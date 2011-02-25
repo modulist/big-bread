@@ -70,6 +70,16 @@ CREATE TABLE energy_sources(
 )
 ENGINE=InnoDB;
 
+CREATE TABLE materials(
+  id                 char(36)      NOT NULL,
+  material_type_id   varchar(6)    NOT NULL,
+  name               varchar(255)  NOT NULL,
+  deleted            boolean       NOT NULL DEFAULT 0,
+  PRIMARY KEY( id ),
+  CONSTRAINT uix__material_type_id UNIQUE INDEX( material_type_id )
+)
+ENGINE=InnoDB;
+
 /** BUILDING TABLES */
 
 CREATE TABLE addresses(
@@ -222,10 +232,14 @@ CREATE TABLE window_systems(
   window_system_type_id   varchar(6)    NOT NULL,
   name                    varchar(255)  NOT NULL,
   panes                   int           NOT NULL, 
-  material                int           NOT NULL, -- What is the material value? A secondary lookup?
+  material_id             char(36)      NOT NULL,
   gas_filled              boolean       NOT NULL DEFAULT 0,
   PRIMARY KEY( id ),
-  CONSTRAINT uix__window_system_type_id UNIQUE INDEX( window_system_type_id )
+  CONSTRAINT uix__window_system_type_id UNIQUE INDEX( window_system_type_id ),
+  CONSTRAINT fk__window_systems__materials FOREIGN KEY( material_id )
+    REFERENCES materials( id )
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION
 ) ENGINE=InnoDB;
 
 CREATE TABLE building_appliances(
