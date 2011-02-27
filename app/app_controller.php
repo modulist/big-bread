@@ -131,4 +131,37 @@ class AppController extends Controller {
     
     return $user ? $user[$this->Auth->userModel] : null;
   }
+  
+  /**
+   * Provides a very loose authentication mechanism for selected
+   * controllers. And by loose, we really just mean a request that:
+   *  - The referrer is a recognized partner TLD
+   *  - A (syntactically) valid contractor email address was passed
+   *
+   * @return  boolean
+   * @public  protected
+   */
+  protected function accessible() {
+    $accessible    = false;
+    $this->Partner = ClassRegistry::init( 'Partner' );
+    
+    /** Ensure that the referrer is a partner domain */
+    $referrer         = parse_url( $this->referer() );
+    $referring_domain = $referrer['host'];
+    $tld              = preg_replace( '/^.*\.([^.]+\.[^.]+)$/', "$1", $referring_domain );
+    
+    $partner = $this->Partner->find(
+      'first',
+      array(
+        'contain' => array( "PartnerDomain.top_level_domain LIKE '%" . $tld . "'" )
+      )
+    );
+    
+    if( !empty( $partner ) && !empty( $partner['PartnerDomain'] ) && !empty( $this->params['url']['contractor'] ) ) {
+      /** The site is a match, ensure that a value contractor email was passed */
+      return Validation::email( base64_decode( $this->params['url']['contractor'] ) );
+    }
+    
+    return false;
+  }
 }

@@ -1,7 +1,7 @@
 <?php
 
 class SurveysController extends AppController {
-  public $name = 'Survey';
+  public $name = 'Surveys';
   
   /**
    * Displays the survey form.
@@ -11,9 +11,8 @@ class SurveysController extends AppController {
    */
   public function create() {
     if( !$this->accessible() ) {
-      exit( 'not accessible' );
+      $this->header( 'HTTP/1.1 403 Forbidden' );
+      throw new Exception( 'Access Forbidden' );
     }
-    
-    exit( 'accessible' );
   }
 }
