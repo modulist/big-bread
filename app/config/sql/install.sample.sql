@@ -1,3 +1,10 @@
+/**
+ * Installs the big bread database that supports the contractor survey.
+ * A complete database installation includes:
+ *  - The latest dump of the fp_incentives database
+ *  - Execution of Cake's session.sql DDL
+ */
+ 
 DROP DATABASE IF EXISTS @DB_NAME@;
 CREATE DATABASE @DB_NAME@
   DEFAULT CHARACTER SET 'utf8'
@@ -397,4 +404,29 @@ CREATE TABLE partner_domains(
     REFERENCES partners( id )
     ON UPDATE CASCADE
     ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+/** SURVEYS */
+
+CREATE TABLE surveys(
+  id            char(36)    NOT NULL,
+  contractor_id char(36)    NULL,
+  homeowner_id  char(36)    NULL,
+  building_id   char(36)    NULL,
+  created       datetime    NOT NULL,
+  modified      datetime    NOT NULL,
+  deleted       boolean     NOT NULL DEFAULT 0,
+  PRIMARY KEY( id ),
+  CONSTRAINT fk__surveys__contractors FOREIGN KEY( contractor_id )
+    REFERENCES contractors( id )
+    ON UPDATE CASCADE
+    ON DELETE SET NULL,
+  CONSTRAINT fk__surveys__homeowners FOREIGN KEY( homeowner_id )
+    REFERENCES homeowners( id )
+    ON UPDATE CASCADE
+    ON DELETE SET NULL,
+  CONSTRAINT fk__surveys__buildings FOREIGN KEY( building_id )
+    REFERENCES buildings( id )
+    ON UPDATE CASCADE
+    ON DELETE SET NULL
 ) ENGINE=InnoDB;
