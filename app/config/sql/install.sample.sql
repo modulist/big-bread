@@ -117,6 +117,9 @@ CREATE TABLE buildings(
   shading_type_id       char(36)  NULL,
   infiltration_type_id  char(36)  NULL,
   exposure_type_id      char(36)  NULL,
+  efficiency_rating     int       NULL,
+  warranty_info         text      NULL,
+  recall_info           text      NULL,
   notes                 text      NULL,
   deleted               boolean   NOT NULL DEFAULT 0,
   created               datetime  NOT NULL,
@@ -346,38 +349,76 @@ CREATE TABLE building_window_systems(
     ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+CREATE TABLE realtors(
+  contact_id    char(36)    NOT NULL,
+  building_id   char(36)    NOT NULL,
+  
+  PRIMARY KEY( id ),
+  CONSTRAINT fk__realtors__buildings FOREIGN KEY( building_id )
+    REFERENCES buildings( id )
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+  CONSTRAINT fk__realtors__contacts FOREIGN KEY( contact_id )
+    REFERENCES window_systems( id )
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+  
+) ENGINE=InnoDB;
+
 /** APPLICATION USERS & PARTNERS */
 
+CREATE TABLE contacts(
+  id          char(36)        NOT NULL,
+  first_name  varchar(255)    NULL,
+  last_name   varchar(255)    NULL,
+  email       varchar(255)    NULL,
+  deleted     boolean         NOT NULL DEFAULT 0,
+  PRIMARY KEY( id )
+)
+ENGINE=InnoDB;
+
 CREATE TABLE users(
-  id        char(36)      NOT NULL,
-  email     varchar(255)  NOT NULL,
-  password  varchar(255)  NOT NULL,
-  deleted   boolean       NOT NULL DEFAULT 1,
-  created   datetime      NOT NULL,
-  modified  datetime      NOT NULL,
+  id          char(36)      NOT NULL,
+  email       varchar(255)  NOT NULL, -- I'm not a fan of duplicating this, but some "people" aren't users.
+  password    varchar(255)  NOT NULL,
+  last_login  datetime      NULL,
+  deleted     boolean       NOT NULL DEFAULT 1,
+  created     datetime      NOT NULL,
+  modified    datetime      NOT NULL,
+  
   PRIMARY KEY( id )
 )
 ENGINE=InnoDB;
 
 CREATE TABLE contractors(
-  id      char(36)  NOT NULL,
-  user_id char(36)  NOT NULL,
+  id          char(36)  NOT NULL,
+  contact_id  char(36)  NOT NULL,
+  user_id     char(36)  NOT NULL,
   
   PRIMARY KEY( id ),
   CONSTRAINT  fk__contractors__users FOREIGN KEY( user_id )
     REFERENCES users( id )
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+  CONSTRAINT  fk__contractors__contacts FOREIGN KEY( contact_id )
+    REFERENCES people( id )
     ON UPDATE CASCADE
     ON DELETE CASCADE
 )
 ENGINE=InnoDB;
 
 CREATE TABLE homeowners(
-  id      char(36)  NOT NULL,
-  user_id char(36)  NOT NULL,
+  id          char(36)  NOT NULL,
+  contact_id  char(36)  NOT NULL,
+  user_id     char(36)  NOT NULL,
   
   PRIMARY KEY( id ),
   CONSTRAINT  fk__homeowners__users FOREIGN KEY( user_id )
     REFERENCES users( id )
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+  CONSTRAINT  fk__homeowners__contacts FOREIGN KEY( contact_id )
+    REFERENCES people( id )
     ON UPDATE CASCADE
     ON DELETE CASCADE
 )
