@@ -4,6 +4,15 @@ class SurveysController extends AppController {
   public $name = 'Surveys';
   
   /**
+   * CALLBACKS
+   */
+  
+  public function beforeFilter() {
+    $this->Auth->allow( 'create' );
+  }
+
+  
+  /**
    * Displays the survey form.
    *
    * @param 	$arg

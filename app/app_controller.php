@@ -41,31 +41,21 @@ class AppController extends Controller {
 	 */
 	
 	public function beforeFilter() {
-		$this->Auth->allow( '*' );
-		$this->Auth->deny(
-			'admin_index'
-			, 'admin_list'
-			, 'admin_new'
-			, 'admin_create'
-			, 'admin_edit'
-			, 'admin_update'
-			, 'admin_delete'
-			, 'admin_write'
-		);
-
+		$this->Auth->deny( '*' );
+		
 		$this->Auth->userModel = 'User';
 		$this->Auth->fields = array(
 			'username' => 'email',
 			'password' => 'password'
 		);
-		$this->Auth->userScope = array( 'User.active' => 1, 'User.deleted' => 0 );
-		$this->Auth->loginAction = array (
+		$this->Auth->userScope = array( 'User.deleted' => 0 );
+		$this->Auth->loginAction = array(
 			'controller' => 'users',
 			'action'     => 'login',
 			'admin'      => false
 		);
 		$this->Auth->autoRedirect = false;
-		$this->Auth->loginRedirect = array (
+		$this->Auth->loginRedirect = array(
 			'controller' => 'users',
 			'action'     => 'index',
 			'admin'      => true
