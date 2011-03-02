@@ -19,6 +19,8 @@ class SurveysController extends AppController {
    * @return	type		description
    */
   public function create() {
+    $this->helpers[] = 'Form';
+    
     if( !$this->accessible() ) {
       $this->header( 'HTTP/1.1 403 Forbidden' );
       throw new Exception( 'Access Forbidden' );
