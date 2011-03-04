@@ -5,24 +5,25 @@ class Building extends AppModel {
 	public $validate = array();
   
 	public $belongsTo = array(
-		'BuildingType',
 		'Address',
-		'Realtor' => array(
+		'BasementType',
+    'BuildingShape',
+		'BuildingType',
+		'ExposureType',
+		'Homeowner' => array(
 			'className' => 'User',
-			'foreignKey' => 'realtor_id'
+			'foreignKey' => 'homeowner_id'
 		),
 		'Inspector' => array(
 			'className' => 'User',
 			'foreignKey' => 'inspector_id'
 		),
-		'Homeowner' => array(
+    'MaintenanceLevel',
+		'Realtor' => array(
 			'className' => 'User',
-			'foreignKey' => 'homeowner_id'
+			'foreignKey' => 'realtor_id'
 		),
-		'BasementType',
 		'ShadingType',
-		'InfiltrationType',
-		'ExposureType'
 	);
 
 	public $hasMany = array(
@@ -33,6 +34,6 @@ class Building extends AppModel {
 		'BuildingWallSystem',
 		'BuildingWindowSystem',
 		'Occupant',
-		'Survey'
+		'Survey',
 	);
 }

@@ -19,74 +19,198 @@ USE @DB_NAME@;
 
 /** LOOKUP TABLES */
 
-DROP TABLE IF EXISTS building_types;
-CREATE TABLE building_types(
-  id                char(36)      NOT NULL,
-  building_type_id  varchar(6)    NOT NULL,
-  name              varchar(255)  NOT NULL,
-  deleted           boolean       NOT NULL DEFAULT 0,
-  PRIMARY KEY( id ),
-  CONSTRAINT uix__building_type_id UNIQUE INDEX( building_type_id )
-) ENGINE=InnoDB;
-
 DROP TABLE IF EXISTS basement_types;
 CREATE TABLE basement_types(
-  id                char(36)      NOT NULL,
-  basement_type_id  varchar(6)    NOT NULL,
-  name              varchar(255)  NOT NULL,
-  deleted           boolean       NOT NULL DEFAULT 0,
+  id        char(36)      NOT NULL,
+  code      varchar(6)    NOT NULL,
+  name      varchar(255)  NOT NULL,
+  deleted   boolean       NOT NULL DEFAULT 0,
   PRIMARY KEY( id ),
-  CONSTRAINT uix__basement_type_id UNIQUE INDEX( basement_type_id )
+  CONSTRAINT uix__code UNIQUE INDEX( code )
 ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS shading_types;
-CREATE TABLE shading_types(
-  id                char(36)      NOT NULL,
-  shading_type_id   varchar(6)    NOT NULL,
-  name              varchar(255)  NOT NULL,
-  deleted           boolean       NOT NULL DEFAULT 0,
+INSERT INTO basement_types( id, code, name )
+VALUES
+( '4d6ffa65-50b4-40de-9eff-7bcd3b196446', 'SLAB', 'Slab on Grade' ),
+( '4d6ffa65-a960-4d5c-a5aa-7bcd3b196446', 'VCRWSP', 'Vented Crawlspace' ),
+( '4d6ffa65-f654-4c75-a964-7bcd3b196446', 'SCRWSP', 'Sealed Crawlspace' ),
+( '4d6ffa65-42e4-4322-86cf-7bcd3b196446', 'UNFNSH', 'Unfinished' ),
+( '4d6ffa65-8f10-489d-8659-7bcd3b196446', 'CONDTN', 'Conditioned' );
+
+DROP TABLE IF EXISTS building_shapes;
+CREATE TABLE building_shapes(
+  id        char(36)      NOT NULL,
+  code      varchar(6)    NOT NULL,
+  name      varchar(255)  NOT NULL,
+  deleted   boolean       NOT NULL DEFAULT 0,
   PRIMARY KEY( id ),
-  CONSTRAINT uix__shading_type_id UNIQUE INDEX( shading_type_id )
+  CONSTRAINT uix__code UNIQUE INDEX( code )
 ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS infiltration_types;
-CREATE TABLE infiltration_types(
-  id                    char(36)      NOT NULL,
-  infiltration_type_id  varchar(6)    NOT NULL,
-  name                  varchar(255)  NOT NULL,
-  deleted               boolean       NOT NULL DEFAULT 0,
+INSERT INTO building_shapes( id, code, name )
+VALUES
+( '4d6ff444-5e18-4ca2-9386-7a073b196446', 'SQUARE', 'Square' ),
+( '4d6ff444-ab70-43bb-8807-7a073b196446', 'RECT', 'Rectangular' ),
+( '4d6ff444-f864-4668-b9b0-7a073b196446', 'LONG', 'Long' ),
+( '4d6ff444-45bc-4aa4-b687-7a073b196446', 'LFORM', 'L-Form' ),
+( '4d6ff444-9314-4058-8979-7a073b196446', 'UFORM', 'U-Form' ),
+( '4d6ff444-e008-47a2-a98e-7a073b196446', 'OTHER', 'Other' );
+
+DROP TABLE IF EXISTS building_types;
+CREATE TABLE building_types(
+  id        char(36)      NOT NULL,
+  code      varchar(6)    NOT NULL,
+  name      varchar(255)  NOT NULL,
+  deleted   boolean       NOT NULL DEFAULT 0,
   PRIMARY KEY( id ),
-  CONSTRAINT uix__infiltration_type_id UNIQUE INDEX( infiltration_type_id )
+  CONSTRAINT uix__code UNIQUE INDEX( code )
 ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS exposure_types;
-CREATE TABLE exposure_types(
-  id                char(36)      NOT NULL,
-  exposure_type_id  varchar(6)    NOT NULL,
-  name              varchar(255)  NOT NULL,
-  deleted           boolean       NOT NULL DEFAULT 0,
-  PRIMARY KEY( id ),
-  CONSTRAINT uix__exposure_type_id UNIQUE INDEX( exposure_type_id )
-) ENGINE=InnoDB;
+INSERT INTO building_types( id, code, name )
+VALUES
+( '4d6ff15d-c9d0-4d44-9379-793d3b196446', 'SNGLFM', 'Single Family' ),
+( '4d6ff15d-16c4-415f-92f8-793d3b196446', 'TWNHSE', 'Townhouse' );
 
 DROP TABLE IF EXISTS energy_sources;
 CREATE TABLE energy_sources(
-  id                      char(36)      NOT NULL,
-  energy_source_type_id   varchar(6)    NOT NULL,
-  name                    varchar(255)  NOT NULL,
-  deleted                 boolean       NOT NULL DEFAULT 0,
+  id        char(36)      NOT NULL,
+  code      varchar(6)    NOT NULL,
+  name      varchar(255)  NOT NULL,
+  deleted   boolean       NOT NULL DEFAULT 0,
   PRIMARY KEY( id ),
-  CONSTRAINT uix__energy_source_type_id UNIQUE INDEX( energy_source_type_id )
+  CONSTRAINT uix__code UNIQUE INDEX( code )
 ) ENGINE=InnoDB;
 
+INSERT INTO energy_sources( id, code, name )
+VALUES
+( '4d6ff444-1bd4-404f-bc53-7a073b196446', 'ELECT', 'Electric' ),
+( '4d6ff444-7610-42bc-af05-7a073b196446', 'NATGAS', 'Natural Gas' ),
+( '4d6ff444-c3cc-42c9-9d02-7a073b196446', 'OIL', 'Oil' ),
+( '4d6ff444-1124-40a6-83eb-7a073b196446', 'PROPNE', 'Propane' );
+
+DROP TABLE IF EXISTS exposure_types;
+CREATE TABLE exposure_types(
+  id        char(36)      NOT NULL,
+  code      varchar(6)    NOT NULL,
+  name      varchar(255)  NOT NULL,
+  deleted   boolean       NOT NULL DEFAULT 0,
+  PRIMARY KEY( id ),
+  CONSTRAINT uix__code UNIQUE INDEX( code )
+) ENGINE=InnoDB;
+
+INSERT INTO exposure_types( id, code, name )
+VALUES
+( '4d6ff15d-878c-4faf-b5f4-793d3b196446', 'OPEN', 'Open' ),
+( '4d6ff15d-e100-489f-8016-793d3b196446', 'BLDGS', 'Other Buildings' ),
+( '4d6ff15d-2f20-4f51-9a39-793d3b196446', 'TREES', 'Some trees' ),
+( '4d6ff15d-7c14-49a2-ba4b-793d3b196446', 'WOODED', 'Wooded lot' );
+
+DROP TABLE IF EXISTS insulation_levels;
+CREATE TABLE insulation_levels(
+  id        char(36)      NOT NULL,
+  code      varchar(6)    NOT NULL,
+  name      varchar(255)  NOT NULL,
+  deleted   boolean       NOT NULL DEFAULT 0,
+  
+  PRIMARY KEY( id ),
+  CONSTRAINT uix__code UNIQUE INDEX( code )
+) ENGINE=InnoDB;
+
+INSERT INTO insulation_levels( id, code, name )
+VALUES
+( '4d700e7a-e0a8-477a-8b71-82376e891b5e', 'NONE', 'None' ),
+( '4d700e7a-6fa0-4aee-acdc-82376e891b5e', 'POOR', 'Poor (3-6")' ),
+( '4d700e7a-f088-46d3-8336-82376e891b5e', 'AVG', 'Average (7-10")' ),
+( '4d700e7a-6108-44cf-9fe4-82376e891b5e', 'GOOD', 'Good (11-15")' ),
+( '4d700e7a-d250-4c50-9a4f-82376e891b5e', 'NOSAY', 'Can''t Say' );
+
+DROP TABLE IF EXISTS maintenance_levels;
+CREATE TABLE maintenance_levels(
+  id        char(36)      NOT NULL,
+  code      varchar(6)    NOT NULL,
+  name      varchar(255)  NOT NULL,
+  deleted   boolean       NOT NULL DEFAULT 0,
+  PRIMARY KEY( id ),
+  CONSTRAINT uix__code UNIQUE INDEX( code )
+) ENGINE=InnoDB;
+
+INSERT INTO maintenance_levels( id, code, name )
+VALUES
+( '4d6ff15d-63b8-4499-a6cd-793d3b196446', 'POOR', 'Poor' ),
+( '4d6ff15d-b0ac-4bb2-b550-793d3b196446', 'AVG', 'Average' ),
+( '4d6ff15d-fe04-47db-8811-793d3b196446', 'GOOD', 'Good' ),
+( '4d6ff15d-4b5c-41d3-9696-793d3b196446', 'UNKNWN', 'Can''t Say' );
+
+-- TODO: What?
 DROP TABLE IF EXISTS materials;
 CREATE TABLE materials(
-  id                 char(36)      NOT NULL,
-  material_type_id   varchar(6)    NOT NULL,
-  name               varchar(255)  NOT NULL,
-  deleted            boolean       NOT NULL DEFAULT 0,
+  id       char(36)      NOT NULL,
+  code     varchar(6)    NOT NULL,
+  name     varchar(255)  NOT NULL,
+  deleted  boolean       NOT NULL DEFAULT 0,
   PRIMARY KEY( id ),
-  CONSTRAINT uix__material_type_id UNIQUE INDEX( material_type_id )
+  CONSTRAINT uix__code UNIQUE INDEX( code )
+) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS roof_systems;
+CREATE TABLE roof_systems(
+  id        char(36)      NOT NULL,
+  code      varchar(6)    NOT NULL,
+  name      varchar(255)  NOT NULL,
+  deleted   boolean       NOT NULL DEFAULT 0,
+  PRIMARY KEY( id ),
+  CONSTRAINT uix__code UNIQUE INDEX( code )
+) ENGINE=InnoDB;
+
+INSERT INTO roof_systems( id, code, name )
+VALUES
+( '4d700e7a-046c-4fa9-9655-82376e891b5e', 'ATTIC', 'Attic' ),
+( '4d703e1f-aa00-4495-ba91-93086e891b5e', 'CTHDRL', 'Cathedral Ceilings' ),
+( '4d703e1f-4960-403f-b3d7-93086e891b5e', 'FLAT', 'Flat Roof' );
+
+DROP TABLE IF EXISTS shading_types;
+CREATE TABLE shading_types(
+  id        char(36)      NOT NULL,
+  code      varchar(6)    NOT NULL,
+  name      varchar(255)  NOT NULL,
+  deleted   boolean       NOT NULL DEFAULT 0,
+  PRIMARY KEY( id ),
+  CONSTRAINT uix__code UNIQUE INDEX( code )
+) ENGINE=InnoDB;
+
+INSERT INTO shading_types( id, code, name )
+VALUES
+( '4d700e7a-426c-4a28-a6dd-82376e891b5e', 'NONE', 'None' ),
+( '4d700e7a-b2ec-4ead-a2e9-82376e891b5e', 'INTBLD', 'Interior Blinds' ),
+( '4d700e7a-236c-4e0e-8a62-82376e891b5e', 'EXTBLD', 'Exterior Blinds/Overhangs' ),
+( '4d700e7a-9388-411c-8c0a-82376e891b5e', 'SHADE', 'Shaded Lot (trees)' );
+
+DROP TABLE IF EXISTS wall_systems;
+CREATE TABLE wall_systems(
+  id        char(36)      NOT NULL,
+  code      varchar(6)    NOT NULL,
+  name      varchar(255)  NOT NULL,
+  u_value   float         NULL,
+  deleted   boolean       NOT NULL DEFAULT 0,
+  
+  PRIMARY KEY( id ),
+  CONSTRAINT uix__code UNIQUE INDEX( code )
+) ENGINE=InnoDB;
+
+INSERT INTO wall_systems( id, code, name )
+VALUES
+( '4d6ffa65-dba0-4594-8346-7bcd3b196446', 'TMBFRM', 'Timber Frame Masonry' ),
+( '4d6ffa65-27cc-49b7-b5f5-7bcd3b196446', 'CONBLK', 'Concrete Block' ),
+( '4d6ffa65-73f8-412e-ab8c-7bcd3b196446', 'OTHER', 'Other' );
+
+DROP TABLE IF EXISTS window_systems;
+CREATE TABLE window_systems(
+  id            char(36)      NOT NULL,
+  code          varchar(6)    NOT NULL,
+  name                    varchar(255)  NOT NULL,
+  
+  PRIMARY KEY( id ),
+  CONSTRAINT uix__code UNIQUE INDEX( code )
 ) ENGINE=InnoDB;
 
 /** APPLICATION USERS */
@@ -113,6 +237,7 @@ CREATE TABLE users(
   first_name      varchar(255)    NOT NULL,
   last_name       varchar(255)    NOT NULL,
   email           varchar(255)    NOT NULL,
+  phone_number    varchar(255)    NULL,
   password        varchar(255)    NULL,
   last_login      datetime        NULL,
   deleted         boolean         NOT NULL DEFAULT 0,
@@ -141,32 +266,41 @@ CREATE TABLE addresses(
 
 DROP TABLE IF EXISTS buildings;
 CREATE TABLE buildings(
-  id                    char(36)  NOT NULL,
-  building_type_id      char(36)  NULL,
-  address_id            char(36)  NOT NULL,
-  realtor_id            char(36)  NULL,
-  inspector_id          char(36)  NOT NULL,
-  homeowner_id          char(36)  NOT NULL,
-  year_built            int       NULL,
-  total_sf              int       NULL,
-  finished_sf           int       NULL,
-  stories_above_ground  int       NULL,
-  basement_type_id      char(36)  NULL,
-  window_wall_ratio     float     NULL,
-  skylight_count        int       NULL,
-  window_wall           boolean   NOT NULL DEFAULT 0,
-  window_wall_sf        int       NULL,
-  window_wall_side      char(1)   NULL,
-  shading_type_id       char(36)  NULL,
-  infiltration_type_id  char(36)  NULL,
-  exposure_type_id      char(36)  NULL,
-  efficiency_rating     float     NULL,
-  warranty_info         text      NULL,
-  recall_info           text      NULL,
-  notes                 text      NULL,
-  deleted               boolean   NOT NULL DEFAULT 0,
-  created               datetime  NOT NULL,
-  modified              datetime  NOT NULL,
+  id                        char(36)  NOT NULL,
+  -- associations
+  building_type_id          char(36)  NULL,
+  address_id                char(36)  NOT NULL,
+  realtor_id                char(36)  NULL,
+  inspector_id              char(36)  NOT NULL,
+  homeowner_id              char(36)  NOT NULL,
+  maintenance_level_id      char(36)  NULL,
+  building_shape_id         char(36)  NULL,
+  basement_type_id          char(36)  NULL,
+  shading_type_id           char(36)  NULL,
+  exposure_type_id          char(36)  NULL,
+  insulation_level_id       char(36)  NULL,
+  -- properties
+  year_built                int       NULL,
+  total_sf                  int       NULL,
+  finished_sf               int       NULL,
+  stories_above_ground      int       NULL,
+  attic                     boolean   NULL,
+  insulated_foundation      boolean   NULL,
+  skylight_count            int       NULL,
+  window_wall               boolean   NOT NULL DEFAULT 0,
+  window_wall_sf            int       NULL,
+  window_wall_side          char(1)   NULL,
+  window_wall_ratio         float     NULL,
+  -- infiltration (varies from original model)
+  drafts                    boolean   NOT NULL DEFAULT 0,
+  visible_weather_stripping boolean   NULL,
+  visible_caulking          boolean   NULL,
+  windows_frequently_open   boolean   NULL,
+  -- other stuff
+  notes                     text      NULL,
+  deleted                   boolean   NOT NULL DEFAULT 0,
+  created                   datetime  NOT NULL,
+  modified                  datetime  NOT NULL,
   
   PRIMARY KEY( id ),
   CONSTRAINT fk__buildings__realtor FOREIGN KEY( realtor_id )
@@ -181,6 +315,14 @@ CREATE TABLE buildings(
     REFERENCES users( id )
     ON UPDATE CASCADE
     ON DELETE NO ACTION,
+  CONSTRAINT fk__buildings__maintenance_levels FOREIGN KEY( maintenance_level_id )
+    REFERENCES maintenance_levels( id )
+    ON UPDATE CASCADE
+    ON DELETE SET NULL,
+  CONSTRAINT fk__buildings__building_shapes FOREIGN KEY( building_shape_id )
+    REFERENCES building_shapes( id )
+    ON UPDATE CASCADE
+    ON DELETE SET NULL,
   CONSTRAINT fk__buildings__addresses FOREIGN KEY( address_id )
     REFERENCES addresses( id )
     ON UPDATE CASCADE
@@ -197,24 +339,27 @@ CREATE TABLE buildings(
     REFERENCES shading_types( id )
     ON UPDATE CASCADE
     ON DELETE SET NULL,
-  CONSTRAINT fk__buildings__infiltration_types FOREIGN KEY( infiltration_type_id )
-    REFERENCES infiltration_types( id )
-    ON UPDATE CASCADE
-    ON DELETE SET NULL,
   CONSTRAINT fk__buildings__exposure_types FOREIGN KEY( exposure_type_id )
     REFERENCES exposure_types( id )
+    ON UPDATE CASCADE
+    ON DELETE SET NULL,
+  CONSTRAINT fk__buildings__insulation_levels FOREIGN KEY( insulation_level_id )
+    REFERENCES insulation_levels( id )
     ON UPDATE CASCADE
     ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS occupants;
 CREATE TABLE occupants(
-  id          char(36)  NOT NULL,
-  building_id char(36)  NOT NULL,
-  age_0_5     int       NULL,
-  age_6_13    int       NULL,
-  age_14_64   int       NULL,
-  age_65      int       NULL,
+  id                    char(36)  NOT NULL,
+  building_id           char(36)  NOT NULL,
+  age_0_5               int       NULL,
+  age_6_13              int       NULL,
+  age_14_64             int       NULL,
+  age_65                int       NULL,
+  daytime_occupancy     boolean   NULL,
+  heating_override      boolean   NULL,
+  cooling_override      boolean   NULL,
   
   PRIMARY KEY( id ),
   CONSTRAINT fk__occupants__buildings FOREIGN KEY( building_id )
@@ -279,45 +424,6 @@ CREATE TABLE hvac_systems(
   CONSTRAINT uix__hvac_system_type_id UNIQUE INDEX( hvac_system_type_id )
 ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS roof_systems;
-CREATE TABLE roof_systems(
-  id                    char(36)      NOT NULL,
-  roof_system_type_id   varchar(6)    NOT NULL,
-  name                  varchar(255)  NOT NULL,
-  u_value               float         NULL,
-  
-  PRIMARY KEY( id ),
-  CONSTRAINT uix__roof_system_type_id UNIQUE INDEX( roof_system_type_id )
-) ENGINE=InnoDB;
-
-DROP TABLE IF EXISTS wall_systems;
-CREATE TABLE wall_systems(
-  id                  char(36)      NOT NULL,
-  wall_system_type_id varchar(6)    NOT NULL,
-  name                varchar(255)  NOT NULL,
-  u_value             float         NULL,
-  deleted             boolean       NOT NULL DEFAULT 0,
-  
-  PRIMARY KEY( id ),
-  CONSTRAINT uix__wall_system_type_id UNIQUE INDEX( wall_system_type_id )
-) ENGINE=InnoDB;
-
-DROP TABLE IF EXISTS window_systems;
-CREATE TABLE window_systems(
-  id                      char(36)      NOT NULL,
-  window_system_type_id   varchar(6)    NOT NULL,
-  name                    varchar(255)  NOT NULL,
-  panes                   int           NOT NULL, 
-  material_id             char(36)      NOT NULL,
-  gas_filled              boolean       NOT NULL DEFAULT 0,
-  PRIMARY KEY( id ),
-  CONSTRAINT uix__window_system_type_id UNIQUE INDEX( window_system_type_id ),
-  CONSTRAINT fk__window_systems__materials FOREIGN KEY( material_id )
-    REFERENCES materials( id )
-    ON UPDATE CASCADE
-    ON DELETE NO ACTION
-) ENGINE=InnoDB;
-
 DROP TABLE IF EXISTS building_appliances;
 CREATE TABLE building_appliances(
   id            char(36)  NOT NULL,
@@ -363,6 +469,9 @@ CREATE TABLE building_hvac_systems(
   year_installed    int       NOT NULL,
   setpoint_heating  int       NULL,
   setpoint_cooling  int       NULL,
+  efficiency_rating float     NULL,
+  warranty_info     text      NULL,
+  recall_info       text      NULL,
   notes             text      NULL,
   
   PRIMARY KEY( id ),
@@ -378,9 +487,12 @@ CREATE TABLE building_hvac_systems(
 
 DROP TABLE IF EXISTS building_roof_systems;
 CREATE TABLE building_roof_systems(
-  id              char(36)    NOT NULL,
-  building_id     char(36)    NOT NULL,
-  roof_system_id  char(36)    NOT NULL,
+  id                    char(36)    NOT NULL,
+  building_id           char(36)    NOT NULL,
+  roof_system_id        char(36)    NOT NULL,
+  insulation_level_id   char(36)    NULL,
+  living_space_ratio    float       NULL,
+  radiant_barrier       boolean     NULL,
   
   PRIMARY KEY( id ),
   CONSTRAINT fk__building_roof_systems__buildings FOREIGN KEY( building_id )
@@ -390,14 +502,19 @@ CREATE TABLE building_roof_systems(
   CONSTRAINT fk__building_roof_systems__roof_systems FOREIGN KEY( roof_system_id )
     REFERENCES roof_systems( id )
     ON UPDATE CASCADE
+    ON DELETE CASCADE,
+  CONSTRAINT fk__building_roof_systems__insulation_types FOREIGN KEY( insulation_level_id )
+    REFERENCES insulation_levels( id )
+    ON UPDATE CASCADE
     ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS building_wall_systems;
 CREATE TABLE building_wall_systems(
-  id              char(36)    NOT NULL,
-  building_id    char(36)  NOT NULL,
-  wall_system_id char(36)  NOT NULL,
+  id                  char(36)  NOT NULL,
+  building_id         char(36)  NOT NULL,
+  wall_system_id      char(36)  NOT NULL,
+  insulation_level_id char(36)  NULL,
   
   PRIMARY KEY( building_id, wall_system_id ),
   CONSTRAINT fk__building_wall_systems__buildings FOREIGN KEY( building_id )
@@ -415,13 +532,16 @@ CREATE TABLE building_window_systems(
   id                char(36)  NOT NULL,
   building_id       char(36)  NOT NULL,
   window_system_id  char(36)  NOT NULL,
+  panes             int       NULL, 
+  material_id       char(36)  NULL,
+  gas_filled        boolean   NULL DEFAULT 0,
   
   PRIMARY KEY( id ),
   CONSTRAINT fk__building_window_systems__buildings FOREIGN KEY( building_id )
     REFERENCES buildings( id )
     ON UPDATE CASCADE
     ON DELETE CASCADE,
-  CONSTRAINT fk__building_window_systems__roof_systems FOREIGN KEY( window_system_id )
+  CONSTRAINT fk__building_window_systems__window_systems FOREIGN KEY( window_system_id )
     REFERENCES window_systems( id )
     ON UPDATE CASCADE
     ON DELETE CASCADE
