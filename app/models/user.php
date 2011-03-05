@@ -1,47 +1,40 @@
 <?php
 
 class User extends AppModel {
-	var $name = 'User';
+	public $name = 'User';
+  public $belongsTo = array( 'UserType' );
   
-	var $validate = array(
+	public $validate = array(
 		'first_name' => array(
 			'notempty' => array(
-				'rule' => array('notempty'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				'rule'       => array( 'notempty' ),
+				'message'    => 'First name cannot be empty.',
+				'allowEmpty' => false,
+				'required'   => true,
 			),
 		),
 		'last_name' => array(
 			'notempty' => array(
-				'rule' => array('notempty'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				'rule'       => array( 'notempty' ),
+				'message'    => 'Last name cannot be empty.',
+				'allowEmpty' => false,
+				'required'   => true,
 			),
 		),
 		'email' => array(
 			'email' => array(
-				'rule' => array('email'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				'rule'       => array( 'email' ),
+				'message'    => 'Email address is invalid.',
+				'allowEmpty' => false,
+				'required'   => true,
 			),
 		),
-		'deleted' => array(
-			'boolean' => array(
-				'rule' => array('boolean'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+		'phone_number' => array(
+			'phoneNumber' => array(
+				'rule' => array( 'phone', null, 'us' ),
+				'message' => 'Phone number is invalid.',
+				'allowEmpty' => true,
+				'required' => false,
 			),
 		),
 	);
