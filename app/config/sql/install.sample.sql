@@ -5,19 +5,53 @@
  *  - Execution of Cake's session.sql DDL
  */
  
--- DROP DATABASE IF EXISTS @DB_NAME@;
-/** 
+DROP DATABASE IF EXISTS @DB_NAME@;
+
+
 CREATE DATABASE @DB_NAME@
   DEFAULT CHARACTER SET 'utf8'
   DEFAULT COLLATE 'utf8_unicode_ci';
 
-GRANT ALL ON @DB_NAME@.* to @DB_NAME@_@DB_USERNAME@ IDENTIFIED BY '@DB_PASSWORD@';
-GRANT ALL ON @DB_NAME@.* to @DB_NAME@_@DB_USERNAME@@localhost IDENTIFIED BY '@DB_PASSWORD@';
- */
+-- GRANT ALL ON @DB_NAME@.* to @DB_NAME@_@DB_USERNAME@ IDENTIFIED BY '@DB_PASSWORD@';
+-- GRANT ALL ON @DB_NAME@.* to @DB_NAME@_@DB_USERNAME@@localhost IDENTIFIED BY '@DB_PASSWORD@';
  
 USE @DB_NAME@;
 
+/** IMPORT EXISTING INCENTIVES DATA */
+
+/**
+ * Execute the local incentives database export. There are a few
+ * dependencies, so this script must be executed first.
+ */
+
+SOURCE fp_incentive.sql;
+
+/** A few adjustments to the incentives database */
+ALTER TABLE us_states
+  ENGINE = InnoDB,
+  CONVERT TO CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci';
+
+
 /** LOOKUP TABLES */
+
+DROP TABLE IF EXISTS appliance_types;
+CREATE TABLE appliance_types(
+  id        char(36)      NOT NULL,
+  code      varchar(6)    NOT NULL,
+  name      varchar(255)  NOT NULL,
+  deleted   boolean       NOT NULL DEFAULT 0,
+  PRIMARY KEY( id ),
+  CONSTRAINT uix__code UNIQUE INDEX( code )
+) ENGINE=InnoDB;
+
+INSERT INTO appliance_types( id, code, name )
+VALUES
+( '4d7173d6-1294-434d-bd3c-4bf33b196446', 'WASHER', 'Washer' ),
+( '4d7173d6-6a78-499a-ad62-4bf33b196446', 'DRYER', 'Dryer' ),
+( '4d7173d6-b708-4a8b-b518-4bf33b196446', 'FREEZR', 'Freezer' ),
+( '4d7173d6-0334-422d-a6b8-4bf33b196446', 'REFRIG', 'Refrigerator' ),
+( '4d7173d6-4fc4-4c91-9a75-4bf33b196446', 'STOVE', 'Stove' ),
+( '4d7173d6-9bf0-4389-b40c-4bf33b196446', 'OVEN', 'Oven' );
 
 DROP TABLE IF EXISTS basement_types;
 CREATE TABLE basement_types(
@@ -141,17 +175,6 @@ VALUES
 ( '4d6ff15d-fe04-47db-8811-793d3b196446', 'GOOD', 'Good' ),
 ( '4d6ff15d-4b5c-41d3-9696-793d3b196446', 'UNKNWN', 'Can''t Say' );
 
--- TODO: What?
-DROP TABLE IF EXISTS materials;
-CREATE TABLE materials(
-  id       char(36)      NOT NULL,
-  code     varchar(6)    NOT NULL,
-  name     varchar(255)  NOT NULL,
-  deleted  boolean       NOT NULL DEFAULT 0,
-  PRIMARY KEY( id ),
-  CONSTRAINT uix__code UNIQUE INDEX( code )
-) ENGINE=InnoDB;
-
 DROP TABLE IF EXISTS roof_systems;
 CREATE TABLE roof_systems(
   id        char(36)      NOT NULL,
@@ -207,28 +230,45 @@ DROP TABLE IF EXISTS window_systems;
 CREATE TABLE window_systems(
   id            char(36)      NOT NULL,
   code          varchar(6)    NOT NULL,
-  name                    varchar(255)  NOT NULL,
+  name          varchar(255)  NOT NULL,
+  deleted       boolean       NOT NULL DEFAULT 0,
   
   PRIMARY KEY( id ),
   CONSTRAINT uix__code UNIQUE INDEX( code )
 ) ENGINE=InnoDB;
+
+INSERT INTO window_systems( id, code, name )
+VALUES
+( '4d7167dc-37d8-4188-b73b-47ec3b196446', 'SINGLE', 'Single Pane' ),
+( '4d7167dc-d1c0-45e9-b1e4-47ec3b196446', 'DOUBLE', 'Double Pane' ),
+( '4d7167dc-56f4-4e01-945e-47ec3b196446', 'INSUL', 'Insulated Glass' ),
+( '4d7167dc-cfa8-4b5c-82e2-47ec3b196446', 'CLEAR', 'Clear' ),
+( '4d7167dc-4d0c-4628-a427-47ec3b196446', 'TINTED', 'Tinted' ),
+( '4d7167dc-c2a0-423c-b566-47ec3b196446', 'LOWE', 'Low E' ),
+( '4d7167dc-2c7c-4a6c-8a7c-47ec3b196446', 'ARGAS', 'Gas Filled (Ar)' ),
+( '4d7167dc-939c-469b-b88c-47ec3b196446', 'WOOD', 'Wood' ),
+( '4d7167dc-50ac-40e0-820a-47ec3b196446', 'VINYL', 'Vinyl' ),
+( '4d7167dc-d1f8-4fc3-9a54-47ec3b196446', 'ALUMNM', 'Aluminum' );
 
 /** APPLICATION USERS */
 
 DROP TABLE IF EXISTS user_types;
 CREATE TABLE user_types(
   id          char(36)        NOT NULL,
-  name        varchar(255)    NULL, -- e.g. Homeowner, Realtor, Inspector, etc.
+  code        varchar(6)      NULL,
+  name        varchar(255)    NULL, -- e.g. Homeowner, Buyer, Realtor, Inspector, etc.
   deleted     boolean         NOT NULL DEFAULT 0,
   
-  PRIMARY KEY( id )
+  PRIMARY KEY( id ),
+  CONSTRAINT uix__code UNIQUE INDEX( code )
 ) ENGINE=InnoDB;
 
 INSERT INTO user_types( id, name )
 VALUES
 ( '4d6d9699-f19c-41e3-a723-45ae6e891b5e', 'Realtor' ),
 ( '4d6d9699-5088-48db-9f56-47ea6e891b5e', 'Inspector' ),
-( '4d6d9699-a7a4-42a1-855e-4f606e891b5e', 'Homeowner' );
+( '4d6d9699-a7a4-42a1-855e-4f606e891b5e', 'Buyer' ),
+( '4d71115d-0f74-43c5-93e9-2f8a3b196446', 'Homeowner' );
 
 DROP TABLE IF EXISTS users;
 CREATE TABLE users(
@@ -248,10 +288,11 @@ CREATE TABLE users(
   CONSTRAINT  fk__users__user_types FOREIGN KEY( user_type_id )
     REFERENCES user_types( id )
     ON UPDATE CASCADE
-    ON DELETE CASCADE
+    ON DELETE NO ACTION,
+  CONSTRAINT uix__email UNIQUE INDEX( email )
 ) ENGINE=InnoDB;
 
-/** BUILDING TABLES */
+/** CORE BUILDING DATA */
 
 DROP TABLE IF EXISTS addresses;
 CREATE TABLE addresses(
@@ -259,9 +300,14 @@ CREATE TABLE addresses(
   address_1 varchar(255)  NOT NULL,
   address_2 varchar(255)  NULL,
   city      varchar(255)  NOT NULL,
-  state     char(2)       NOT NULL,
+  state     varchar(2)    NOT NULL, -- TODO: Make char on both ends
   zip_code  varchar(255)  NOT NULL,
-  PRIMARY KEY( id )
+  
+  PRIMARY KEY( id ),
+  CONSTRAINT  fk__addresses__us_states FOREIGN KEY( state )
+    REFERENCES us_states( code )
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS buildings;
@@ -272,7 +318,7 @@ CREATE TABLE buildings(
   address_id                char(36)  NOT NULL,
   realtor_id                char(36)  NULL,
   inspector_id              char(36)  NOT NULL,
-  homeowner_id              char(36)  NOT NULL,
+  client_id                 char(36)  NOT NULL,
   maintenance_level_id      char(36)  NULL,
   building_shape_id         char(36)  NULL,
   basement_type_id          char(36)  NULL,
@@ -303,6 +349,14 @@ CREATE TABLE buildings(
   modified                  datetime  NOT NULL,
   
   PRIMARY KEY( id ),
+  CONSTRAINT fk__buildings__building_types FOREIGN KEY( building_type_id )
+    REFERENCES building_types( id )
+    ON UPDATE CASCADE
+    ON DELETE SET NULL,
+  CONSTRAINT fk__buildings__addresses FOREIGN KEY( address_id )
+    REFERENCES addresses( id )
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
   CONSTRAINT fk__buildings__realtor FOREIGN KEY( realtor_id )
     REFERENCES users( id )
     ON UPDATE CASCADE
@@ -311,7 +365,7 @@ CREATE TABLE buildings(
     REFERENCES users( id )
     ON UPDATE CASCADE
     ON DELETE NO ACTION,
-  CONSTRAINT fk__buildings__homeowner FOREIGN KEY( homeowner_id )
+  CONSTRAINT fk__buildings__client FOREIGN KEY( client_id )
     REFERENCES users( id )
     ON UPDATE CASCADE
     ON DELETE NO ACTION,
@@ -321,14 +375,6 @@ CREATE TABLE buildings(
     ON DELETE SET NULL,
   CONSTRAINT fk__buildings__building_shapes FOREIGN KEY( building_shape_id )
     REFERENCES building_shapes( id )
-    ON UPDATE CASCADE
-    ON DELETE SET NULL,
-  CONSTRAINT fk__buildings__addresses FOREIGN KEY( address_id )
-    REFERENCES addresses( id )
-    ON UPDATE CASCADE
-    ON DELETE NO ACTION,
-  CONSTRAINT fk__buildings__building_types FOREIGN KEY( building_type_id )
-    REFERENCES building_types( id )
     ON UPDATE CASCADE
     ON DELETE SET NULL,
   CONSTRAINT fk__buildings__basement_types FOREIGN KEY( basement_type_id )
@@ -349,6 +395,7 @@ CREATE TABLE buildings(
     ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
+/** Building occupancy info */
 DROP TABLE IF EXISTS occupants;
 CREATE TABLE occupants(
   id                    char(36)  NOT NULL,
@@ -370,67 +417,40 @@ CREATE TABLE occupants(
 
 /** PRODUCTS AND PRODUCT JOINS */
 
+/** Appliance product catalog */
 DROP TABLE IF EXISTS appliances;
 CREATE TABLE appliances(
   id                char(36)      NOT NULL,
-  appliance_type_id varchar(6)    NOT NULL,
-  energy_source_id  char(36)      NOT NULL,
-  name              varchar(255)  NOT NULL,
-  make              varchar(255)  NOT NULL,
-  model             varchar(255)  NOT NULL,
-  serial_number     varchar(255)  NOT NULL,
+  appliance_type_id char(36)      NOT NULL,
+  code              varchar(6)    NULL,
+  energy_source_id  char(36)      NULL,
+  make              varchar(255)  NULL,
+  model             varchar(255)  NULL,
   
   PRIMARY KEY( id ),
+  CONSTRAINT fk__appliances__appliance_types FOREIGN KEY( appliance_type_id )
+    REFERENCES appliance_types( id )
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
   CONSTRAINT fk__appliances__energy_sources FOREIGN KEY( energy_source_id )
     REFERENCES energy_sources( id )
     ON UPDATE CASCADE
-    ON DELETE NO ACTION,
-  CONSTRAINT uix__appliance_type_id UNIQUE INDEX( appliance_type_id )
+    ON DELETE SET NULL,
+  CONSTRAINT uix__code UNIQUE INDEX( code )
 ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS hot_water_systems;
-CREATE TABLE hot_water_systems(
-  id                        char(36)      NOT NULL,
-  hot_water_system_type_id  varchar(6)    NOT NULL,
-  energy_source_id          char(36)      NOT NULL,
-  name                      varchar(255)  NOT NULL,
-  make                      varchar(255)  NOT NULL,
-  model                     varchar(255)  NOT NULL,
-  serial_number             varchar(255)  NOT NULL,
-  
-  PRIMARY KEY( id ),
-  CONSTRAINT fk__hot_water_systems__energy_sources FOREIGN KEY( energy_source_id )
-    REFERENCES energy_sources( id )
-    ON UPDATE CASCADE
-    ON DELETE NO ACTION,
-  CONSTRAINT uix__hot_water_system_type_id UNIQUE INDEX( hot_water_system_type_id )
-) ENGINE=InnoDB;
-
-DROP TABLE IF EXISTS hvac_systems;
-CREATE TABLE hvac_systems(
-  id                    char(36)      NOT NULL,
-  hvac_system_type_id   varchar(6)    NOT NULL,
-  energy_source_id      char(36)      NOT NULL,
-  name                  varchar(255)  NOT NULL,
-  make                  varchar(255)  NOT NULL,
-  model                 varchar(255)  NOT NULL,
-  serial_number         varchar(255)  NOT NULL,
-  
-  PRIMARY KEY( id ),
-  CONSTRAINT fk__hvac_systems__energy_sources FOREIGN KEY( energy_source_id )
-    REFERENCES energy_sources( id )
-    ON UPDATE CASCADE
-    ON DELETE NO ACTION,
-  CONSTRAINT uix__hvac_system_type_id UNIQUE INDEX( hvac_system_type_id )
-) ENGINE=InnoDB;
-
+/** Installed appliance info */
 DROP TABLE IF EXISTS building_appliances;
 CREATE TABLE building_appliances(
-  id            char(36)  NOT NULL,
-  building_id   char(36)  NOT NULL,
-  appliance_id  char(36)  NOT NULL,
-  year_built    int       NULL,
-  notes         text      NULL,
+  id                char(36)      NOT NULL,
+  building_id       char(36)      NOT NULL,
+  appliance_id      char(36)      NOT NULL,
+  year_built        int           NULL,
+  serial_number     varchar(255)  NULL,
+  efficiency_rating float         NULL,
+  warranty_info     text          NULL,
+  recall_info       text          NULL,
+  notes             text          NULL,
   
   PRIMARY KEY( id ),
   CONSTRAINT fk__building_appliances__buildings FOREIGN KEY( building_id )
@@ -440,39 +460,80 @@ CREATE TABLE building_appliances(
   CONSTRAINT fk__building_appliances__appliances FOREIGN KEY( appliance_id )
     REFERENCES appliances( id )
     ON UPDATE CASCADE
-    ON DELETE CASCADE
+    ON DELETE NO ACTION
 ) ENGINE=InnoDB;
 
+/** Hot water system product catalog */
+DROP TABLE IF EXISTS hot_water_systems;
+CREATE TABLE hot_water_systems(
+  id                char(36)      NOT NULL,
+  code              varchar(6)    NULL,
+  energy_source_id  char(36)      NULL,
+  make              varchar(255)  NULL,
+  model             varchar(255)  NULL,
+  
+  PRIMARY KEY( id ),
+  CONSTRAINT fk__hot_water_systems__energy_sources FOREIGN KEY( energy_source_id )
+    REFERENCES energy_sources( id )
+    ON UPDATE CASCADE
+    ON DELETE SET NULL,
+  CONSTRAINT uix__code UNIQUE INDEX( code )
+) ENGINE=InnoDB;
+
+/** Installed hot water system info */
 DROP TABLE IF EXISTS building_hot_water_sytems;
 CREATE TABLE building_hot_water_systems(
-  id                    char(36)  NOT NULL,
-  building_id           char(36)  NOT NULL,
-  hot_water_system_id   char(36)  NOT NULL,
-  notes                 text      NULL,
+  id                    char(36)      NOT NULL,
+  building_id           char(36)      NOT NULL,
+  hot_water_system_id   char(36)      NOT NULL,
+  serial_number         varchar(255)  NULL,
+  efficiency_rating     float         NULL,
+  warranty_info         text          NULL,
+  recall_info           text          NULL,
+  notes                 text          NULL,
   
   PRIMARY KEY( id ),
   CONSTRAINT fk__building_hot_water_systems__buildings FOREIGN KEY( building_id )
     REFERENCES buildings( id )
     ON UPDATE CASCADE
     ON DELETE CASCADE,
-  CONSTRAINT fk__building_hot_water_systems__appliances FOREIGN KEY( hot_water_system_id )
+  CONSTRAINT fk__building_hot_water_systems__hot_water_systems FOREIGN KEY( hot_water_system_id )
     REFERENCES hot_water_systems( id )
     ON UPDATE CASCADE
-    ON DELETE CASCADE
+    ON DELETE NO ACTION
 ) ENGINE=InnoDB;
 
+/** HVAC system product catalog */
+DROP TABLE IF EXISTS hvac_systems;
+CREATE TABLE hvac_systems(
+  id                  char(36)      NOT NULL,
+  code                varchar(6)    NULL,
+  energy_source_id    char(36)      NULL,
+  make                varchar(255)  NULL,
+  model               varchar(255)  NULL,
+  
+  PRIMARY KEY( id ),
+  CONSTRAINT fk__hvac_systems__energy_sources FOREIGN KEY( energy_source_id )
+    REFERENCES energy_sources( id )
+    ON UPDATE CASCADE
+    ON DELETE SET NULL,
+  CONSTRAINT uix__code UNIQUE INDEX( code )
+) ENGINE=InnoDB;
+
+/** Installed HVAC system info */
 DROP TABLE IF EXISTS building_hvac_systems;
 CREATE TABLE building_hvac_systems(
-  id                char(36)  NOT NULL,
-  building_id       char(36)  NOT NULL,
-  hvac_system_id    char(36)  NOT NULL,
-  year_installed    int       NOT NULL,
-  setpoint_heating  int       NULL,
-  setpoint_cooling  int       NULL,
-  efficiency_rating float     NULL,
-  warranty_info     text      NULL,
-  recall_info       text      NULL,
-  notes             text      NULL,
+  id                char(36)      NOT NULL,
+  building_id       char(36)      NOT NULL,
+  hvac_system_id    char(36)      NOT NULL,
+  serial_number     varchar(255)  NOT NULL,
+  year_built        int           NOT NULL,
+  setpoint_heating  int           NULL,
+  setpoint_cooling  int           NULL,
+  efficiency_rating float         NULL,
+  warranty_info     text          NULL,
+  recall_info       text          NULL,
+  notes             text          NULL,
   
   PRIMARY KEY( id ),
   CONSTRAINT fk__building_hvac_systems__buildings FOREIGN KEY( building_id )
@@ -482,8 +543,9 @@ CREATE TABLE building_hvac_systems(
   CONSTRAINT fk__building_hvac_systems__hvac_systems FOREIGN KEY( hvac_system_id )
     REFERENCES hvac_systems( id )
     ON UPDATE CASCADE
-    ON DELETE CASCADE
+    ON DELETE NO ACTION
 ) ENGINE=InnoDB;
+
 
 DROP TABLE IF EXISTS building_roof_systems;
 CREATE TABLE building_roof_systems(
@@ -502,11 +564,11 @@ CREATE TABLE building_roof_systems(
   CONSTRAINT fk__building_roof_systems__roof_systems FOREIGN KEY( roof_system_id )
     REFERENCES roof_systems( id )
     ON UPDATE CASCADE
-    ON DELETE CASCADE,
-  CONSTRAINT fk__building_roof_systems__insulation_types FOREIGN KEY( insulation_level_id )
+    ON DELETE NO ACTION,
+  CONSTRAINT fk__building_roof_systems__insulation_levels FOREIGN KEY( insulation_level_id )
     REFERENCES insulation_levels( id )
     ON UPDATE CASCADE
-    ON DELETE CASCADE
+    ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS building_wall_systems;
@@ -524,17 +586,19 @@ CREATE TABLE building_wall_systems(
   CONSTRAINT fk__building_wall_systems__wall_systems FOREIGN KEY( wall_system_id )
     REFERENCES wall_systems( id )
     ON UPDATE CASCADE
-    ON DELETE CASCADE
+    ON DELETE NO ACTION,
+  CONSTRAINT fk__building_wall_systems__insulation_levels FOREIGN KEY( insulation_level_id )
+    REFERENCES insulation_levels( id )
+    ON UPDATE CASCADE
+    ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
+/** Not sure how to handle this */
 DROP TABLE IF EXISTS building_window_systems;
 CREATE TABLE building_window_systems(
   id                char(36)  NOT NULL,
   building_id       char(36)  NOT NULL,
   window_system_id  char(36)  NOT NULL,
-  panes             int       NULL, 
-  material_id       char(36)  NULL,
-  gas_filled        boolean   NULL DEFAULT 0,
   
   PRIMARY KEY( id ),
   CONSTRAINT fk__building_window_systems__buildings FOREIGN KEY( building_id )
@@ -544,11 +608,12 @@ CREATE TABLE building_window_systems(
   CONSTRAINT fk__building_window_systems__window_systems FOREIGN KEY( window_system_id )
     REFERENCES window_systems( id )
     ON UPDATE CASCADE
-    ON DELETE CASCADE
+    ON DELETE NO ACTION
 ) ENGINE=InnoDB;
 
 /** PARTNERS */
 
+/** Partners authorized to access the survey remotely */
 DROP TABLE IF EXISTS partners;
 CREATE TABLE partners(
   id        char(36)      NOT NULL,
@@ -563,6 +628,7 @@ CREATE TABLE partners(
 INSERT INTO partners( id, name, created, modified )
 VALUES( '4d6da23a-8fe0-407f-99c5-4d006e891b5e', 'Test Partner', NOW(), NOW() );
 
+/** Domains from which to expect partner requests */
 DROP TABLE IF EXISTS partner_domains;
 CREATE TABLE partner_domains(
   id                char(36)      NOT NULL,
@@ -583,6 +649,8 @@ VALUES( '4d6da23a-a5dc-470d-9238-43e76e891b5e', '4d6da23a-8fe0-407f-99c5-4d006e8
 
 /** SURVEYS */
 
+/** Inspector questionnaires */
+/** @todo Change nomenclature to "questionnaire" */
 DROP TABLE IF EXISTS surveys;
 CREATE TABLE surveys(
   id            char(36)    NOT NULL,

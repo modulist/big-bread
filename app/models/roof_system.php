@@ -1,7 +1,7 @@
 <?php
 
 class RoofSystem extends AppModel {
-	var $name = 'RoofSystem';
+	public $name = 'RoofSystem';
 
-	var $hasMany = array( 'BuildingRoofSystem' );
+	public $hasMany = array( 'BuildingRoofSystem' );
 }

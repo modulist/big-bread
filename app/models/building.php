@@ -10,9 +10,9 @@ class Building extends AppModel {
     'BuildingShape',
 		'BuildingType',
 		'ExposureType',
-		'Homeowner' => array(
+		'Client' => array(
 			'className' => 'User',
-			'foreignKey' => 'homeowner_id'
+			'foreignKey' => 'client_id'
 		),
 		'Inspector' => array(
 			'className' => 'User',

@@ -13,21 +13,19 @@
   <?php echo $this->Form->input( 'Inspector.email', array( 'label' => 'Inspector Email' ) ) ?>
   
   <!-- #3 Homeowner -->
-  <?php echo $this->Form->input( 'Homeowner.first_name', array( 'label' => 'Homeowner First Name' ) ) ?>
-  <?php echo $this->Form->input( 'Homeowner.last_name', array( 'label' => 'Homeowner Last Name' ) ) ?>
-  <?php echo $this->Form->input( 'Homeowner.email', array( 'label' => 'Homeowner Email' ) ) ?>
-  
-  <p>Missing #4 (homeowner or buyer)</p>
+  <?php echo $this->Form->input( 'Client.first_name', array( 'label' => 'Client First Name' ) ) ?>
+  <?php echo $this->Form->input( 'Client.last_name', array( 'label' => 'Client Last Name' ) ) ?>
+  <?php echo $this->Form->input( 'Client.email', array( 'label' => 'Client Email' ) ) ?>
+  <!-- #6 Phone number -->
+  <?php echo $this->Form->input( 'Client.phone_number' ) ?>
+  <?php echo $this->Form->input( 'Client.user_type_id', array( 'type' => 'radio', 'legend' => false, 'default' => '4d71115d-0f74-43c5-93e9-2f8a3b196446' ) ) ?>
   
   <!-- #5 Address -->
-  <?php echo $this->Form->input( 'Address.street_address_1' ) ?>
-  <?php echo $this->Form->input( 'Address.street_address_2' ) ?>
-  <?php echo $this->Form->input( 'Address.city' ) ?>
-  <?php echo $this->Form->input( 'Address.state' ) ?>
+  <?php echo $this->Form->input( 'Address.address_1' ) ?>
+  <?php echo $this->Form->input( 'Address.address_2' ) ?>
+  <?php echo $this->Form->input( 'Address.city' ) # TODO: Populate city based on zip code ?>
+  <?php echo $this->Form->input( 'Address.state' ) # TODO: Populate state based on zip coee ?>
   <?php echo $this->Form->input( 'Address.zip_code' ) ?>
-  
-  <!-- #6 Address -->
-  <?php echo $this->Form->input( 'Homeowner.phone_number' ) ?>
   
   <h2>Demographics</h2>
   <!-- #7 Number of occupants by Age -->
@@ -40,15 +38,25 @@
   <?php echo $this->Form->input( 'Occupant.daytime_occupancy', array( 'label' => 'Are occupants at home during the day?' ) ) ?>
   
   <!-- #9 Heating and cooling setpoints and overrides -->
-  <?php echo $this->Form->input( 'building_hvac_systems.setpoint_heating', array( 'label' => 'Thermostat setting (heating)' ) ) ?>
+  <?php echo $this->Form->input( 'BuildingHvacSystem.setpoint_heating', array( 'label' => 'Thermostat setting (heating)' ) ) ?>
   <?php echo $this->Form->input( 'Occupant.heating_override', array( 'label' => 'Frequently adjusted?' ) ) ?>
-  <?php echo $this->Form->input( 'building_hvac_systems.setpoint_cooling', array( 'label' => 'Thermostat setting (cooling)' ) ) ?>
+  <?php echo $this->Form->input( 'BuildingHvacSystem.setpoint_cooling', array( 'label' => 'Thermostat setting (cooling)' ) ) ?>
   <?php echo $this->Form->input( 'Occupant.cooling_override', array( 'label' => 'Frequently adjusted?' ) ) ?>
   
-  <p>Missing #10 (Utility providers)</p>
+  <p>Missing #10 (Utility providers) to be pulled from incentives database</p>
   
   <h2>Equipment Listing</h2>
-  <p>TBD. I don't feel like I have a good idea of how the building_[equipment] tables relate to the product tables.</p>
+  
+  <?php foreach( $applianceTypes as $i => $type ): ?>
+    <h3><?php echo h( $type['ApplianceType']['name'] ) ?></h3>
+    <?php echo $this->Form->input( 'BuildingAppliance.' . $i . '.appliance_type_id', array( 'type' => 'hidden', 'value' => $type['ApplianceType']['id'] ) ) ?>
+    <?php echo $this->Form->input( 'Appliance.make' ) # TODO: Make this an autocomplete field ?>
+    <?php echo $this->Form->input( 'Appliance.model' ) # TODO: Make this an autocomplete field ?>
+    <?php echo $this->Form->input( 'BuildingAppliance.' . $i . '.serial_number' ) ?>
+    <?php echo $this->Form->input( 'Appliance.energy_source_id', array( 'empty' => 'Not Applicable' ) ) ?>
+    <?php echo $this->Form->input( 'BuildingAppliance.' . $i . '.year_built' ) ?>
+    <?php echo $this->Form->input( 'BuildingAppliance.' . $i . '.notes' ) ?>
+  <?php endforeach; ?>
   
   <h2>Building Characteristics</h2>
   <!-- #20 Exposure to elements -->
@@ -71,10 +79,10 @@
   <?php echo $this->Form->input( 'Building.insulated_foundation' ) ?>
   <!-- #28 -->
   <?php echo $this->Form->input( 'BuildingWallSystem.wall_system_id' ) ?>
-  
-  <h2>Insulation, Windows &amp; Doors</h2>
   <!-- #29 -->
   <?php echo $this->Form->input( 'BuildingWallSystem.insulation_level_id' ) ?>
+  
+  <h2>Insulation, Windows &amp; Doors</h2>
   
   <p>Missing: #30 (Windows)</p>
 
