@@ -1,7 +1,7 @@
 <?php
 
 class WallSystem extends AppModel {
-	var $name = 'WallSystem';
+	public $name = 'WallSystem';
 
-	var $hasMany = array( 'BuildingWallSystem' );
+	public $hasMany = array( 'BuildingWallSystem' );
 }

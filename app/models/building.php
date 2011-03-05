@@ -2,7 +2,6 @@
 
 class Building extends AppModel {
 	public $name = 'Building';
-	public $validate = array();
   
 	public $belongsTo = array(
 		'Address',
@@ -25,15 +24,18 @@ class Building extends AppModel {
 		),
 		'ShadingType',
 	);
-
+  public $hasOne  = array(
+    'BuildingWallSystem', # Built for hasMany, but currently implemented as hasOne
+  );
 	public $hasMany = array(
     'BuildingAppliance',
     'BuildingHotWaterSystem',
 		'BuildingHvacSystem',
 		'BuildingRoofSystem',
-		'BuildingWallSystem',
 		'BuildingWindowSystem',
 		'Occupant',
 		'Survey',
 	);
+  
+	public $validate = array();
 }

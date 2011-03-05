@@ -1,24 +1,18 @@
 <?php
+
 class PartnerDomain extends AppModel {
-	var $name = 'PartnerDomain';
-	var $validate = array(
-		'partner_id' => array(
-			'notempty' => array(
-				'rule'       => array( 'notempty' ),
-				'message'    => 'A domain must belong to a partner.',
-				'allowEmpty' => false,
-				'required'   => true
-			),
-		),
+	public $name = 'PartnerDomain';
+	
+	public $belongsTo = array( 'Partner' );
+  
+	public $validate  = array(
 		'top_level_domain' => array(
 			'notempty' => array(
 				'rule'       => array( 'notempty' ),
-				'message'    => 'Top level domain cannot be empty.',
+				'message'    => 'Top level domain (e.g. partnername.com) cannot be empty.',
 				'allowEmpty' => false,
 				'required'   => true
 			),
 		),
 	);
-	
-	var $belongsTo = array( 'Partner' );
 }

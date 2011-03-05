@@ -1,8 +1,11 @@
 <?php
 
 class Partner extends AppModel {
-	var $name = 'Partner';
-	var $validate = array(
+	public $name = 'Partner';
+	
+  public $hasMany = array( 'PartnerDomain' );
+  
+	public $validate = array(
 		'name' => array(
 			'notempty' => array(
 				'rule'       => array( 'notempty' ),
@@ -12,6 +15,4 @@ class Partner extends AppModel {
 			),
 		),
 	);
-	
-  var $hasMany = array( 'PartnerDomain' );
 }
