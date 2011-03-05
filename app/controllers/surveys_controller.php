@@ -60,7 +60,7 @@ class SurveysController extends AppController {
       array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
     );
     $roofSystems = $this->Survey->Building->BuildingRoofSystem->RoofSystem->find(
-      'list',
+      'all',
       array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
     );
     $shadingTypes = $this->Survey->Building->ShadingType->find(
@@ -81,7 +81,7 @@ class SurveysController extends AppController {
     );
     $windowSystems = $this->Survey->Building->BuildingWindowSystem->WindowSystem->find(
       'list',
-      array( 'conditions' => array( 'name' => array( 'Homeowner', 'Home Buyer' ), 'deleted' => 0 ), 'order' => 'name' )
+      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
     );
     
     /** Prepare the view */
