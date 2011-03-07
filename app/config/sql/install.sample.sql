@@ -330,7 +330,6 @@ CREATE TABLE buildings(
   total_sf                  int       NULL,
   finished_sf               int       NULL,
   stories_above_ground      int       NULL,
-  built_out_attic           boolean   NULL,
   insulated_foundation      boolean   NULL,
   skylight_count            int       NULL,
   -- window-specific properties
@@ -534,8 +533,6 @@ CREATE TABLE building_hvac_systems(
   year_built        int           NOT NULL,
   setpoint_heating  int           NULL,
   setpoint_cooling  int           NULL,
-  space_heaters     boolean       NULL,
-  room_ac           boolean       NULL,
   efficiency_rating float         NULL,
   warranty_info     text          NULL,
   recall_info       text          NULL,
