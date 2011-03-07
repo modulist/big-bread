@@ -24,7 +24,8 @@ class SurveysController extends AppController {
       throw new Exception( 'Access Forbidden' );
     }
     
-    $this->helpers[] = 'Form';
+    $this->layout           = 'iframe';
+    $this->helpers[]        = 'Form';
     
     /** Populate Lookups */
     $applianceTypes = $this->Survey->Building->BuildingAppliance->Appliance->ApplianceType->find(

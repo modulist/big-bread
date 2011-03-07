@@ -1,3 +1,5 @@
+<?php $this->set( 'title_for_layout', __( 'Questionnaire', true )) ?>
+
 <h1><?php __( 'Questionnaire' ) ?></h1>
 
 <?php echo $this->Form->create( 'Survey' ) ?>
