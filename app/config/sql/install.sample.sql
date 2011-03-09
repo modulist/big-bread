@@ -27,18 +27,25 @@ USE @DB_NAME@;
 SOURCE fp_incentive.sql;
 
 /** A few adjustments to the incentives database */
+-- Required to create foreign key constraints
 ALTER TABLE us_states
   ENGINE = InnoDB,
   CONVERT TO CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci';
-
+  
+-- Required to create foreign key constraints
 ALTER TABLE us_zipcode
   MODIFY zip char(5) NOT NULL,
   ENGINE = InnoDB,
   CONVERT TO CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci';
   
+-- Creates a ready-to-use value
 UPDATE us_zipcode
   SET zip = LPAD(zip, 5, '0');
-
+  
+-- Required to create foreign key constraints
+ALTER TABLE incentive_tech_energy_type
+  ENGINE = InnoDB,
+  CONVERT TO CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci';
 
 /** LOOKUP TABLES */
 
@@ -183,6 +190,23 @@ VALUES
 ( '4d6ff15d-fe04-47db-8811-793d3b196446', 'GOOD', 'Good' ),
 ( '4d6ff15d-4b5c-41d3-9696-793d3b196446', 'UNKNWN', 'Can''t Say' );
 
+DROP TABLE IF EXISTS materials;
+CREATE TABLE materials(
+  id        char(36)      NOT NULL,
+  code      varchar(6)    NOT NULL,
+  name      varchar(255)  NOT NULL,
+  deleted   boolean       NOT NULL DEFAULT 0,
+  PRIMARY KEY( id ),
+  CONSTRAINT uix__code UNIQUE INDEX( code )
+) ENGINE=InnoDB;
+
+INSERT INTO materials( id, code, name )
+VALUES
+( '4d6ff15d-63b8-4499-a6cd-793d3b196446', 'WOOD', 'Wood' ),
+( '4d6ff15d-b0ac-4bb2-b550-793d3b196446', 'VINYL', 'Vinyl' ),
+( '4d6ff15d-fe04-47db-8811-793d3b196446', 'ALUM', 'Aluminum' );
+
+
 DROP TABLE IF EXISTS roof_systems;
 CREATE TABLE roof_systems(
   id        char(36)      NOT NULL,
@@ -195,7 +219,8 @@ CREATE TABLE roof_systems(
 
 INSERT INTO roof_systems( id, code, name )
 VALUES
-( '4d700e7a-046c-4fa9-9655-82376e891b5e', 'ATTIC', 'Attic' ),
+( '4d700e7a-046c-4fa9-9655-82376e891b5e', 'UNFATT', 'Unfinished Attic' ),
+( '4d77eeb6-d174-44e8-9997-99156e891b5e', 'FINATT', 'Finished Attic' ),
 ( '4d703e1f-aa00-4495-ba91-93086e891b5e', 'CTHDRL', 'Cathedral Ceilings' ),
 ( '4d703e1f-4960-403f-b3d7-93086e891b5e', 'FLAT', 'Flat Roof' );
 
@@ -234,29 +259,22 @@ VALUES
 ( '4d6ffa65-27cc-49b7-b5f5-7bcd3b196446', 'CONBLK', 'Concrete Block' ),
 ( '4d6ffa65-73f8-412e-ab8c-7bcd3b196446', 'OTHER', 'Other' );
 
-DROP TABLE IF EXISTS window_systems;
-CREATE TABLE window_systems(
-  id            char(36)      NOT NULL,
-  code          varchar(6)    NOT NULL,
-  name          varchar(255)  NOT NULL,
-  deleted       boolean       NOT NULL DEFAULT 0,
+DROP TABLE IF EXISTS window_pane_types;
+CREATE TABLE window_pane_types(
+  id        char(36)      NOT NULL,
+  code      varchar(6)    NOT NULL,
+  name      varchar(255)  NOT NULL,
+  deleted   boolean       NOT NULL DEFAULT 0,
   
   PRIMARY KEY( id ),
   CONSTRAINT uix__code UNIQUE INDEX( code )
 ) ENGINE=InnoDB;
 
-INSERT INTO window_systems( id, code, name )
+INSERT INTO window_pane_types( id, code, name )
 VALUES
-( '4d7167dc-37d8-4188-b73b-47ec3b196446', 'SINGLE', 'Single Pane' ),
-( '4d7167dc-d1c0-45e9-b1e4-47ec3b196446', 'DOUBLE', 'Double Pane' ),
-( '4d7167dc-56f4-4e01-945e-47ec3b196446', 'INSUL', 'Insulated Glass' ),
-( '4d7167dc-cfa8-4b5c-82e2-47ec3b196446', 'CLEAR', 'Clear' ),
-( '4d7167dc-4d0c-4628-a427-47ec3b196446', 'TINTED', 'Tinted' ),
-( '4d7167dc-c2a0-423c-b566-47ec3b196446', 'LOWE', 'Low E' ),
-( '4d7167dc-2c7c-4a6c-8a7c-47ec3b196446', 'ARGAS', 'Gas Filled (Ar)' ),
-( '4d7167dc-939c-469b-b88c-47ec3b196446', 'WOOD', 'Wood' ),
-( '4d7167dc-50ac-40e0-820a-47ec3b196446', 'VINYL', 'Vinyl' ),
-( '4d7167dc-d1f8-4fc3-9a54-47ec3b196446', 'ALUMNM', 'Aluminum' );
+( '4d6ffa65-dba0-4594-8346-7bcd3b196446', 'SINGLE', 'Single' ),
+( '4d6ffa65-27cc-49b7-b5f5-7bcd3b196446', 'DOUBLE', 'Double' ),
+( '4d6ffa65-73f8-412e-ab8c-7bcd3b196446', 'GAS', 'Gas Filled' );
 
 /** APPLICATION USERS */
 
@@ -611,17 +629,24 @@ CREATE TABLE building_wall_systems(
 /** Not sure how to handle this */
 DROP TABLE IF EXISTS building_window_systems;
 CREATE TABLE building_window_systems(
-  id                char(36)  NOT NULL,
-  building_id       char(36)  NOT NULL,
-  window_system_id  char(36)  NOT NULL,
+  id                  char(36)  NOT NULL,
+  building_id         char(36)  NOT NULL,
+  window_pane_type_id char(36)  NULL,
+  frame_material_id   char(36)  NULL,
+  tinted              boolean   NOT NULL DEFAULT 0,
+  low_e               boolean   NOT NULL DEFAULT 0,
   
   PRIMARY KEY( id ),
   CONSTRAINT fk__building_window_systems__buildings FOREIGN KEY( building_id )
     REFERENCES buildings( id )
     ON UPDATE CASCADE
     ON DELETE CASCADE,
-  CONSTRAINT fk__building_window_systems__window_systems FOREIGN KEY( window_system_id )
-    REFERENCES window_systems( id )
+  CONSTRAINT fk__building_window_systems__window_pane_types FOREIGN KEY( window_pane_type_id )
+    REFERENCES window_pane_types( id )
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
+  CONSTRAINT fk__building_window_systems__materials FOREIGN KEY( frame_material_id )
+    REFERENCES materials( id )
     ON UPDATE CASCADE
     ON DELETE NO ACTION
 ) ENGINE=InnoDB;
