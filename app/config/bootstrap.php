@@ -49,6 +49,6 @@
  *
  */
 
-if( file_exists( '__DIR__' . DS . 'bootstrap.local.php' ) ) {
+if( file_exists( __DIR__ . DS . 'bootstrap.local.php' ) ) {
   include_once( 'bootstrap.local.php' );
 }
