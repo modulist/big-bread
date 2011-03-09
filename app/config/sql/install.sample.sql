@@ -31,6 +31,14 @@ ALTER TABLE us_states
   ENGINE = InnoDB,
   CONVERT TO CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci';
 
+ALTER TABLE us_zipcode
+  MODIFY zip char(5) NOT NULL,
+  ENGINE = InnoDB,
+  CONVERT TO CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci';
+  
+UPDATE us_zipcode
+  SET zip = LPAD(zip, 5, '0');
+
 
 /** LOOKUP TABLES */
 
@@ -300,12 +308,16 @@ CREATE TABLE addresses(
   address_1 varchar(255)  NOT NULL,
   address_2 varchar(255)  NULL,
   city      varchar(255)  NOT NULL,
-  state     varchar(2)    NOT NULL, -- TODO: Make char on both ends
-  zip_code  varchar(255)  NOT NULL,
+  state     char(2)       NOT NULL, -- TODO: Make char on both ends
+  zip_code  char(5)       NOT NULL,
   
   PRIMARY KEY( id ),
   CONSTRAINT  fk__addresses__us_states FOREIGN KEY( state )
     REFERENCES us_states( code )
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
+  CONSTRAINT  fk__addresses__us_zipcode FOREIGN KEY( zip_code )
+    REFERENCES us_zipcode( zip )
     ON UPDATE CASCADE
     ON DELETE NO ACTION
 ) ENGINE=InnoDB;

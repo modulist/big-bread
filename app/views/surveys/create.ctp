@@ -20,9 +20,10 @@
   
   <?php echo $this->Form->input( 'Address.address_1' ) ?>
   <?php echo $this->Form->input( 'Address.address_2' ) ?>
-  <?php echo $this->Form->input( 'Address.city' ) # TODO: Populate city based on zip code ?>
-  <?php echo $this->Form->input( 'Address.state' ) # TODO: Populate state based on zip coee ?>
   <?php echo $this->Form->input( 'Address.zip_code' ) ?>
+  <?php echo $this->Form->input( 'Address.city', array( 'type' => 'hidden' ) ) # TODO: Populate city based on zip code ?>
+  <?php echo $this->Form->input( 'Address.state', array( 'type' => 'hidden' ) ) # TODO: Populate state based on zip coee ?>
+  
   
   <h2><?php __( 'Demographics' ) ?></h2>
   <?php echo $this->Form->input( 'Occupant.age_0_5', array( 'label' => __( 'Ages 0-5', true ) ) ) ?>

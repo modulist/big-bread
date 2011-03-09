@@ -3,7 +3,10 @@
 class Address extends AppModel {
 	public $name = 'Address';
 	
-	public $belongsTo = array( 'State' => array( 'foreignKey' => 'state' ) );
+	public $belongsTo = array(
+    'State'   => array( 'foreignKey' => 'state' ),
+    'ZipCode' => array( 'foreignKey' => 'zip' ),
+  );
 	public $hasOne    = array( 'Building' );
   
 	public $validate  = array(
