@@ -115,7 +115,11 @@
   <h2><?php __( 'Insulation, Windows &amp; Doors' ) ?></h2>
   
   <h3><?php __( 'Windows' ) ?></h3>
-  <?php echo $this->Form->input( 'BuildingWindowSystem.window_systems', array( 'multiple' => 'checkbox' ) ) ?>
+  <label>Window Pane Type</label>
+  <?php echo $this->Form->input( 'BuildingWindowSystem.0.window_pane_type_id', array( 'type' => 'radio', 'legend' => false ) ) ?>
+  <?php echo $this->Form->input( 'BuildingWindowSystem.0.tinted' ) ?>
+  <?php echo $this->Form->input( 'BuildingWindowSystem.0.low_e' ) ?>
+  <?php echo $this->Form->input( 'BuildingWindowSystem.0.frame_material_id' ) ?>
   <?php echo $this->Form->input( 'Building.window_percent_average', array( 'label' => __( 'Average (6-8 sf)', true ) ) ) ?>
   <?php echo $this->Form->input( 'Building.window_percent_small', array( 'label' => __( 'Few/Small (less than 6 sf, low natural light)', true ) ) ) ?>
   <?php echo $this->Form->input( 'Building.window_percent_large', array( 'label' => __( 'Large (more than 8 sf, bright natural light)', true ) ) ) ?>

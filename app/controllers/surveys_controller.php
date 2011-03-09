@@ -60,6 +60,10 @@ class SurveysController extends AppController {
       'list',
       array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
     );
+    $frameMaterials = $this->Survey->Building->BuildingWindowSystem->FrameMaterial->find(
+      'list',
+      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
+    );
     $roofSystems = $this->Survey->Building->BuildingRoofSystem->RoofSystem->find(
       'all',
       array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
@@ -80,12 +84,12 @@ class SurveysController extends AppController {
       'list',
       array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
     );
-    $windowSystems = $this->Survey->Building->BuildingWindowSystem->WindowSystem->find(
+    $windowPaneTypes = $this->Survey->Building->BuildingWindowSystem->WindowPaneType->find(
       'list',
       array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
     );
     
     /** Prepare the view */
-    $this->set( compact( 'applianceTypes', 'buildingTypes', 'basementTypes', 'buildingShapes', 'energySources', 'exposureTypes', 'insulationLevels', 'maintenanceLevels', 'roofSystems', 'shadingTypes', 'states', 'userTypes', 'wallSystems', 'windowSystems' ) );
+    $this->set( compact( 'applianceTypes', 'buildingTypes', 'basementTypes', 'buildingShapes', 'energySources', 'exposureTypes', 'frameMaterials', 'insulationLevels', 'maintenanceLevels', 'roofSystems', 'shadingTypes', 'states', 'userTypes', 'wallSystems', 'windowPaneTypes' ) );
   }
 }
