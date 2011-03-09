@@ -53,7 +53,8 @@
 
 <!-- Include universal scripts -->
 <?php echo $this->Html->script( 'http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js' ) . "\n" ?>
-<?php echo $this->Html->script( 'application' ) ?>
+<?php echo $this->Html->script( 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/jquery-ui.min.js' ) . "\n" ?>
+<?php # echo $this->Html->script( 'application' ) ?>
 <?php # echo $this->Html->script( 'vendors/jquery-colorbox.min.js' ) ?>
 
 <!-- Include any layout scripts -->
