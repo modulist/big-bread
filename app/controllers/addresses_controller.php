@@ -8,7 +8,19 @@ class AddressesController extends AppController {
    */
   
   public function beforeFilter() {
-    $this->Auth->allow( 'zipcodes' );
+    $this->Auth->allow( '*' );
+  }
+  
+  public function locale( $zip_code ) {
+    $locale = $this->Address->ZipCode->find(
+      'first', array(
+        'contain'    => false,
+        'fields'     => array( 'city', 'state' ),
+        'conditions' => array( 'zip' => $zip_code ),
+      )
+    );
+    
+    $this->set( compact( 'locale' ) );
   }
 
   public function zipcodes() {
