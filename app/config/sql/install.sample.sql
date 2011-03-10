@@ -328,15 +328,9 @@ CREATE TABLE addresses(
   id        char(36)      NOT NULL,
   address_1 varchar(255)  NOT NULL,
   address_2 varchar(255)  NULL,
-  city      varchar(255)  NOT NULL,
-  state     char(2)       NOT NULL, -- TODO: Make char on both ends
   zip_code  char(5)       NOT NULL,
   
   PRIMARY KEY( id ),
-  CONSTRAINT  fk__addresses__us_states FOREIGN KEY( state )
-    REFERENCES us_states( code )
-    ON UPDATE CASCADE
-    ON DELETE NO ACTION,
   CONSTRAINT  fk__addresses__us_zipcode FOREIGN KEY( zip_code )
     REFERENCES us_zipcode( zip )
     ON UPDATE CASCADE

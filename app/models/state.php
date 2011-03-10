@@ -1,10 +1,10 @@
 <?php
 
-class state extends AppModel {
-	public $name         = 'state';
+class State extends AppModel {
+	public $name         = 'State';
 	public $useTable     = 'us_states';
 	public $primaryKey   = 'code';
 	public $displayField = 'state';
 	
-	public $hasMany = array( 'Address' );
+  /** TODO: Add zipcode link */
 }

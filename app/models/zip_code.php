@@ -5,6 +5,7 @@ class ZipCode extends AppModel {
 	public $useTable   = 'us_zipcode';
 	public $primaryKey = 'zip';
 	
+  /** TODO: Add state assoc */
 	public $hasOne = array(
 		'Address' => array(
 			'className' => 'Address',
