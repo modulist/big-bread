@@ -4,9 +4,8 @@
  *  - The latest dump of the fp_incentives database
  *  - Execution of Cake's session.sql DDL
  */
- 
-DROP DATABASE IF EXISTS @DB_NAME@;
 
+DROP DATABASE IF EXISTS @DB_NAME@;
 
 CREATE DATABASE @DB_NAME@
   DEFAULT CHARACTER SET 'utf8'
@@ -27,6 +26,36 @@ USE @DB_NAME@;
 SOURCE fp_incentive.sql;
 
 /** A few adjustments to the incentives database */
+
+-- Cruft removal
+DROP TABLE incentive_tech__incentive_tech_energy_group; -- redundant, obsolete
+
+-- Add a UUID field that will become the primary key
+-- display a given technology on the questionnaire.
+-- Accept foreign key constraints
+ALTER TABLE incentive_tech
+  ADD COLUMN id char(36) NULL FIRST,
+  ADD COLUMN questionnaire_product boolean NOT NULL DEFAULT 0, -- whether this piece of tech is represented by a product on the questionnaire
+  ENGINE = InnoDB,
+  CONVERT TO CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci';
+
+-- Add an id (UUID) for easy access and manipulation
+UPDATE incentive_tech
+   SET id = UUID();
+   
+-- Reset the primary key on the new id and add a unique index for the old
+ALTER TABLE incentive_tech
+  DROP PRIMARY KEY,
+  ADD PRIMARY KEY( id ),
+  ADD CONSTRAINT uix__incentive_tech_id UNIQUE INDEX( incentive_tech_id );
+   
+-- Identify the technology products we care about:
+-- Boiler, AC, Dishwasher, Dryer, Freezer, Furnace, Heat Pump, Room AC,
+-- Space Heater, Washer, Water Heater, Range/Cooktop
+UPDATE incentive_tech
+   SET questionnaire_product = 1
+ WHERE incentive_tech_id IN ( 'BOIL','CAC','DISHW','DRYER','FREEZ','FURN','HP','RMAC','SPHEAT','WASH','WH','COOK' );
+
 -- Required to create foreign key constraints
 ALTER TABLE us_states
   ENGINE = InnoDB,
@@ -48,25 +77,6 @@ ALTER TABLE incentive_tech_energy_type
   CONVERT TO CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci';
 
 /** LOOKUP TABLES */
-
-DROP TABLE IF EXISTS appliance_types;
-CREATE TABLE appliance_types(
-  id        char(36)      NOT NULL,
-  code      varchar(6)    NOT NULL,
-  name      varchar(255)  NOT NULL,
-  deleted   boolean       NOT NULL DEFAULT 0,
-  PRIMARY KEY( id ),
-  CONSTRAINT uix__code UNIQUE INDEX( code )
-) ENGINE=InnoDB;
-
-INSERT INTO appliance_types( id, code, name )
-VALUES
-( '4d7173d6-1294-434d-bd3c-4bf33b196446', 'WASHER', 'Washer' ),
-( '4d7173d6-6a78-499a-ad62-4bf33b196446', 'DRYER', 'Dryer' ),
-( '4d7173d6-b708-4a8b-b518-4bf33b196446', 'FREEZR', 'Freezer' ),
-( '4d7173d6-0334-422d-a6b8-4bf33b196446', 'REFRIG', 'Refrigerator' ),
-( '4d7173d6-4fc4-4c91-9a75-4bf33b196446', 'STOVE', 'Stove' ),
-( '4d7173d6-9bf0-4389-b40c-4bf33b196446', 'OVEN', 'Oven' );
 
 DROP TABLE IF EXISTS basement_types;
 CREATE TABLE basement_types(
@@ -129,13 +139,6 @@ CREATE TABLE energy_sources(
   PRIMARY KEY( id ),
   CONSTRAINT uix__code UNIQUE INDEX( code )
 ) ENGINE=InnoDB;
-
-INSERT INTO energy_sources( id, code, name )
-VALUES
-( '4d6ff444-1bd4-404f-bc53-7a073b196446', 'ELECT', 'Electric' ),
-( '4d6ff444-7610-42bc-af05-7a073b196446', 'NATGAS', 'Natural Gas' ),
-( '4d6ff444-c3cc-42c9-9d02-7a073b196446', 'OIL', 'Oil' ),
-( '4d6ff444-1124-40a6-83eb-7a073b196446', 'PROPNE', 'Propane' );
 
 DROP TABLE IF EXISTS exposure_types;
 CREATE TABLE exposure_types(
@@ -362,6 +365,9 @@ CREATE TABLE buildings(
   stories_above_ground      int       NULL,
   insulated_foundation      boolean   NULL,
   skylight_count            int       NULL,
+  -- hvac-specific properties
+  setpoint_heating          int       NULL,
+  setpoint_cooling          int       NULL,
   -- window-specific properties
   window_percent_average    float     NULL,
   window_percent_small      float     NULL,
@@ -450,135 +456,48 @@ CREATE TABLE occupants(
 
 /** PRODUCTS AND PRODUCT JOINS */
 
-/** Appliance product catalog */
-DROP TABLE IF EXISTS appliances;
-CREATE TABLE appliances(
+/**
+ * A catalog of products we know about and are interested in.
+ */
+DROP TABLE IF EXISTS products;
+CREATE TABLE products(
   id                char(36)      NOT NULL,
-  appliance_type_id char(36)      NOT NULL,
-  code              varchar(6)    NULL,
-  energy_source_id  char(36)      NULL,
+  technology_id     varchar(36)   NOT NULL,
   make              varchar(255)  NULL,
   model             varchar(255)  NULL,
+  ahri_ref_number   varchar(255)  NULL, -- AHRI certified reference number (http://www.ahridirectory.org/ahridirectory/pages/home.aspx)
+  -- energy_source_id  varchar(255)  NULL, -- TBD
+  efficiency_rating float         NULL,
+  warranty_info     text          NULL,
+  recall_info       text          NULL,
   
   PRIMARY KEY( id ),
-  CONSTRAINT fk__appliances__appliance_types FOREIGN KEY( appliance_type_id )
-    REFERENCES appliance_types( id )
+  CONSTRAINT fk__appliances__incentive_tech FOREIGN KEY( technology_id )
+    REFERENCES incentive_tech( incentive_tech_id )
     ON UPDATE CASCADE
-    ON DELETE NO ACTION,
-  CONSTRAINT fk__appliances__energy_sources FOREIGN KEY( energy_source_id )
-    REFERENCES energy_sources( id )
-    ON UPDATE CASCADE
-    ON DELETE SET NULL,
-  CONSTRAINT uix__code UNIQUE INDEX( code )
+    ON DELETE NO ACTION
 ) ENGINE=InnoDB;
-
+ 
 /** Installed appliance info */
-DROP TABLE IF EXISTS building_appliances;
-CREATE TABLE building_appliances(
+DROP TABLE IF EXISTS building_products;
+CREATE TABLE building_products(
   id                char(36)      NOT NULL,
   building_id       char(36)      NOT NULL,
-  appliance_id      char(36)      NOT NULL,
+  product_id        char(36)      NOT NULL,
   year_built        int           NULL,
   serial_number     varchar(255)  NULL,
-  efficiency_rating float         NULL,
-  warranty_info     text          NULL,
-  recall_info       text          NULL,
   notes             text          NULL,
   
   PRIMARY KEY( id ),
-  CONSTRAINT fk__building_appliances__buildings FOREIGN KEY( building_id )
+  CONSTRAINT fk__building_products__buildings FOREIGN KEY( building_id )
     REFERENCES buildings( id )
     ON UPDATE CASCADE
     ON DELETE CASCADE,
-  CONSTRAINT fk__building_appliances__appliances FOREIGN KEY( appliance_id )
-    REFERENCES appliances( id )
+  CONSTRAINT fk__building_products__products FOREIGN KEY( product_id )
+    REFERENCES products( id )
     ON UPDATE CASCADE
     ON DELETE NO ACTION
 ) ENGINE=InnoDB;
-
-/** Hot water system product catalog */
-DROP TABLE IF EXISTS hot_water_systems;
-CREATE TABLE hot_water_systems(
-  id                char(36)      NOT NULL,
-  code              varchar(6)    NULL,
-  energy_source_id  char(36)      NULL,
-  make              varchar(255)  NULL,
-  model             varchar(255)  NULL,
-  
-  PRIMARY KEY( id ),
-  CONSTRAINT fk__hot_water_systems__energy_sources FOREIGN KEY( energy_source_id )
-    REFERENCES energy_sources( id )
-    ON UPDATE CASCADE
-    ON DELETE SET NULL,
-  CONSTRAINT uix__code UNIQUE INDEX( code )
-) ENGINE=InnoDB;
-
-/** Installed hot water system info */
-DROP TABLE IF EXISTS building_hot_water_sytems;
-CREATE TABLE building_hot_water_systems(
-  id                    char(36)      NOT NULL,
-  building_id           char(36)      NOT NULL,
-  hot_water_system_id   char(36)      NOT NULL,
-  serial_number         varchar(255)  NULL,
-  efficiency_rating     float         NULL,
-  warranty_info         text          NULL,
-  recall_info           text          NULL,
-  notes                 text          NULL,
-  
-  PRIMARY KEY( id ),
-  CONSTRAINT fk__building_hot_water_systems__buildings FOREIGN KEY( building_id )
-    REFERENCES buildings( id )
-    ON UPDATE CASCADE
-    ON DELETE CASCADE,
-  CONSTRAINT fk__building_hot_water_systems__hot_water_systems FOREIGN KEY( hot_water_system_id )
-    REFERENCES hot_water_systems( id )
-    ON UPDATE CASCADE
-    ON DELETE NO ACTION
-) ENGINE=InnoDB;
-
-/** HVAC system product catalog */
-DROP TABLE IF EXISTS hvac_systems;
-CREATE TABLE hvac_systems(
-  id                  char(36)      NOT NULL,
-  code                varchar(6)    NULL,
-  energy_source_id    char(36)      NULL,
-  make                varchar(255)  NULL,
-  model               varchar(255)  NULL,
-  
-  PRIMARY KEY( id ),
-  CONSTRAINT fk__hvac_systems__energy_sources FOREIGN KEY( energy_source_id )
-    REFERENCES energy_sources( id )
-    ON UPDATE CASCADE
-    ON DELETE SET NULL,
-  CONSTRAINT uix__code UNIQUE INDEX( code )
-) ENGINE=InnoDB;
-
-/** Installed HVAC system info */
-DROP TABLE IF EXISTS building_hvac_systems;
-CREATE TABLE building_hvac_systems(
-  id                char(36)      NOT NULL,
-  building_id       char(36)      NOT NULL,
-  hvac_system_id    char(36)      NOT NULL,
-  serial_number     varchar(255)  NOT NULL,
-  year_built        int           NOT NULL,
-  setpoint_heating  int           NULL,
-  setpoint_cooling  int           NULL,
-  efficiency_rating float         NULL,
-  warranty_info     text          NULL,
-  recall_info       text          NULL,
-  notes             text          NULL,
-  
-  PRIMARY KEY( id ),
-  CONSTRAINT fk__building_hvac_systems__buildings FOREIGN KEY( building_id )
-    REFERENCES buildings( id )
-    ON UPDATE CASCADE
-    ON DELETE CASCADE,
-  CONSTRAINT fk__building_hvac_systems__hvac_systems FOREIGN KEY( hvac_system_id )
-    REFERENCES hvac_systems( id )
-    ON UPDATE CASCADE
-    ON DELETE NO ACTION
-) ENGINE=InnoDB;
-
 
 DROP TABLE IF EXISTS building_roof_systems;
 CREATE TABLE building_roof_systems(

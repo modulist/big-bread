@@ -28,9 +28,7 @@ class Building extends AppModel {
     'BuildingWallSystem', # Built for hasMany, but currently implemented as hasOne
   );
 	public $hasMany = array(
-    'BuildingAppliance',
-    'BuildingHotWaterSystem',
-		'BuildingHvacSystem',
+    'BuildingProduct',
 		'BuildingRoofSystem',
 		'BuildingWindowSystem',
 		'Occupant',

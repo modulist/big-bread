@@ -28,10 +28,6 @@ class SurveysController extends AppController {
     $this->helpers[]        = 'Form';
     
     /** Populate Lookups */
-    $applianceTypes = $this->Survey->Building->BuildingAppliance->Appliance->ApplianceType->find(
-      'all',
-      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
-    );
     $basementTypes = $this->Survey->Building->BasementType->find(
       'list',
       array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
@@ -41,10 +37,6 @@ class SurveysController extends AppController {
       array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
     );
     $buildingTypes = $this->Survey->Building->BuildingType->find(
-      'list',
-      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
-    );
-    $energySources = $this->Survey->Building->BuildingAppliance->Appliance->EnergySource->find(
       'list',
       array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
     );
@@ -76,6 +68,13 @@ class SurveysController extends AppController {
       'list',
       array( 'order' => 'state' )
     );
+    $technologies = $this->Survey->Building->BuildingProduct->Product->Technology->find(
+      'list',
+      array(
+        'conditions' => array( 'Technology.questionnaire_product' => 1 ),
+        'order' => array( 'incentive_tech_group_id', 'name' ),
+      )
+    );
     $userTypes = $this->Survey->Building->Client->UserType->find(
       'list',
       array( 'conditions' => array( 'name' => array( 'Homeowner', 'Buyer' ), 'deleted' => 0 ), 'order' => 'name' )
@@ -90,6 +89,6 @@ class SurveysController extends AppController {
     );
     
     /** Prepare the view */
-    $this->set( compact( 'applianceTypes', 'buildingTypes', 'basementTypes', 'buildingShapes', 'energySources', 'exposureTypes', 'frameMaterials', 'insulationLevels', 'maintenanceLevels', 'roofSystems', 'shadingTypes', 'states', 'userTypes', 'wallSystems', 'windowPaneTypes' ) );
+    $this->set( compact( 'buildingTypes', 'basementTypes', 'buildingShapes', 'exposureTypes', 'frameMaterials', 'insulationLevels', 'maintenanceLevels', 'roofSystems', 'shadingTypes', 'states', 'technologies', 'userTypes', 'wallSystems', 'windowPaneTypes' ) );
   }
 }

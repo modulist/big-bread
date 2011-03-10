@@ -41,63 +41,18 @@
   
   <h2><?php __( 'Equipment Listing' ) ?></h2>
   
-  <h3><?php __( 'HVAC Systems' ) ?></h3>
-  
-  <h4><?php __( 'Furnace or Boiler' ) ?></h4>
-  <fieldset data-system="hvac" class="group">
+  <fieldset class="group">
     <div class="cloneable">
-      <?php echo $this->Form->input( 'HvacSystem.0.make' ) # TODO: Make this an autocomplete field ?>
-      <?php echo $this->Form->input( 'HvacSystem.0.model' ) # TODO: Make this an autocomplete field ?>
-      <?php echo $this->Form->input( 'BuildingHvacSystem.0.serial_number' ) ?>
-      <?php echo $this->Form->input( 'HvacSystem.0.energy_source_id', array( 'empty' => __( 'Not Applicable', true ) ) ) ?>
-      <?php echo $this->Form->input( 'BuildingHvacSystem.0.notes' ) ?>
+      <?php echo $this->Form->input( 'Product.0.technology_id' ) # TODO: Make this an autocomplete field ?>
+      <?php echo $this->Form->input( 'Product.0.make' ) # TODO: Make this an autocomplete field ?>
+      <?php echo $this->Form->input( 'Product.0.model' ) # TODO: Make this an autocomplete field ?>
+      <?php echo $this->Form->input( 'BuildingProduct.0.serial_number' ) ?>
+      <?php # echo $this->Form->input( 'Product.0.energy_source_id', array( 'empty' => __( 'Not Applicable', true ) ) ) ?>
+      <?php echo $this->Form->input( 'BuildingProduct.0.notes' ) ?>
     </div>
     
-    <?php echo $this->Html->link( __( 'Add another furnace or boiler', true ), '#', array( 'class' => 'clone' ) ) ?>
+    <?php echo $this->Html->link( __( 'Add another piece of equipment', true ), '#', array( 'class' => 'clone' ) ) ?>
   </fieldset>
-  
-  <h4><?php __( 'Cooling System' ) ?></h4>
-  <fieldset data-system="hvac" class="group">
-    <div class="cloneable">
-      <?php echo $this->Form->input( 'HvacSystem.1.make' ) # TODO: Make this an autocomplete field ?>
-      <?php echo $this->Form->input( 'HvacSystem.1.model' ) # TODO: Make this an autocomplete field ?>
-      <?php echo $this->Form->input( 'BuildingHvacSystem.1.serial_number' ) ?>
-      <?php echo $this->Form->input( 'HvacSystem.1.energy_source_id', array( 'empty' => __( 'Not Applicable', true ) ) ) ?>
-      <?php echo $this->Form->input( 'BuildingHvacSystem.1.notes' ) ?>
-    </div>
-    
-    <?php echo $this->Html->link( __( 'Add another cooling system', true ), '#', array( 'class' => 'clone' ) ) ?>
-  </fieldset>
-  
-  <h3><?php __( 'Hot Water System' ) ?></h3>
-  <fieldset data-system="hotwater" class="group">
-    <div class="cloneable">
-      <?php echo $this->Form->input( 'HotWaterSystem.0.make' ) # TODO: Make this an autocomplete field ?>
-      <?php echo $this->Form->input( 'HotWaterSystem.0.model' ) # TODO: Make this an autocomplete field ?>
-      <?php echo $this->Form->input( 'BuildingHotWaterSystem.0.serial_number' ) ?>
-      <?php echo $this->Form->input( 'HotWaterSystem.0.energy_source_id', array( 'empty' => __( 'Not Applicable', true ) ) ) ?>
-      <?php echo $this->Form->input( 'BuildingHotWaterSystem.0.notes' ) ?>
-    </div>
-    
-    <?php echo $this->Html->link( __( 'Add another hot water system', true ), '#', array( 'class' => 'clone' ) ) ?>
-  </fieldset>
-  
-  <h3><?php __( 'Appliances' ) ?></h3>
-    <?php foreach( $applianceTypes as $i => $type ): ?>
-      <h4><?php echo h( $type['ApplianceType']['name'] ) ?></h4>
-      <fieldset data-system="hotwater" class="group">
-        <div class="cloneable">
-          <?php echo $this->Form->input( 'BuildingAppliance.' . $i . '.appliance_type_id', array( 'type' => 'hidden', 'value' => $type['ApplianceType']['id'] ) ) ?>
-          <?php echo $this->Form->input( 'Appliance.' . $i . '.make' ) # TODO: Make this an autocomplete field ?>
-          <?php echo $this->Form->input( 'Appliance.' . $i . '.model' ) # TODO: Make this an autocomplete field ?>
-          <?php echo $this->Form->input( 'BuildingAppliance.' . $i . '.serial_number' ) ?>
-          <?php echo $this->Form->input( 'Appliance.' . $i . '.energy_source_id', array( 'empty' => __( 'Not Applicable', true ) ) ) ?>
-          <?php echo $this->Form->input( 'BuildingAppliance.' . $i . '.notes' ) ?>
-        </div>
-      
-        <?php echo $this->Html->link( sprintf( __( 'Add another %s', true ), h( strtolower( $type['ApplianceType']['name'] ) ) ), '#', array( 'class' => 'clone' ) ) ?>
-      </fieldset>
-    <?php endforeach; ?>
   
   <h2><?php __( 'Building Characteristics' ) ?></h2>
   <?php echo $this->Form->input( 'Building.exposure_type_id' ) ?>

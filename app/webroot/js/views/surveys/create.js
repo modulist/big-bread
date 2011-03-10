@@ -23,24 +23,21 @@ $(document).ready( function() {
     $cloneable = $group.children( '.cloneable' ).last(); // The last cloneable set in the group
     $cloned    = $cloneable.clone(); // The new clone
     
-    /**
-     * Some systems are divided into subgroups in the interface. For example,
-     * HVAC Systems are split across heating and cooling groups. This is just
-     * a visual cue, but we need to account for it when we clone.
-     */
-    var i = $( '.group[data-system="' + $group.attr('data-system') + '"] .cloneable' ).length;
-      
+    /** How many do we already have? */
+    var i = $( '.cloneable' ).length;
+    
+    /** Update the CakePHP name, id values on each cloned input */
     $cloned.find( 'input, select, textarea' ).each( function() {
       var $this = $(this);
       var name  = $this.attr( 'name' );
       var id    = $this.attr( 'id' );
       
-      /** Index of the field that was cloned */
-      var cloned_i = name.replace( /^.+\[(\d+)\].+$/, "$1" );
+      /** Empty any values cloned from the original */
+      $this.val('');
       
       /** Update the cloned field index with the next value */
-      $this.attr( 'name', name.replace( new RegExp( cloned_i ), i ) );
-      $this.attr( 'id', id.replace( new RegExp( cloned_i ), i ) );
+      $this.attr( 'name', name.replace( new RegExp( '\[' + (i - 1) + '\]' ), i ) );
+      $this.attr( 'id', id.replace( new RegExp( i - 1 ), i ) );
     });
     
     $cloneable.after( $cloned );
