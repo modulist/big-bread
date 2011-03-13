@@ -5,10 +5,6 @@ $(document).ready( function() {
       /** Display the city, state identified by the zip code */
       $this.next( 'p' ).remove();
       $this.after( '<p>' + data.ZipCode.city + ', ' + data.ZipCode.state );
-      
-      /** Set hidden input values */
-      $('#AddressCity').val( data.ZipCode.city );
-      $('#AddressState').val( data.ZipCode.state );
     });
   });
   

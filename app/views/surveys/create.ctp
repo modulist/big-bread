@@ -21,8 +21,6 @@
   <?php echo $this->Form->input( 'Address.address_1' ) ?>
   <?php echo $this->Form->input( 'Address.address_2' ) ?>
   <?php echo $this->Form->input( 'Address.zip_code' ) ?>
-  <?php echo $this->Form->input( 'Address.city', array( 'type' => 'hidden' ) ) # TODO: Populate city based on zip code ?>
-  <?php echo $this->Form->input( 'Address.state', array( 'type' => 'hidden' ) ) # TODO: Populate state based on zip coee ?>
   
   
   <h2><?php __( 'Demographics' ) ?></h2>
@@ -43,7 +41,7 @@
   
   <fieldset class="group">
     <div class="cloneable">
-      <?php echo $this->Form->input( 'Product.0.technology_id' ) # TODO: Make this an autocomplete field ?>
+      <?php echo $this->Form->input( 'Product.0.technology_id', array( 'label' => 'Equipment Type', 'required' => true, 'empty' => true ) ) # TODO: Make this an autocomplete field ?>
       <?php echo $this->Form->input( 'Product.0.make' ) # TODO: Make this an autocomplete field ?>
       <?php echo $this->Form->input( 'Product.0.model' ) # TODO: Make this an autocomplete field ?>
       <?php echo $this->Form->input( 'BuildingProduct.0.serial_number' ) ?>
