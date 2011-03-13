@@ -1,4 +1,5 @@
 <?php $this->set( 'title_for_layout', __( 'Questionnaire', true )) ?>
+<?php echo $this->Html->css( 'jqueryui/themes/jquery-ui-1.8.10.custom.css', null, array( 'inline' => false ) ) ?>
 
 <h1><?php __( 'Questionnaire' ) ?></h1>
 
@@ -22,7 +23,6 @@
   <?php echo $this->Form->input( 'Address.address_2' ) ?>
   <?php echo $this->Form->input( 'Address.zip_code' ) ?>
   
-  
   <h2><?php __( 'Demographics' ) ?></h2>
   <?php echo $this->Form->input( 'Occupant.age_0_5', array( 'label' => __( 'Ages 0-5', true ) ) ) ?>
   <?php echo $this->Form->input( 'Occupant.age_6_13', array( 'label' => __( 'Ages 6-13', true ) ) ) ?>
@@ -35,8 +35,21 @@
   <?php echo $this->Form->input( 'BuildingHvacSystem.setpoint_cooling', array( 'label' => __( 'Thermostat setting (cooling)', true ) ) ) ?>
   <?php echo $this->Form->input( 'Occupant.cooling_override', array( 'label' => __( 'Frequently adjusted?', true ) ) ) ?>
   
-  <p>Missing #10 (Utility providers) to be pulled from incentives database</p>
-  
+  <div id="utility-providers" style="display: none;">
+    <h3><?php __( 'Utility Providers' ) ?></h3>
+    <?php echo $this->Form->input( 'Building.electricity_provider_name', array( 'type' => 'text' ) ) ?>
+    <?php echo $this->Form->input( 'Building.electricity_provider_id', array( 'type' => 'hidden' ) ) ?>
+    
+    <?php echo $this->Form->input( 'Building.gas_provider_name', array( 'type' => 'text' ) ) ?>
+    <?php echo $this->Form->input( 'Building.gas_provider_id', array( 'type' => 'hidden' ) ) ?>
+    
+    <?php echo $this->Form->input( 'Building.water_provider_name', array( 'type' => 'text' ) ) ?>
+    <?php echo $this->Form->input( 'Building.water_provider_id', array( 'type' => 'hidden' ) ) ?>
+    
+    <h4><?php __( 'Alternative Heating Source' ) ?></h4>
+    <?php echo $this->Form->input( 'Building.other_heating_source', array( 'type' => 'radio', 'options' => array( 'PROPANE' => 'Propane', 'HEATING OIL' => 'Heating Oil', 'OTHER' => 'Other' ), 'legend' => false ) ) ?>
+  </div>
+    
   <h2><?php __( 'Equipment Listing' ) ?></h2>
   
   <fieldset class="group">

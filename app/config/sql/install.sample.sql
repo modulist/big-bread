@@ -70,7 +70,33 @@ ALTER TABLE us_zipcode
 -- Creates a ready-to-use value
 UPDATE us_zipcode
   SET zip = LPAD(zip, 5, '0');
-  
+
+-- Add a UUID field that will become the primary key
+-- Add a couple of fields so we can accept new user input
+-- Accept foreign key constraints
+ALTER TABLE utility
+  ADD COLUMN id char(36) NULL FIRST,
+  CHANGE COLUMN utility name varchar(255) NOT NULL,
+  ADD COLUMN created datetime NULL AFTER name,
+  ADD COLUMN reviewed boolean NULL AFTER name,
+  ENGINE = InnoDB,
+  CONVERT TO CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci';
+
+-- Add an id (UUID) for easy access and manipulation
+UPDATE utility
+   SET id = UUID(),
+       reviewed = 1;
+       
+-- Now that the id is populated, it can't be null and it must be unique
+ALTER TABLE utility
+  MODIFY id char(36) NOT NULL,
+  ADD CONSTRAINT uix__id UNIQUE INDEX( id );
+       
+-- Required to create foreign key constraints
+ALTER TABLE utility_zip
+  ENGINE = InnoDB,
+  CONVERT TO CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci';
+
 -- Required to create foreign key constraints
 ALTER TABLE incentive_tech_energy_type
   ENGINE = InnoDB,
@@ -339,47 +365,51 @@ CREATE TABLE addresses(
 
 DROP TABLE IF EXISTS buildings;
 CREATE TABLE buildings(
-  id                        char(36)  NOT NULL,
+  id                        char(36)          NOT NULL,
   -- associations
-  building_type_id          char(36)  NULL,
-  address_id                char(36)  NOT NULL,
-  realtor_id                char(36)  NULL,
-  inspector_id              char(36)  NOT NULL,
-  client_id                 char(36)  NOT NULL,
-  maintenance_level_id      char(36)  NULL,
-  building_shape_id         char(36)  NULL,
-  basement_type_id          char(36)  NULL,
-  shading_type_id           char(36)  NULL,
-  exposure_type_id          char(36)  NULL,
-  insulation_level_id       char(36)  NULL,
+  building_type_id          char(36)          NULL,
+  address_id                char(36)          NOT NULL,
+  realtor_id                char(36)          NULL,
+  inspector_id              char(36)          NOT NULL,
+  client_id                 char(36)          NOT NULL,
+  maintenance_level_id      char(36)          NULL,
+  building_shape_id         char(36)          NULL,
+  basement_type_id          char(36)          NULL,
+  shading_type_id           char(36)          NULL,
+  exposure_type_id          char(36)          NULL,
+  insulation_level_id       char(36)          NULL,
+  electricity_provider_id   char(36)          NULL,
+  gas_provider_id           char(36)          NULL,
+  water_provider_id         char(36)          NULL,
+  other_heating_source      varchar(255)      NULL,
   -- properties
-  year_built                int       NULL,
-  total_sf                  int       NULL,
-  finished_sf               int       NULL,
-  stories_above_ground      int       NULL,
-  insulated_foundation      boolean   NULL,
-  skylight_count            int       NULL,
+  year_built                int               NULL,
+  total_sf                  int               NULL,
+  finished_sf               int               NULL,
+  stories_above_ground      int               NULL,
+  insulated_foundation      boolean           NULL,
+  skylight_count            int               NULL,
   -- hvac-specific properties
-  setpoint_heating          int       NULL,
-  setpoint_cooling          int       NULL,
+  setpoint_heating          int               NULL,
+  setpoint_cooling          int               NULL,
   -- window-specific properties
-  window_percent_average    float     NULL,
-  window_percent_small      float     NULL,
-  window_percent_large      float     NULL,
-  window_wall               boolean   NULL DEFAULT 0,
-  window_wall_sf            int       NULL,
-  window_wall_side          char(1)   NULL,
-  window_wall_ratio         float     NULL,
+  window_percent_average    float             NULL,
+  window_percent_small      float             NULL,
+  window_percent_large      float             NULL,
+  window_wall               boolean           NULL DEFAULT 0,
+  window_wall_sf            int               NULL,
+  window_wall_side          char(1)           NULL,
+  window_wall_ratio         float             NULL,
   -- infiltration properties
-  drafts                    boolean   NOT NULL DEFAULT 0,
-  visible_weather_stripping boolean   NULL,
-  visible_caulking          boolean   NULL,
-  windows_frequently_open   boolean   NULL,
+  drafts                    boolean           NOT NULL DEFAULT 0,
+  visible_weather_stripping boolean           NULL,
+  visible_caulking          boolean           NULL,
+  windows_frequently_open   boolean           NULL,
   -- other stuff
-  notes                     text      NULL,
-  deleted                   boolean   NOT NULL DEFAULT 0,
-  created                   datetime  NOT NULL,
-  modified                  datetime  NOT NULL,
+  notes                     text              NULL,
+  deleted                   boolean           NOT NULL DEFAULT 0,
+  created                   datetime          NOT NULL,
+  modified                  datetime          NOT NULL,
   
   PRIMARY KEY( id ),
   CONSTRAINT fk__buildings__building_types FOREIGN KEY( building_type_id )
@@ -424,6 +454,18 @@ CREATE TABLE buildings(
     ON DELETE SET NULL,
   CONSTRAINT fk__buildings__insulation_levels FOREIGN KEY( insulation_level_id )
     REFERENCES insulation_levels( id )
+    ON UPDATE CASCADE
+    ON DELETE SET NULL,
+  CONSTRAINT fk__buildings__utility_ele FOREIGN KEY( electricity_provider_id )
+    REFERENCES utility( id )
+    ON UPDATE CASCADE
+    ON DELETE SET NULL,
+  CONSTRAINT fk__buildings__utility__gas FOREIGN KEY( gas_provider_id )
+    REFERENCES utility( id )
+    ON UPDATE CASCADE
+    ON DELETE SET NULL,
+  CONSTRAINT fk__buildings__utility__wtr FOREIGN KEY( water_provider_id )
+    REFERENCES utility( id )
     ON UPDATE CASCADE
     ON DELETE SET NULL
 ) ENGINE=InnoDB;

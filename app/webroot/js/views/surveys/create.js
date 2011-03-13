@@ -1,11 +1,83 @@
 $(document).ready( function() {
   $('#AddressZipCode').change( function() {
     var $this = $(this);
-    $.getJSON( '/addresses/locale/' + $this.val() + '.json', null, function( data ) {
+    var zip   = $this.val();
+    
+    /** Pull the zip code's locale (city, state) info */
+    $.getJSON( '/addresses/locale/' + zip + '.json', null, function( data ) {
       /** Display the city, state identified by the zip code */
-      $this.next( 'p' ).remove();
-      $this.after( '<p>' + data.ZipCode.city + ', ' + data.ZipCode.state );
+      $this
+        .next( 'p' ).slideUp().remove().end()
+        .after( '<p>' + data.ZipCode.city + ', ' + data.ZipCode.state + '</p>' ).slideDown();
     });
+    
+    /** Populate the electricity provider autocomplete options */
+    $('#BuildingElectricityProviderName').autocomplete({
+      source: '/addresses/utilities/' + zip + '/ele.json',
+      minLength: 0,
+      focus: function( event, ui ) {
+        $('#BuildingElectricityProviderName').val( ui.item.Utility.name );
+        
+        return false;
+      },
+      select: function( event, ui ) {
+        $( '#BuildingElectricityProviderName' ).val( ui.item.Utility.name );
+        $( '#BuildingElectricityProviderId' ).val( ui.item.Utility.id );
+
+        return false;
+      }
+    }).data( 'autocomplete' )._renderItem = function( ul, item ) {
+      return $( "<li></li>" )
+        .data( "item.autocomplete", item )
+        .append( '<a>' + item.Utility.name + '</a>' )
+        .appendTo( ul );
+    };
+    
+    /** Populate the gas provider autocomplete options */
+    $('#BuildingGasProviderName').autocomplete({
+      source: '/addresses/utilities/' + zip + '/gas.json',
+      minLength: 0,
+      focus: function( event, ui ) {
+        $('#BuildingGasProviderName').val( ui.item.Utility.name );
+        
+        return false;
+      },
+      select: function( event, ui ) {
+        $( '#BuildingGasProviderName' ).val( ui.item.Utility.name );
+        $( '#BuildingGasProviderId' ).val( ui.item.Utility.id );
+
+        return false;
+      }
+    }).data( 'autocomplete' )._renderItem = function( ul, item ) {
+      return $( "<li></li>" )
+        .data( "item.autocomplete", item )
+        .append( '<a>' + item.Utility.name + '</a>' )
+        .appendTo( ul );
+    };
+    
+    /** Populate the water provider autocomplete options */
+    $('#BuildingWaterProviderName').autocomplete({
+      source: '/addresses/utilities/' + zip + '/wtr.json',
+      minLength: 0,
+      focus: function( event, ui ) {
+        $('#BuildingWaterProviderName').val( ui.item.Utility.name );
+        
+        return false;
+      },
+      select: function( event, ui ) {
+        $( '#BuildingWaterProviderName' ).val( ui.item.Utility.name );
+        $( '#BuildingWaterProviderId' ).val( ui.item.Utility.id );
+
+        return false;
+      }
+    }).data( 'autocomplete' )._renderItem = function( ul, item ) {
+      return $( "<li></li>" )
+        .data( "item.autocomplete", item )
+        .append( '<a>' + item.Utility.name + '</a>' )
+        .appendTo( ul );
+    };
+      
+    $('#utility-providers').slideDown();
   });
   
   /**
