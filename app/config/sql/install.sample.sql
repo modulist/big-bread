@@ -139,7 +139,7 @@ VALUES
 ( '4d6ffa65-a960-4d5c-a5aa-7bcd3b196446', 'VCRWSP', 'Vented Crawlspace' ),
 ( '4d6ffa65-f654-4c75-a964-7bcd3b196446', 'SCRWSP', 'Sealed Crawlspace' ),
 ( '4d6ffa65-42e4-4322-86cf-7bcd3b196446', 'UNFNSH', 'Unfinished' ),
-( '4d6ffa65-8f10-489d-8659-7bcd3b196446', 'CONDTN', 'Conditioned' );
+( '4d6ffa65-8f10-489d-8659-7bcd3b196446', 'CONDTN', 'Unconditioned' );
 
 DROP TABLE IF EXISTS building_shapes;
 CREATE TABLE building_shapes(
