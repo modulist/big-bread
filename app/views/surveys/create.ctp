@@ -57,8 +57,8 @@
       <?php echo $this->Form->input( 'Product.0.technology_id', array( 'label' => 'Equipment Type', 'required' => true, 'empty' => true ) ) # TODO: Make this an autocomplete field ?>
       <?php echo $this->Form->input( 'Product.0.make' ) # TODO: Make this an autocomplete field ?>
       <?php echo $this->Form->input( 'Product.0.model' ) # TODO: Make this an autocomplete field ?>
+      <?php echo $this->Form->input( 'Product.0.energy_source_id', array( 'empty' => '' ) ) ?>
       <?php echo $this->Form->input( 'BuildingProduct.0.serial_number' ) ?>
-      <?php # echo $this->Form->input( 'Product.0.energy_source_id', array( 'empty' => __( 'Not Applicable', true ) ) ) ?>
       <?php echo $this->Form->input( 'BuildingProduct.0.notes' ) ?>
     </div>
     

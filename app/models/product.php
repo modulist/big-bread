@@ -8,6 +8,9 @@ class Product extends AppModel {
     'Technology' => array(
       'fields'     => array( 'id', 'incentive_tech_group_id', 'name', 'description' ),
       'conditions' => array( 'Technology.questionnaire_product' => 1 ),
-    )
+    ),
+    'EnergySource' => array(
+      'fields'     => array( 'id', 'incentive_tech_energy_group_id', 'name', 'description' ),
+    ),
   );
 }

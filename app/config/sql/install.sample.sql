@@ -122,10 +122,28 @@ ALTER TABLE utility_zip
     REFERENCES utility( id );
 SET foreign_key_checks = 1; -- Re-engage foreign key constraints
 
--- Required to create foreign key constraints
-ALTER TABLE incentive_tech_energy_type
+-- Drop existing key to prepare for a new id key
+-- Add unique index where there was a primary key
+ALTER TABLE incentive_tech_energy_group
+  DROP PRIMARY KEY,
+  DROP COLUMN parent_id,
+  ADD COLUMN id char(36) NULL FIRST,
+  ADD CONSTRAINT uix__incentive_tech_energy_group__incentive_tech_energy_group_id UNIQUE INDEX ( incentive_tech_energy_group_id ),
   ENGINE = InnoDB,
   CONVERT TO CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci';
+  
+-- Populate the coming primary key value
+UPDATE incentive_tech_energy_group
+   SET id = UUID();
+   
+-- We're flattening this table so we can kill a couple of "parent" records
+DELETE FROM incentive_tech_energy_group
+      WHERE incentive_tech_energy_group_id IN ( 'GAS', 'ALT' );
+   
+-- Now that the id is populated, make it the primary key
+ALTER TABLE incentive_tech_energy_group
+  MODIFY id char(36) NOT NULL,
+  ADD PRIMARY KEY( id );
   
 /** LOOKUP TABLES */
 
@@ -517,15 +535,19 @@ CREATE TABLE products(
   make              varchar(255)  NULL,
   model             varchar(255)  NULL,
   ahri_ref_number   varchar(255)  NULL, -- AHRI certified reference number (http://www.ahridirectory.org/ahridirectory/pages/home.aspx)
-  -- energy_source_id  varchar(255)  NULL, -- TBD
+  energy_source_id  char(36)      NULL,
   efficiency_rating float         NULL,
   warranty_info     text          NULL,
   recall_info       text          NULL,
   
   PRIMARY KEY( id ),
-  CONSTRAINT uix__products__make_model UNIQUE INDEX( make, model ),
-  CONSTRAINT fk__appliances__incentive_tech FOREIGN KEY( technology_id )
+  CONSTRAINT uix__products__make_model_energy UNIQUE INDEX( make, model, energy_source_id ),
+  CONSTRAINT fk__products__incentive_tech FOREIGN KEY( technology_id )
     REFERENCES incentive_tech( incentive_tech_id )
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
+  CONSTRAINT fk__products__incentive_tech_energy_group FOREIGN KEY( energy_source_id )
+    REFERENCES incentive_tech_energy_group( id )
     ON UPDATE CASCADE
     ON DELETE NO ACTION
 ) ENGINE=InnoDB;

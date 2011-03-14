@@ -40,6 +40,10 @@ class SurveysController extends AppController {
       'list',
       array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
     );
+    $energySources = $this->Survey->Building->BuildingProduct->Product->EnergySource->find(
+      'list',
+      array( 'order' => 'name' )
+    );
     $exposureTypes = $this->Survey->Building->ExposureType->find(
       'list',
       array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
@@ -89,6 +93,6 @@ class SurveysController extends AppController {
     );
     
     /** Prepare the view */
-    $this->set( compact( 'buildingTypes', 'basementTypes', 'buildingShapes', 'exposureTypes', 'frameMaterials', 'insulationLevels', 'maintenanceLevels', 'roofSystems', 'shadingTypes', 'states', 'technologies', 'userTypes', 'wallSystems', 'windowPaneTypes' ) );
+    $this->set( compact( 'buildingTypes', 'basementTypes', 'buildingShapes', 'energySources', 'exposureTypes', 'frameMaterials', 'insulationLevels', 'maintenanceLevels', 'roofSystems', 'shadingTypes', 'states', 'technologies', 'userTypes', 'wallSystems', 'windowPaneTypes' ) );
   }
 }
