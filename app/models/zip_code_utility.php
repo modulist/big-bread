@@ -8,9 +8,7 @@ class ZipCodeUtility extends AppModel {
 		'ZipCode' => array(
 			'foreignKey' => 'zip'
 		),
-    'Utility' => array(
-      'foreignKey' => 'utility_id'
-    ),
+    'Utility',
 	);
   
   public $types = array(
