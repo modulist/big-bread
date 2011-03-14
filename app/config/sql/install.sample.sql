@@ -101,12 +101,18 @@ ALTER TABLE utility
 -- Prepare utility_zip to use the UUID value as its foreign key to utility
 ALTER TABLE utility_zip
   MODIFY COLUMN utility_id char(36) NULL,
+  ADD COLUMN created datetime NULL AFTER coverage,
+  ADD COLUMN reviewed boolean NULL DEFAULT 0 AFTER coverage,
+  ADD COLUMN source varchar(255) NULL AFTER coverage,
+  DROP COLUMN type,
   ENGINE = InnoDB,
   CONVERT TO CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci';
 
 -- Set the new utility_zip.utility_id value to the UUID.
 UPDATE utility_zip, utility
-   SET utility_zip.utility_id = utility.id
+   SET utility_zip.utility_id = utility.id,
+       utility_zip.source = 'Platts',
+       utility_zip.reviewed = 1
  WHERE utility_zip.utility_id = utility.utility_id;
  
 -- Create an actual foreign key constraint
