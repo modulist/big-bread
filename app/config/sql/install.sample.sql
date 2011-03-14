@@ -72,36 +72,55 @@ UPDATE us_zipcode
   SET zip = LPAD(zip, 5, '0');
 
 -- Add a UUID field that will become the primary key
--- Add a couple of fields so we can accept new user input
+-- Add a couple of fields so we can accept (and vet) new user input
 -- Accept foreign key constraints
 ALTER TABLE utility
+  DROP PRIMARY KEY,
   ADD COLUMN id char(36) NULL FIRST,
   CHANGE COLUMN utility name varchar(255) NOT NULL,
+  MODIFY COLUMN utility_id int NULL, -- nullable to avoid future conflicts when importing libraries.
   ADD COLUMN created datetime NULL AFTER name,
-  ADD COLUMN reviewed boolean NULL AFTER name,
+  ADD COLUMN reviewed boolean NULL DEFAULT 0 AFTER name,
+  ADD COLUMN source varchar(255) NULL AFTER name,
   ENGINE = InnoDB,
   CONVERT TO CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci';
 
 -- Add an id (UUID) for easy access and manipulation
+-- Set the source for existing records
+-- Mark existing records as reviewed
 UPDATE utility
    SET id = UUID(),
+       source = 'Platts',
        reviewed = 1;
        
--- Now that the id is populated, it can't be null and it must be unique
+-- Now that the id is populated, make it the primary key
 ALTER TABLE utility
   MODIFY id char(36) NOT NULL,
-  ADD CONSTRAINT uix__id UNIQUE INDEX( id );
+  ADD PRIMARY KEY( id );
        
--- Required to create foreign key constraints
+-- Prepare utility_zip to use the UUID value as its foreign key to utility
 ALTER TABLE utility_zip
+  MODIFY COLUMN utility_id char(36) NULL,
   ENGINE = InnoDB,
   CONVERT TO CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci';
+
+-- Set the new utility_zip.utility_id value to the UUID.
+UPDATE utility_zip, utility
+   SET utility_zip.utility_id = utility.id
+ WHERE utility_zip.utility_id = utility.utility_id;
+ 
+-- Create an actual foreign key constraint
+SET foreign_key_checks = 0; -- Protect against bad legacy data
+ALTER TABLE utility_zip
+  ADD CONSTRAINT fk__utility_zip__utility FOREIGN KEY( utility_id )
+    REFERENCES utility( id );
+SET foreign_key_checks = 1; -- Re-engage foreign key constraints
 
 -- Required to create foreign key constraints
 ALTER TABLE incentive_tech_energy_type
   ENGINE = InnoDB,
   CONVERT TO CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci';
-
+  
 /** LOOKUP TABLES */
 
 DROP TABLE IF EXISTS basement_types;
@@ -155,16 +174,6 @@ INSERT INTO building_types( id, code, name )
 VALUES
 ( '4d6ff15d-c9d0-4d44-9379-793d3b196446', 'SNGLFM', 'Single Family' ),
 ( '4d6ff15d-16c4-415f-92f8-793d3b196446', 'TWNHSE', 'Townhouse' );
-
-DROP TABLE IF EXISTS energy_sources;
-CREATE TABLE energy_sources(
-  id        char(36)      NOT NULL,
-  code      varchar(6)    NOT NULL,
-  name      varchar(255)  NOT NULL,
-  deleted   boolean       NOT NULL DEFAULT 0,
-  PRIMARY KEY( id ),
-  CONSTRAINT uix__code UNIQUE INDEX( code )
-) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS exposure_types;
 CREATE TABLE exposure_types(
@@ -508,6 +517,7 @@ CREATE TABLE products(
   recall_info       text          NULL,
   
   PRIMARY KEY( id ),
+  CONSTRAINT uix__products__make_model UNIQUE INDEX( make, model ),
   CONSTRAINT fk__appliances__incentive_tech FOREIGN KEY( technology_id )
     REFERENCES incentive_tech( incentive_tech_id )
     ON UPDATE CASCADE
