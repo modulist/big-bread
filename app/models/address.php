@@ -18,22 +18,6 @@ class Address extends AppModel {
 				'required'   => true,
 			),
 		),
-		'city' => array(
-			'notempty' => array(
-				'rule'       => array( 'notempty' ),
-				'message'    => 'City cannot be empty.',
-				'allowEmpty' => false,
-				'required'   => true,
-			),
-		),
-		'state' => array(
-			'notempty' => array(
-				'rule'       => array( 'notempty' ),
-				'message'    => 'State cannot be empty',
-				'allowEmpty' => false,
-				'required'   => true,
-			),
-		),
 		'zip_code' => array(
 			'postal' => array(
 				'rule'       => array( 'postal', null, 'us' ),

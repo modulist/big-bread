@@ -16,6 +16,8 @@ CREATE DATABASE @DB_NAME@
  
 USE @DB_NAME@;
 
+ALTER DATABASE @DB_NAME@ DEFAULT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci';
+
 /** IMPORT EXISTING INCENTIVES DATA */
 
 /**
@@ -24,6 +26,44 @@ USE @DB_NAME@;
  */
 
 SOURCE fp_incentive.sql;
+
+/**
+ * Convert everything in the schema to a unified collation:
+ */
+alter table bigbread.dsireincentive convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.dsireincentive_detail convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.dsireincentive_dsireincentive_detail convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.error_log convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.error_log_bak convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.incentive convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.incentive__incentive_tech convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.incentive_amount_type convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.incentive_county convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.incentive_note convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.incentive_note_type convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.incentive_tech convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.incentive_tech_energy convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.incentive_tech_energy_group convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.incentive_tech_energy_type convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.incentive_tech_group convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.incentive_tech_option convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.incentive_tech_option_type convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.incentive_tech_term convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.incentive_tech_term_type convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.incentive_type convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.incentive_type_group convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.incentive_utility convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.incentive_weblink convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.incentive_weblink_type convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.incentive_weblink_verification convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.incentive_zip convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.us_county convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.us_county__us_zipcode convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.us_states convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.us_zipcode convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.user convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.utility convert to character set utf8 collate utf8_unicode_ci;
+alter table bigbread.utility_zip convert to character set utf8 collate utf8_unicode_ci;
 
 /** A few adjustments to the incentives database */
 
@@ -162,8 +202,8 @@ VALUES
 ( '4d6ffa65-50b4-40de-9eff-7bcd3b196446', 'SLAB', 'Slab on Grade' ),
 ( '4d6ffa65-a960-4d5c-a5aa-7bcd3b196446', 'VCRWSP', 'Vented Crawlspace' ),
 ( '4d6ffa65-f654-4c75-a964-7bcd3b196446', 'SCRWSP', 'Sealed Crawlspace' ),
-( '4d6ffa65-42e4-4322-86cf-7bcd3b196446', 'UNFNSH', 'Unfinished' ),
-( '4d6ffa65-8f10-489d-8659-7bcd3b196446', 'CONDTN', 'Unconditioned' );
+( '4d6ffa65-42e4-4322-86cf-7bcd3b196446', 'UNCOND', 'Unconditioned' ),
+( '4d6ffa65-8f10-489d-8659-7bcd3b196446', 'CONDTN', 'Conditioned' );
 
 DROP TABLE IF EXISTS building_shapes;
 CREATE TABLE building_shapes(
@@ -684,19 +724,19 @@ VALUES( '4d6da23a-a5dc-470d-9238-43e76e891b5e', '4d6da23a-8fe0-407f-99c5-4d006e8
 
 /** Inspector questionnaires */
 /** @todo Change nomenclature to "questionnaire" */
-DROP TABLE IF EXISTS surveys;
-CREATE TABLE surveys(
+DROP TABLE IF EXISTS questionnaires;
+CREATE TABLE questionnaires(
   id            char(36)    NOT NULL,
-  building_id   char(36)    NULL,
+  building_id   char(36)    NOT NULL,
+  deleted       boolean     NOT NULL DEFAULT 0,
   created       datetime    NOT NULL,
   modified      datetime    NOT NULL,
-  deleted       boolean     NOT NULL DEFAULT 0,
   
   PRIMARY KEY( id ),
-  CONSTRAINT fk__surveys__buildings FOREIGN KEY( building_id )
+  CONSTRAINT fk__questionnaires__buildings FOREIGN KEY( building_id )
     REFERENCES buildings( id )
     ON UPDATE CASCADE
-    ON DELETE SET NULL
+    ON DELETE NO ACTION
 ) ENGINE=InnoDB;
 
 /**

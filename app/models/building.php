@@ -25,23 +25,23 @@ class Building extends AppModel {
 		'ShadingType',
 	);
   public $hasOne  = array(
+    'BuildingWallSystem', # Built for hasMany, but currently implemented as hasOne
     'ElectricityProvider' => array(
       'className' => 'Utility',
     ),
     'GasProvider' => array(
       'className' => 'Utility',
     ),
+		'Occupant',
+		'Questionnaire',
     'WaterProvider' => array(
       'className' => 'Utility',
     ),
-    'BuildingWallSystem', # Built for hasMany, but currently implemented as hasOne
   );
 	public $hasMany = array(
     'BuildingProduct',
 		'BuildingRoofSystem',
 		'BuildingWindowSystem',
-		'Occupant',
-		'Survey',
 	);
   
 	public $validate = array();

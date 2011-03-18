@@ -1,4 +1,55 @@
 $(document).ready( function() {
+  /** FOR TESTING, DO SOME WORK AUTOMATICALLY */
+  /** TODO: REMOVE THIS BEFORE DEPLOYMENT */
+  $('#RealtorFirstName').val( 'realfirst' );
+  $('#RealtorLastName').val( 'reallast' );
+  $('#RealtorEmail').val( 'real@tor.com' );
+  $('#InspectorFirstName').val( 'inspectorfirst' );
+  $('#InspectorLastName').val( 'inspectorlast' );
+  $('#InspectorEmail').val( 'inspec@tor.com' );
+  $('#ClientFirstName').val( 'Rob' );
+  $('#ClientLastName').val( 'Wilkerson' );
+  $('#ClientEmail').val( 'rob@rob.com' );
+  
+  $('#AddressAddress1').val( '3322 O\'Donnell Street' );
+  
+  $('#OccupantAge1464').val( '2' );
+  $('#OccupantDaytimeOccupancy').attr( 'checked', 'checked' );
+  $('#BuildingSetpointHeating').val( '67' );
+  $('#BuildingSetpointCooling').val( '70' );
+  $('#OccupantCoolingOverride').attr( 'checked', 'checked' );
+  
+  $('#BuildingExposureTypeId').val( '4d6ff15d-e100-489f-8016-793d3b196446' );
+  $('#BuildingYearBuilt').val( '1920' );
+  $('#BuildingFinishedSf').val( '2300' );
+  $('#BuildingBuildingTypeId').val( '4d6ff15d-16c4-415f-92f8-793d3b196446' );
+  $('#BuildingMaintenanceLevelId').val( '4d6ff15d-fe04-47db-8811-793d3b196446' );
+  $('#BuildingStoriesAboveGround').val( '2' );
+  $('#BuildingBuildingShapeId').val( '4d6ff444-f864-4668-b9b0-7a073b196446' );
+  $('#BuildingBasementTypeId').val( '4d6ffa65-8f10-489d-8659-7bcd3b196446' );
+  $('#BuildingInsulatedFoundation').attr( 'checked', 'checked' );
+  $('#BuildingWallSystemWallSystemId').val( '4d6ffa65-73f8-412e-ab8c-7bcd3b196446' );
+  $('#BuildingWallSystemInsulationLevelId').val( '4d700e7a-d250-4c50-9a4f-82376e891b5e' );
+  
+  $('#BuildingWindowSystem0WindowPaneTypeId4d6ffa6573f8412eAb8c7bcd3b196446').attr( 'checked', 'checked' );
+  $('#BuildingWindowSystem0LowE').attr( 'checked', 'checked' );
+  $('#BuildingWindowSystem0FrameMaterialId').val( '4d6ff15d-b0ac-4bb2-b550-793d3b196446' );
+  $('#BuildingWindowPercentAverage').val( '5' );
+  $('#BuildingWindowPercentLarge').val( '20' );
+  $('#BuildingWindowWallSide2').attr( 'checked', 'checked' );
+  $('#BuildingSkylightCount').val( '4' );
+  $('#BuildingShadingTypeId').val( '4d700e7a-b2ec-4ead-a2e9-82376e891b5e' );
+  
+  $('#BuildingVisibleWeatherStripping').attr( 'checked', 'checked' );
+  $('#BuildingVisibleCaulking').attr( 'checked', 'checked' );
+  $('#BuildingRoofSystem0RoofSystemId').attr( 'checked', 'checked' );
+  $('#BuildingRoofSystem0LivingSpaceRatio').val( '10' );
+  $('#BuildingRoofSystem2RoofSystemId').attr( 'checked', 'checked' );
+  $('#BuildingRoofSystem2LivingSpaceRatio').val( '90' );
+  
+  $('#BuildingRoofSystemInsulationLevelId').val( '4d700e7a-d250-4c50-9a4f-82376e891b5e' );
+  /** END AUTO FILL */
+  
   $('#AddressZipCode').change( function() {
     var $this = $(this);
     var zip   = $this.val();
@@ -97,6 +148,7 @@ $(document).ready( function() {
     /** Update the CakePHP name, id values on each cloned input */
     $cloned.find( 'input, select, textarea' ).each( function() {
       var $this = $(this);
+      var $label = $(this).parent().find( 'label' ).first();
       var name  = $this.attr( 'name' );
       var id    = $this.attr( 'id' );
       
@@ -104,8 +156,13 @@ $(document).ready( function() {
       $this.val('');
       
       /** Update the cloned field index with the next value */
-      $this.attr( 'name', name.replace( new RegExp( '\[' + (i - 1) + '\]' ), i ) );
-      $this.attr( 'id', id.replace( new RegExp( i - 1 ), i ) );
+      var new_name = name.replace( new RegExp( '\[' + (i - 1) + '\]' ), i );
+      var new_id   = id.replace( new RegExp( i - 1 ), i );
+      $this.attr( 'name', new_name );
+      $this.attr( 'id', new_id );
+      
+      /** And update the label */
+      $label.attr( 'for', new_id );
     });
     
     $cloneable.after( $cloned );
