@@ -106,9 +106,13 @@ class BuildingsController extends AppController {
     $this->set( compact( 'buildingTypes', 'basementTypes', 'buildingShapes', 'energySources', 'exposureTypes', 'frameMaterials', 'insulationLevels', 'maintenanceLevels', 'roofSystems', 'shadingTypes', 'states', 'technologies', 'userTypes', 'wallSystems', 'windowPaneTypes' ) );
   }
   
+  /**
+   * Creates a building record (and associated records) from the
+   * questionnaire form.
+   *
+   * @see $this::questionnaire()
+   */
   public function create() {
-    new PHPDump( $this->data, 'DATA', '', true ); # exit;
-    
     /**
      * We can only take one user with a given email address. If anyone
      * associated with the building has an email that already exists,
@@ -137,6 +141,72 @@ class BuildingsController extends AppController {
       unset( $this->data['Client'] );
     }
     /** END : user detection */
+    
+    /** Handle utility providers if an unknown was specified */
+    /** TODO: Can we move this down the stack somewhere? */
+    foreach( $this->Building->Address->ZipCode->ZipCodeUtility->type_codes as $code => $type ) {
+      $type     = strtolower( $type );
+      $name     = $this->data['Building'][$type . '_provider_name'];
+      
+      /** Empty the utility id if the name is empty */
+      $this->data['Building'][$type . '_provider_id'] = !empty( $name )
+        ? $this->data['Building'][$type . '_provider_id']
+        : null;
+      
+      $id       = $this->data['Building'][$type . '_provider_id'];
+      
+      if( !empty( $name ) ) {
+        $provider = $this->Building->Address->ZipCode->ZipCodeUtility->Utility->known( $name, $id );
+        
+        if( !$provider ) { # The specified provider is not recognized
+          /** Pull the state code for the building zip code */
+          if( !isset( $state ) ) {
+            $state = $this->Building->Address->ZipCode->find(
+              'first',
+              array(
+                'contain'    => false,
+                'fields'     => array( 'ZipCode.state' ),
+                'conditions' => array( 'ZipCode.zip' => $this->data['Address']['zip_code'] ),
+              )
+            );
+          }
+          
+          /** Build and save a Utility record and a ZipCodeUtility record */
+          $this->data['Utility'] = array(
+            'name'     => $this->data['Building'][$type . '_provider_name'],
+            'source'   => 'User',
+            'reviewed' => 0,
+          );
+          $this->data['ZipCodeUtility'] = array(
+            'zip'      => $this->data['Address']['zip_code'],
+            'state'    => $state['ZipCode']['state'],
+            'coverage' => 0,
+            'source'   => 'User',
+            'reviewed' => 0,
+            'type'     => $code
+          );
+          
+          if( $this->Building->Address->ZipCode->ZipCodeUtility->Utility->save( $this->data['Utility'] ) ) {
+            $this->data['ZipCodeUtility']['utility_id'] = $this->Building->Address->ZipCode->ZipCodeUtility->Utility->id;
+            
+            if( !$this->Building->Address->ZipCode->ZipCodeUtility->save( $this->data['ZipCodeUtility'] ) ) {
+              /** TODO: Flash message and fall through */
+              exit( 'Zip Utility did not save' );
+            }
+          }
+          else {
+            /** TODO: Flash message and fall through */
+            exit( 'Utility did not save' );
+          }
+          
+          exit( 'Utility saved. Yay.' );
+        }
+        else {
+          /** If the name is known, use the id from the database */
+          $this->data['Building'][$type . '_provider_id'] = $provider;
+        }
+      }
+    }
     
     /**
      * As with users, we don't want redundant products in our catalog.

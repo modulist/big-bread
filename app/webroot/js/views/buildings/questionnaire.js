@@ -62,71 +62,49 @@ $(document).ready( function() {
         .after( '<p>' + data.ZipCode.city + ', ' + data.ZipCode.state + '</p>' ).slideDown();
     });
     
-    /** Populate the electricity provider autocomplete options */
-    $('#BuildingElectricityProviderName').autocomplete({
-      source: '/addresses/utilities/' + zip + '/ele.json',
-      minLength: 0,
-      focus: function( event, ui ) {
-        $('#BuildingElectricityProviderName').val( ui.item.Utility.name );
-        
-        return false;
-      },
-      select: function( event, ui ) {
-        $( '#BuildingElectricityProviderName' ).val( ui.item.Utility.name );
-        $( '#BuildingElectricityProviderId' ).val( ui.item.Utility.id );
-
-        return false;
-      }
-    }).data( 'autocomplete' )._renderItem = function( ul, item ) {
-      return $( "<li></li>" )
-        .data( "item.autocomplete", item )
-        .append( '<a>' + item.Utility.name + '</a>' )
-        .appendTo( ul );
-    };
+    /** Retrieve known utility providers for the given zip code */
+    var utility_types = [ 'Electricity', 'Gas', 'Water' ];
     
-    /** Populate the gas provider autocomplete options */
-    $('#BuildingGasProviderName').autocomplete({
-      source: '/addresses/utilities/' + zip + '/gas.json',
-      minLength: 0,
-      focus: function( event, ui ) {
-        $('#BuildingGasProviderName').val( ui.item.Utility.name );
+    for( var i = 0; i < utility_types.length; i++ ) {
+      var type = utility_types[i];
+      
+      $.getJSON( '/addresses/utilities/' + zip + '/' + type + '.json', null, function( data, status ) {
+        var utility_type = data.Type.name;
         
-        return false;
-      },
-      select: function( event, ui ) {
-        $( '#BuildingGasProviderName' ).val( ui.item.Utility.name );
-        $( '#BuildingGasProviderId' ).val( ui.item.Utility.id );
-
-        return false;
-      }
-    }).data( 'autocomplete' )._renderItem = function( ul, item ) {
-      return $( "<li></li>" )
-        .data( "item.autocomplete", item )
-        .append( '<a>' + item.Utility.name + '</a>' )
-        .appendTo( ul );
-    };
-    
-    /** Populate the water provider autocomplete options */
-    $('#BuildingWaterProviderName').autocomplete({
-      source: '/addresses/utilities/' + zip + '/wtr.json',
-      minLength: 0,
-      focus: function( event, ui ) {
-        $('#BuildingWaterProviderName').val( ui.item.Utility.name );
+        var $provider_name = $('#Building' + utility_type + 'ProviderName');
+        var $provider_id   = $('#Building' + utility_type + 'ProviderId');
         
-        return false;
-      },
-      select: function( event, ui ) {
-        $( '#BuildingWaterProviderName' ).val( ui.item.Utility.name );
-        $( '#BuildingWaterProviderId' ).val( ui.item.Utility.id );
-
-        return false;
-      }
-    }).data( 'autocomplete' )._renderItem = function( ul, item ) {
-      return $( "<li></li>" )
-        .data( "item.autocomplete", item )
-        .append( '<a>' + item.Utility.name + '</a>' )
-        .appendTo( ul );
-    };
+        // alert( utility_type );
+        // alert( data.Utilities[0].Utility.name );
+        
+        if( data.Utilities.length == 1 ) {
+          /** If there's only one, just set that value as a default */
+          $provider_name.val( data.Utilities[0].Utility.name );
+          $provider_id.val( data.Utilities[0].Utility.id );
+        }
+        else {
+          /** If more than one, populate the provider autocomplete options */
+          $provider_name.autocomplete({
+            source: data.Utilities,
+            minLength: 0,
+            focus: function( event, ui ) {
+              $provider_name.val( ui.item.Utility.name );
+              return false;
+            },
+            select: function( event, ui ) {
+              $provider_name.val( ui.item.Utility.name );
+              $provider_id.val( ui.item.Utility.id );
+              return false;
+            }
+          }).data( 'autocomplete' )._renderItem = function( ul, item ) {
+            return $( "<li></li>" )
+              .data( "item.autocomplete", item )
+              .append( '<a>' + item.Utility.name + '</a>' )
+              .appendTo( ul );
+          };
+        }
+      });
+    }
       
     $('#utility-providers').slideDown();
   });

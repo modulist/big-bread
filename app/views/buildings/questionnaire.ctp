@@ -40,8 +40,6 @@
   <?php echo $this->Form->input( 'Building.setpoint_cooling', array( 'label' => __( 'Thermostat setting (cooling)', true ) ) ) ?>
   <?php echo $this->Form->input( 'Occupant.cooling_override', array( 'label' => __( 'Frequently adjusted?', true ) ) ) ?>
 
-<?php /** ?>
-  
   <div id="utility-providers" style="display: none;">
     <h3><?php __( 'Utility Providers' ) ?></h3>
     <?php echo $this->Form->input( 'Building.electricity_provider_name', array( 'type' => 'text' ) ) ?>
@@ -56,6 +54,8 @@
     <h4><?php __( 'Alternative Heating Source' ) ?></h4>
     <?php echo $this->Form->input( 'Building.other_heating_source', array( 'type' => 'radio', 'options' => array( 'PROPANE' => 'Propane', 'HEATING OIL' => 'Heating Oil', 'OTHER' => 'Other' ), 'legend' => false ) ) ?>
   </div>
+  
+<?php /** ?>
   
   <h2><?php __( 'Equipment Listing' ) ?></h2>
   
