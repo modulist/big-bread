@@ -109,6 +109,10 @@ $(document).ready( function() {
     $('#utility-providers').slideDown();
   });
   
+  if( $('#AddressZipCode').val().length > 0 ) {
+    $('#AddressZipCode' ).change();
+  }
+  
   /**
    * Some building components can be entered as multiples. Each group of
    * fields that makes up a record is contained within a "cloneable" div.
