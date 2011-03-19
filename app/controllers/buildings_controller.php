@@ -8,7 +8,7 @@ class BuildingsController extends AppController {
    */
   
   public function beforeFilter() {
-    $this->Auth->allow( 'questionnaire', 'create' );
+    $this->Auth->allow( 'questionnaire', 'create', 'rebates' );
   }
 
   
@@ -219,9 +219,7 @@ class BuildingsController extends AppController {
       $model      = $product['model'];
       $energy     = $product['energy_source_id'];
       
-      /**
-       * If no equipment info was entered, move along.
-       */
+      /** If no equipment info was entered, move along. */
       if( empty( $make ) && empty( $model ) ) {
         continue;
       }
@@ -232,8 +230,6 @@ class BuildingsController extends AppController {
         $this->Building->BuildingProduct->Product->create();
         if( $this->Building->BuildingProduct->Product->save( $product ) ) {
           $product_id = $this->Building->BuildingProduct->Product->id;
-          
-          if( Configure::read( 'debug' ) > 0 ) $this->log( '{BuildingsController::create} Created ' . $product_id, LOG_DEBUG );
         }
         else {
           $this->Session->setFlash( 'Unable to save product (' . $make . ' ' . $model . ')', null, null, 'warning' );
@@ -247,6 +243,7 @@ class BuildingsController extends AppController {
     
     if( $this->Building->saveAll( $this->data ) ) {
       $this->Session->setFlash( 'Thanks for participating.', null, null, 'success' );
+      $this->redirect( array( 'action' => 'rebates', $this->Building->id ) );
     }
     else {
       $invalid_fields = $this->Building->invalidFields();
@@ -255,6 +252,14 @@ class BuildingsController extends AppController {
       }
       $this->setAction( 'questionnaire' );
     }
-    
+  }
+  
+  /**
+   * Displays the set of rebates available for a given building.
+   *
+   * @param 	$building_id
+   */
+  public function rebates( $building_id ) {
+    exit( 'Rebates for building ' . $building_id . ' will be displayed here' );
   }
 }
