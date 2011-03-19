@@ -613,7 +613,7 @@ CREATE TABLE products(
   PRIMARY KEY( id ),
   CONSTRAINT uix__products__make_model_energy UNIQUE INDEX( make, model, energy_source_id ),
   CONSTRAINT fk__products__incentive_tech FOREIGN KEY( technology_id )
-    REFERENCES incentive_tech( incentive_tech_id )
+    REFERENCES incentive_tech( id )
     ON UPDATE CASCADE
     ON DELETE NO ACTION,
   CONSTRAINT fk__products__incentive_tech_energy_group FOREIGN KEY( energy_source_id )

@@ -113,6 +113,9 @@ class BuildingsController extends AppController {
    * @see $this::questionnaire()
    */
   public function create() {
+    if( !$this->RequestHandler->isPost() || empty( $this->data ) ) {
+      $this->redirect( '/questionnaire' );
+    }
     /**
      * We can only take one user with a given email address. If anyone
      * associated with the building has an email that already exists,
@@ -153,7 +156,7 @@ class BuildingsController extends AppController {
         ? $this->data['Building'][$type . '_provider_id']
         : null;
       
-      $id       = $this->data['Building'][$type . '_provider_id'];
+      $id = $this->data['Building'][$type . '_provider_id'];
       
       if( !empty( $name ) ) {
         $provider = $this->Building->Address->ZipCode->ZipCodeUtility->Utility->known( $name, $id );
@@ -173,7 +176,7 @@ class BuildingsController extends AppController {
           
           /** Build and save a Utility record and a ZipCodeUtility record */
           $this->data['Utility'] = array(
-            'name'     => $this->data['Building'][$type . '_provider_name'],
+            'name'     => $name,
             'source'   => 'User',
             'reviewed' => 0,
           );
@@ -190,16 +193,14 @@ class BuildingsController extends AppController {
             $this->data['ZipCodeUtility']['utility_id'] = $this->Building->Address->ZipCode->ZipCodeUtility->Utility->id;
             
             if( !$this->Building->Address->ZipCode->ZipCodeUtility->save( $this->data['ZipCodeUtility'] ) ) {
-              /** TODO: Flash message and fall through */
-              exit( 'Zip Utility did not save' );
+              /** TODO: Do we want to do something else here? */
+              $this->Session->setFlash( 'Unable to attach the specified ' . strtolower( $type ) . ' provider (' . $name . ') to the ' . $this->data['Address']['zip_code'] . ' zip code.', null, null, 'warning' );
             }
           }
           else {
-            /** TODO: Flash message and fall through */
-            exit( 'Utility did not save' );
+            /** TODO: Do we want to do something else here? */
+            $this->Session->setFlash( 'Unable to save ' . strtolower( $type ) . ' provider name (' . $name . ')', null, null, 'warning' );
           }
-          
-          exit( 'Utility saved. Yay.' );
         }
         else {
           /** If the name is known, use the id from the database */
@@ -212,18 +213,47 @@ class BuildingsController extends AppController {
      * As with users, we don't want redundant products in our catalog.
      * For products, the combination of make, model & serial number
      * determines uniqueness.
-     */
-    /** 
-    foreach( $this->data['Product'] as $product ) {
-      /** TODO: check existence
-    } */
+     */ 
+    foreach( $this->data['Product'] as $i => $product ) {
+      $make       = $product['make'];
+      $model      = $product['model'];
+      $energy     = $product['energy_source_id'];
+      
+      /**
+       * If no equipment info was entered, move along.
+       */
+      if( empty( $make ) && empty( $model ) ) {
+        continue;
+      }
+      
+      $product_id = $this->Building->BuildingProduct->Product->known( $make, $model, $energy );
+      
+      if( !$product_id ) {
+        $this->Building->BuildingProduct->Product->create();
+        if( $this->Building->BuildingProduct->Product->save( $product ) ) {
+          $product_id = $this->Building->BuildingProduct->Product->id;
+          
+          if( Configure::read( 'debug' ) > 0 ) $this->log( '{BuildingsController::create} Created ' . $product_id, LOG_DEBUG );
+        }
+        else {
+          $this->Session->setFlash( 'Unable to save product (' . $make . ' ' . $model . ')', null, null, 'warning' );
+        }
+      }
+      
+      if( $product_id ) {
+        $this->data['BuildingProduct'][$i]['product_id'] = $product_id;
+      }
+    }
     
     if( $this->Building->saveAll( $this->data ) ) {
-      exit( 'saved' );
+      $this->Session->setFlash( 'Thanks for participating.', null, null, 'success' );
     }
     else {
-      new PHPDump( $this->Building->invalidFields(), 'Invalid fields' );
-      exit( 'failed' );
+      $invalid_fields = $this->Building->invalidFields();
+      if( !empty( $invalid_fields ) ) {
+        $this->Session->setFlash( 'Oh noz. There is a problem with the questionnaire. Please correct the errors below.', null, null, 'validation' );
+      }
+      $this->setAction( 'questionnaire' );
     }
     
   }

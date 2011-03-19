@@ -17,7 +17,7 @@ class Product extends AppModel {
   public $validate = array(
 		'make' => array(
 			'notempty' => array(
-				'rule'       => array( 'notempty' ),
+				'rule'       => 'notempty',
 				'message'    => 'Make cannot be empty.',
 				'allowEmpty' => false,
 				'required'   => true,
@@ -25,7 +25,7 @@ class Product extends AppModel {
 		),
 		'model' => array(
 			'notempty' => array(
-				'rule'       => array( 'notempty' ),
+				'rule'       => 'notempty',
 				'message'    => 'Model cannot be empty.',
 				'allowEmpty' => false,
 				'required'   => true,
@@ -33,7 +33,7 @@ class Product extends AppModel {
 		),
 		'energy_source_id' => array(
 			'notempty' => array(
-				'rule'       => array( 'notempty' ),
+				'rule'       => 'notempty',
 				'message'    => 'Energy source cannot be empty.',
 				'allowEmpty' => false,
 				'required'   => true,
@@ -56,10 +56,6 @@ class Product extends AppModel {
    *                           exists, false otherwise.
    */
   public function known( $make, $model, $energy_source ) {
-    /**
-     * TODO: When soft deletable, how do we handle existence? Can't
-     * login if deleted, can't create a new profile with the same email.
-     */
     $product = $this->find(
       'first',
       array(

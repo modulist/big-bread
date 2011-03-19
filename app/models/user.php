@@ -22,17 +22,26 @@ class User extends AppModel {
 			),
 		),
 		'email' => array(
+			'notempty' => array(
+				'rule'       => array( 'notempty' ),
+				'message'    => 'Email address cannot be empty.',
+				'allowEmpty' => false,
+				'required'   => true,
+        'last'       => true,
+			),
 			'email' => array(
 				'rule'       => array( 'email' ),
 				'message'    => 'Email address is invalid.',
 				'allowEmpty' => false,
 				'required'   => true,
+        'last'       => true,
 			),
 			'unique' => array(
 				'rule'       => 'isUnique',
 				'message'    => 'This email address is already in the system.',
 				'allowEmpty' => false,
 				'required'   => true,
+        'last'       => true,
 			),
 		),
 		'phone_number' => array(

@@ -55,8 +55,6 @@
     <?php echo $this->Form->input( 'Building.other_heating_source', array( 'type' => 'radio', 'options' => array( 'PROPANE' => 'Propane', 'HEATING OIL' => 'Heating Oil', 'OTHER' => 'Other' ), 'legend' => false ) ) ?>
   </div>
   
-<?php /** ?>
-  
   <h2><?php __( 'Equipment Listing' ) ?></h2>
   
   <fieldset class="group">
@@ -72,8 +70,6 @@
     <?php echo $this->Html->link( __( 'Add another piece of equipment', true ), '#', array( 'class' => 'clone' ) ) ?>
   </fieldset>
 
-<?php */ ?>
-    
   <h2><?php __( 'Building Characteristics' ) ?></h2>
   <?php echo $this->Form->input( 'Building.exposure_type_id', array( 'empty' => true ) ) ?>
   <?php echo $this->Form->input( 'Building.year_built' ) ?>
