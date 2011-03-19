@@ -30,40 +30,74 @@ SOURCE fp_incentive.sql;
 /**
  * Convert everything in the schema to a unified collation:
  */
-alter table bigbread.dsireincentive convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.dsireincentive_detail convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.dsireincentive_dsireincentive_detail convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.error_log convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.error_log_bak convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.incentive convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.incentive__incentive_tech convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.incentive_amount_type convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.incentive_county convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.incentive_note convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.incentive_note_type convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.incentive_tech convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.incentive_tech_energy convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.incentive_tech_energy_group convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.incentive_tech_energy_type convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.incentive_tech_group convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.incentive_tech_option convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.incentive_tech_option_type convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.incentive_tech_term convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.incentive_tech_term_type convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.incentive_type convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.incentive_type_group convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.incentive_utility convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.incentive_weblink convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.incentive_weblink_type convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.incentive_weblink_verification convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.incentive_zip convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.us_county convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.us_county__us_zipcode convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.us_states convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.us_zipcode convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.user convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.utility convert to character set utf8 collate utf8_unicode_ci;
-alter table bigbread.utility_zip convert to character set utf8 collate utf8_unicode_ci;
+ALTER TABLE bigbread.dsireincentive
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.dsireincentive_detail
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.dsireincentive_dsireincentive_detail
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.error_log
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.error_log_bak
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.incentive
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.incentive__incentive_tech
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.incentive_amount_type
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.incentive_county
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.incentive_note
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.incentive_note_type
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.incentive_tech
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.incentive_tech_energy
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.incentive_tech_energy_group
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.incentive_tech_energy_type
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.incentive_tech_group
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.incentive_tech_option
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.incentive_tech_option_type
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.incentive_tech_term
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.incentive_tech_term_type
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.incentive_type
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.incentive_type_group
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.incentive_utility
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.incentive_weblink
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.incentive_weblink_type
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.incentive_weblink_verification
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.incentive_zip
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.us_county
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.us_county__us_zipcode
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.us_states
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.us_zipcode
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.user
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.utility
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE bigbread.utility_zip
+  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 /** A few adjustments to the incentives database */
 
@@ -76,8 +110,7 @@ DROP TABLE incentive_tech__incentive_tech_energy_group; -- redundant, obsolete
 ALTER TABLE incentive_tech
   ADD COLUMN id char(36) NULL FIRST,
   ADD COLUMN questionnaire_product boolean NOT NULL DEFAULT 0, -- whether this piece of tech is represented by a product on the questionnaire
-  ENGINE = InnoDB,
-  CONVERT TO CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci';
+  ENGINE = InnoDB;
 
 -- Add an id (UUID) for easy access and manipulation
 UPDATE incentive_tech
@@ -98,14 +131,12 @@ UPDATE incentive_tech
 
 -- Required to create foreign key constraints
 ALTER TABLE us_states
-  ENGINE = InnoDB,
-  CONVERT TO CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci';
+  ENGINE = InnoDB;
   
 -- Required to create foreign key constraints
 ALTER TABLE us_zipcode
   MODIFY zip char(5) NOT NULL,
-  ENGINE = InnoDB,
-  CONVERT TO CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci';
+  ENGINE = InnoDB;
   
 -- Creates a ready-to-use value
 UPDATE us_zipcode
@@ -122,8 +153,7 @@ ALTER TABLE utility
   ADD COLUMN created datetime NULL AFTER name,
   ADD COLUMN reviewed boolean NULL DEFAULT 0 AFTER name,
   ADD COLUMN source varchar(255) NULL AFTER name,
-  ENGINE = InnoDB,
-  CONVERT TO CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci';
+  ENGINE = InnoDB;
 
 -- Add an id (UUID) for easy access and manipulation
 -- Set the source for existing records
@@ -169,8 +199,7 @@ ALTER TABLE incentive_tech_energy_group
   DROP COLUMN parent_id,
   ADD COLUMN id char(36) NULL FIRST,
   ADD CONSTRAINT uix__incentive_tech_energy_group__incentive_tech_energy_group_id UNIQUE INDEX ( incentive_tech_energy_group_id ),
-  ENGINE = InnoDB,
-  CONVERT TO CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci';
+  ENGINE = InnoDB;
   
 -- Populate the coming primary key value
 UPDATE incentive_tech_energy_group
