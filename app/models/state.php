@@ -6,5 +6,9 @@ class State extends AppModel {
 	public $primaryKey   = 'code';
 	public $displayField = 'state';
 	
-  /** TODO: Add zipcode link */
+  public $belongsTo = array(
+    'ZipCode' => array(
+      'foreignKey' => 'state',
+    ),
+  );
 }

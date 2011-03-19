@@ -9,11 +9,12 @@ class ZipCode extends AppModel {
     'ZipCodeUtility' => array( 'foreignKey' => 'zip' ),
   );
   
-  /** TODO: Add state assoc */
 	public $hasOne = array(
 		'Address' => array(
-			'className' => 'Address',
-			'foreignKey' => 'zip_code'
+			'foreignKey' => 'zip_code',
 		),
+    'State' => array(
+      'foreignKey' => 'state',
+    ),
 	);
 }

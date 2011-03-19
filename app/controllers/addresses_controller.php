@@ -37,24 +37,25 @@ class AddressesController extends AppController {
    * @return  array
    */
   public function utilities( $zip_code, $type ) {
-    $type = strtoupper( $type );
+    $type = ucwords( $type );
     
-    if( !in_array( $type, array( 'ELE', 'GAS', 'WTR' ) ) ) {
+    if( !in_array( $type, array( 'Electricity', 'Gas', 'Water' ) ) ) {
       /** TODO: Return a 403 (?) error? */
     }
     
+    $type_code = $this->Address->ZipCode->ZipCodeUtility->type_code_reverse_lookup[$type];
     $utilities = $this->Address->ZipCode->ZipCodeUtility->find(
       'all',
       array(
-        'contain'    => 'Utility',
-        'fields'     => array( 'Utility.id', 'Utility.utility_id', 'Utility.name' ),
-        'conditions' => array( 'ZipCodeUtility.zip' => $zip_code, 'ZipCodeUtility.type' => $type ),
+        'fields'     => array( 'Utility.id', 'Utility.name' ),
+        'conditions' => array( 'ZipCodeUtility.zip' => $zip_code, 'ZipCodeUtility.type' => $type_code ),
+        'recursive'  => 0,
       )
     );
     
-    # new PHPDump( $utilities ); exit;
+    $type = array( 'code' => $type_code, 'name' => $type );
     
-    $this->set( compact( 'utilities' ) );
+    $this->set( compact( 'type', 'utilities' ) );
   }
 
   /**

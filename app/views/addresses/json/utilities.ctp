@@ -1,1 +1,1 @@
-<?php echo json_encode( $utilities ) ?>
+<?php echo json_encode( array( 'Type' => $type, 'Utilities' => $utilities ) ) ?>
