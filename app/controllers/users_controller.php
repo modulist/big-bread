@@ -63,17 +63,21 @@ class UsersController extends AppController {
    * @access  public
    */
 	public function login() {
+    /** Logging in and authenticated */
     if ( !empty( $this->data ) && $this->Auth->user() ) {
-			$this->User->id = $this->Auth->user( 'id' );
+      echo '<p>Settign last_login</p>';
+      $this->User->id = $this->Auth->user( 'id' );
 			$this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
 			$this->redirect( $this->Auth->redirect() );
 		}
-    else {
-      /** Empty the password fields we we don't display encrypted values */
+    /** Probably an error logging in */
+    else if( !empty( $this->data ) ) {
+      echo '<p>Clearing password data</p>';
+      /** Clear the password fields we we don't display encrypted values */
       $this->data['User']['password'] = null;
-      $this->data['User']['confirm_password'] = null;
     }
     
+    echo '<p>Exiting login</p>';
 		$this->set( 'title_for_layout', 'Login' );
 	}
 	

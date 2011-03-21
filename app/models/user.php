@@ -7,7 +7,7 @@ class User extends AppModel {
 	public $validate = array(
 		'first_name' => array(
 			'notempty' => array(
-				'rule'       => array( 'notempty' ),
+				'rule'       => 'notEmpty',
 				'message'    => 'First name cannot be empty.',
 				'allowEmpty' => false,
 				'required'   => true,
@@ -15,7 +15,7 @@ class User extends AppModel {
 		),
 		'last_name' => array(
 			'notempty' => array(
-				'rule'       => array( 'notempty' ),
+				'rule'       => 'notEmpty',
 				'message'    => 'Last name cannot be empty.',
 				'allowEmpty' => false,
 				'required'   => true,
@@ -23,7 +23,7 @@ class User extends AppModel {
 		),
 		'email' => array(
 			'notempty' => array(
-				'rule'       => 'notempty',
+				'rule'       => 'notEmpty',
 				'message'    => 'Email address cannot be empty.',
 				'allowEmpty' => false,
 				'required'   => true,
@@ -38,7 +38,7 @@ class User extends AppModel {
 			),
 			'unique' => array(
 				'rule'       => 'isUnique',
-				'message'    => 'This email address is already in the system.',
+				'message'    => 'This email address is already in use.',
 				'allowEmpty' => false,
 				'required'   => true,
         'last'       => true,
@@ -46,10 +46,11 @@ class User extends AppModel {
 		),
 		'password' => array(
 			'notempty' => array(
-				'rule'       => array( 'notempty' ),
+				'rule'       => 'notEmpty',
 				'message'    => 'Password cannot be empty.',
 				'allowEmpty' => false,
 				'required'   => false,
+        'last'       => true,
 			),
       'identical' => array(
         'rule'    => array( 'identical', 'confirm_password' ), 
@@ -58,7 +59,7 @@ class User extends AppModel {
     ),
 		'confirm_password' => array(
 			'notempty' => array(
-				'rule'       => array( 'notempty' ),
+				'rule'       => 'notEmpty',
 				'message'    => 'Password cannot be empty.',
 				'allowEmpty' => false,
 				'required'   => false,
@@ -75,7 +76,7 @@ class User extends AppModel {
 		),
 		'user_type_id' => array(
 			'notempty' => array(
-				'rule'       => array( 'notempty' ),
+				'rule'       => 'notEmpty',
 				'message'    => 'Primary role cannot be empty.',
 				'allowEmpty' => false,
 				'required'   => true,

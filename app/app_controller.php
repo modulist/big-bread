@@ -56,11 +56,12 @@ class AppController extends Controller {
 			'action'     => 'show_all',
 		);
 		$this->Auth->logoutRedirect = array(
-      'controller' => 'pages',
-      'action' => 'home'
+      'controller' => 'users',
+      'action'     => 'login'
     );
-    $this->Auth->authError      = 'Authentication required. Please Login.';
-		$this->Auth->loginError     = 'Invalid authentication credentials. Please try again.';
+    
+    $this->Auth->authError  = __( 'Authentication required. Please login.', true );
+		$this->Auth->loginError = __( 'Invalid authentication credentials. Please try again.', true );
 
 		/**
 		 * If data is being submitted, then attach the user data to it
@@ -69,7 +70,7 @@ class AppController extends Controller {
     if( !empty( $this->data ) && empty( $this->data['User'] ) ) {
       $this->data['User'] = $this->current_user();
     }
-
+    
 		/**
 		 * Turn off debug output for ajax requests and don't attempt
 		 * to automatically render a view.
