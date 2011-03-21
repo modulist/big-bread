@@ -44,10 +44,6 @@ class AppController extends Controller {
 		$this->Auth->deny( '*' );
 		
 		$this->Auth->userModel = 'User';
-		$this->Auth->fields = array(
-			'username' => 'email',
-			'password' => 'password'
-		);
 		$this->Auth->userScope = array( 'User.deleted' => 0 );
 		$this->Auth->loginAction = array(
 			'controller' => 'users',
@@ -56,11 +52,13 @@ class AppController extends Controller {
 		);
 		$this->Auth->autoRedirect = false;
 		$this->Auth->loginRedirect = array(
-			'controller' => 'users',
-			'action'     => 'index',
-			'admin'      => true
+			'controller' => 'buildings',
+			'action'     => 'show_all',
 		);
-		$this->Auth->logoutRedirect = array( 'controller' => 'pages', 'action' => 'home' );
+		$this->Auth->logoutRedirect = array(
+      'controller' => 'pages',
+      'action' => 'home'
+    );
     $this->Auth->authError      = 'Authentication required. Please Login.';
 		$this->Auth->loginError     = 'Invalid authentication credentials. Please try again.';
 
@@ -68,7 +66,7 @@ class AppController extends Controller {
 		 * If data is being submitted, then attach the user data to it
 		 * so it can potentially be used by the Auditable behavior.
 		 */
-    if( !empty( $this->data ) ) {
+    if( !empty( $this->data ) && empty( $this->data['User'] ) ) {
       $this->data['User'] = $this->current_user();
     }
 

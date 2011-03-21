@@ -9,6 +9,16 @@ class UsersController extends AppController {
    */
   
   public function beforeFilter() {
+    parent::beforeFilter();
+    
+    /**
+     * The password is auto hashed only if the username reset is located
+     * in this controller Not in AppController. I don't know why.
+     */
+		$this->Auth->fields = array(
+			'username' => 'email',
+			'password' => 'password'
+		);
     $this->Auth->allow( 'register', 'login', 'logout' );
   }
 
@@ -19,7 +29,31 @@ class UsersController extends AppController {
    * @access  public
    */
   public function register() {
+    if( !empty( $this->data ) ) {
+      /**
+       * The password value is hashed automagically. We need to hash the
+       * confirmation value manually for validation.
+       * @see User::identical()
+       */
+      $this->data['User']['confirm_password'] = $this->Auth->password( $this->data['User']['confirm_password'] );
+      
+      if( $this->User->save( $this->data ) ) {
+        $this->Session->setFlash( 'Welcome to BigBread', null, null, 'success' );
+        $this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
+        $this->User->login( $this->data );
+        $this->redirect( $this->Auth->redirect() );
+      }
+      else {
+        $this->Session->setFlash( 'Oh noz. There\'s a problem with your registration.', null, null, 'validation' );
+      }
+    }
     
+    $userTypes = $this->User->UserType->find(
+      'list',
+      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
+    );
+    
+    $this->set( compact( 'userTypes' ) );
   }
 
   /**
@@ -34,6 +68,11 @@ class UsersController extends AppController {
 			$this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
 			$this->redirect( $this->Auth->redirect() );
 		}
+    else {
+      /** Empty the password fields we we don't display encrypted values */
+      $this->data['User']['password'] = null;
+      $this->data['User']['confirm_password'] = null;
+    }
     
 		$this->set( 'title_for_layout', 'Login' );
 	}
