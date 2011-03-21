@@ -262,4 +262,11 @@ class BuildingsController extends AppController {
   public function rebates( $building_id ) {
     exit( 'Rebates for building ' . $building_id . ' will be displayed here' );
   }
+  
+  /**
+   * Lists existing questionnaires by or for the authenticated user
+   */
+  public function show_all() {
+    exit( 'Here we\'ll list any/all questionnaires that have been saved by or on behalf of the authenticated user.' );
+  }
 }
