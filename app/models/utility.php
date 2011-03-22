@@ -9,18 +9,11 @@ class Utility extends AppModel {
   public $validate = array(
     'name' => array(
       'notempty' => array(
-        'rule'       => array( 'inList', array( 'ELE', 'GAS', 'WTR' ) ),
-        'message'    => 'The utility type code ("ELE", "GAS" or "WTR") must be specified.',
+        'rule'       => 'notEmpty',
+        'message'    => 'Name cannot be empty.',
         'allowEmpty' => false,
         'required'   => true,
-      ),
-    ),
-    'coverage' => array(
-      'notempty' => array(
-        'rule'       => 'notempty',
-        'message'    => 'A coverage value must be set. When in doubt, set to 0.',
-        'allowEmpty' => false,
-        'required'   => true,
+        'last'       => true,
       ),
     ),
   );

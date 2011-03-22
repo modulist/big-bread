@@ -87,6 +87,13 @@ class BuildingsController extends AppController {
       array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
     );
     
+    if( in_array( $this->Session->read( 'Auth.UserType.name' ), array( 'Homeowner', 'Buyer' ) ) ) {
+      $this->data['Client'] = $this->Session->read( 'Auth.User' );
+    }
+    else {
+      $this->data[$this->Session->read( 'Auth.UserType.name' )] = $this->Session->read( 'Auth.User' );
+    }
+    
     /** Prepare the view */
     $this->set( compact( 'buildingTypes', 'basementTypes', 'buildingShapes', 'energySources', 'exposureTypes', 'frameMaterials', 'insulationLevels', 'maintenanceLevels', 'roofSystems', 'shadingTypes', 'states', 'technologies', 'userTypes', 'wallSystems', 'windowPaneTypes' ) );
   }
@@ -129,14 +136,14 @@ class BuildingsController extends AppController {
       unset( $this->data['Client'] );
     }
     /** END : user detection */
-    
+  
     /** Handle utility providers if an unknown was specified */
     /** TODO: Can we move this down the stack somewhere? */
     foreach( $this->Building->Address->ZipCode->ZipCodeUtility->type_codes as $code => $type ) {
       $type     = strtolower( $type );
       $name     = $this->data['Building'][$type . '_provider_name'];
       
-      /** Empty the utility id if the name is empty */
+      # Empty the utility id if the name is empty
       $this->data['Building'][$type . '_provider_id'] = !empty( $name )
         ? $this->data['Building'][$type . '_provider_id']
         : null;
@@ -147,7 +154,7 @@ class BuildingsController extends AppController {
         $provider = $this->Building->Address->ZipCode->ZipCodeUtility->Utility->known( $name, $id );
         
         if( !$provider ) { # The specified provider is not recognized
-          /** Pull the state code for the building zip code */
+          # Pull the state code for the building zip code
           if( !isset( $state ) ) {
             $state = $this->Building->Address->ZipCode->find(
               'first',
@@ -159,7 +166,7 @@ class BuildingsController extends AppController {
             );
           }
           
-          /** Build and save a Utility record and a ZipCodeUtility record */
+          # Build and save a Utility record and a ZipCodeUtility record
           $this->data['Utility'] = array(
             'name'     => $name,
             'source'   => 'User',
@@ -173,22 +180,25 @@ class BuildingsController extends AppController {
             'reviewed' => 0,
             'type'     => $code
           );
-          
+         
           if( $this->Building->Address->ZipCode->ZipCodeUtility->Utility->save( $this->data['Utility'] ) ) {
             $this->data['ZipCodeUtility']['utility_id'] = $this->Building->Address->ZipCode->ZipCodeUtility->Utility->id;
             
             if( !$this->Building->Address->ZipCode->ZipCodeUtility->save( $this->data['ZipCodeUtility'] ) ) {
-              /** TODO: Do we want to do something else here? */
+              new PHPDump( $this->Building->Address->ZipCode->ZipCodeUtility->invalidFields(), 'Utility-Zip Errors' ); exit;
+              # TODO: Do we want to do something else here?
               $this->Session->setFlash( 'Unable to attach the specified ' . strtolower( $type ) . ' provider (' . $name . ') to the ' . $this->data['Address']['zip_code'] . ' zip code.', null, null, 'warning' );
             }
           }
           else {
-            /** TODO: Do we want to do something else here? */
+            new PHPDump( $this->Building->Address->ZipCode->ZipCodeUtility->Utility->invalidFields(), 'Utility Errors' );
+            new PHPDump( $this->data, 'Data' ); exit;
+            # TODO: Do we want to do something else here?
             $this->Session->setFlash( 'Unable to save ' . strtolower( $type ) . ' provider name (' . $name . ')', null, null, 'warning' );
           }
         }
         else {
-          /** If the name is known, use the id from the database */
+          # If the name is known, use the id from the database
           $this->data['Building'][$type . '_provider_id'] = $provider;
         }
       }
@@ -198,14 +208,14 @@ class BuildingsController extends AppController {
      * As with users, we don't want redundant products in our catalog.
      * For products, the combination of make, model & serial number
      * determines uniqueness.
-     */ 
+     */
     foreach( $this->data['Product'] as $i => $product ) {
       $make       = $product['make'];
       $model      = $product['model'];
       $energy     = $product['energy_source_id'];
       
-      /** If no equipment info was entered, move along. */
-      if( empty( $make ) && empty( $model ) ) {
+      # If any key equipment info was entered, move along.
+      if( empty( $product['technology_id'] ) || empty( $make ) || empty( $model ) || empty( $energy ) ) {
         continue;
       }
       
@@ -228,7 +238,8 @@ class BuildingsController extends AppController {
     
     if( $this->Building->saveAll( $this->data ) ) {
       $this->Session->setFlash( 'Thanks for participating.', null, null, 'success' );
-      $this->redirect( array( 'action' => 'rebates', $this->Building->id ) );
+      # $this->redirect( array( 'action' => 'rebates', $this->Building->id ) );
+      $this->setAction( 'questionnaire' );
     }
     else {
       $invalid_fields = $this->Building->invalidFields();
