@@ -140,8 +140,8 @@ class BuildingsController extends AppController {
     /** Handle utility providers if an unknown was specified */
     /** TODO: Can we move this down the stack somewhere? */
     foreach( $this->Building->Address->ZipCode->ZipCodeUtility->type_codes as $code => $type ) {
-      $type     = strtolower( $type );
-      $name     = $this->data['Building'][$type . '_provider_name'];
+      $type = strtolower( $type );
+      $name = $this->data['Building'][$type . '_provider_name'];
       
       # Empty the utility id if the name is empty
       $this->data['Building'][$type . '_provider_id'] = !empty( $name )
@@ -184,17 +184,23 @@ class BuildingsController extends AppController {
           if( $this->Building->Address->ZipCode->ZipCodeUtility->Utility->save( $this->data['Utility'] ) ) {
             $this->data['ZipCodeUtility']['utility_id'] = $this->Building->Address->ZipCode->ZipCodeUtility->Utility->id;
             
-            if( !$this->Building->Address->ZipCode->ZipCodeUtility->save( $this->data['ZipCodeUtility'] ) ) {
-              new PHPDump( $this->Building->Address->ZipCode->ZipCodeUtility->invalidFields(), 'Utility-Zip Errors' ); exit;
+            if( $this->Building->Address->ZipCode->ZipCodeUtility->save( $this->data['ZipCodeUtility'] ) ) {
+              # At this point, we should have a provider id for the new record.
+              $this->data['Building'][$type . '_provider_id'] = $this->Building->Address->ZipCode->ZipCodeUtility->Utility->id;
+            }
+            else {
               # TODO: Do we want to do something else here?
               $this->Session->setFlash( 'Unable to attach the specified ' . strtolower( $type ) . ' provider (' . $name . ') to the ' . $this->data['Address']['zip_code'] . ' zip code.', null, null, 'warning' );
+              
+              new PHPDump( $this->Building->Address->ZipCode->ZipCodeUtility->invalidFields(), 'Utility-Zip Errors' ); exit;
             }
           }
           else {
-            new PHPDump( $this->Building->Address->ZipCode->ZipCodeUtility->Utility->invalidFields(), 'Utility Errors' );
-            new PHPDump( $this->data, 'Data' ); exit;
             # TODO: Do we want to do something else here?
             $this->Session->setFlash( 'Unable to save ' . strtolower( $type ) . ' provider name (' . $name . ')', null, null, 'warning' );
+            
+            new PHPDump( $this->Building->Address->ZipCode->ZipCodeUtility->Utility->invalidFields(), 'Utility Errors' );
+            new PHPDump( $this->data, 'Data' ); exit;
           }
         }
         else {
@@ -263,6 +269,7 @@ class BuildingsController extends AppController {
    * Lists existing questionnaires by or for the authenticated user
    */
   public function show_all() {
-    exit( 'Here we\'ll list any/all questionnaires that have been saved by or on behalf of the authenticated user.' );
+    echo '<p>I picture this page as a sort of user dashboard. At the very least, it will be a list of all of the surveys that they\'ve created (inspectors) or have had created on their behalf (clients and realtors). Go to the <a href="/questionnaire">questionnaire</a>.</p>';
+    exit;
   }
 }

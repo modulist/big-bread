@@ -1,6 +1,8 @@
 $(document).ready( function() {
   /** FOR TESTING, DO SOME WORK AUTOMATICALLY */
   /** TODO: REMOVE THIS BEFORE DEPLOYMENT */
+  alert( 'loading test data...' );
+  
   $('#RealtorFirstName').val( 'realfirst' );
   $('#RealtorLastName').val( 'reallast' );
   $('#RealtorEmail').val( 'real@tor.com' );

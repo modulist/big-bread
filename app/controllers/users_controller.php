@@ -41,6 +41,7 @@ class UsersController extends AppController {
         $this->Session->setFlash( 'Welcome to BigBread', null, null, 'success' );
         $this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
         $this->Auth->login( $this->data );
+        $this->set_user_type();
         $this->redirect( $this->Auth->redirect() );
       }
       else {
@@ -66,16 +67,7 @@ class UsersController extends AppController {
     /** Logging in and authenticated */
     if ( !empty( $this->data ) && $this->Auth->user() ) {
       $this->User->id = $this->Auth->user( 'id' );
-      $user_type = $this->User->UserType->find(
-        'first',
-        array(
-          'contain'    => false,
-          'fields'     => array( 'id', 'name' ),
-          'conditions' => array( 'UserType.id' => $this->Auth->User( 'user_type_id' ) ),
-        )
-      );
-      $this->Session->write( 'Auth.UserType', $user_type['UserType'] );
-      
+      $this->set_user_type();
 			$this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
 			$this->redirect( $this->Auth->redirect() );
 		}
@@ -107,5 +99,29 @@ class UsersController extends AppController {
 	public function admin_index() {
 		$title_for_layout = 'Site Administrator';
 		$this->set( compact( 'title_for_layout' ) );
+  }
+  
+  /**
+   * PRIVATE METHODS
+   */
+  
+  /**
+   * Writes the authenticated user's primary role (UserType) to the
+   * authenticated session.
+   *
+   * @return boolean
+   */
+  private function set_user_type() {
+    if( $this->Auth->user() ) {
+      $user_type = $this->User->UserType->find(
+        'first',
+        array(
+          'contain'    => false,
+          'fields'     => array( 'id', 'name' ),
+          'conditions' => array( 'UserType.id' => $this->Auth->user( 'user_type_id' ) ),
+        )
+      );
+      $this->Session->write( 'Auth.UserType', $user_type['UserType'] );
+    }
   }
 }
