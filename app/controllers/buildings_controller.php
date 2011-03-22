@@ -8,7 +8,7 @@ class BuildingsController extends AppController {
    */
   
   public function beforeFilter() {
-    $this->Auth->allow( 'questionnaire', 'create', 'rebates' );
+    # $this->Auth->allow( 'questionnaire', 'create', 'rebates' );
   }
 
   
@@ -19,21 +19,6 @@ class BuildingsController extends AppController {
    * @return	type		description
    */
   public function questionnaire() {
-    /** TODO: RE-ENABLE THIS
-     *  TODO: Add test for auth so the form can be accessed both ways
-     *  TODO: use diff layouts for iframe/authenticated access
-    if( $this->Auth ) {
-      
-    }
-    else {
-      if( !$this->accessible() ) {
-        $this->header( 'HTTP/1.1 403 Forbidden' );
-        throw new Exception( 'Access Forbidden' );
-      }
-    }
-
-    */
-    
     $this->layout           = 'iframe';
     $this->helpers[]        = 'Form';
     

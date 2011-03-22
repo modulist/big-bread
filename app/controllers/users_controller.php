@@ -40,7 +40,7 @@ class UsersController extends AppController {
       if( $this->User->save( $this->data ) ) {
         $this->Session->setFlash( 'Welcome to BigBread', null, null, 'success' );
         $this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
-        $this->User->login( $this->data );
+        $this->Auth->login( $this->data );
         $this->redirect( $this->Auth->redirect() );
       }
       else {
@@ -65,19 +65,26 @@ class UsersController extends AppController {
 	public function login() {
     /** Logging in and authenticated */
     if ( !empty( $this->data ) && $this->Auth->user() ) {
-      echo '<p>Settign last_login</p>';
       $this->User->id = $this->Auth->user( 'id' );
+      $user_type = $this->User->UserType->find(
+        'first',
+        array(
+          'contain'    => false,
+          'fields'     => array( 'id', 'name' ),
+          'conditions' => array( 'UserType.id' => $this->Auth->User( 'user_type_id' ) ),
+        )
+      );
+      $this->Session->write( 'Auth.UserType', $user_type['UserType'] );
+      
 			$this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
 			$this->redirect( $this->Auth->redirect() );
 		}
     /** Probably an error logging in */
     else if( !empty( $this->data ) ) {
-      echo '<p>Clearing password data</p>';
       /** Clear the password fields we we don't display encrypted values */
       $this->data['User']['password'] = null;
     }
     
-    echo '<p>Exiting login</p>';
 		$this->set( 'title_for_layout', 'Login' );
 	}
 	
