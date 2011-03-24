@@ -244,8 +244,7 @@ class BuildingsController extends AppController {
     
     if( $this->Building->saveAll( $this->data ) ) {
       $this->Session->setFlash( 'Thanks for participating.', null, null, 'success' );
-      # $this->redirect( array( 'action' => 'rebates', $this->Building->id ) );
-      $this->setAction( 'questionnaire' );
+      $this->redirect( array( 'action' => 'incentives', $this->Building->id ) );
     }
     else {
       $invalid_fields = $this->Building->invalidFields();
@@ -261,8 +260,11 @@ class BuildingsController extends AppController {
    *
    * @param 	$building_id
    */
-  public function rebates( $building_id ) {
-    exit( 'Rebates for building ' . $building_id . ' will be displayed here' );
+  public function incentives( $building_id ) {
+    $incentives = $this->Building->incentives( $building_id );
+    $zip_code   = $this->Building->zipcode( $building_id );
+    
+    $this->set( compact( 'zip_code', 'incentives' ) );
   }
   
   /**

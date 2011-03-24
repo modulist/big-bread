@@ -45,4 +45,46 @@ class Building extends AppModel {
 	);
   
 	public $validate = array();
+  
+  /**
+   * Retrieves the relevant incentives (rebates) for a given building.
+   *
+   * @param 	$building_id
+   * @return	array
+   */
+  public function incentives( $building_id ) {
+    $address = $this->Address->find(
+      'first',
+      array(
+        'contain'    => array( 'Building' ),
+        'fields'     => array( 'Address.zip_code' ),
+        'conditions' => array( 'Building.id' => $building_id ),
+      )
+    );
+    
+    # Pull the incentives
+    return $this->Address->ZipCode->incentives( $this->zipcode( $building_id ) );
+  }
+  
+  /**
+   * Returns the zip code for a given building.
+   *
+   * @param 	$building_id
+   * @return	string
+   */
+  public function zipcode( $building_id ) {
+    $address = $this->Address->find(
+      'first',
+      array(
+        'contain'    => array(
+          'Building' => array(
+            'conditions' => array( 'Building.id' => $building_id )
+          )
+        ),
+        'fields'     => array( 'Address.zip_code' ),
+      )
+    );
+    
+    return $address['Address']['zip_code'];
+  }
 }

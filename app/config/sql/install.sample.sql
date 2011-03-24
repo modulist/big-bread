@@ -28,7 +28,9 @@ ALTER DATABASE @DB_NAME@ DEFAULT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci';
 SOURCE fp_incentive.sql;
 
 /**
- * Convert everything in the schema to a unified collation:
+ * Convert everything in the schema to a unified collation. It looks like
+ * this probably isn't necessary any longer, but it doesn't hurt, so I'm
+ * going to go ahead and leave it in there.
  */
 ALTER TABLE bigbread.dsireincentive
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -92,7 +94,7 @@ ALTER TABLE bigbread.us_states
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 ALTER TABLE bigbread.us_zipcode
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.user
+ALTER TABLE bigbread.incentive_user
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 ALTER TABLE bigbread.utility
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
@@ -214,6 +216,16 @@ DELETE FROM incentive_tech_energy_group
 ALTER TABLE incentive_tech_energy_group
   MODIFY id char(36) NOT NULL,
   ADD PRIMARY KEY( id );
+
+-- Make the table join-ready
+ALTER TABLE incentive_zip
+  MODIFY zip char(5) NOT NULL,
+  ENGINE = InnoDB;
+  
+
+-- Creates a ready-to-use value
+UPDATE us_zipcode
+  SET zip = LPAD(zip, 5, '0');
   
 /** LOOKUP TABLES */
 
