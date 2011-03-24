@@ -42,8 +42,9 @@ class ZipCode extends AppModel {
             'fields'     => 'ZipCode.zip',
             'conditions' => array( 'ZipCode.zip' => $zip )
           ),
+          
         ),
-        'fields' => array( 'Incentive.id', 'Incentive.name', 'Incentive.it_name', 'Incentive.amount', 'Incentive.state', 'Incentive.entire_state', 'Incentive.excluded', 'Incentive.is_active' ),
+        'fields' => array( 'Incentive.id', 'Incentive.name', 'Incentive.it_name', 'Incentive.it_group', 'Incentive.amount', 'Incentive.energy_group', 'Incentive.weblink', 'Incentive.rebate_link', 'Incentive.state', 'Incentive.entire_state', 'Incentive.excluded', 'Incentive.is_active' ),
         'conditions' => array(
           'Incentive.excluded'  => 0,
           'Incentive.is_active' => 1,

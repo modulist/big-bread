@@ -448,6 +448,7 @@ CREATE TABLE users(
   last_name       varchar(255)    NOT NULL,
   email           varchar(255)    NOT NULL,
   phone_number    varchar(255)    NULL,
+  invite_code     char(32)        NULL,     -- MD5 hash of a UUID (slightly prettier)
   password        varchar(255)    NULL,
   last_login      datetime        NULL,
   deleted         boolean         NOT NULL DEFAULT 0,
@@ -459,7 +460,8 @@ CREATE TABLE users(
     REFERENCES user_types( id )
     ON UPDATE CASCADE
     ON DELETE NO ACTION,
-  CONSTRAINT uix__email UNIQUE INDEX( email )
+  CONSTRAINT uix__email UNIQUE INDEX( email ),
+  CONSTRAINT uix__email UNIQUE INDEX( invite_code )
 ) ENGINE=InnoDB;
 
 /** CORE BUILDING DATA */

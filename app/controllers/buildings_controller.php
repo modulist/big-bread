@@ -2,6 +2,7 @@
 
 class BuildingsController extends AppController {
   public $name = 'Buildings';
+  public $components = 'SwiftMailer';
   
   /**
    * CALLBACKS
