@@ -2,7 +2,7 @@
 
 class BuildingsController extends AppController {
   public $name = 'Buildings';
-  public $components = 'SwiftMailer';
+  public $components = array( 'SwiftMailer' );
   
   /**
    * CALLBACKS
@@ -115,7 +115,8 @@ class BuildingsController extends AppController {
      * we're just going to assume that it's the same person and save
      * only the id.
      */
-    foreach( array( 'Realtor', 'Inspector', 'Client' ) as $role ) {
+    $roles = array( 'Realtor', 'Inspector', 'Client' );
+    foreach( $roles as $role ) {
       $user = !empty( $this->data[$role]['email'] )
         ? $this->Building->{$role}->known( $this->data[$role]['email'] )
         : false;
@@ -237,6 +238,37 @@ class BuildingsController extends AppController {
     
     if( $this->Building->saveAll( $this->data ) ) {
       $this->Session->setFlash( 'Thanks for participating.', null, null, 'success' );
+      
+      # Send new user invites
+      foreach( $roles as $role ) {
+        if( isset( $this->data[$role]['invite_code'] ) ) {
+          if( Configure::read( 'debug' ) > 0 ) $this->log( '{BuildingsController::crete} Sending invite to a ' . $role . ' (' . $this->data[$role]['email'] . '). Code: ' . $this->data[$role]['invite_code'], LOG_DEBUG );
+          /** 
+          $this->SwiftMailer->smtpType = 'tls'; 
+          $this->SwiftMailer->smtpHost = 'smtp.gmail.com'; 
+          $this->SwiftMailer->smtpPort = 465; 
+          $this->SwiftMailer->smtpUsername = 'my_email@gmail.com'; 
+          $this->SwiftMailer->smtpPassword = 'hard_to_guess'; 
+          */
+          $this->SwiftMailer->sendAs = 'both'; 
+          $this->SwiftMailer->from = 'rob@robwilkerson.org'; 
+          $this->SwiftMailer->fromName = 'BigBread.net'; 
+          $this->SwiftMailer->to = 'rob@robwilkerson.org';
+          
+          //set variables to template as usual 
+          $this->set( 'invite_code', $this->data[$role]['invite_code'] ); 
+           
+          try { 
+              if( !$this->SwiftMailer->send( 'invite', 'You\'ve been invited to save', 'native' ) ) { 
+                  $this->log( 'Error sending email' ); 
+              } 
+          } 
+          catch( Exception $e ) { 
+                $this->log( 'Failed to send email: ' . $e->getMessage() ); 
+          } 
+        }
+      }
+      
       $this->redirect( array( 'action' => 'incentives', $this->Building->id ) );
     }
     else {
