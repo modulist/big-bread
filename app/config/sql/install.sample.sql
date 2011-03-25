@@ -461,7 +461,7 @@ CREATE TABLE users(
     ON UPDATE CASCADE
     ON DELETE NO ACTION,
   CONSTRAINT uix__email UNIQUE INDEX( email ),
-  CONSTRAINT uix__email UNIQUE INDEX( invite_code )
+  CONSTRAINT uix__invite_code UNIQUE INDEX( invite_code )
 ) ENGINE=InnoDB;
 
 /** CORE BUILDING DATA */

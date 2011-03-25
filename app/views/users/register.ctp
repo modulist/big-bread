@@ -1,6 +1,7 @@
 <h1>Register</h1>
 
-<?php echo $this->Form->create( 'User' ) ?>
+<?php echo $this->Form->create( 'User', array( 'action' => 'register' ) ) ?>
+  <?php echo $this->Form->input( 'User.invite_code', array( 'type' => 'hidden' ) ) ?>
   <?php echo $this->Form->input( 'User.user_type_id', array( 'type' => 'radio', 'legend' => 'Primary Role' ) ) ?>
   <?php echo $this->Form->input( 'User.first_name' ) ?>
   <?php echo $this->Form->input( 'User.last_name' ) ?>

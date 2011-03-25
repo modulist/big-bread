@@ -115,26 +115,18 @@ class BuildingsController extends AppController {
      * we're just going to assume that it's the same person and save
      * only the id.
      */
-    $realtor = !empty( $this->data['Realtor']['email'] )
-      ? $this->Building->Realtor->known( $this->data['Realtor']['email'] )
-      : false;
-    if( $realtor ) {
-      $this->data['Building']['realtor_id'] = $realtor;
-      unset( $this->data['Realtor'] );
-    }
-    $inspector = !empty( $this->data['Inspector']['email'] )
-      ? $this->Building->Inspector->known( $this->data['Inspector']['email'] )
-      : false;
-    if( $inspector ) {
-      $this->data['Building']['inspector_id'] = $inspector;
-      unset( $this->data['Inspector'] );
-    }
-    $client = !empty( $this->data['Client']['email'] )
-      ? $this->Building->Client->known( $this->data['Client']['email'] )
-      : false;
-    if( $client ) {
-      $this->data['Building']['client_id'] = $client;
-      unset( $this->data['Client'] );
+    foreach( array( 'Realtor', 'Inspector', 'Client' ) as $role ) {
+      $user = !empty( $this->data[$role]['email'] )
+        ? $this->Building->{$role}->known( $this->data[$role]['email'] )
+        : false;
+      
+      if( $user ) { # This user is already in the system
+        $this->data['Building'][strtolower( $role ) . '_id'] = $user;
+        unset( $this->data[$role] );
+      }
+      else { # We don't know this user, create an invite code
+        $this->data[$role]['invite_code'] = md5( String::uuid() );
+      }
     }
     /** END : user detection */
   

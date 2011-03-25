@@ -28,8 +28,9 @@ class UsersController extends AppController {
    * @return  void
    * @access  public
    */
-  public function register() {
-    if( !empty( $this->data ) ) {
+  public function register( $invite = null ) {
+    # Handle a submitted registration
+    if( $this->RequestHandler->isPost() && !empty( $this->data ) ) {
       /**
        * The password value is hashed automagically. We need to hash the
        * confirmation value manually for validation.
@@ -38,7 +39,7 @@ class UsersController extends AppController {
       $this->data['User']['confirm_password'] = $this->Auth->password( $this->data['User']['confirm_password'] );
       
       if( $this->User->save( $this->data ) ) {
-        $this->Session->setFlash( 'Welcome to BigBread', null, null, 'success' );
+        $this->Session->setFlash( 'Welcome to BigBread. Thanks for registering.', null, null, 'success' );
         $this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
         $this->Auth->login( $this->data );
         $this->set_user_type();
@@ -46,6 +47,32 @@ class UsersController extends AppController {
       }
       else {
         $this->Session->setFlash( 'Oh noz. There\'s a problem with your registration.', null, null, 'validation' );
+      }
+    }
+    else {
+      # If an invite is passed, pull the user attached to that invite.
+      if( !empty( $invite ) ) {
+        $user = $this->User->find(
+          'first',
+          array(
+            'contain'    => false,
+            'conditions' => array( 'User.invite_code' => $invite ),
+          )
+        );
+        
+        if( empty( $user ) ) { # Unrecognized invite code
+          $this->Session->setFlash( 'That invite code was not recognized. You can still register as a new user.', null, null, 'warn' );
+        }
+        else { # Invited user found
+          if( !empty( $user['User']['password'] ) ) { # Invited user has already registered
+            $this->Session->setFlash( 'That invite code has already been used. Please login.', null, null, 'error' );
+            $this->redirect( array( 'action' => 'login' ) );
+          }
+          else { # This is the invited user
+            $this->User->id = $user['User']['id'];
+            $this->data = $user;
+          }
+        }
       }
     }
     
