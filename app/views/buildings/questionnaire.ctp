@@ -58,14 +58,27 @@
   <h2><?php __( 'Equipment Listing' ) ?></h2>
   
   <fieldset class="group">
-    <div class="cloneable">
-      <?php echo $this->Form->input( 'Product.0.technology_id', array( 'label' => 'Equipment Type', 'required' => true, 'empty' => true ) ) ?>
-      <?php echo $this->Form->input( 'Product.0.make' ) # TODO: Make this an autocomplete field ?>
-      <?php echo $this->Form->input( 'Product.0.model' ) # TODO: Make this an autocomplete field ?>
-      <?php echo $this->Form->input( 'Product.0.energy_source_id', array( 'empty' => '' ) ) ?>
-      <?php echo $this->Form->input( 'BuildingProduct.0.serial_number' ) ?>
-      <?php echo $this->Form->input( 'BuildingProduct.0.notes' ) ?>
-    </div>
+    <?php if( empty( $this->data['Product'] ) ): ?>
+      <div class="cloneable">
+        <?php echo $this->Form->input( 'Product.0.technology_id', array( 'label' => 'Equipment Type', 'required' => true, 'empty' => true ) ) ?>
+        <?php echo $this->Form->input( 'Product.0.make' ) # TODO: Make this an autocomplete field ?>
+        <?php echo $this->Form->input( 'Product.0.model' ) # TODO: Make this an autocomplete field ?>
+        <?php echo $this->Form->input( 'Product.0.energy_source_id', array( 'empty' => '' ) ) ?>
+        <?php echo $this->Form->input( 'BuildingProduct.0.serial_number' ) ?>
+        <?php echo $this->Form->input( 'BuildingProduct.0.notes' ) ?>
+      </div>
+    <?php else: ?>
+      <?php foreach( $this->data['Product'] as $i => $product ): ?>
+        <div class="cloneable">
+          <?php echo $this->Form->input( 'Product.' . $i . '.technology_id', array( 'label' => 'Equipment Type', 'required' => true, 'empty' => true ) ) ?>
+          <?php echo $this->Form->input( 'Product.' . $i . '.make' ) # TODO: Make this an autocomplete field ?>
+          <?php echo $this->Form->input( 'Product.' . $i . '.model' ) # TODO: Make this an autocomplete field ?>
+          <?php echo $this->Form->input( 'Product.' . $i . '.energy_source_id', array( 'empty' => '' ) ) ?>
+          <?php echo $this->Form->input( 'BuildingProduct.' . $i . '.serial_number' ) ?>
+          <?php echo $this->Form->input( 'BuildingProduct.' . $i . '.notes' ) ?>
+        </div>
+      <?php endforeach; ?>
+    <?php endif; ?>
     
     <?php echo $this->Html->link( __( 'Add another piece of equipment', true ), '#', array( 'class' => 'clone' ) ) ?>
   </fieldset>
