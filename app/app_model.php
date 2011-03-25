@@ -59,9 +59,11 @@ class AppModel extends Model {
 	 * @todo      Detect Auth user model automatically?
 	 */
 	public function current_user() {
-		return isset( $this->data['User'] )
+		$user = isset( $this->data['User'] )
       ? $this->data['User']
       : null;
+      
+    return $user;
 	}
   
 	/**
