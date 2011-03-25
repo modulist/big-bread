@@ -259,12 +259,4 @@ class BuildingsController extends AppController {
     
     $this->set( compact( 'zip_code', 'incentives' ) );
   }
-  
-  /**
-   * Lists existing questionnaires by or for the authenticated user
-   */
-  public function show_all() {
-    echo '<p>I picture this page as a sort of user dashboard. At the very least, it will be a list of all of the surveys that they\'ve created (inspectors) or have had created on their behalf (clients and realtors). Go to the <a href="/questionnaire">questionnaire</a>.</p>';
-    exit;
-  }
 }

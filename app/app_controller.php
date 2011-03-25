@@ -53,7 +53,7 @@ class AppController extends Controller {
 		$this->Auth->autoRedirect = false;
 		$this->Auth->loginRedirect = array(
 			'controller' => 'buildings',
-			'action'     => 'show_all',
+			'action'     => 'questionnaire',
 		);
 		$this->Auth->logoutRedirect = array(
       'controller' => 'users',
