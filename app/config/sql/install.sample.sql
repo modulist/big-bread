@@ -783,6 +783,9 @@ CREATE TABLE questionnaires(
     ON DELETE NO ACTION
 ) ENGINE=InnoDB;
 
+-- Support the auditable behavior
+SOURCE auditable.sql;
+
 /**
  * CAKEPHP SESSION STORAGE
  * From cake/console/templates/skel/config/schema

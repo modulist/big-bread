@@ -44,6 +44,12 @@ class Building extends AppModel {
 		'BuildingWindowSystem',
 	);
   
+  public $actsAs = array(
+    'Auditable' => array(
+      'ignore'  => array( 'created', 'modified' ),
+    )
+  );
+  
 	public $validate = array();
   
   /**
