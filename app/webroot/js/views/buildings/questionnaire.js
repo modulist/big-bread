@@ -111,26 +111,6 @@ $(document).ready( function() {
     $('#utility-providers').slideDown();
   });
   
-  $('.equipment-type select').change( function() {
-    var $select        = $(this);
-    var $energy_select = $select.parent().nextAll( '.energy-source' ).first().find( 'select' );
-    var technology_id  = $select.val();
-    
-    $energy_select.attr( 'disabled', 'disabled' );
-    $energy_select.children( 'option' ).remove();
-    $energy_select.append( '<option value="">Loading...</option>' );
-    
-    /** get energy sources */
-    $.getJSON( '/products/energy_sources/' + technology_id + '.json', null, function( data, status ) {
-      $energy_select.children( 'option' ).remove();
-      
-      for( var i = 0; i < data.length; i++ ) {
-        $energy_select.append( '<option value="' + data[i].EnergySource.incentive_tech_energy_type_id + '">' + data[i].EnergySource.name + '</option>' );
-      }
-      $energy_select.removeAttr( 'disabled' );
-    });
-  });
-  
   if( $('#AddressZipCode').val().length > 0 ) {
     $('#AddressZipCode' ).change();
   }
@@ -167,10 +147,37 @@ $(document).ready( function() {
       
       /** And update the label */
       $label.attr( 'for', new_id );
+      
+      /** If we're cloning the energy source, clear and disable it */
+      if( $this.parent().hasClass( 'energy-source' ) ) {
+        $this.attr( 'disabled', 'disabled' );
+        $this.children( 'option' ).remove();
+        $this.append( '<option value="">Select equipment type</option>' );
+      }
     });
     
     $cloneable.after( $cloned );
     e.preventDefault();
     return false;
+  });
+  
+  $('.equipment-type select').live( 'change', function() {
+    var $select        = $(this);
+    var $energy_select = $select.parent().nextAll( '.energy-source' ).first().find( 'select' );
+    var technology_id  = $select.val();
+    
+    $energy_select.attr( 'disabled', 'disabled' );
+    $energy_select.children( 'option' ).remove();
+    $energy_select.append( '<option value="">Loading...</option>' );
+    
+    /** get energy sources */
+    $.getJSON( '/products/energy_sources/' + technology_id + '.json', null, function( data, status ) {
+      $energy_select.children( 'option' ).remove();
+      
+      for( var i = 0; i < data.length; i++ ) {
+        $energy_select.append( '<option value="' + data[i].EnergySource.incentive_tech_energy_type_id + '">' + data[i].EnergySource.name + '</option>' );
+      }
+      $energy_select.removeAttr( 'disabled' );
+    });
   });
 });
