@@ -60,10 +60,10 @@
   <fieldset class="group">
     <?php if( empty( $this->data['Product'] ) ): ?>
       <div class="cloneable">
-        <?php echo $this->Form->input( 'Product.0.technology_id', array( 'label' => 'Equipment Type', 'required' => true, 'empty' => true ) ) ?>
+        <?php echo $this->Form->input( 'Product.0.technology_id', array( 'label' => 'Equipment Type', 'div' => 'input select equipment-type', 'required' => true, 'empty' => true ) ) ?>
         <?php echo $this->Form->input( 'Product.0.make' ) # TODO: Make this an autocomplete field ?>
         <?php echo $this->Form->input( 'Product.0.model' ) # TODO: Make this an autocomplete field ?>
-        <?php echo $this->Form->input( 'Product.0.energy_source_id', array( 'empty' => '' ) ) ?>
+        <?php echo $this->Form->input( 'Product.0.energy_source_id', array( 'empty' => 'Select equipment type', 'options' => array(), 'div' => 'input select energy-source', 'disabled' => 'disabled' ) ) ?>
         <?php echo $this->Form->input( 'BuildingProduct.0.serial_number' ) ?>
         <?php echo $this->Form->input( 'BuildingProduct.0.notes' ) ?>
       </div>

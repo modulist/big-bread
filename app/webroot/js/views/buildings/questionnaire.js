@@ -82,7 +82,7 @@ $(document).ready( function() {
         if( data.Utilities.length == 1 ) {
           /** If there's only one, just set that value as a default */
           $provider_name.val( data.Utilities[0].Utility.name );
-          $provider_id.val( data.Utilities[0].Utility.id );
+          $provider_id.val( data.Utilities[0].Utility.utility_id );
         }
         else {
           /** If more than one, populate the provider autocomplete options */
@@ -109,6 +109,26 @@ $(document).ready( function() {
     }
       
     $('#utility-providers').slideDown();
+  });
+  
+  $('.equipment-type select').change( function() {
+    var $select        = $(this);
+    var $energy_select = $select.parent().nextAll( '.energy-source' ).first().find( 'select' );
+    var technology_id  = $select.val();
+    
+    $energy_select.attr( 'disabled', 'disabled' );
+    $energy_select.children( 'option' ).remove();
+    $energy_select.append( '<option value="">Loading...</option>' );
+    
+    /** get energy sources */
+    $.getJSON( '/products/energy_sources/' + technology_id + '.json', null, function( data, status ) {
+      $energy_select.children( 'option' ).remove();
+      
+      for( var i = 0; i < data.length; i++ ) {
+        $energy_select.append( '<option value="' + data[i].EnergySource.incentive_tech_energy_type_id + '">' + data[i].EnergySource.name + '</option>' );
+      }
+      $energy_select.removeAttr( 'disabled' );
+    });
   });
   
   if( $('#AddressZipCode').val().length > 0 ) {
