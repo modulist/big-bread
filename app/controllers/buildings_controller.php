@@ -150,6 +150,7 @@ class BuildingsController extends AppController {
         $provider = $this->Building->Address->ZipCode->ZipCodeUtility->Utility->known( $name, $id );
         
         if( !$provider ) { # The specified provider is not recognized
+if( Configure::read( 'debug' ) > 0 ) $this->log( 'Provider is NOT known', LOG_DEBUG );
           # Pull the state code for the building zip code
           if( !isset( $state ) ) {
             $state = $this->Building->Address->ZipCode->find(
@@ -200,6 +201,7 @@ class BuildingsController extends AppController {
           }
         }
         else {
+if( Configure::read( 'debug' ) > 0 ) $this->log( 'Provider is known', LOG_DEBUG );
           # If the name is known, use the id from the database
           $this->data['Building'][$type . '_provider_id'] = $provider;
         }
@@ -214,7 +216,7 @@ class BuildingsController extends AppController {
     foreach( $this->data['Product'] as $i => $product ) {
       $make       = $product['make'];
       $model      = $product['model'];
-      $energy     = $product['energy_source_id'];
+      $energy     = isset( $product['energy_source_id'] ) ? $product['energy_source_id'] : null;
       
       # If any key equipment info was entered, move along.
       if( empty( $product['technology_id'] ) || empty( $make ) || empty( $model ) || empty( $energy ) ) {

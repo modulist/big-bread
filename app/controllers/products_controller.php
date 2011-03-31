@@ -10,22 +10,23 @@ class ProductsController extends AppController {
   /**
    * Retrieves the energy sources relevant to a given product
    *
-   * @param 	$product_id
+   * @param 	$technology_id
    * @return	array
    */
-  public function energy_sources( $product_id ) {
-    $energy_sources = $this->Product->EnergySource->find(
+  public function energy_sources( $technology_id ) {
+    $energy_sources = $this->Product->Technology->TechnologyIncentive->TechnologyIncentiveEnergySource->EnergySource->find(
       'all',
       array(
-        'contain' => false,
+        'contain' => array( 'TechnologyIncentiveEnergySource' ),
         'fields'  => array( 'EnergySource.incentive_tech_energy_type_id', 'EnergySource.name' ),
         'conditions' => array(
-          # 'EnergySource.active' => 1,
-          'EnergySource.incentive_tech_id' => $product_id,
+          'TechnologyIncentiveEnergySource.incentive_tech_id' => $technology_id,
         ),
         'order' => array( 'EnergySource.name' ),
       )
     );
+    
+    # new PHPDump( $energy_sources, 'Energy Sources' ); exit;
     
     $this->set( compact( 'energy_sources' ) );
   }

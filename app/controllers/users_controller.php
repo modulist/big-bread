@@ -29,6 +29,8 @@ class UsersController extends AppController {
    * @access  public
    */
   public function register( $invite = null ) {
+    # new PHPDump( $this->User->invalidFields(), 'Invalid Fields (on enter)' );
+    
     # Handle a submitted registration
     if( $this->RequestHandler->isPost() && !empty( $this->data ) ) {
       /**

@@ -1,19 +1,30 @@
 <?php
 
 class Incentive extends AppModel {
-	public $name     = 'Incentive';
-	public $useTable = 'search_view';
+	public $name       = 'Incentive';
+	public $useTable   = 'incentive';
+  public $primarykey = 'incentive_id';
   
   public $hasMany = array(
-    # 'ZipCodeIncentive' => array( 'foreignKey' => 'incentive_id' ),
+    /** TODO: Note */
+    'TechnologyIncentive' => array(
+      'className'  => 'TechnologyIncentive',
+      'conditions' => array( 'TechnologyIncentive.is_active' => 1 ),
+    ),
   );
+  
   public $hasAndBelongsToMany = array(
     'ZipCode' => array(
       'className'             => 'ZipCode',
       'joinTable'             => 'incentive_zip',
-      'with'                  => 'ZipCodeIncentive',
       'foreignKey'            => 'incentive_id',
       'associationForeignKey' => 'zip',
+    ),
+    'Utility' => array(
+      'className'             => 'Utility',
+      'joinTable'             => 'incentive_utility',
+      'foreignKey'            => 'incentive_id',
+      'associationForeignKey' => 'utility_id',
     ),
   );
 }

@@ -27,6 +27,8 @@ ALTER DATABASE @DB_NAME@ DEFAULT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci';
 
 SOURCE fp_incentive.sql;
 
+SET foreign_key_checks = 0; -- Protect against bad legacy data
+
 /**
  * Convert everything in the schema to a unified collation. It looks like
  * this probably isn't necessary any longer, but it doesn't hurt, so I'm
@@ -106,24 +108,74 @@ ALTER TABLE bigbread.utility_zip
 -- Cruft removal
 DROP TABLE incentive_tech__incentive_tech_energy_group; -- redundant, obsolete
 
+/** INCENTIVES */
+
+-- Create a new id field that will become the PK
+ALTER TABLE incentive
+  DROP PRIMARY KEY,
+  ADD COLUMN id char(36) NULL FIRST,
+  MODIFY COLUMN incentive_id varchar(10) NULL;
+  
+-- Populate the new id field
+UPDATE incentive
+   SET id = UUID();
+  
+-- Reassign the PK and create a unique index on the old PK
+ALTER TABLE incentive
+  MODIFY id char(36) NOT NULL,
+  ADD PRIMARY KEY( id ),
+  ADD CONSTRAINT uix__incentive_id UNIQUE INDEX( incentive_id );
+
+/**
+ * Update the foreign key value on a few tables that aren't handled in
+ * more detail below. These are tables that the new app doesn't use or
+ * uses very little right now.
+ */
+ 
+ALTER TABLE incentive_county
+  MODIFY COLUMN incentive_id char(36) NOT NULL;
+  
+-- Set the new incentive_county.incentive_id value to the UUID, where appropriate
+UPDATE incentive_county, incentive
+   SET incentive_county.incentive_id = incentive.id
+ WHERE incentive_county.incentive_id = incentive.incentive_id;
+
+ALTER TABLE incentive_note
+  MODIFY COLUMN incentive_id char(36) NOT NULL;
+ 
+-- Set the new incentive_note.incentive_id value to the UUID, where appropriate
+UPDATE incentive_note, incentive
+   SET incentive_note.incentive_id = incentive.id
+ WHERE incentive_note.incentive_id = incentive.incentive_id;
+
+ALTER TABLE incentive_weblink
+  MODIFY COLUMN incentive_id char(36) NOT NULL;
+ 
+-- Set the new incentive_weblink.incentive_id value to the UUID, where appropriate
+UPDATE incentive_weblink, incentive
+   SET incentive_weblink.incentive_id = incentive.id
+ WHERE incentive_weblink.incentive_id = incentive.incentive_id;
+ 
+/** TECHNOLOGIES */
+
 -- Add a UUID field that will become the primary key
 -- display a given technology on the questionnaire.
 -- Accept foreign key constraints
 ALTER TABLE incentive_tech
+  DROP PRIMARY KEY,
   ADD COLUMN id char(36) NULL FIRST,
-  ADD COLUMN questionnaire_product boolean NOT NULL DEFAULT 0, -- whether this piece of tech is represented by a product on the questionnaire
-  ENGINE = InnoDB;
-
--- Add an id (UUID) for easy access and manipulation
+  ADD COLUMN questionnaire_product boolean NOT NULL DEFAULT 0; -- whether this piece of tech is represented by a product on the questionnaire
+  
+-- Populate the new id field
 UPDATE incentive_tech
    SET id = UUID();
-   
--- Reset the primary key on the new id and add a unique index for the old
+  
+-- Reassign the PK and create a unique index on the old PK
 ALTER TABLE incentive_tech
-  DROP PRIMARY KEY,
+  MODIFY id char(36) NOT NULL,
   ADD PRIMARY KEY( id ),
   ADD CONSTRAINT uix__incentive_tech_id UNIQUE INDEX( incentive_tech_id );
-   
+
 -- Identify the technology products we care about:
 -- Boiler, AC, Dishwasher, Dryer, Freezer, Furnace, Heat Pump, Room AC,
 -- Space Heater, Washer, Water Heater, Range/Cooktop
@@ -131,22 +183,106 @@ UPDATE incentive_tech
    SET questionnaire_product = 1
  WHERE incentive_tech_id IN ( 'BOIL','CAC','DISHW','DRYER','FREEZ','FURN','HP','RMAC','SPHEAT','WASH','WH','COOK' );
 
--- Required to create foreign key constraints
-ALTER TABLE us_states
-  ENGINE = InnoDB;
+/** INCENTIVE-TECHNOLOGY JOIN */
+
+ALTER TABLE incentive__incentive_tech
+  MODIFY COLUMN incentive_tech_id char(36) NOT NULL,
+  MODIFY COLUMN incentive_id char(36) NOT NULL;
+ 
+-- Set the new incentive__incentive_tech.incentive_id value to the UUID, where appropriate
+UPDATE incentive__incentive_tech, incentive
+   SET incentive__incentive_tech.incentive_id = incentive.id
+ WHERE incentive__incentive_tech.incentive_id = incentive.incentive_id;
+ 
+-- Set the new incentive__incentive_tech.incentive_tech_id value to the UUID, where appropriate
+UPDATE incentive__incentive_tech, incentive_tech
+   SET incentive__incentive_tech.incentive_tech_id = incentive_tech.id
+ WHERE incentive__incentive_tech.incentive_tech_id = incentive_tech.incentive_tech_id;
+
+-- Foreign key 
+ALTER TABLE incentive__incentive_tech
+  ADD CONSTRAINT fk__incentive__incentive_tech__incentive_tech FOREIGN KEY( incentive_tech_id )
+    REFERENCES incentive_tech( id )
+      ON UPDATE CASCADE
+      ON DELETE NO ACTION,
+  ADD CONSTRAINT fk__incentive__incentive_tech__incentive FOREIGN KEY( incentive_id )
+    REFERENCES incentive( id )
+      ON UPDATE CASCADE
+      ON DELETE NO ACTION;
+
+/** ENERGY SOURCE */
+
+ALTER TABLE incentive_tech_energy_type
+  MODIFY COLUMN incentive_tech_id char(36) NOT NULL;
+ 
+-- Set the new incentive__incentive_tech.incentive_tech_id value to the UUID, where appropriate
+UPDATE incentive_tech_energy_type, incentive_tech
+   SET incentive_tech_energy_type.incentive_tech_id = incentive_tech.id
+ WHERE incentive_tech_energy_type.incentive_tech_id = incentive_tech.incentive_tech_id;
+ 
+ALTER TABLE incentive_tech_energy_type
+  ADD CONSTRAINT fk__incentive_tech_energy_type__incentive_tech FOREIGN KEY( incentive_tech_id )
+    REFERENCES incentive_tech( id )
+      ON UPDATE CASCADE
+      ON DELETE NO ACTION;
+
+/** ENERGY GROUP */
+
+-- Drop existing key to prepare for a new id key
+-- Add unique index where there was a primary key
+ALTER TABLE incentive_tech_energy_group
+  DROP COLUMN parent_id;
   
+-- We're flattening this table so we can kill a couple of "parent" records
+DELETE FROM incentive_tech_energy_group
+      WHERE incentive_tech_energy_group_id IN ( 'GAS', 'ALT' );
+
+/** ZIP CODE */
+
 -- Required to create foreign key constraints
 ALTER TABLE us_zipcode
-  MODIFY zip char(5) NOT NULL,
-  ENGINE = InnoDB;
+  MODIFY zip char(5) NOT NULL;
   
 -- Creates a ready-to-use value
 UPDATE us_zipcode
   SET zip = LPAD(zip, 5, '0');
+ 
+/** INCENTIVE-ZIPCODE JOIN */
+
+-- Make the table join-ready
+ALTER TABLE incentive_zip
+  MODIFY incentive_id char(36) NOT NULL,
+  MODIFY zip char(5) NOT NULL;
+  
+-- Set the new incentive_zip.incentive_id value to the UUID, where appropriate
+UPDATE incentive_zip, incentive
+   SET incentive_zip.incentive_id = incentive.id
+ WHERE incentive_zip.incentive_id = incentive.incentive_id;
+  
+-- Create a ready-to use zipcode value
+UPDATE incentive_zip
+   SET zip = LPAD(zip, 5, '0');
+   
+-- Foreign key
+ALTER TABLE incentive_zip
+  ADD CONSTRAINT fk__incentive_zip__incentive FOREIGN KEY( incentive_id )
+    REFERENCES incentive( incentive_id )
+      ON UPDATE CASCADE
+      ON DELETE NO ACTION;
+ 
+-- Foreign key
+ALTER TABLE incentive_zip
+  ADD CONSTRAINT fk__incentive_zip__us_zipcode FOREIGN KEY( zip )
+    REFERENCES us_zipcode( zip )
+      ON UPDATE CASCADE
+      ON DELETE NO ACTION;
+
+/** UTILITY */
 
 -- Add a UUID field that will become the primary key
 -- Add a couple of fields so we can accept (and vet) new user input
 -- Accept foreign key constraints
+-- Autoincrement start value required to prevent entire table from resequencing
 ALTER TABLE utility
   DROP PRIMARY KEY,
   ADD COLUMN id char(36) NULL FIRST,
@@ -154,79 +290,81 @@ ALTER TABLE utility
   MODIFY COLUMN utility_id int NULL, -- nullable to avoid future conflicts when importing libraries.
   ADD COLUMN created datetime NULL AFTER name,
   ADD COLUMN reviewed boolean NULL DEFAULT 0 AFTER name,
-  ADD COLUMN source varchar(255) NULL AFTER name,
-  ENGINE = InnoDB;
+  ADD COLUMN source varchar(255) NULL AFTER name;
 
 -- Add an id (UUID) for easy access and manipulation
 -- Set the source for existing records
 -- Mark existing records as reviewed
 UPDATE utility
    SET id = UUID(),
-       source = 'Platts',
+       source   = 'Platts',
        reviewed = 1;
        
--- Now that the id is populated, make it the primary key
 ALTER TABLE utility
   MODIFY id char(36) NOT NULL,
   ADD PRIMARY KEY( id );
-       
+
+/** UTILITY-ZIPCODE JOIN */
+      
 -- Prepare utility_zip to use the UUID value as its foreign key to utility
 ALTER TABLE utility_zip
   MODIFY COLUMN utility_id char(36) NULL,
   ADD COLUMN created datetime NULL AFTER type,
   ADD COLUMN reviewed boolean NULL DEFAULT 0 AFTER type,
-  ADD COLUMN source varchar(255) NULL AFTER type,
-  ENGINE = InnoDB;
+  ADD COLUMN source varchar(255) NULL AFTER type;
 
 -- Set the new utility_zip.utility_id value to the UUID, where appropriate
 UPDATE utility_zip, utility
    SET utility_zip.utility_id = utility.id
  WHERE utility_zip.utility_id = utility.utility_id;
- 
+
 -- For all existing records, set the source and reviewed values
 UPDATE utility_zip
-   SET utility_zip.source = 'Platts',
-       utility_zip.reviewed = 1;
+   SET zip      = LPAD(zip, 5, '0'),
+       source   = 'Platts',
+       reviewed = 1;
  
--- Create an actual foreign key constraint
-SET foreign_key_checks = 0; -- Protect against bad legacy data
+-- Create an actual foreign key constraints
 ALTER TABLE utility_zip
   ADD CONSTRAINT fk__utility_zip__utility FOREIGN KEY( utility_id )
-    REFERENCES utility( id );
+    REFERENCES utility( id )
+      ON UPDATE CASCADE
+      ON DELETE NO ACTION,
+  ADD CONSTRAINT fk__utility_zip__us_zipcode FOREIGN KEY( zip )
+    REFERENCES us_zipcode( zip )
+      ON UPDATE CASCADE
+      ON DELETE NO ACTION;
+
+/** INCENTIVE-UTILITY JOIN */
+
+-- Join table needs the new utility id
+ALTER TABLE incentive_utility
+  MODIFY COLUMN incentive_id char(36) NOT NULL,
+  MODIFY COLUMN utility_id char(36) NOT NULL;
+
+-- Set the new incentive_utility.incentive_id value to the UUID, where appropriate
+UPDATE incentive_utility, incentive
+   SET incentive_utility.incentive_id = incentive.id
+ WHERE incentive_utility.incentive_id = incentive.incentive_id;
+  
+-- Set the new utility_zip.utility_id value to the UUID, where appropriate
+UPDATE incentive_utility, utility
+   SET incentive_utility.utility_id = utility.id
+ WHERE incentive_utility.utility_id = utility.utility_id;
+ 
+-- Create an actual foreign key constraints
+ALTER TABLE incentive_utility
+  ADD CONSTRAINT fk__incentive_utility__utility FOREIGN KEY( utility_id )
+    REFERENCES utility( id )
+      ON UPDATE CASCADE
+      ON DELETE NO ACTION,
+  ADD CONSTRAINT fk__incentive_utility__incentive FOREIGN KEY( incentive_id )
+    REFERENCES incentive( incentive_id )
+      ON UPDATE CASCADE
+      ON DELETE NO ACTION;
+
 SET foreign_key_checks = 1; -- Re-engage foreign key constraints
 
--- Drop existing key to prepare for a new id key
--- Add unique index where there was a primary key
-ALTER TABLE incentive_tech_energy_group
-  DROP PRIMARY KEY,
-  DROP COLUMN parent_id,
-  ADD COLUMN id char(36) NULL FIRST,
-  ADD CONSTRAINT uix__incentive_tech_energy_group__incentive_tech_energy_group_id UNIQUE INDEX ( incentive_tech_energy_group_id ),
-  ENGINE = InnoDB;
-  
--- Populate the coming primary key value
-UPDATE incentive_tech_energy_group
-   SET id = UUID();
-   
--- We're flattening this table so we can kill a couple of "parent" records
-DELETE FROM incentive_tech_energy_group
-      WHERE incentive_tech_energy_group_id IN ( 'GAS', 'ALT' );
-   
--- Now that the id is populated, make it the primary key
-ALTER TABLE incentive_tech_energy_group
-  MODIFY id char(36) NOT NULL,
-  ADD PRIMARY KEY( id );
-
--- Make the table join-ready
-ALTER TABLE incentive_zip
-  MODIFY zip char(5) NOT NULL,
-  ENGINE = InnoDB;
-  
-
--- Creates a ready-to-use value
-UPDATE us_zipcode
-  SET zip = LPAD(zip, 5, '0');
-  
 /** LOOKUP TABLES */
 
 DROP TABLE IF EXISTS basement_types;
@@ -487,7 +625,7 @@ CREATE TABLE buildings(
   building_type_id          char(36)          NULL,
   address_id                char(36)          NOT NULL,
   realtor_id                char(36)          NULL,
-  inspector_id              char(36)          NOT NULL,
+  inspector_id              char(36)          NULL,
   client_id                 char(36)          NOT NULL,
   maintenance_level_id      char(36)          NULL,
   building_shape_id         char(36)          NULL,
@@ -615,7 +753,7 @@ CREATE TABLE occupants(
 DROP TABLE IF EXISTS products;
 CREATE TABLE products(
   id                char(36)      NOT NULL,
-  technology_id     varchar(36)   NOT NULL,
+  technology_id     char(36)      NOT NULL,
   make              varchar(255)  NULL,
   model             varchar(255)  NULL,
   ahri_ref_number   varchar(255)  NULL, -- AHRI certified reference number (http://www.ahridirectory.org/ahridirectory/pages/home.aspx)
@@ -630,8 +768,8 @@ CREATE TABLE products(
     REFERENCES incentive_tech( id )
     ON UPDATE CASCADE
     ON DELETE NO ACTION,
-  CONSTRAINT fk__products__incentive_tech_energy_group FOREIGN KEY( energy_source_id )
-    REFERENCES incentive_tech_energy_group( id )
+  CONSTRAINT fk__products__incentive_tech_energy_type FOREIGN KEY( energy_source_id )
+    REFERENCES incentive_tech_energy_type( incentive_tech_energy_type_id )
     ON UPDATE CASCADE
     ON DELETE NO ACTION
 ) ENGINE=InnoDB;
@@ -764,10 +902,8 @@ CREATE TABLE partner_domains(
 INSERT INTO partner_domains( id, partner_id, top_level_domain, created, modified )
 VALUES( '4d6da23a-a5dc-470d-9238-43e76e891b5e', '4d6da23a-8fe0-407f-99c5-4d006e891b5e', 'partnersite.com', NOW(), NOW() );
 
-/** SURVEYS */
+/** Questionnaire */
 
-/** Inspector questionnaires */
-/** @todo Change nomenclature to "questionnaire" */
 DROP TABLE IF EXISTS questionnaires;
 CREATE TABLE questionnaires(
   id            char(36)    NOT NULL,
@@ -781,6 +917,34 @@ CREATE TABLE questionnaires(
     REFERENCES buildings( id )
     ON UPDATE CASCADE
     ON DELETE NO ACTION
+) ENGINE=InnoDB;
+
+/** Glossary */
+
+DROP TABLE IF EXISTS glossary_terms;
+CREATE TABLE glossary_terms(
+  id          char(36)      NOT NULL,
+  foreign_key char(36)      NOT NULL,
+  model       varchar(255)  NOT NULL,
+  definition  varchar(255)  NOT NULL,
+  active      boolean       NOT NULL DEFAULT 1,
+  created     datetime      NULL,
+  modified    datetime      NULL,
+  
+  PRIMARY KEY( id )
+) ENGINE=InnoDB;
+
+/** Tips */
+
+DROP TABLE IF EXISTS tips;
+CREATE TABLE tips(
+  id          char(36)      NOT NULL,
+  tip         varchar(255)  NOT NULL,
+  active      boolean       NOT NULL DEFAULT 1,
+  created     datetime      NULL,
+  modified    datetime      NULL,
+  
+  PRIMARY KEY( id )
 ) ENGINE=InnoDB;
 
 -- Support the auditable behavior

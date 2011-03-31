@@ -1,10 +1,29 @@
 <?php
 
+/**
+ * Defines a utility provider.
+ *
+ * This model has a non-standard primary key, so use $this->primaryKey
+ * when accessing field names or data.
+ */
 class Utility extends AppModel {
 	public $name        = 'Utility';
 	public $useTable    = 'utility';
-	
-  public $hasMany = array( 'ZipCodeUtility' );
+  
+  public $hasMany = array(
+    'ZipCodeUtility' => array(
+      'className'  => 'ZipCodeUtility',
+      'foreignKey' => 'utility_id',
+    ),
+  );
+  public $hasAndBelongsToMany = array(
+    'Incentive' => array(
+      'className'             => 'Incentive',
+      'joinTable'             => 'incentive_utility',
+      'foreignKey'            => 'utility_id',
+      'associationForeignKey' => 'incentive_id',
+    ),
+  );
   
   public $validate = array(
     'name' => array(
@@ -37,14 +56,14 @@ class Utility extends AppModel {
       'first',
       array(
         'contain' => false,
-        'fields'  => array( $this->alias . '.id' ),
+        'fields'  => array( $this->alias . '.' . $this->primaryKey ),
         'conditions' => array(
-          $this->alias . '.id'   => trim( $id ),
+          $this->alias . '.' . $this->primaryKey => trim( $id ),
           $this->alias . '.name' => trim( $name ),
         ),
       )
     );
     
-    return !empty( $utility ) ? $utility[$this->alias]['id'] : false;
+    return !empty( $utility ) ? $utility[$this->alias][$this->primaryKey] : false;
   }
 }

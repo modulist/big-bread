@@ -82,7 +82,7 @@ $(document).ready( function() {
         if( data.Utilities.length == 1 ) {
           /** If there's only one, just set that value as a default */
           $provider_name.val( data.Utilities[0].Utility.name );
-          $provider_id.val( data.Utilities[0].Utility.utility_id );
+          $provider_id.val( data.Utilities[0].Utility.id );
         }
         else {
           /** If more than one, populate the provider autocomplete options */
