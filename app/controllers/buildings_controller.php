@@ -256,19 +256,20 @@ if( Configure::read( 'debug' ) > 0 ) $this->log( 'Provider is known', LOG_DEBUG 
           */
           $this->SwiftMailer->sendAs = 'both'; 
           $this->SwiftMailer->from = 'rob@robwilkerson.org'; 
-          $this->SwiftMailer->fromName = 'BigBread.net'; 
+          $this->SwiftMailer->fromName = 'BigBread.net';
+          # TODO: Change To address
           $this->SwiftMailer->to = 'rob@robwilkerson.org';
           
           //set variables to template as usual 
           $this->set( 'invite_code', $this->data[$role]['invite_code'] ); 
            
           try { 
-              if( !$this->SwiftMailer->send( 'invite', 'You\'ve been invited to save', 'native' ) ) { 
-                  $this->log( 'Error sending email' ); 
-              } 
+            if( !$this->SwiftMailer->send( 'invite', 'You\'ve been invited to save', 'native' ) ) { 
+              $this->log( 'Error sending email' ); 
+            } 
           } 
           catch( Exception $e ) { 
-                $this->log( 'Failed to send email: ' . $e->getMessage() ); 
+            $this->log( 'Failed to send email: ' . $e->getMessage() ); 
           } 
         }
       }
