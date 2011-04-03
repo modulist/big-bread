@@ -19,27 +19,8 @@
 <body>
   
 <div id="wrapper">
-  <div id="topheader">
-    <div id="version"><?php echo $this->Html->image( 'beta.png', array( 'title' => 'beta' ) ) ?></div>
-    <div id="logo">
-      <?php echo $this->Html->image( 'logo.png', array( 'url' => Router::url( '/' ), 'title' => 'beta' ) ) ?>
-    </div>
-    <div id="nav-links">
-      <ul id="menu">
-        <li class="first"><?php echo $this->Html->link( 'Invite Friends', '#' ) ?></li>
-        <li><?php echo $this->Html->link( 'Manage Profile', '#' ) ?></li>
-        <li><?php echo $this->Html->link( 'Contact', Router::url( '/contact' ) ) ?></li>
-        <li class="last"><?php echo $this->Html->link( 'Logout', Router::url( '/logout' ) ) ?></li>
-      </ul>
-    </div>
-  </div>
+  <?php echo $this->element( 'header' ) ?>
   
-  <div class="menu">
-    <div id="menubar">
-      <a href="#"><?php echo $this->Html->image( 'menubtn1.png' ) ?></a>
-      <a href="#" ><?php echo $this->Html->image( 'menubtn2.png' ) ?></a>  
-    </div>
-  </div>
   <div class="clear"></div>
   <div id="pagebody">
     <div id="bodygeneral">
@@ -80,18 +61,8 @@
       <div class="clear"></div>
     </div>
   </div>
-  <div id="footer">
-    <div id="footerright">
-      <a href="#" ><?php echo $this->Html->image( 'versing.png' ) ?></a>
-      <a href="#" ><?php echo $this->Html->image( 'truste.png' ) ?></a>
-      <a href="#" ><?php echo $this->Html->image( 'mcAfee.png' ) ?></a>
-    </div>
-    <div id="footerleft">
-      <a href="#" ><?php echo $this->Html->image( 'poweredBy.png' ) ?></a>
-      <p><a href="#" >Why BigBread.net </a> | <a href="#" >Our Background</a> | <a href="#" >Privacy & Security</a> | <a href="#" >Terms of Use</a></p><p>
-      © 2009-2011 Federated Power, Inc. | Beta 1.0</p>
-    </div>
-  </div>
+  
+  <?php echo $this->element( 'footer' ) ?>
 </div>
   
 <!-- Include universal scripts -->
@@ -100,14 +71,14 @@
 <?php # echo $this->Html->script( 'application' ) ?>
 <?php # echo $this->Html->script( 'vendors/jquery-colorbox.min.js' ) ?>
 
-<!-- Include any layout scripts -->
-<?php echo $scripts_for_layout . "\n" ?>
- 
 <!-- Include any page-specific scripts -->
 <?php if( file_exists( WWW_ROOT . 'js/views/' . Inflector::underscore( $this->name ) . '/' . Inflector::underscore( $this->action ) . '.js' ) ): ?>
   <?php echo $this->Html->script( 'views/' . Inflector::underscore( $this->name ) . '/' . Inflector::underscore( $this->action ) ) ?>
 <?php endif; ?>
 
+<!-- Include any layout scripts -->
+<?php echo $scripts_for_layout . "\n" ?>
+ 
 <?php if( isset( $this->params['url']['debug'] ) ): ?>
   <!-- DEBUG INFORMATION -->
   <?php echo $this->element( 'sql_dump' ) ?>
