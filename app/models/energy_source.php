@@ -7,23 +7,18 @@ class EnergySource extends AppModel {
 	
 	public $belongsTo = array(
     /** TODO: IncentiveTechEnergyGroup */
+    'Technology' => array(
+      'className'  => 'Technology',
+      'foreignKey' => 'incentive_tech_id',
+    )
 	);
 
 	public $hasMany = array(
 		'Product' => array(
 			'className' => 'Product',
 			'foreignKey' => 'energy_source_id',
-		),/**
-    'TechnologyIncentiveEnergySource' => array(
-      'className'  => 'TechnologyIncentiveEnergySource',
-      'foreignKey' => 'incentive_tech_energy_type_id'
-    ), */
+		),
 	);
   
-  public $hasAndBelongsToMany = array(
-    'TechnologyIncentive' => array(
-      'className' => 'TechnologyIncentive',
-      'with'      => 'TechnologyIncentiveEnergySource',
-    ),
-  );
+  public $hasAndBelongsToMany = array();
 }

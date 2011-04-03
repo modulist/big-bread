@@ -1,40 +1,38 @@
 <?php
 
+/** Uses the search_view */
 class TechnologyIncentive extends AppModel {
-	public $name       = 'TechnologyIncentive';
-	public $useTable   = 'incentive__incentive_tech';
+	public $name     = 'TechnologyIncentive';
+	public $useTable = 'incentive__incentive_tech';
   
   public $hasMany = array(
     // TODO: TechnologyTerm
-    'TechnologyIncentiveEnergySource' => array(
-      'className'  => 'TechnologyIncentiveEnergySource',
-      'foreignKey' => 'incentive__incentive_tech_id',
-    ),
   );
   public $belongsTo = array(
-    /** TODO: IncentiveAmountType */
     'Incentive' => array(
       'className'  => 'Incentive',
-      'foreignKey' => 'incentive_id',
       'type'       => 'inner',
-      'conditions' => array( 'Incentive.excluded' => 0 ),
+      'foreignKey' => false, # actually 'incentive_id', but we need to fool Cake
+			'conditions' => array(
+        'TechnologyIncentive.incentive_id = Incentive.incentive_id',
+      ),
+    ),
+    'IncentiveAmountType' => array(
+      'className'  => 'IncentiveAmountType',
+      'foreignKey' => false,
+      'conditions' => array( 'TechnologyIncentive.incentive_amount_type_id = IncentiveAmountType.incentive_amount_type_id' ),
     ),
     'Technology' => array(
       'className'  => 'Technology',
-      'foreignKey' => 'incentive_tech_id',
       'type'       => 'inner',
+      'foreignKey' => false, # actually 'incentive_tech_id', but we need to fool Cake
+      'conditions' => array(
+        'TechnologyIncentive.incentive_tech_id = Technology.incentive_tech_id',
+      )
     ),
   );
   
-  public $hasAndBelongsToMany = array(
-    'EnergySource' => array(
-      'className'             => 'EnergySource',
-      'with'                  => 'TechnologyIncentiveEnergySource',
-      'joinTable'             => 'incentive_tech_energy',
-      'foreignKey'            => 'incentive__incentive_tech_id',
-      'associationForeignKey' => 'incentive_tech_energy_type_id',
-    ),
-  );
+  public $hasAndBelongsToMany = array();
   
 
   /**
@@ -44,44 +42,77 @@ class TechnologyIncentive extends AppModel {
    * @return	array
    */
   public function by_zip( $zip ) {
+    # All kinds of non-standard db fields involved here.
+    $this->Behaviors->attach( 'Containable', array( 'autoFields' => false ) );
+    
     # Which state owns this zip code?
     $state = $this->Incentive->ZipCode->field( 'state', array( 'ZipCode.zip' => $zip ) );
     
-    # Pull the incentives
+    # Incentives specific to this zip
+    $zip_code_incentives = $this->Incentive->ZipCodeIncentive->find(
+      'all',
+      array(
+        'fields' => array( 'DISTINCT ZipCodeIncentive.incentive_id'),
+        'conditions' => array( 'ZipCodeIncentive.zip' => $zip ),
+      )
+    );
+    $zip_code_incentives = Set::extract( '/ZipCodeIncentive/incentive_id', $zip_code_incentives );
+
+    # Pull the incentive details
     $incentives = $this->find(
       'all',
       array(
         'contain' => array(
-          'TechnologyIncentiveEnergySource',
-          # 'EnergySource',
-          'Incentive'  => array(
-            'fields' => array( 'Incentive.id', 'Incentive.incentive_id', 'Incentive.category', 'Incentive.state', 'Incentive.entire_state', 'Incentive.excluded' ),
-            'Utility' => array(
-              'fields' => array( 'Utility.name' ),
-            ),
-            'ZipCode' => array(
-              'fields' => array( 'zip' ),
-              'conditions' => array( 'ZipCode.zip' => $zip ),
+          'Incentive',
+          'IncentiveAmountType',
+        ),
+        # Containable botched things, so this is a workaround
+        # @see http://stackoverflow.com/questions/5529793/containable-behavior-issue-with-non-standard-keys
+        'joins' => array(
+          array(
+            'table'      => 'incentive_tech', 
+            'alias'      => 'Technology', 
+            'type'       => 'inner', 
+            'foreignKey' => false, 
+            'conditions' => array(
+              'TechnologyIncentive.incentive_tech_id = Technology.incentive_tech_id',
             ),
           ),
-          'Technology' => array(
-            'fields' => array( 'Technology.incentive_tech_id', 'Technology.incentive_tech_group_id', 'Technology.name' ),
-            'TechnologyGroup' => array(
-              'fields' => array( 'TechnologyGroup.incentive_tech_group_id', 'TechnologyGroup.name' ),
+          array(
+            'table'      => 'incentive_tech_group', 
+            'alias'      => 'TechnologyGroup', 
+            'type'       => 'left', 
+            'foreignKey' => false, 
+            'conditions' => array(
+              'Technology.incentive_tech_group_id = TechnologyGroup.incentive_tech_group_id',
             ),
           ),
         ),
         'fields' => array(
-          # 'Incentive.energy_group', MUST BE JOINED
-          'TechnologyIncentive.id',
-          'TechnologyIncentive.incentive_tech_id',
+          'Incentive.incentive_id',
+          'Incentive.name',
+          'Incentive.category',
+          'Incentive.summary',
+          'IncentiveAmountType.name',
+          'IncentiveAmountType.description',
+          'Technology.incentive_tech_id',
+          'Technology.name',
+          'Technology.description',
           'TechnologyIncentive.incentive_id',
+          'TechnologyIncentive.incentive_tech_id',
           'TechnologyIncentive.amount',
+          'TechnologyIncentive.incentive_amount_type_id',
           'TechnologyIncentive.weblink',
           'TechnologyIncentive.rebate_link',
+          'TechnologyGroup.name',
+          # Filter fields included for validation purposes
+          'Incentive.state',
+          'Incentive.entire_state',
+          'Incentive.excluded',
           'TechnologyIncentive.is_active',
         ),
         'conditions' => array(
+          'Incentive.excluded' => 0,
           'OR' => array(
             'Incentive.state' => 'US',  # nationwide incentives
             array(
@@ -89,7 +120,7 @@ class TechnologyIncentive extends AppModel {
               'Incentive.entire_state' => 1,
               'Incentive.state'        => $state,
             ),
-            # 'ZipCodeIncentive.zip' => $zip
+            'Incentive.incentive_id' => $zip_code_incentives
           ),
         ),
         'order' => array( 'TechnologyIncentive.amount DESC' ),
@@ -103,7 +134,7 @@ class TechnologyIncentive extends AppModel {
       # echo '<p>' .  . '</p>';
     }
     
-    new PHPDump( $incentives, 'Incentives (' . count( $incentives ) . ')' );
+    new PHPDump( $incentives, 'Full Incentives (' . count( $incentives ) . ')' );
     
     $log = $this->getDataSource()->getLog(false, false);
     new PHPDump( $log, 'LOG' ); exit;

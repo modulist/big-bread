@@ -14,14 +14,12 @@ class ProductsController extends AppController {
    * @return	array
    */
   public function energy_sources( $technology_id ) {
-    $energy_sources = $this->Product->Technology->TechnologyIncentive->TechnologyIncentiveEnergySource->EnergySource->find(
+    $energy_sources = $this->Product->Technology->EnergySource->find(
       'all',
       array(
-        'contain' => array( 'TechnologyIncentiveEnergySource' ),
+        'contain' => false,
         'fields'  => array( 'EnergySource.incentive_tech_energy_type_id', 'EnergySource.name' ),
-        'conditions' => array(
-          'TechnologyIncentiveEnergySource.incentive_tech_id' => $technology_id,
-        ),
+        'conditions' => array( 'EnergySource.incentive_tech_id' => $technology_id ),
         'order' => array( 'EnergySource.name' ),
       )
     );

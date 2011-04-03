@@ -6,6 +6,10 @@ class ZipCode extends AppModel {
 	public $primaryKey = 'zip';
 
   public $hasMany = array(
+		'ZipCodeIncentive' => array(
+			'className' => 'ZipCodeIncentive',
+			'foreignKey' => 'zip',
+		),
     'ZipCodeUtility' => array(
       'className'  => 'ZipCodeUtility',
       'foreignKey' => 'zip',
@@ -18,7 +22,7 @@ class ZipCode extends AppModel {
   public $hasAndBelongsToMany = array(
     'Incentive' => array(
       'className'             => 'Incentive',
-      'joinTable'             => 'incentive_zip',
+      'joinTable'             => 'incentive_zips',
       'foreignKey'            => 'zip',
       'associationForeignKey' => 'incentive_id',
     ),

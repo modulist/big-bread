@@ -22,8 +22,7 @@ class BuildingsController extends AppController {
    * @return	type		description
    */
   public function questionnaire() {
-    $this->layout           = 'iframe';
-    $this->helpers[]        = 'Form';
+    $this->helpers[] = 'Form';
     
     /** Populate Lookups */
     $basementTypes = $this->Building->BasementType->find(

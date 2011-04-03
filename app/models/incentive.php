@@ -11,20 +11,20 @@ class Incentive extends AppModel {
       'className'  => 'TechnologyIncentive',
       'conditions' => array( 'TechnologyIncentive.is_active' => 1 ),
     ),
+		'ZipCodeIncentive' => array(
+			'className' => 'ZipCodeIncentive',
+			'foreignKey' => 'incentive_id',
+		)
   );
   
   public $hasAndBelongsToMany = array(
     'ZipCode' => array(
-      'className'             => 'ZipCode',
-      'joinTable'             => 'incentive_zip',
-      'foreignKey'            => 'incentive_id',
-      'associationForeignKey' => 'zip',
+      'className' => 'ZipCode',
+      'with'      => 'ZipCodeIncentive',
     ),
     'Utility' => array(
-      'className'             => 'Utility',
-      'joinTable'             => 'incentive_utility',
-      'foreignKey'            => 'incentive_id',
-      'associationForeignKey' => 'utility_id',
+      'className' => 'Utility',
+      'with'      => 'ZipCodeUtility',
     ),
   );
 }

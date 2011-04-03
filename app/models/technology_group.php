@@ -8,8 +8,8 @@ class TechnologyGroup extends AppModel {
 	public $hasMany = array(
 		'Technology' => array(
 			'className'  => 'Technology',
-			'foreignKey' => 'incentive_tech_group_id',
-			'dependent'  => false,
+			'foreignKey' => false,
+      'conditions' => array( 'TechnologyGroup.incentive_tech_group_id' => 'Technology.incentive_tech_group_id' ),
 		),
 	);
 }
