@@ -32,7 +32,20 @@ class TechnologyIncentive extends AppModel {
     ),
   );
   
-  public $hasAndBelongsToMany = array();
+  public $hasAndBelongsToMany = array(
+    'EnergySource' => array(
+      'className'             => 'EnergySource',
+      'joinTable'             => 'incentive_tech_energy',
+      'foreignKey'            => 'incentive__incentive_tech_id',
+      'associationForeignKey' => 'incentive_tech_energy_type_id',
+    ),
+    'TechnologyOption' => array(
+      'className'             => 'TechnologyOption',
+      'joinTable'             => 'incentive_tech_option',
+      'foreignKey'            => 'incentive__incentive_tech_id',
+      'associationForeignKey' => 'incentive_tech_option_type_id',
+    )
+  );
   
 
   /**

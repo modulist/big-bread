@@ -20,5 +20,12 @@ class EnergySource extends AppModel {
 		),
 	);
   
-  public $hasAndBelongsToMany = array();
+  public $hasAndBelongsToMany = array(
+    'TechnologyIncentive' => array(
+      'className'             => 'TechnologyIncentive',
+      'joinTable'             => 'incentive_tech_energy',
+      'foreignKey'            => 'incentive_tech_energy_type_id',
+      'associationForeignKey' => 'incentive__incentive_tech_id',
+    ),
+  );
 }
