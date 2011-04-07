@@ -4,31 +4,29 @@
   <?php echo $this->element( 'layout/head_content' ) ?>
 </head>
 
-<body>
+<body class="onecolumn">
   
 <div id="wrapper">
   <div id="header">
     <?php echo $this->element( 'layout/header' ) ?>
-  </div>
+  </div><!-- #header -->
   
-  <?php ?>
-  <div id="pagebody"> 				
+  <div id="page_content"> 				
     <div id="bodymain">
       <div id="content">
         <?php echo $this->element( 'layout/flash_messages' ) ?>
         
         <?php echo $content_for_layout ?>
-      </div>
+      </div> <!-- #content -->
       <div class="clear"></div>
       
-    </div>
-  </div>
-  <?php ?>
+    </div> <!-- #bodymain -->
+  </div> <!-- #page_content -->
   
   <div id="footer">
     <?php echo $this->element( 'layout/footer' ) ?>
-  </div>
-</div>
+  </div> <!-- #footer -->
+</div> <!-- #wrapper -->
   
 <?php echo $this->element( 'layout/include_scripts' ) ?>
 

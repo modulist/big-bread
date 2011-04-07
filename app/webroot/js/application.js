@@ -3,6 +3,6 @@ $(document).ready( function() {
     href: function() {
       return $(this).attr( 'href' );  
     },
-    rel: 'nofollow',
+    rel: 'nofollow'
   });
 });

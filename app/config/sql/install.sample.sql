@@ -43,63 +43,63 @@ DROP TABLE IF EXISTS dsireincentive_dsireincentive_detail;
 DROP TABLE IF EXISTS error_log;
 DROP TABLE IF EXISTS error_log_bak;
 
-ALTER TABLE bigbread.incentive
+ALTER TABLE incentive
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.incentive__incentive_tech
+ALTER TABLE incentive__incentive_tech
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.incentive_amount_type
+ALTER TABLE incentive_amount_type
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.incentive_county
+ALTER TABLE incentive_county
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.incentive_note
+ALTER TABLE incentive_note
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.incentive_note_type
+ALTER TABLE incentive_note_type
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.incentive_tech
+ALTER TABLE incentive_tech
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.incentive_tech_energy
+ALTER TABLE incentive_tech_energy
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.incentive_tech_energy_group
+ALTER TABLE incentive_tech_energy_group
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.incentive_tech_energy_type
+ALTER TABLE incentive_tech_energy_type
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.incentive_tech_group
+ALTER TABLE incentive_tech_group
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.incentive_tech_option
+ALTER TABLE incentive_tech_option
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.incentive_tech_option_type
+ALTER TABLE incentive_tech_option_type
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.incentive_tech_term
+ALTER TABLE incentive_tech_term
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.incentive_tech_term_type
+ALTER TABLE incentive_tech_term_type
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.incentive_type
+ALTER TABLE incentive_type
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.incentive_type_group
+ALTER TABLE incentive_type_group
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.incentive_utility
+ALTER TABLE incentive_utility
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.incentive_weblink
+ALTER TABLE incentive_weblink
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.incentive_weblink_type
+ALTER TABLE incentive_weblink_type
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.incentive_weblink_verification
+ALTER TABLE incentive_weblink_verification
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.incentive_zip
+ALTER TABLE incentive_zip
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.us_county
+ALTER TABLE us_county
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.us_county__us_zipcode
+ALTER TABLE us_county__us_zipcode
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.us_states
+ALTER TABLE us_states
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.us_zipcode
+ALTER TABLE us_zipcode
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.incentive_user
+ALTER TABLE incentive_user
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.utility
+ALTER TABLE utility
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.utility_zip
+ALTER TABLE utility_zip
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 /** A few adjustments to the incentives database */
@@ -110,61 +110,17 @@ UPDATE incentive
    SET expiration_date = null
  WHERE expiration_date = '0000-00-00';
 
--- Create a new id field that will become the PK
-/**
-ALTER TABLE incentive
-  DROP PRIMARY KEY,
-  ADD COLUMN id char(36) NULL FIRST,
-  MODIFY COLUMN incentive_id varchar(10) NULL;
-  
--- Populate the new id field
-UPDATE incentive
-   SET id = UUID();
-  
--- Reassign the PK and create a unique index on the old PK
-ALTER TABLE incentive
-  MODIFY id char(36) NOT NULL,
-  ADD PRIMARY KEY( id ),
-  ADD CONSTRAINT uix__incentive_id UNIQUE INDEX( incentive_id );
-*/
-
 /**
  * Update the foreign key value on a few tables that aren't handled in
  * more detail below. These are tables that the new app doesn't use or
  * uses very little right now.
  */
-/*
-ALTER TABLE incentive_county
-  MODIFY COLUMN incentive_id char(36) NOT NULL;
-  
--- Set the new incentive_county.incentive_id value to the UUID, where appropriate
-UPDATE incentive_county, incentive
-   SET incentive_county.incentive_id = incentive.id
- WHERE incentive_county.incentive_id = incentive.incentive_id;
 
-ALTER TABLE incentive_note
-  MODIFY COLUMN incentive_id char(36) NOT NULL;
- 
--- Set the new incentive_note.incentive_id value to the UUID, where appropriate
-UPDATE incentive_note, incentive
-   SET incentive_note.incentive_id = incentive.id
- WHERE incentive_note.incentive_id = incentive.incentive_id;
-
-ALTER TABLE incentive_weblink
-  MODIFY COLUMN incentive_id char(36) NOT NULL;
- 
--- Set the new incentive_weblink.incentive_id value to the UUID, where appropriate
-UPDATE incentive_weblink, incentive
-   SET incentive_weblink.incentive_id = incentive.id
- WHERE incentive_weblink.incentive_id = incentive.incentive_id;
-*/
-
-/** TECHNOLOGIES /
+/** TECHNOLOGIES */
 
 -- Add a UUID field that will become the primary key
 -- display a given technology on the questionnaire.
 -- Accept foreign key constraints
-*/
 ALTER TABLE incentive_tech
 --   DROP PRIMARY KEY,
 --   ADD COLUMN id char(36) NULL FIRST,
@@ -174,64 +130,12 @@ ALTER TABLE incentive_tech
 -- UPDATE incentive_tech
 --   SET id = UUID();
 
-/* 
--- Reassign the PK and create a unique index on the old PK
-ALTER TABLE incentive_tech
-  MODIFY id char(36) NOT NULL,
-  ADD PRIMARY KEY( id ),
-  ADD CONSTRAINT uix__incentive_tech_id UNIQUE INDEX( incentive_tech_id );
-*/
-
 -- Identify the technology products we care about:
 -- Boiler, AC, Dishwasher, Dryer, Freezer, Furnace, Heat Pump, Room AC,
 -- Space Heater, Washer, Water Heater, Range/Cooktop
 UPDATE incentive_tech
    SET questionnaire_product = 1
  WHERE incentive_tech_id IN ( 'BOIL','CAC','DISHW','DRYER','FREEZ','FURN','HP','RMAC','SPHEAT','WASH','WH','COOK' );
-
-/** INCENTIVE-TECHNOLOGY JOIN /
-
-ALTER TABLE incentive__incentive_tech
-  MODIFY COLUMN incentive_tech_id char(36) NOT NULL,
-  MODIFY COLUMN incentive_id char(36) NOT NULL;
- 
--- Set the new incentive__incentive_tech.incentive_id value to the UUID, where appropriate
-UPDATE incentive__incentive_tech, incentive
-   SET incentive__incentive_tech.incentive_id = incentive.id
- WHERE incentive__incentive_tech.incentive_id = incentive.incentive_id;
- 
--- Set the new incentive__incentive_tech.incentive_tech_id value to the UUID, where appropriate
-UPDATE incentive__incentive_tech, incentive_tech
-   SET incentive__incentive_tech.incentive_tech_id = incentive_tech.id
- WHERE incentive__incentive_tech.incentive_tech_id = incentive_tech.incentive_tech_id;
-
--- Foreign key 
-ALTER TABLE incentive__incentive_tech
-  ADD CONSTRAINT fk__incentive__incentive_tech__incentive_tech FOREIGN KEY( incentive_tech_id )
-    REFERENCES incentive_tech( id )
-      ON UPDATE CASCADE
-      ON DELETE NO ACTION,
-  ADD CONSTRAINT fk__incentive__incentive_tech__incentive FOREIGN KEY( incentive_id )
-    REFERENCES incentive( id )
-      ON UPDATE CASCADE
-      ON DELETE NO ACTION;
-
-/** ENERGY SOURCE /
-
-ALTER TABLE incentive_tech_energy_type
-  MODIFY COLUMN incentive_tech_id char(36) NOT NULL;
- 
--- Set the new incentive__incentive_tech.incentive_tech_id value to the UUID, where appropriate
-UPDATE incentive_tech_energy_type, incentive_tech
-   SET incentive_tech_energy_type.incentive_tech_id = incentive_tech.id
- WHERE incentive_tech_energy_type.incentive_tech_id = incentive_tech.incentive_tech_id;
- 
-ALTER TABLE incentive_tech_energy_type
-  ADD CONSTRAINT fk__incentive_tech_energy_type__incentive_tech FOREIGN KEY( incentive_tech_id )
-    REFERENCES incentive_tech( id )
-      ON UPDATE CASCADE
-      ON DELETE NO ACTION;
-*/
 
 /** ENERGY GROUP */
 
@@ -258,23 +162,11 @@ UPDATE us_zipcode
 -- Make the table join-ready
 ALTER TABLE incentive_zip
   MODIFY zip char(5) NOT NULL;
-/* 
--- Set the new incentive_zip.incentive_id value to the UUID, where appropriate
-UPDATE incentive_zip, incentive
-   SET incentive_zip.incentive_id = incentive.id
- WHERE incentive_zip.incentive_id = incentive.incentive_id;
-*/  
+
 -- Create a ready-to use zipcode value
 UPDATE incentive_zip
    SET zip = LPAD(zip, 5, '0');
-/*   
--- Foreign key
-ALTER TABLE incentive_zip
-  ADD CONSTRAINT fk__incentive_zip__incentive FOREIGN KEY( incentive_id )
-    REFERENCES incentive( incentive_id )
-      ON UPDATE CASCADE
-      ON DELETE NO ACTION;
-*/ 
+
 -- Foreign key
 ALTER TABLE incentive_zip
   ADD CONSTRAINT fk__incentive_zip__us_zipcode FOREIGN KEY( zip )
@@ -347,13 +239,6 @@ ALTER TABLE incentive_utility
 -- MODIFY COLUMN incentive_id char(36) NOT NULL,
   MODIFY COLUMN utility_id char(36) NOT NULL;
 
-/*
--- Set the new incentive_utility.incentive_id value to the UUID, where appropriate
-UPDATE incentive_utility, incentive
-   SET incentive_utility.incentive_id = incentive.id
- WHERE incentive_utility.incentive_id = incentive.incentive_id;
-*/
-
 -- Set the new utility_zip.utility_id value to the UUID, where appropriate
 UPDATE incentive_utility, utility
    SET incentive_utility.utility_id = utility.id
@@ -364,11 +249,7 @@ ALTER TABLE incentive_utility
   ADD CONSTRAINT fk__incentive_utility__utility FOREIGN KEY( utility_id )
     REFERENCES utility( id )
       ON UPDATE CASCADE
-      ON DELETE NO ACTION /** ,
-  ADD CONSTRAINT fk__incentive_utility__incentive FOREIGN KEY( incentive_id )
-    REFERENCES incentive( incentive_id )
-      ON UPDATE CASCADE
-      ON DELETE NO ACTION */;
+      ON DELETE NO ACTION;
 
 SET foreign_key_checks = 1; -- Re-engage foreign key constraints
 
