@@ -1,4 +1,4 @@
-<div id="topheader">
+<div id="logoheader">
   <div id="version"><?php echo $this->Html->image( 'beta.png', array( 'title' => 'beta' ) ) ?></div>
   <div id="logo">
     <?php echo $this->Html->image( 'logo.png', array( 'url' => Router::url( '/' ), 'title' => 'beta' ) ) ?>
@@ -27,8 +27,8 @@
   <?php if( $this->Session->check( 'Auth.User' ) ): ?>
     <div id="menubar">
       <?php echo $this->Html->image( 'menubtn1_off.png', array( 'url' => array( 'controller' => 'buildings', 'action' => 'incentives' ), 'alt' => 'Ways to Save', 'title' => 'Ways to Save' ) ) ?>
-      <?php echo $this->Html->image( 'menubtn2_off.png', array( 'url' => '#', 'alt' => 'My House', 'title' => 'My House' ) ) ?>
-      <?php echo $this->Html->image( 'menubtn3_off.png', array( 'url' => Router::url( '/contact' ) ) ) ?>
+      <?php echo $this->Html->image( 'menubtn2_off.png', array( 'url' => Router::url( '/questionnaire' ), 'alt' => 'My House', 'title' => 'My House' ) ) ?>
+      <?php echo $this->Html->image( 'menubtn3_off.png', array( 'url' => Router::url( '/contact' ), 'alt' => 'Feedback', 'title' => 'Feedback' ) ) ?>
     </div>
   <?php endif; ?>
 </div>

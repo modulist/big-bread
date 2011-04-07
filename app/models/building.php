@@ -53,6 +53,10 @@ class Building extends AppModel {
 	public $validate = array();
   
   /**
+   * PUBLIC METHODS
+   */
+  
+  /**
    * Retrieves the relevant incentives (rebates) for a given building.
    *
    * @param 	$building_id

@@ -4,8 +4,7 @@ class Address extends AppModel {
 	public $name = 'Address';
 	
 	public $belongsTo = array(
-    'State'   => array( 'foreignKey' => 'state' ),
-    'ZipCode' => array( 'foreignKey' => 'zip' ),
+    'ZipCode' => array( 'foreignKey' => 'zip_code' ),
   );
 	public $hasOne    = array( 'Building' );
   

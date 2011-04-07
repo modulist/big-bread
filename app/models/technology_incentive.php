@@ -55,6 +55,11 @@ class TechnologyIncentive extends AppModel {
    * @return	array
    */
   public function by_zip( $zip ) {
+    /** 
+    $es = $this->find( 'all', array(
+      'conditions' => array( 'TechnologyIncentive.id' => 11703 ),
+    ) ); */
+    
     # All kinds of non-standard db fields involved here.
     $this->Behaviors->attach( 'Containable', array( 'autoFields' => false ) );
     
@@ -105,12 +110,14 @@ class TechnologyIncentive extends AppModel {
           'Incentive.incentive_id',
           'Incentive.name',
           'Incentive.category',
-          'Incentive.summary',
+          'Incentive.expiration_date',
+          'IncentiveAmountType.incentive_amount_type_id',
           'IncentiveAmountType.name',
           'IncentiveAmountType.description',
           'Technology.incentive_tech_id',
           'Technology.name',
           'Technology.description',
+          'TechnologyIncentive.id',
           'TechnologyIncentive.incentive_id',
           'TechnologyIncentive.incentive_tech_id',
           'TechnologyIncentive.amount',
@@ -118,6 +125,7 @@ class TechnologyIncentive extends AppModel {
           'TechnologyIncentive.weblink',
           'TechnologyIncentive.rebate_link',
           'TechnologyGroup.name',
+          # 'TechnologyOption.name',
           # Filter fields included for validation purposes
           'Incentive.state',
           'Incentive.entire_state',
@@ -136,16 +144,15 @@ class TechnologyIncentive extends AppModel {
             'Incentive.incentive_id' => $zip_code_incentives
           ),
         ),
-        'order' => array( 'TechnologyIncentive.amount DESC' ),
-        # 'limit' => 25,
+        'order' => array(
+          'TechnologyGroup.name',
+          'Technology.name',
+          'TechnologyIncentive.amount DESC'
+        ),
       )
     );
     
-    /** use Set to sort stuff better? */
-    
-    foreach( $incentives as $incentive ) {
-      # echo '<p>' .  . '</p>';
-    }
+    return $incentives;
     
     new PHPDump( $incentives, 'Full Incentives (' . count( $incentives ) . ')' );
     

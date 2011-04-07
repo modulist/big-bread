@@ -23,6 +23,7 @@ class BuildingsController extends AppController {
    */
   public function questionnaire() {
     $this->helpers[] = 'Form';
+    $this->layout    = 'sidebar';
     
     /** Populate Lookups */
     $basementTypes = $this->Building->BasementType->find(
@@ -65,10 +66,6 @@ class BuildingsController extends AppController {
       'list',
       array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
     );
-    $states = $this->Building->Address->State->find(
-      'list',
-      array( 'order' => 'state' )
-    );
     $technologies = $this->Building->BuildingProduct->Product->Technology->find(
       'list',
       array(
@@ -97,7 +94,7 @@ class BuildingsController extends AppController {
     }
     
     /** Prepare the view */
-    $this->set( compact( 'buildingTypes', 'basementTypes', 'buildingShapes', 'energySources', 'exposureTypes', 'frameMaterials', 'insulationLevels', 'maintenanceLevels', 'roofSystems', 'shadingTypes', 'states', 'technologies', 'userTypes', 'wallSystems', 'windowPaneTypes' ) );
+    $this->set( compact( 'buildingTypes', 'basementTypes', 'buildingShapes', 'energySources', 'exposureTypes', 'frameMaterials', 'insulationLevels', 'maintenanceLevels', 'roofSystems', 'shadingTypes', 'technologies', 'userTypes', 'wallSystems', 'windowPaneTypes' ) );
   }
   
   /**
@@ -290,9 +287,28 @@ if( Configure::read( 'debug' ) > 0 ) $this->log( 'Provider is known', LOG_DEBUG 
    * @param 	$building_id
    */
   public function incentives( $building_id ) {
-    $incentives = $this->Building->incentives( $building_id );
-    $zip_code   = $this->Building->zipcode( $building_id );
+    $this->layout = 'sidebar';
     
-    $this->set( compact( 'zip_code', 'incentives' ) );
+    # All of the buildings associated with a given user
+    $buildings = $this->Building->Client->buildings( $this->Auth->user( 'id' ) );
+    
+    $building  = $this->Building->find(
+      'first',
+      array(
+        'contain' => array(
+          'Address' => array(
+            'ZipCode'
+          ),
+          'Client',
+          'Inspector',
+          'Realtor',
+        ),
+        'conditions' => array( 'Building.id' => $building_id ),
+      )
+    );
+    $incentives = $this->Building->incentives( $building_id );
+    $incentives = Set::combine( $incentives, '{n}.TechnologyIncentive.id', '{n}', '{n}.TechnologyGroup.name');
+    
+    $this->set( compact( 'building', 'buildings', 'incentives' ) );
   }
 }

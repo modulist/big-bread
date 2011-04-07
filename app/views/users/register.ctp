@@ -1,12 +1,39 @@
-<h1>Register</h1>
-
 <?php echo $this->Form->create( 'User', array( 'action' => 'register' ) ) ?>
-  <?php echo $this->Form->input( 'User.invite_code', array( 'type' => 'hidden' ) ) ?>
-  <?php echo $this->Form->input( 'User.user_type_id', array( 'type' => 'radio', 'legend' => 'Primary Role' ) ) ?>
+<?php echo $this->Form->input( 'User.invite_code', array( 'type' => 'hidden' ) ) ?>
+
+<div id="signupheader">
+  <h1>Join BigBread.net</h1>
+  <h3>Choose your user type</h3>
+  <ul id="user_type">
+    <?php echo $this->Form->hidden( 'User.user_type_id', array( 'id' => 'UserUserTypeId_', 'value' => '' ) ) ?>
+    <?php foreach( $userTypes as $id => $name ): ?>
+      <li>
+        <?php echo $this->Html->image( strtolower( Inflector::slug( $name ) ) . '.png' ) ?><br />
+        <?php echo $this->Form->radio( 'User.user_type_id', array( $id => $name ), array( 'legend' => false, 'hiddenField' => false ) ) ?>
+      </li>
+    <?php endforeach; ?>
+  </ul>
+  <div class="clear"></div>
+</div>
+
+<div id="signupbody">
+  <p>Required fields are noted by <span>*</span></p>
+  
   <?php echo $this->Form->input( 'User.first_name' ) ?>
   <?php echo $this->Form->input( 'User.last_name' ) ?>
   <?php echo $this->Form->input( 'User.email' ) ?>
   <?php echo $this->Form->input( 'User.phone_number' ) ?>
   <?php echo $this->Form->input( 'User.password' ) ?>
   <?php echo $this->Form->input( 'User.confirm_password', array( 'type' => 'password' ) ) ?>
-<?php echo $this->Form->end( 'Register' ) ?> or <?php echo $this->Html->link( 'Cancel', '/' ) ?>
+  
+  <div class="buttons">
+    <div class="button">
+      <input type="submit" value="Submit" />
+    </div>
+    <div class="button">
+      <input type="reset" value="Cancel" />
+    </div>
+  </div>
+</div>
+
+<?php echo $this->Form->end() ?>

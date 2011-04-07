@@ -34,16 +34,15 @@ SET foreign_key_checks = 0; -- Protect against bad legacy data
  * this probably isn't necessary any longer, but it doesn't hurt, so I'm
  * going to go ahead and leave it in there.
  */
-ALTER TABLE bigbread.dsireincentive
-  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.dsireincentive_detail
-  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.dsireincentive_dsireincentive_detail
-  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.error_log
-  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-ALTER TABLE bigbread.error_log_bak
-  CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ 
+-- Cruft removal
+DROP TABLE IF EXISTS incentive_tech__incentive_tech_energy_group; -- redundant, obsolete
+DROP TABLE IF EXISTS dsireincentive;
+DROP TABLE IF EXISTS dsireincentive_detail;
+DROP TABLE IF EXISTS dsireincentive_dsireincentive_detail;
+DROP TABLE IF EXISTS error_log;
+DROP TABLE IF EXISTS error_log_bak;
+
 ALTER TABLE bigbread.incentive
   CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 ALTER TABLE bigbread.incentive__incentive_tech
@@ -105,12 +104,14 @@ ALTER TABLE bigbread.utility_zip
 
 /** A few adjustments to the incentives database */
 
--- Cruft removal
-DROP TABLE incentive_tech__incentive_tech_energy_group; -- redundant, obsolete
-
 /** INCENTIVES */
 
+UPDATE incentive
+   SET expiration_date = null
+ WHERE expiration_date = '0000-00-00';
+
 -- Create a new id field that will become the PK
+/**
 ALTER TABLE incentive
   DROP PRIMARY KEY,
   ADD COLUMN id char(36) NULL FIRST,
@@ -125,13 +126,14 @@ ALTER TABLE incentive
   MODIFY id char(36) NOT NULL,
   ADD PRIMARY KEY( id ),
   ADD CONSTRAINT uix__incentive_id UNIQUE INDEX( incentive_id );
+*/
 
 /**
  * Update the foreign key value on a few tables that aren't handled in
  * more detail below. These are tables that the new app doesn't use or
  * uses very little right now.
  */
- 
+/*
 ALTER TABLE incentive_county
   MODIFY COLUMN incentive_id char(36) NOT NULL;
   
@@ -155,26 +157,30 @@ ALTER TABLE incentive_weblink
 UPDATE incentive_weblink, incentive
    SET incentive_weblink.incentive_id = incentive.id
  WHERE incentive_weblink.incentive_id = incentive.incentive_id;
- 
-/** TECHNOLOGIES */
+*/
+
+/** TECHNOLOGIES /
 
 -- Add a UUID field that will become the primary key
 -- display a given technology on the questionnaire.
 -- Accept foreign key constraints
+*/
 ALTER TABLE incentive_tech
-  DROP PRIMARY KEY,
-  ADD COLUMN id char(36) NULL FIRST,
+--   DROP PRIMARY KEY,
+--   ADD COLUMN id char(36) NULL FIRST,
   ADD COLUMN questionnaire_product boolean NOT NULL DEFAULT 0; -- whether this piece of tech is represented by a product on the questionnaire
   
 -- Populate the new id field
-UPDATE incentive_tech
-   SET id = UUID();
-  
+-- UPDATE incentive_tech
+--   SET id = UUID();
+
+/* 
 -- Reassign the PK and create a unique index on the old PK
 ALTER TABLE incentive_tech
   MODIFY id char(36) NOT NULL,
   ADD PRIMARY KEY( id ),
   ADD CONSTRAINT uix__incentive_tech_id UNIQUE INDEX( incentive_tech_id );
+*/
 
 -- Identify the technology products we care about:
 -- Boiler, AC, Dishwasher, Dryer, Freezer, Furnace, Heat Pump, Room AC,
@@ -183,7 +189,7 @@ UPDATE incentive_tech
    SET questionnaire_product = 1
  WHERE incentive_tech_id IN ( 'BOIL','CAC','DISHW','DRYER','FREEZ','FURN','HP','RMAC','SPHEAT','WASH','WH','COOK' );
 
-/** INCENTIVE-TECHNOLOGY JOIN */
+/** INCENTIVE-TECHNOLOGY JOIN /
 
 ALTER TABLE incentive__incentive_tech
   MODIFY COLUMN incentive_tech_id char(36) NOT NULL,
@@ -210,7 +216,7 @@ ALTER TABLE incentive__incentive_tech
       ON UPDATE CASCADE
       ON DELETE NO ACTION;
 
-/** ENERGY SOURCE */
+/** ENERGY SOURCE /
 
 ALTER TABLE incentive_tech_energy_type
   MODIFY COLUMN incentive_tech_id char(36) NOT NULL;
@@ -225,6 +231,7 @@ ALTER TABLE incentive_tech_energy_type
     REFERENCES incentive_tech( id )
       ON UPDATE CASCADE
       ON DELETE NO ACTION;
+*/
 
 /** ENERGY GROUP */
 
@@ -236,7 +243,6 @@ ALTER TABLE incentive_tech_energy_group
 -- We're flattening this table so we can kill a couple of "parent" records
 DELETE FROM incentive_tech_energy_group
       WHERE incentive_tech_energy_group_id IN ( 'GAS', 'ALT' );
-
 /** ZIP CODE */
 
 -- Required to create foreign key constraints
@@ -251,25 +257,24 @@ UPDATE us_zipcode
 
 -- Make the table join-ready
 ALTER TABLE incentive_zip
-  MODIFY incentive_id char(36) NOT NULL,
   MODIFY zip char(5) NOT NULL;
-  
+/* 
 -- Set the new incentive_zip.incentive_id value to the UUID, where appropriate
 UPDATE incentive_zip, incentive
    SET incentive_zip.incentive_id = incentive.id
  WHERE incentive_zip.incentive_id = incentive.incentive_id;
-  
+*/  
 -- Create a ready-to use zipcode value
 UPDATE incentive_zip
    SET zip = LPAD(zip, 5, '0');
-   
+/*   
 -- Foreign key
 ALTER TABLE incentive_zip
   ADD CONSTRAINT fk__incentive_zip__incentive FOREIGN KEY( incentive_id )
     REFERENCES incentive( incentive_id )
       ON UPDATE CASCADE
       ON DELETE NO ACTION;
- 
+*/ 
 -- Foreign key
 ALTER TABLE incentive_zip
   ADD CONSTRAINT fk__incentive_zip__us_zipcode FOREIGN KEY( zip )
@@ -339,14 +344,16 @@ ALTER TABLE utility_zip
 
 -- Join table needs the new utility id
 ALTER TABLE incentive_utility
-  MODIFY COLUMN incentive_id char(36) NOT NULL,
+-- MODIFY COLUMN incentive_id char(36) NOT NULL,
   MODIFY COLUMN utility_id char(36) NOT NULL;
 
+/*
 -- Set the new incentive_utility.incentive_id value to the UUID, where appropriate
 UPDATE incentive_utility, incentive
    SET incentive_utility.incentive_id = incentive.id
  WHERE incentive_utility.incentive_id = incentive.incentive_id;
-  
+*/
+
 -- Set the new utility_zip.utility_id value to the UUID, where appropriate
 UPDATE incentive_utility, utility
    SET incentive_utility.utility_id = utility.id
@@ -357,11 +364,11 @@ ALTER TABLE incentive_utility
   ADD CONSTRAINT fk__incentive_utility__utility FOREIGN KEY( utility_id )
     REFERENCES utility( id )
       ON UPDATE CASCADE
-      ON DELETE NO ACTION,
+      ON DELETE NO ACTION /** ,
   ADD CONSTRAINT fk__incentive_utility__incentive FOREIGN KEY( incentive_id )
     REFERENCES incentive( incentive_id )
       ON UPDATE CASCADE
-      ON DELETE NO ACTION;
+      ON DELETE NO ACTION */;
 
 SET foreign_key_checks = 1; -- Re-engage foreign key constraints
 
@@ -757,7 +764,7 @@ CREATE TABLE products(
   make              varchar(255)  NULL,
   model             varchar(255)  NULL,
   ahri_ref_number   varchar(255)  NULL, -- AHRI certified reference number (http://www.ahridirectory.org/ahridirectory/pages/home.aspx)
-  energy_source_id  char(36)      NULL,
+  energy_source_id  varchar(6)    NULL,
   efficiency_rating float         NULL,
   warranty_info     text          NULL,
   recall_info       text          NULL,
@@ -765,7 +772,7 @@ CREATE TABLE products(
   PRIMARY KEY( id ),
   CONSTRAINT uix__products__make_model_energy UNIQUE INDEX( make, model, energy_source_id ),
   CONSTRAINT fk__products__incentive_tech FOREIGN KEY( technology_id )
-    REFERENCES incentive_tech( id )
+    REFERENCES incentive_tech( incentive_tech_id )
     ON UPDATE CASCADE
     ON DELETE NO ACTION,
   CONSTRAINT fk__products__incentive_tech_energy_type FOREIGN KEY( energy_source_id )

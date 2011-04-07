@@ -7,23 +7,27 @@
 <body>
   
 <div id="wrapper">
-  <!-- BEGIN COMMON HEADER -->
-  <?php echo $this->element( 'layout/header' ) ?>
-  <!-- END COMMON HEADER -->
-  
-  <div id="content">
-    <!-- BEGIN  FLASH MESSAGES -->
-    <?php echo $this->element( 'layout/flash_messages' ) ?>
-    <!-- END  FLASH MESSAGES -->
-    
-    <!-- BEGIN PAGE CONTENT -->
-    <?php echo $content_for_layout ?>
-    <!-- END PAGE CONTENT -->
+  <div id="header">
+    <?php echo $this->element( 'layout/header' ) ?>
   </div>
   
-  <!-- BEGIN COMMON FOOTER -->
-  <?php echo $this->element( 'layout/footer' ) ?>
-  <!-- END COMMON FOOTER -->
+  <?php ?>
+  <div id="pagebody"> 				
+    <div id="bodymain">
+      <div id="content">
+        <?php echo $this->element( 'layout/flash_messages' ) ?>
+        
+        <?php echo $content_for_layout ?>
+      </div>
+      <div class="clear"></div>
+      
+    </div>
+  </div>
+  <?php ?>
+  
+  <div id="footer">
+    <?php echo $this->element( 'layout/footer' ) ?>
+  </div>
 </div>
   
 <?php echo $this->element( 'layout/include_scripts' ) ?>

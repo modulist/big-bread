@@ -29,8 +29,6 @@ class UsersController extends AppController {
    * @access  public
    */
   public function register( $invite = null ) {
-    # new PHPDump( $this->User->invalidFields(), 'Invalid Fields (on enter)' );
-    
     # Handle a submitted registration
     if( $this->RequestHandler->isPost() && !empty( $this->data ) ) {
       /**
@@ -48,7 +46,9 @@ class UsersController extends AppController {
         $this->redirect( $this->Auth->redirect() );
       }
       else {
-        $this->Session->setFlash( 'Oh noz. There\'s a problem with your registration.', null, null, 'validation' );
+        $this->Session->setFlash( 'There\'s a problem with your registration. Please correct the errors below.', null, null, 'validation' );
+        $this->data['User']['password'] = '';
+        $this->data['User']['confirm_password'] = '';
       }
     }
     else {
