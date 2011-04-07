@@ -55,10 +55,7 @@ class AppController extends Controller {
 			'controller' => 'buildings',
 			'action'     => 'questionnaire',
 		);
-		$this->Auth->logoutRedirect = array(
-      'controller' => 'users',
-      'action'     => 'login'
-    );
+		$this->Auth->logoutRedirect = Router::url( '/' );
     
     $this->Auth->authError  = __( 'Authentication required. Please login.', true );
 		$this->Auth->loginError = __( 'Invalid authentication credentials. Please try again.', true );

@@ -34,7 +34,7 @@
         <?php # new PHPDump( $details, 'Details' ); ?>
         <div id="item">
           <ul>
-            <li><?php echo $this->Html->image( 'T_AirCon.png', array( 'alt' => $details['Technology']['name'], 'title' => $details['Technology']['name'] ) ) ?></li>
+            <li><?php echo h( $details['Technology']['name'] ) # echo $this->Html->image( 'T_AirCon.png', array( 'alt' => $details['Technology']['name'], 'title' => $details['Technology']['name'] ) ) ?></li>
             <li><?php __( 'Make' ) ?><br /><div>Abc</div></li>
             <li><?php __( 'Model' ) ?><br /><div>Abc123</div></li>
             <li><?php __( 'Serial Number' ) ?><br /><div>123456</div></li>
@@ -43,7 +43,7 @@
         </div>
     
         <div id="sponser">
-          <h3>Sponsers</h3>
+          <h3>Sponsors</h3>
           <ul>
             <li><b>American Home Shield</b>-Avoid Costly Home A/C Repairs.<br />
                   Get A Home Warranty Quote Free!<br />
@@ -66,7 +66,7 @@
             <div class="price USD"><p><?php echo h( $details['TechnologyIncentive']['amount'] ) ?></p></div>
             <ul>
               <li class="itemname"><b><?php echo h( $details['Incentive']['name'] ) ?></b></li>
-              <li><b>Expiration Date<br /><?php echo empty( $details['Incentive']['expiration_date'] ) ? 'Not Specified' : date( 'm/d/Y', strtotime( $details['Incentive']['expiration_date'] ) ) ?></b></li>
+              <li><b>Expiration Date<br /><?php echo empty( $details['Incentive']['expiration_date'] ) ? 'When Funds Exhausted' : date( 'm/d/Y', strtotime( $details['Incentive']['expiration_date'] ) ) ?></b></li>
             </ul>
           </div>
         </div>

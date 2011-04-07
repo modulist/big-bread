@@ -148,6 +148,26 @@ class User extends AppModel {
   }
   
   /**
+   * Returns the identifier of the most recently created building
+   * associated with the specified user.
+   */
+  public function has_building( $user_id ) {
+    return $this->Building->find(
+      'count',
+      array(
+        'contain'    => false,
+        'conditions' => array(
+          'OR' => array(
+            'Building.client_id'    => $user_id,
+            'Building.realtor_id'   => $user_id,
+            'Building.inspector_id' => $user_id,
+          )
+        ),
+      )
+    );
+  }
+  
+  /**
    * Determines whether a user already exists (is known) based on an
    * email address (a unique key).
    *

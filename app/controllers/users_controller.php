@@ -98,7 +98,15 @@ class UsersController extends AppController {
       $this->User->id = $this->Auth->user( 'id' );
       $this->set_user_type();
 			$this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
-			$this->redirect( $this->Auth->redirect() );
+      
+      if( $this->User->has_building( $this->Auth->User('id') ) ) {
+        $this->redirect( array( 'controller' => 'buildings', 'action' => 'incentives' ) );
+      }
+      else {
+        $this->redirect( $this->Auth->redirect() );
+      }
+      
+			
 		}
     /** Probably an error logging in */
     else if( !empty( $this->data ) ) {

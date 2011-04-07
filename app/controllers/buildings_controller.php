@@ -286,11 +286,14 @@ if( Configure::read( 'debug' ) > 0 ) $this->log( 'Provider is known', LOG_DEBUG 
    *
    * @param 	$building_id
    */
-  public function incentives( $building_id ) {
+  public function incentives( $building_id = null ) {
     $this->layout = 'sidebar';
     
-    # All of the buildings associated with a given user
+    # All of the buildings associated with a given user (sidebar)
     $buildings = $this->Building->Client->buildings( $this->Auth->user( 'id' ) );
+    
+    # If no building is specified, use the most recent for the user
+    $building_id = !empty( $building_id ) ? $building_id : $buildings[0]['Building']['id'];
     
     $building  = $this->Building->find(
       'first',
