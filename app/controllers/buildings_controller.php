@@ -107,6 +107,7 @@ class BuildingsController extends AppController {
     if( !$this->RequestHandler->isPost() || empty( $this->data ) ) {
       $this->redirect( '/questionnaire' );
     }
+    
     /**
      * We can only take one user with a given email address. If anyone
      * associated with the building has an email that already exists,
@@ -146,7 +147,6 @@ class BuildingsController extends AppController {
         $provider = $this->Building->Address->ZipCode->ZipCodeUtility->Utility->known( $name, $id );
         
         if( !$provider ) { # The specified provider is not recognized
-if( Configure::read( 'debug' ) > 0 ) $this->log( 'Provider is NOT known', LOG_DEBUG );
           # Pull the state code for the building zip code
           if( !isset( $state ) ) {
             $state = $this->Building->Address->ZipCode->find(
@@ -197,7 +197,6 @@ if( Configure::read( 'debug' ) > 0 ) $this->log( 'Provider is NOT known', LOG_DE
           }
         }
         else {
-if( Configure::read( 'debug' ) > 0 ) $this->log( 'Provider is known', LOG_DEBUG );
           # If the name is known, use the id from the database
           $this->data['Building'][$type . '_provider_id'] = $provider;
         }
@@ -214,8 +213,11 @@ if( Configure::read( 'debug' ) > 0 ) $this->log( 'Provider is known', LOG_DEBUG 
       $model      = $product['model'];
       $energy     = isset( $product['energy_source_id'] ) ? $product['energy_source_id'] : null;
       
-      # If any key equipment info was entered, move along.
+      # Ensure that the product is valid. If not, kill it.
       if( empty( $product['technology_id'] ) || empty( $make ) || empty( $model ) || empty( $energy ) ) {
+        # TODO: Maybe pull the tech name and display a warning if the tech_id was entered?
+        unset( $this->data['Product'][$i] );
+        unset( $this->data['BuildingProduct'][$i] );
         continue;
       }
       
@@ -234,6 +236,14 @@ if( Configure::read( 'debug' ) > 0 ) $this->log( 'Provider is known', LOG_DEBUG 
       if( $product_id ) {
         $this->data['BuildingProduct'][$i]['product_id'] = $product_id;
       }
+    }
+    
+    # Clear the product structures if empty.
+    if( empty( $this->data['Product'] ) ) {
+      unset( $this->data['Product'] );
+    }
+    if( empty( $this->data['BuildingProduct'] ) ) {
+      unset( $this->data['BuildingProduct'] );
     }
     
     if( $this->Building->saveAll( $this->data ) ) {
@@ -275,7 +285,7 @@ if( Configure::read( 'debug' ) > 0 ) $this->log( 'Provider is known', LOG_DEBUG 
     else {
       $invalid_fields = $this->Building->invalidFields();
       if( !empty( $invalid_fields ) ) {
-        $this->Session->setFlash( 'Oh noz. There is a problem with the questionnaire. Please correct the errors below.', null, null, 'validation' );
+        $this->Session->setFlash( 'There is a problem with the data you provided. Please correct the errors below.', null, null, 'validation' );
       }
       $this->setAction( 'questionnaire' );
     }
@@ -309,6 +319,13 @@ if( Configure::read( 'debug' ) > 0 ) $this->log( 'Provider is known', LOG_DEBUG 
         'conditions' => array( 'Building.id' => $building_id ),
       )
     );
+    
+    # Something bad happened.
+    if( empty( $building ) ) {
+      $this->Session->setFlash( 'We\'re sorry, but we couldn\'t find the building you requested.', null, null, 'validation' );
+      $this->redirect( Router::url( '/questionnaire' ) );
+    }
+    
     $incentives = $this->Building->incentives( $building_id );
     $incentives = Set::combine( $incentives, '{n}.TechnologyIncentive.id', '{n}', '{n}.TechnologyGroup.name');
     
