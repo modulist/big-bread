@@ -46,15 +46,15 @@ class BuildingsController extends AppController {
       'list',
       array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
     );
+    $frameMaterials = $this->Building->BuildingWindowSystem->FrameMaterial->find(
+      'list',
+      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
+    );
     $insulationLevels = $this->Building->BuildingWallSystem->InsulationLevel->find(
       'list',
       array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
     );
     $maintenanceLevels = $this->Building->MaintenanceLevel->find(
-      'list',
-      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
-    );
-    $frameMaterials = $this->Building->BuildingWindowSystem->FrameMaterial->find(
       'list',
       array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
     );
@@ -70,7 +70,7 @@ class BuildingsController extends AppController {
       'list',
       array(
         'conditions' => array( 'Technology.questionnaire_product' => 1 ),
-        'order' => array( 'Technology.technology_group_id', 'Technology.name' ),
+        'order' => array( 'Technology.name' ),
       )
     );
     $userTypes = $this->Building->Client->UserType->find(
