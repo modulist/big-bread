@@ -32,7 +32,7 @@
       
       <?php $technologies = array() ?>
       <?php foreach( $technology as $id => $details ): ?>
-        <?php # new PHPDump( $details, 'Details', '', true ); ?>
+        <?php new PHPDump( $details, 'Details', '', true ); ?>
         
         <?php if( !in_array( $details['Technology']['name'], $technologies ) ): ?>
           <?php if( empty( $details['Technology']['Product'] ) ): ?>
@@ -99,27 +99,80 @@
         <div class="clear"></div>
 
         <div class="incentive">
-          <div class="incentive-bar">
-            <div class="incentive-btn">
-              <a href="#" ><div id="TermsCondition_on">&nbsp;</div></a>
-              <a href="#" ><div id="RebateForm_off">&nbsp;</div></a>
-              <a href="#" ><div id="SponsorInfo_off">&nbsp;</div></a>
-            </div>
-            <h3><?php __( 'Incentives' ) ?></h3>
-            <div class="clear"></div>
-          </div>
-
-          <p>The total credil cannot exceed $1.200- must be installed on e taxp¤yer's principal residence in the United
-          States Oulsque lacillsls eral a dui. Nam matesuada omnre dolor Cras gravida, dlem sit amet rhoncus ornare.
-          erat ellt consectetuer eral, ld egestes pede nlbh eget odlo. Proln nsequat rutrum. Nullam egestas leuglat lelis.
-          Integer edipiscing semper Iigula. Nunc molestie. nist sit amet cursus convallls. sapien lectus enim wisi id lectus
-          Donec vestibulum. Etiam vel nlbhr Nutla lacillsl. Mauris ptiaretra. Donec sugue Fusce ultrlces, neque ld dignisslm
-          ullrices. tellus mauris dictum elit. vel leclnie enim metus eu nunc.</p>
+          <table cellspacing="0" border="1" class="incentive-details">
+          <thead>
+            <tr>
+              <th>Technology</th>
+              <th>Options</th>
+              <th>Energy Source</th>
+            </tr>
+          <thead>
+          <tbody>
+            <td><?php echo h( $details['Technology']['name'] ) ?></td>
+            <td>
+              <?php if( !empty( $details['TechnologyOption'] ) ): ?>
+                <ul>
+                  <?php foreach( $details['TechnologyOption'] as $option ): ?>
+                    <li><?php echo h( $option['name'] ) ?></li>
+                  <?php endforeach; ?>
+                </ul>
+              <?php else: ?>
+                None
+              <?php endif; ?>
+            </td>
+            <td>
+              <?php if( !empty( $details['EnergySource'] ) ): ?>
+                <ul>
+                  <?php foreach( $details['EnergySource'] as $esource ): ?>
+                    <li><?php echo h( $esource['name'] ) ?></li>
+                  <?php endforeach; ?>
+                </ul>
+              <?php else: ?>
+                None
+              <?php endif; ?>
+            <td>
+          </tbody>
+          </table>
+          
+          <?php if( !empty( $details['TechnologyTerm'] ) ): ?>
+            <table cellspacing="0" class="incentive-tnc" border="1">
+            <thead>
+              <tr>
+                <th class="terms"><?php __( 'Terms' ) ?></th>
+                <th class="conditions"><?php __( 'Conditions' ) ?></th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach( $details['TechnologyTerm'] as $term ): ?>
+              <tr>
+                <td class="terms"><?php echo h( $term['name'] ) ?></td>
+                <td class="conditions">
+                  <?php if( !empty( $term['field1_name'] ) || !empty( $term['field2_name'] ) ): ?>
+                    <ul>
+                      <?php foreach( array( 'field1', 'field2' ) as $i => $field ): ?>
+                        <li><?php echo h( $term[$field . '_name'] ) . h( $term['IncentiveTechTerm'][$field . '_value'] ) ?></li>
+                      <?php endforeach; ?>
+                    </ul>
+                  <?php endif; ?>
+                </td>
+              </tr>
+              <?php endforeach; ?> 
+            <tbody>
+            </table>
+          <?php endif; ?>
+          <?php if( !empty( $details['Incentive']['IncentiveNote'] ) ): ?>
+            <h4>Notes</h4>
+            <ul>
+              <?php foreach( $details['Incentive']['IncentiveNote'] as $note ): ?>
+                <li><?php echo h( $note['note'] ) ?></li>
+              <?php endforeach; ?>
+            </ul>
+          <?php endif; ?>
         </div>
         <div class="clear"></div>
         
         <div class="itemspac">
-          <div class="incentive-note"><a href="#" ><?php __( 'Incentive Notes' ) ?></a></div>
+          <div class="incentive-note"><a href="#"><?php __( 'Show Details' ) ?></a></div>
         </div>
       <?php endforeach; ?>
     <?php endforeach; ?>
