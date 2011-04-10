@@ -4,6 +4,7 @@
 <div id="signupheader">
   <h1>Join BigBread.net</h1>
   <h3>Choose your user type</h3>
+  
   <ul id="user_type">
     <?php echo $this->Form->hidden( 'User.user_type_id', array( 'id' => 'UserUserTypeId_', 'value' => '' ) ) ?>
     <?php foreach( $userTypes as $id => $name ): ?>

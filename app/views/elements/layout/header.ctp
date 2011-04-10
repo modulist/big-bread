@@ -11,8 +11,8 @@
       <?php if( $this->Session->check( 'Auth.User' ) ): ?>
         <li class="first last"><?php echo $this->Html->link( 'Logout', Router::url( '/logout' ) ) ?></li>
       <?php else: ?>
-        <li class="first"><?php echo $this->Html->link( 'Login', Router::url( '/login' ), array( 'rel' => 'modal' ) ) ?></li>
-        <li class="last"><?php echo $this->Html->link( 'Register', Router::url( '/register' ), array( 'rel' => 'modal' ) ) ?></li>
+        <li class="first"><?php echo $this->Html->link( 'Login', Router::url( '/login' ) ) ?></li>
+        <li class="last"><?php echo $this->Html->link( 'Register', Router::url( '/register' ) ) ?></li>
       <?php endif; ?>
     </ul>
   </div>

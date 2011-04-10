@@ -29,8 +29,6 @@ class UsersController extends AppController {
    * @access  public
    */
   public function register( $invite = null ) {
-    $this->layout = 'blank';
-    
     # Handle a submitted registration
     if( $this->RequestHandler->isPost() && !empty( $this->data ) ) {
       /**
@@ -95,8 +93,6 @@ class UsersController extends AppController {
    * @access  public
    */
 	public function login() {
-    $this->layout = 'blank';
-    
     /** Logging in and authenticated */
     if ( !empty( $this->data ) && $this->Auth->user() ) {
       $this->User->id = $this->Auth->user( 'id' );
