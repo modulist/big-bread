@@ -79,6 +79,10 @@ class User extends AppModel {
 				'required'   => false,
         'on'         => 'create',
 			),
+      'identical' => array(
+        'rule'    => array( 'identical', 'password' ), 
+        'message' => 'Passwords do not match.' 
+      ),
     ),
 		'phone_number' => array(
 			'phoneNumber' => array(
