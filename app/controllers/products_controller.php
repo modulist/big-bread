@@ -19,7 +19,7 @@ class ProductsController extends AppController {
       array(
         'contain' => false,
         'fields'  => array( 'EnergySource.incentive_tech_energy_type_id', 'EnergySource.name' ),
-        'conditions' => array( 'EnergySource.incentive_tech_id' => $technology_id ),
+        'conditions' => array( 'EnergySource.technology_id' => $technology_id ),
         'order' => array( 'EnergySource.name' ),
       )
     );

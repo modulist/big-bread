@@ -2,8 +2,6 @@
 
 class Technology extends AppModel {
 	public $name         = 'Technology';
-	public $useTable     = 'incentive_tech';
-  public $primaryKey   = 'incentive_tech_id';
   
   public $hasMany = array(
     'EnergySource' => array(
@@ -20,8 +18,6 @@ class Technology extends AppModel {
   public $belongsTo = array(
     'TechnologyGroup' => array(
       'className'  => 'TechnologyGroup',
-      'foreignKey' => false,
-      'conditions' => array( 'Technology.incentive_tech_group_id = TechnologyGroup.incentive_tech_group_id' ),
     ),
   );
 }

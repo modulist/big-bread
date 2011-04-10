@@ -70,7 +70,7 @@ class BuildingsController extends AppController {
       'list',
       array(
         'conditions' => array( 'Technology.questionnaire_product' => 1 ),
-        'order' => array( 'incentive_tech_group_id', 'name' ),
+        'order' => array( 'Technology.technology_group_id', 'Technology.name' ),
       )
     );
     $userTypes = $this->Building->Client->UserType->find(
@@ -327,7 +327,17 @@ class BuildingsController extends AppController {
     }
     
     $incentives = $this->Building->incentives( $building_id );
+    # Group by technology group
     $incentives = Set::combine( $incentives, '{n}.TechnologyIncentive.id', '{n}', '{n}.TechnologyGroup.name');
+# new PHPDump( $incentives, 'Incentives' ); exit;
+    # Within a group, group by technology
+/** 
+    foreach( $incentives as $group => $incentive ) {
+      $incentives[$group] = Set::combine( $incentive, '{n}.TechnologyIncentive.id', '{n}', '{n}.Technology.name' );
+    }
+*/
+
+# new PHPDump( $incentives, 'Grouped', '', true );
     
     $this->set( compact( 'building', 'buildings', 'incentives' ) );
   }

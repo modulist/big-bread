@@ -44,6 +44,15 @@ class Building extends AppModel {
 		'BuildingWindowSystem',
 	);
   
+  public $hasAndBelongsToMany = array(
+    'Product' => array(
+      'className'             => 'Product',
+      'joinTable'             => 'building_products',
+      'foreignKey'            => 'building_id',
+      'associationForeignKey' => 'product_id',
+    ),
+  );
+  
   public $actsAs = array(
     'Auditable' => array(
       'ignore'  => array( 'created', 'modified' ),

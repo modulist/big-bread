@@ -3,10 +3,12 @@
 class Incentive extends AppModel {
 	public $name       = 'Incentive';
 	public $useTable   = 'incentive';
-  public $primarykey = 'incentive_id';
   
   public $hasMany = array(
-    /** TODO: Note */
+    'IncentiveNote' => array(
+      'className'  => 'IncentiveNote',
+      'conditions' => array( 'IncentiveNote.incentive_note_type_id' => array( 'PUB', 'AIN' ) )
+    ),
     'TechnologyIncentive' => array(
       'className'  => 'TechnologyIncentive',
       'conditions' => array( 'TechnologyIncentive.is_active' => 1 ),

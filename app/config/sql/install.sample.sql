@@ -104,38 +104,251 @@ ALTER TABLE utility_zip
 
 /** A few adjustments to the incentives database */
 
-/** INCENTIVES */
+/**
+ * Update key entities to remove double underscores.
+ * - These created havoc with the framework
+ * - Going to improve clarity as long as we're here.
+ */
+ 
+/**
+ * INCENTIVES
+ */
 
+-- Prepare for a new PK field
+ALTER TABLE incentive
+  DROP PRIMARY KEY,
+  ADD COLUMN id char(36) NULL FIRST,
+  MODIFY COLUMN incentive_id varchar(10) NULL;
+
+-- Populate the new incentive.id
+UPDATE incentive
+   SET id = UUID();
+   
+-- Reassign the PK and create a unique index on the old PK
+ALTER TABLE incentive
+  MODIFY id char(36) NOT NULL,
+  ADD PRIMARY KEY( id ),
+  ADD CONSTRAINT uix__incentive_id UNIQUE INDEX( incentive_id );
+  
+-- Minor data cleanup
 UPDATE incentive
    SET expiration_date = null
  WHERE expiration_date = '0000-00-00';
+
+    /**
+     * TABLES ASSOCIATED WITH incentive
+     * - Change the foreign key field to char(36)
+     * - Update the appropriate records
+     * - Create an actual foreign key
+     */
+
+    -- NOTES
+    ALTER TABLE incentive_note
+      MODIFY COLUMN incentive_id char(36) NOT NULL;
+      
+    UPDATE incentive_note, incentive
+       SET incentive_note.incentive_id = incentive.id
+     WHERE incentive_note.incentive_id = incentive.incentive_id;
+     
+    ALTER TABLE incentive_note
+      ADD CONSTRAINT fk__incentive_note__incentive FOREIGN KEY( incentive_id )
+        REFERENCES incentive( id )
+          ON UPDATE CASCADE
+          ON DELETE NO ACTION;
+
+    -- UTILITIES
+    ALTER TABLE incentive_utility
+      MODIFY COLUMN incentive_id char(36) NOT NULL;
+      
+    UPDATE incentive_utility, incentive
+       SET incentive_utility.incentive_id = incentive.id
+     WHERE incentive_utility.incentive_id = incentive.incentive_id;
+     
+    ALTER TABLE incentive_utility
+      ADD CONSTRAINT fk__incentive_utility__incentive FOREIGN KEY( incentive_id )
+        REFERENCES incentive( id )
+          ON UPDATE CASCADE
+          ON DELETE NO ACTION;
+
+    -- INCENTIVE_WEBLINK
+    ALTER TABLE incentive_weblink
+      MODIFY COLUMN incentive_id char(36) NOT NULL;
+      
+    UPDATE incentive_weblink, incentive
+       SET incentive_weblink.incentive_id = incentive.id
+     WHERE incentive_weblink.incentive_id = incentive.incentive_id;
+     
+    ALTER TABLE incentive_weblink
+      ADD CONSTRAINT fk__incentive_weblink__incentive FOREIGN KEY( incentive_id )
+        REFERENCES incentive( id )
+          ON UPDATE CASCADE
+          ON DELETE NO ACTION;
+
+    -- INCENTIVE_ZIPS
+    ALTER TABLE incentive_zips
+      MODIFY COLUMN incentive_id char(36) NOT NULL;
+      
+    -- Set the new technology_incentives.incentive_id value to the UUID, where appropriate
+    UPDATE incentive_zips, incentive
+       SET incentive_zips.incentive_id = incentive.id
+     WHERE incentive_zips.incentive_id = incentive.incentive_id;
+     
+    -- Create real foreign keys
+    ALTER TABLE incentive_zips
+      ADD CONSTRAINT fk__incentive_zips__incentive FOREIGN KEY( incentive_id )
+        REFERENCES incentive( id )
+          ON UPDATE CASCADE
+          ON DELETE NO ACTION,
+      ADD CONSTRAINT fk__incentive_zips__us_zipcode FOREIGN KEY( zip )
+        REFERENCES us_zipcode( zip )
+          ON UPDATE CASCADE
+          ON DELETE NO ACTION;
+
+/**
+ * TECHNOLOGY GROUP
+ */
+ALTER TABLE incentive_tech_group
+  RENAME TO technology_groups;
+  
+-- Prepare for a new PK field
+ALTER TABLE technology_groups
+  DROP PRIMARY KEY,
+  ADD COLUMN id char(36) NULL FIRST,
+  MODIFY COLUMN incentive_tech_group_id varchar(6) NULL; -- whether this piece of tech is represented by a product on the questionnaire
+  
+-- Populate the new incentive.id
+UPDATE technology_groups
+   SET id = UUID();
+   
+-- Reassign the PK and create a unique index on the old PK
+ALTER TABLE technology_groups
+  MODIFY id char(36) NOT NULL,
+  ADD PRIMARY KEY( id ),
+  ADD CONSTRAINT uix__incentive_tech_group_id UNIQUE INDEX( incentive_tech_group_id );
+
+
+/**
+ * TECHNOLOGIES
+ */
+ 
+-- Rename the table for clarity as long as we're changing other stuff.
+ALTER TABLE incentive_tech
+  RENAME TO technologies;
+  
+-- Prepare for a new PK field
+-- Adjust for changes to the technology_groups table above
+-- Add a field
+ALTER TABLE technologies
+  DROP PRIMARY KEY,
+  ADD COLUMN id char(36) NULL FIRST,
+  MODIFY COLUMN incentive_tech_id varchar(10) NULL,
+  CHANGE COLUMN incentive_tech_group_id technology_group_id char(36) NOT NULL,
+  ADD COLUMN questionnaire_product boolean NOT NULL DEFAULT 0; -- whether this piece of tech is represented by a product on the questionnaire
+  
+-- Populate the new incentive.id
+UPDATE technologies
+   SET id = UUID();
+   
+-- Update group association data
+UPDATE technologies, technology_groups
+   SET technologies.technology_group_id = technology_groups.id
+ WHERE technologies.technology_group_id = technology_groups.incentive_tech_group_id;
+   
+-- Reassign the PK and create a unique index on the old PK
+ALTER TABLE technologies
+  MODIFY id char(36) NOT NULL,
+  ADD PRIMARY KEY( id ),
+  ADD CONSTRAINT uix__incentive_tech_id UNIQUE INDEX( incentive_tech_id );
+
+-- Identify the technology products we care about:
+-- Boiler, AC, Dishwasher, Dryer, Freezer, Furnace, Heat Pump, Room AC,
+-- Space Heater, Washer, Water Heater, Range/Cooktop
+UPDATE technologies
+   SET questionnaire_product = 1
+ WHERE incentive_tech_id IN ( 'BOIL','CAC','DISHW','DRYER','FREEZ','FURN','HP','RMAC','SPHEAT','WASH','WH','COOK' );
+
+    /**
+     * TABLES ASSOCIATED WITH technologies (nee incentive_tech)
+     * - Change the foreign key field to char(36)
+     * - Update the appropriate records
+     * - Create an actual foreign key
+     */
+
+    -- Energy source
+    ALTER TABLE incentive_tech_energy_type
+      CHANGE COLUMN incentive_tech_id technology_id char(36) NOT NULL;
+      
+    -- Set the new incentive_tech_energy_type.technology_id value to the UUID, where appropriate
+    UPDATE incentive_tech_energy_type, technologies
+       SET incentive_tech_energy_type.technology_id = technologies.id
+     WHERE incentive_tech_energy_type.technology_id = technologies.incentive_tech_id;
+
+/**
+ * TECHNOLOGY-INCENTIVE JOIN
+ */
+ 
+-- Rename to remove double underscore
+-- Adjust for new foreign key fields
+ALTER TABLE incentive__incentive_tech
+  RENAME TO technology_incentives,
+  CHANGE COLUMN incentive_tech_id technology_id char(36) NOT NULL,
+  MODIFY COLUMN incentive_id char(36) NOT NULL;
+  
+-- Set the new technology_incentives.incentive_id value to the UUID, where appropriate
+UPDATE technology_incentives, incentive
+   SET technology_incentives.incentive_id = incentive.id
+ WHERE technology_incentives.incentive_id = incentive.incentive_id;
+ 
+-- Set the new technology_incentives.incentive_tech_id value to the UUID, where appropriate
+UPDATE technology_incentives, technologies
+   SET technology_incentives.technology_id = technologies.id
+ WHERE technology_incentives.technology_id = technologies.incentive_tech_id;
+ 
+-- Create real foreign keys
+ALTER TABLE technology_incentives
+  ADD CONSTRAINT fk__technology_incentives__technologies FOREIGN KEY( technology_id )
+    REFERENCES technologies( id )
+      ON UPDATE CASCADE
+      ON DELETE NO ACTION,
+  ADD CONSTRAINT fk__technology_incentives__incentive FOREIGN KEY( incentive_id )
+    REFERENCES incentive( id )
+      ON UPDATE CASCADE
+      ON DELETE NO ACTION;
+
+    /**
+     * TABLES ASSOCIATED WITH technology_incentives (nee incentive__incentive_tech)
+     * - Change the foreign key field to char(36)
+     * - Create an actual foreign key
+     */
+
+    -- Update foreign key fields to remove double underscore (incentive__incentive_tech_id)
+    -- and to better fit framework conventions as long as a change has to be made.
+    ALTER TABLE incentive_tech_energy
+      CHANGE incentive__incentive_tech_id technology_incentive_id bigint NOT NULL,
+      ADD CONSTRAINT fk__incentive_tech_energy__technology_incentives FOREIGN KEY( technology_incentive_id )
+        REFERENCES technology_incentives( id )
+          ON UPDATE CASCADE
+          ON DELETE NO ACTION;
+          
+    ALTER TABLE incentive_tech_option
+      CHANGE incentive__incentive_tech_id technology_incentive_id bigint NOT NULL,
+      ADD CONSTRAINT fk__incentive_tech_option__technology_incentives FOREIGN KEY( technology_incentive_id )
+        REFERENCES technology_incentives( id )
+          ON UPDATE CASCADE
+          ON DELETE NO ACTION;
+          
+    ALTER TABLE incentive_tech_term
+      CHANGE incentive__incentive_tech_id technology_incentive_id bigint NOT NULL,
+      ADD CONSTRAINT fk__incentive_tech_term__technology_incentives FOREIGN KEY( technology_incentive_id )
+        REFERENCES technology_incentives( id )
+          ON UPDATE CASCADE
+          ON DELETE NO ACTION;
 
 /**
  * Update the foreign key value on a few tables that aren't handled in
  * more detail below. These are tables that the new app doesn't use or
  * uses very little right now.
  */
-
-/** TECHNOLOGIES */
-
--- Add a UUID field that will become the primary key
--- display a given technology on the questionnaire.
--- Accept foreign key constraints
-ALTER TABLE incentive_tech
---   DROP PRIMARY KEY,
---   ADD COLUMN id char(36) NULL FIRST,
-  ADD COLUMN questionnaire_product boolean NOT NULL DEFAULT 0; -- whether this piece of tech is represented by a product on the questionnaire
-  
--- Populate the new id field
--- UPDATE incentive_tech
---   SET id = UUID();
-
--- Identify the technology products we care about:
--- Boiler, AC, Dishwasher, Dryer, Freezer, Furnace, Heat Pump, Room AC,
--- Space Heater, Washer, Water Heater, Range/Cooktop
-UPDATE incentive_tech
-   SET questionnaire_product = 1
- WHERE incentive_tech_id IN ( 'BOIL','CAC','DISHW','DRYER','FREEZ','FURN','HP','RMAC','SPHEAT','WASH','WH','COOK' );
 
 /** ENERGY GROUP */
 
@@ -236,7 +449,6 @@ ALTER TABLE utility_zip
 
 -- Join table needs the new utility id
 ALTER TABLE incentive_utility
--- MODIFY COLUMN incentive_id char(36) NOT NULL,
   MODIFY COLUMN utility_id char(36) NOT NULL;
 
 -- Set the new utility_zip.utility_id value to the UUID, where appropriate
@@ -652,8 +864,8 @@ CREATE TABLE products(
   
   PRIMARY KEY( id ),
   CONSTRAINT uix__products__make_model_energy UNIQUE INDEX( make, model, energy_source_id ),
-  CONSTRAINT fk__products__incentive_tech FOREIGN KEY( technology_id )
-    REFERENCES incentive_tech( incentive_tech_id )
+  CONSTRAINT fk__products__technologies FOREIGN KEY( technology_id )
+    REFERENCES technologies( id )
     ON UPDATE CASCADE
     ON DELETE NO ACTION,
   CONSTRAINT fk__products__incentive_tech_energy_type FOREIGN KEY( energy_source_id )

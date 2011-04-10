@@ -25,48 +25,74 @@
 
 <div id="contentbody">
   <?php if( !empty( $incentives ) ): ?>
-    <?php foreach( $incentives as $group => $tech_incentives ): ?>
+    <?php foreach( $incentives as $group => $technology ): ?>
       <div id="info">
-        <h2><?php echo !empty( $group ) ? $group : 'Unspecified Group' ?></h2>
+        <h2><?php echo !empty( $group ) ? h( $group ) : 'Unspecified Group' ?></h2>
       </div>
       
-      <?php foreach( $tech_incentives as $id => $details ): ?>
-        <?php # new PHPDump( $details, 'Details' ); ?>
-        <div id="item">
-          <ul>
-            <li><?php echo h( $details['Technology']['name'] ) # echo $this->Html->image( 'T_AirCon.png', array( 'alt' => $details['Technology']['name'], 'title' => $details['Technology']['name'] ) ) ?></li>
-            <li><?php __( 'Make' ) ?><br /><div>Abc</div></li>
-            <li><?php __( 'Model' ) ?><br /><div>Abc123</div></li>
-            <li><?php __( 'Serial Number' ) ?><br /><div>123456</div></li>
-          </ul>
-          <div class="clear"></div>
-        </div>
-    
-        <div id="sponser">
-          <h3>Sponsors</h3>
-          <ul>
-            <li><b>American Home Shield</b>-Avoid Costly Home A/C Repairs.<br />
-                  Get A Home Warranty Quote Free!<br />
-                  <a href="#">homewarranty.ahs.com</a>
-            </li>
-            <li><b>Virginia Repair AC</b>-Find Prescreened Cooling Pros Free!<br />
-                  Repair, Replace &amp; Service Your A/C.<br />
-                  <a href="#">www.servicemagic.com</a>
-            </li>
-            <li><b>Windsor, VA HVAC Services</b>-Local, Quality Heating &amp; AC Service<br />
-                Serving Windsor &amp; Surrounding Areas<br />
-                <a href="#">www.tidewaterpetro.com/HVAC</a>
-            </li>
-          </ul>
-          <div class="clear"></div>
-        </div>
+      <?php $technologies = array() ?>
+      <?php foreach( $technology as $id => $details ): ?>
+        <?php # new PHPDump( $details, 'Details', '', true ); ?>
+        
+        <?php if( !in_array( $details['Technology']['name'], $technologies ) ): ?>
+          <?php if( empty( $details['Technology']['Product'] ) ): ?>
+            <div id="item">
+              <ul>
+                <li><div><?php echo h( $details['Technology']['name'] ) ?></div></li>
+                <li><div><?php echo sprintf( __( 'No existing %s', true ), strtolower( Inflector::pluralize( h( $details['Technology']['name'] ) ) ) ) ?></div></li>
+              </ul>
+              <div class="clear"></div>
+            </div>
+          <?php else: ?>
+            <?php foreach( $details['Technology']['Product'] as $product ): ?>
+              <div id="item">
+                <ul>
+                  <li><div><?php echo h( $details['Technology']['name'] ) ?></div></li>
+                  <li><?php __( 'Make' ) ?><br /><div><?php echo h( $product['make'] ) ?></div></li>
+                  <li><?php __( 'Model' ) ?><br /><div><?php echo h( $product['model'] ) ?></div></li>
+                  <li><?php __( 'Serial Number' ) ?><br />
+                    <?php foreach( $product['BuildingProduct'] as $building_product ): ?>
+                      <?php # new PHPDump( $building_product ); ?>
+                      <div><?php echo h( $building_product['serial_number'] ) ?></div>
+                    <?php endforeach; ?>
+                  </li>
+                </ul>
+                <div class="clear"></div>
+              </div>
+            <?php endforeach; ?>
+          <?php endif; ?>
+          
+          <div id="sponser">
+            <h3>Sponsors</h3>
+            <ul>
+              <li><b>American Home Shield</b>-Avoid Costly Home A/C Repairs.<br />
+                    Get A Home Warranty Quote Free!<br />
+                    <a href="#">homewarranty.ahs.com</a>
+              </li>
+              <li><b>Virginia Repair AC</b>-Find Prescreened Cooling Pros Free!<br />
+                    Repair, Replace &amp; Service Your A/C.<br />
+                    <a href="#">www.servicemagic.com</a>
+              </li>
+              <li><b>Windsor, VA HVAC Services</b>-Local, Quality Heating &amp; AC Service<br />
+                  Serving Windsor &amp; Surrounding Areas<br />
+                  <a href="#">www.tidewaterpetro.com/HVAC</a>
+              </li>
+            </ul>
+            <div class="clear"></div>
+          </div>
+          
+          <?php # Add the tech name to the stack so we don't print it again. ?>
+          <?php array_push( $technologies, $details['Technology']['name'] ) ?>
+        <?php endif; ?>
 
         <div class="itemprice_border">
           <div class="itemprice">
-            <div class="price USD"><p><?php echo h( $details['TechnologyIncentive']['amount'] ) ?></p></div>
+            <div class="price <?php echo Inflector::slug( h( $details['TechnologyIncentive']['incentive_amount_type_id'] ) ) ?>">
+              <p><?php echo h( $details['TechnologyIncentive']['amount'] ) ?></p>
+            </div>
             <ul>
               <li class="itemname"><b><?php echo h( $details['Incentive']['name'] ) ?></b></li>
-              <li><b>Expiration Date<br /><?php echo empty( $details['Incentive']['expiration_date'] ) ? 'When Funds Exhausted' : date( 'm/d/Y', strtotime( $details['Incentive']['expiration_date'] ) ) ?></b></li>
+              <li><b><?php __( 'Expiration Date:' ) ?><br /><?php echo empty( $details['Incentive']['expiration_date'] ) ? __( 'When Funds Exhausted', true ) : date( 'm/d/Y', strtotime( $details['Incentive']['expiration_date'] ) ) ?></b></li>
             </ul>
           </div>
         </div>
@@ -79,7 +105,7 @@
               <a href="#" ><div id="RebateForm_off">&nbsp;</div></a>
               <a href="#" ><div id="SponsorInfo_off">&nbsp;</div></a>
             </div>
-            <h3>Incentives</h3>
+            <h3><?php __( 'Incentives' ) ?></h3>
             <div class="clear"></div>
           </div>
 
@@ -93,7 +119,7 @@
         <div class="clear"></div>
         
         <div class="itemspac">
-          <div class="incentive-note"><a href="#" >Incentive Notes</a></div>
+          <div class="incentive-note"><a href="#" ><?php __( 'Incentive Notes' ) ?></a></div>
         </div>
       <?php endforeach; ?>
     <?php endforeach; ?>

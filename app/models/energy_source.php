@@ -25,7 +25,7 @@ class EnergySource extends AppModel {
       'className'             => 'TechnologyIncentive',
       'joinTable'             => 'incentive_tech_energy',
       'foreignKey'            => 'incentive_tech_energy_type_id',
-      'associationForeignKey' => 'incentive__incentive_tech_id',
+      'associationForeignKey' => 'technology_incentive_id',
     ),
   );
 }
