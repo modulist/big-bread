@@ -32,8 +32,6 @@
       
       <?php $technologies = array() ?>
       <?php foreach( $technology as $id => $details ): ?>
-        <?php # new PHPDump( $details, 'Details', '', true ); ?>
-        
         <?php if( !in_array( $details['Technology']['name'], $technologies ) ): ?>
           <?php if( empty( $details['Technology']['Product'] ) ): ?>
             <div id="item">
@@ -52,7 +50,6 @@
                   <li><?php __( 'Model' ) ?><br /><div><?php echo h( $product['model'] ) ?></div></li>
                   <li><?php __( 'Serial Number' ) ?><br />
                     <?php foreach( $product['BuildingProduct'] as $building_product ): ?>
-                      <?php # new PHPDump( $building_product ); ?>
                       <div><?php echo h( $building_product['serial_number'] ) ?></div>
                     <?php endforeach; ?>
                   </li>
@@ -99,6 +96,12 @@
         <div class="clear"></div>
 
         <div class="incentive">
+          <?php if( !empty( $details['Incentive']['AdditionalIncentiveNote'] ) ): ?>
+            <?php foreach( $details['Incentive']['AdditionalIncentiveNote'] as $note ): ?>
+              <p><?php echo h( $note['note'] ) ?></p>
+            <?php endforeach; ?>
+          <?php endif; ?>
+          
           <table cellspacing="0" border="1" class="incentive-details">
           <thead>
             <tr>
@@ -162,10 +165,10 @@
             <tbody>
             </table>
           <?php endif; ?>
-          <?php if( !empty( $details['Incentive']['IncentiveNote'] ) ): ?>
+          <?php if( !empty( $details['Incentive']['PublicNote'] ) ): ?>
             <h4>Notes</h4>
             <ul>
-              <?php foreach( $details['Incentive']['IncentiveNote'] as $note ): ?>
+              <?php foreach( $details['Incentive']['PublicNote'] as $note ): ?>
                 <li><?php echo h( $note['note'] ) ?></li>
               <?php endforeach; ?>
             </ul>

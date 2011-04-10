@@ -79,7 +79,8 @@ class TechnologyIncentive extends AppModel {
         'contain' => array(
           'EnergySource',
           'Incentive' => array(
-            'IncentiveNote',
+            'PublicNote',
+            'AdditionalIncentiveNote',
           ),
           'IncentiveAmountType',
           'TechnologyOption',

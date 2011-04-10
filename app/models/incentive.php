@@ -9,6 +9,14 @@ class Incentive extends AppModel {
       'className'  => 'IncentiveNote',
       'conditions' => array( 'IncentiveNote.incentive_note_type_id' => array( 'PUB', 'AIN' ) )
     ),
+    'PublicNote' => array(
+      'className'  => 'IncentiveNote',
+      'conditions' => array( 'PublicNote.incentive_note_type_id' => 'PUB' )
+    ),
+    'AdditionalIncentiveNote' => array(
+      'className'  => 'IncentiveNote',
+      'conditions' => array( 'AdditionalIncentiveNote.incentive_note_type_id' => 'AIN' )
+    ),
     'TechnologyIncentive' => array(
       'className'  => 'TechnologyIncentive',
       'conditions' => array( 'TechnologyIncentive.is_active' => 1 ),
