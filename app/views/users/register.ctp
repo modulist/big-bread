@@ -8,7 +8,7 @@
     <?php echo $this->Form->hidden( 'User.user_type_id', array( 'id' => 'UserUserTypeId_', 'value' => '' ) ) ?>
     <?php foreach( $userTypes as $id => $name ): ?>
       <li>
-        <?php echo $this->Html->image( strtolower( Inflector::slug( $name ) ) . '.png' ) ?><br />
+        <?php echo $this->Html->image( strtolower( Inflector::slug( $name ) ) . '.png', array( 'class' => 'icon', 'title' => $name, 'data-for' => 'UserUserTypeId' . Inflector::slug( $id, '' ) ) ) ?><br />
         <?php echo $this->Form->radio( 'User.user_type_id', array( $id => $name ), array( 'legend' => false, 'hiddenField' => false ) ) ?>
       </li>
     <?php endforeach; ?>
