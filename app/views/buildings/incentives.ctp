@@ -36,7 +36,7 @@
           <?php if( empty( $details['Technology']['Product'] ) ): ?>
             <div id="item">
               <ul>
-                <li><div><?php echo h( $details['Technology']['name'] ) ?></div></li>
+                <li><div>My <?php echo h( $details['Technology']['name'] ) ?></div></li>
                 <li><div><?php echo sprintf( __( 'No existing %s', true ), strtolower( Inflector::pluralize( h( $details['Technology']['name'] ) ) ) ) ?></div></li>
               </ul>
               <div class="clear"></div>
@@ -45,7 +45,7 @@
             <?php foreach( $details['Technology']['Product'] as $product ): ?>
               <div id="item">
                 <ul>
-                  <li><div><?php echo h( $details['Technology']['name'] ) ?></div></li>
+                  <li><div>My <?php echo h( $details['Technology']['name'] ) ?></div></li>
                   <li><?php __( 'Make' ) ?><br /><div><?php echo h( $product['make'] ) ?></div></li>
                   <li><?php __( 'Model' ) ?><br /><div><?php echo h( $product['model'] ) ?></div></li>
                   <li><?php __( 'Serial Number' ) ?><br />
