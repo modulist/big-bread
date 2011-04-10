@@ -32,7 +32,7 @@
       
       <?php $technologies = array() ?>
       <?php foreach( $technology as $id => $details ): ?>
-        <?php new PHPDump( $details, 'Details', '', true ); ?>
+        <?php # new PHPDump( $details, 'Details', '', true ); ?>
         
         <?php if( !in_array( $details['Technology']['name'], $technologies ) ): ?>
           <?php if( empty( $details['Technology']['Product'] ) ): ?>
@@ -153,6 +153,8 @@
                         <li><?php echo h( $term[$field . '_name'] ) . h( $term['IncentiveTechTerm'][$field . '_value'] ) ?></li>
                       <?php endforeach; ?>
                     </ul>
+                  <?php else: ?>
+                    None
                   <?php endif; ?>
                 </td>
               </tr>
