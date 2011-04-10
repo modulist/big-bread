@@ -4,6 +4,7 @@ class ContactsController extends AppController {
   public $name       = 'Contacts';
 	public $helpers    = array( 'Form' );
   public $components = array( 'SwiftMailer' );
+  public $uses       = array( 'UserType' );
   
   /**
    * CALLBACKS
@@ -58,12 +59,11 @@ class ContactsController extends AppController {
         # TODO: Redirect somewhere
       }
     }
-    $organizationTypes = array(
-      'Manufacturers' => 'Manufacturers',
-      'Distributors'  => 'Distributors',
-      'Contractors'   => 'Contractors',
-      'Utilities'     => 'Utilities',
-      'Other'         => 'Other',
+    $organizationTypes = $this->UserType->find(
+      'list',
+      array(
+        'order' => 'UserType.name',
+      )
     );
     
     $this->set( compact( 'organizationTypes' ) );
