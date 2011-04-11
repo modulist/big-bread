@@ -16,8 +16,12 @@
     <br />
     <ul>
       <li><b>Client</b> | <?php echo h( $building['Client']['full_name'] ) ?> | <?php echo $this->Html->link( $building['Client']['email'], 'mailto:' . $building['Client']['email'] ) ?></li>
-      <li><b>Realtor</b> | <?php echo h( $building['Realtor']['full_name'] ) ?> | <?php echo $this->Html->link( $building['Realtor']['email'], 'mailto:' . $building['Realtor']['email'] ) ?></li>
-      <li><b>Inspector</b> | <?php echo h( $building['Inspector']['full_name'] ) ?> | <?php echo $this->Html->link( $building['Inspector']['email'], 'mailto:' . $building['Inspector']['email'] ) ?></li>
+      <?php if( !empty( $building['Realtor']['email'] ) ): ?>
+        <li><b>Realtor</b> | <?php echo h( $building['Realtor']['full_name'] ) ?> | <?php echo $this->Html->link( $building['Realtor']['email'], 'mailto:' . $building['Realtor']['email'] ) ?></li>
+      <?php endif; ?>
+      <?php if( !empty( $building['Inspector']['email'] ) ): ?>
+        <li><b>Inspector</b> | <?php echo h( $building['Inspector']['full_name'] ) ?> | <?php echo $this->Html->link( $building['Inspector']['email'], 'mailto:' . $building['Inspector']['email'] ) ?></li>
+      <?php endif; ?>
     </ul>
   </div>
   <div class="clear"></div>
