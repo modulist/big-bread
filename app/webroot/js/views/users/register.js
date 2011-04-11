@@ -6,4 +6,8 @@ $(document).ready( function() {
       // TODO: "-a" in the UUID is being converted to "A" and messing stuff up
       $('#' + id).attr( 'checked', 'checked' );
     });
+    
+  $('input[type="reset"]').click( function() {
+    location.href = '/';
+  })
 });
