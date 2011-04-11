@@ -1,7 +1,7 @@
 <div id="footerright">
-  <a href="#" ><?php echo $this->Html->image( 'versing.png' ) ?></a>
-  <a href="#" ><?php echo $this->Html->image( 'truste.png' ) ?></a>
-  <a href="#" ><?php echo $this->Html->image( 'mcAfee.png' ) ?></a>
+  <?php # echo $this->Html->image( 'versing.png' ) ?>
+  <?php # echo $this->Html->image( 'truste.png' ) ?>
+  <?php # echo $this->Html->image( 'mcAfee.png' ) ?>
 </div>
 <div id="footerleft">
   <a href="#" ><?php echo $this->Html->image( 'poweredBy.png' ) ?></a>
