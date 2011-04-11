@@ -67,7 +67,9 @@ class TechnologyIncentive extends AppModel {
       )
     );
     $zip_code_incentives = Set::extract( '/ZipCodeIncentive/incentive_id', $zip_code_incentives );
-
+    
+    # new PHPDump( $zip_code_incentives );
+    
     #
     # BEWARE: Crazy query follows. Lots of shit included.
     # 
@@ -131,7 +133,11 @@ class TechnologyIncentive extends AppModel {
               'Incentive.entire_state' => 1,
               'Incentive.state'        => $state,
             ),
-            'Incentive.id' => $zip_code_incentives
+            array(
+              # Incentive that belong to a given zip in the current state
+              'Incentive.id' => $zip_code_incentives,
+              'Incentive.state' => $state,
+            ),
           ),
         ),
         'order' => array(
@@ -141,9 +147,11 @@ class TechnologyIncentive extends AppModel {
         ),
       )
     );
+    
 /**      
     new PHPDump( $incentives, 'Full Incentives (' . count( $incentives ) . ')' ); exit;
-
+    new PHPDump( array_unique( Set::extract( '/Incentive/incentive_id', $incentives ) ) );
+    
     $log = $this->getDataSource()->getLog(false, false);
     new PHPDump( $log, 'LOG' ); exit;
 */
