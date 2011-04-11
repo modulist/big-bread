@@ -10,8 +10,8 @@
       BigBread.net brings together all the energy efficiency, home improvement rebates that help you lower your home maintenance costs and lower your monthly utility bills.
     </p>
     <br />
-    <p><?php echo $this->Html->link( __( 'Register now for your rebates!', true ), Router::url( '/register' ) ) ?></button></p>
-    <p>If you are already registerd, <?php echo $this->Html->link( 'Login', Router::url( '/login' ) ) ?>.</p>
+    <?php echo $this->Html->link( __( 'Register now for your rebates!', true ), Router::url( '/register' ), array( 'class' => 'button' ) ) ?>
+    <p class="link-action">If you are already registerd, <?php echo $this->Html->link( 'Login', Router::url( '/login' ) ) ?>.</p>
 </div>
 
 <div class="clear"></div>
