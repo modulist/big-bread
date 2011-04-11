@@ -9,5 +9,5 @@ $(document).ready( function() {
     
   $('input[type="reset"]').click( function() {
     location.href = '/';
-  })
+  });
 });
