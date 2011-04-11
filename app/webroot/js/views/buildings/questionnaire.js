@@ -1,6 +1,11 @@
 $(document).ready( function() {
+  // Last resort. Clear the required flag manually.
+  $('#RealtorFirstName,#RealtorLastName,#RealtorEmail').parent().removeClass( 'required' );
+  $('#InspectorFirstName,#InspectorLastName,#InspectorEmail').parent().removeClass( 'required' );
+  
   /** FOR TESTING, DO SOME WORK AUTOMATICALLY */
   /** TODO: REMOVE THIS BEFORE DEPLOYMENT */
+  /** 
   alert( 'loading test data...' );
   
   $('#RealtorFirstName').val( 'realfirst' );
@@ -50,6 +55,7 @@ $(document).ready( function() {
   $('#BuildingRoofSystem2LivingSpaceRatio').val( '90' );
   
   $('#BuildingRoofSystemInsulationLevelId').val( '4d700e7a-d250-4c50-9a4f-82376e891b5e' );
+  // */
   /** END AUTO FILL */
   
   $('#AddressZipCode').change( function() {

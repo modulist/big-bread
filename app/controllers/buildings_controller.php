@@ -93,6 +93,13 @@ class BuildingsController extends AppController {
       $this->data[$this->Session->read( 'Auth.UserType.name' )] = $this->Session->read( 'Auth.User' );
     }
     
+    /** 
+    $this->Building->Realtor->validate['first_name']['notempty']['required'] = false;
+    $this->Building->Realtor->validate['last_name']['notempty']['required'] = false;
+    $this->Building->Realtor->validate['email']['notempty']['required'] = false;
+    # debug( $this->Building->Realtor->validate );
+    */
+    
     /** Prepare the view */
     $this->set( compact( 'buildingTypes', 'basementTypes', 'buildingShapes', 'energySources', 'exposureTypes', 'frameMaterials', 'insulationLevels', 'maintenanceLevels', 'roofSystems', 'shadingTypes', 'technologies', 'userTypes', 'wallSystems', 'windowPaneTypes' ) );
   }
@@ -116,6 +123,14 @@ class BuildingsController extends AppController {
      */
     $roles = array( 'Realtor', 'Inspector', 'Client' );
     foreach( $roles as $role ) {
+      # Realtor and Inspector are optional. If key fields are empty, Move along.
+      if( $role != 'Client' ) {
+        if( empty( $this->data[$role]['first_name'] ) && empty( $this->data[$role]['last_name'] ) && empty( $this->data[$role]['email'] ) ) {
+          unset( $this->data[$role] );
+          continue;
+        }
+      }
+      
       $user = !empty( $this->data[$role]['email'] )
         ? $this->Building->{$role}->known( $this->data[$role]['email'] )
         : false;
