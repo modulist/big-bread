@@ -885,6 +885,7 @@ CREATE TABLE building_products(
   notes             text          NULL,
   
   PRIMARY KEY( id ),
+  CONSTRAINT uix__building_products__serial_number UNIQUE INDEX( serial_number ),
   CONSTRAINT fk__building_products__buildings FOREIGN KEY( building_id )
     REFERENCES buildings( id )
     ON UPDATE CASCADE
