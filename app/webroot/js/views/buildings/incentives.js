@@ -7,4 +7,6 @@ $(document).ready( function() {
       $(this).closest( '.itemspac' ).prevAll('.incentive').first().slideUp(); 
       $(this).html('Show Details');
   });
+  // Hide the print button until we have a stylesheet
+  $('.buttons').css( 'visibility', 'hidden' );
 });

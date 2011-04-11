@@ -40,8 +40,10 @@
           <?php if( empty( $details['Technology']['Product'] ) ): ?>
             <div id="item">
               <ul>
-                <li><div>My <?php echo h( $details['Technology']['name'] ) ?></div></li>
-                <li><div><?php echo sprintf( __( 'No existing %s', true ), strtolower( Inflector::pluralize( h( $details['Technology']['name'] ) ) ) ) ?></div></li>
+                <li>
+                  <div>My <?php echo h( $details['Technology']['name'] ) ?></div>
+                  <p><?php echo sprintf( __( 'No %s information has been entered.', true ), strtolower( Inflector::singularize( h( $details['Technology']['name'] ) ) ) ) ?></p>
+                </li>
               </ul>
               <div class="clear"></div>
             </div>
@@ -58,9 +60,10 @@
                     <?php endforeach; ?>
                   </li>
                 </ul>
-                <p>Product recall, safety &amp; warranty information coming soon.</p>
                 <div class="clear"></div>
+                <p>Product recall, safety &amp; warranty information coming soon.</p>
               </div>
+              <div class="clear"></div>
             <?php endforeach; ?>
           <?php endif; ?>
           
@@ -160,7 +163,7 @@
                       <?php foreach( array( 'field1', 'field2', 'field3' ) as $i => $field ): ?>
                         <?php if( !empty( $term[$field . '_name'] ) && !empty( $term['IncentiveTechTerm'][$field . '_value'] ) ): ?>
                           <?php $display = $field != 'field3' # For field3, don't display the name value.
-                            ? h( $term[$field . '_name'] ) . h( $term['IncentiveTechTerm'][$field . '_value'] )
+                            ? h( $term[$field . '_name'] ) . ' = ' . h( $term['IncentiveTechTerm'][$field . '_value'] )
                             : h( $term['IncentiveTechTerm'][$field . '_value'] );
                           ?>
                           <li><?php echo $display ?></li>
