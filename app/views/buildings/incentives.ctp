@@ -48,8 +48,8 @@
           <?php else: ?>
             <?php foreach( $details['Technology']['Product'] as $product ): ?>
               <div id="item">
+                <h3>My <?php echo h( $details['Technology']['name'] ) ?></h3>
                 <ul>
-                  <li><div>My <?php echo h( $details['Technology']['name'] ) ?></div></li>
                   <li><?php __( 'Make' ) ?><br /><div><?php echo h( $product['make'] ) ?></div></li>
                   <li><?php __( 'Model' ) ?><br /><div><?php echo h( $product['model'] ) ?></div></li>
                   <li><?php __( 'Serial Number' ) ?><br />
@@ -58,6 +58,7 @@
                     <?php endforeach; ?>
                   </li>
                 </ul>
+                <p>Product recall, safety &amp; warranty information coming soon.</p>
                 <div class="clear"></div>
               </div>
             <?php endforeach; ?>
@@ -154,10 +155,16 @@
               <tr>
                 <td class="terms"><?php echo h( $term['name'] ) ?></td>
                 <td class="conditions">
-                  <?php if( !empty( $term['field1_name'] ) || !empty( $term['field2_name'] ) ): ?>
+                  <?php if( !empty( $term['field1_name'] ) || !empty( $term['field2_name'] ) || !empty( $term['field3_name'] )  ): ?>
                     <ul>
-                      <?php foreach( array( 'field1', 'field2' ) as $i => $field ): ?>
-                        <li><?php echo h( $term[$field . '_name'] ) . h( $term['IncentiveTechTerm'][$field . '_value'] ) ?></li>
+                      <?php foreach( array( 'field1', 'field2', 'field3' ) as $i => $field ): ?>
+                        <?php if( !empty( $term[$field . '_name'] ) && !empty( $term['IncentiveTechTerm'][$field . '_value'] ) ): ?>
+                          <?php $display = $field != 'field3' # For field3, don't display the name value.
+                            ? h( $term[$field . '_name'] ) . h( $term['IncentiveTechTerm'][$field . '_value'] )
+                            : h( $term['IncentiveTechTerm'][$field . '_value'] );
+                          ?>
+                          <li><?php echo $display ?></li>
+                        <?php endif; ?>
                       <?php endforeach; ?>
                     </ul>
                   <?php else: ?>
