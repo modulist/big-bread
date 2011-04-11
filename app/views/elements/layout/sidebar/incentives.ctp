@@ -19,11 +19,13 @@
     <?php foreach( $buildings as $building ): ?>
       <tr>
         <td class="adrs">
-          <?php echo h( $building['Address']['address_1'] ) ?><br />
-          <?php if( !empty( $building['Address']['address_2'] ) ): ?>
-            <?php echo h( $building['Address']['address_2'] ) ?><br />
-          <?php endif; ?>
-          <?php echo h( $building['Address']['ZipCode']['city'] ) . ', ' . h( $building['Address']['ZipCode']['state'] ) . ' ' . h( $building['Address']['zip_code'] ) ?>
+          <a href="<?php echo Router::url( array( 'action' => 'incentives', $building['Building']['id'] ) ) ?>">
+            <?php echo h( $building['Address']['address_1'] ) ?><br />
+            <?php if( !empty( $building['Address']['address_2'] ) ): ?>
+              <?php echo h( $building['Address']['address_2'] ) ?><br />
+            <?php endif; ?>
+            <?php echo h( $building['Address']['ZipCode']['city'] ) . ', ' . h( $building['Address']['ZipCode']['state'] ) . ' ' . h( $building['Address']['zip_code'] ) ?>
+          </a>
         </td>
         <td class="date"><?php echo date( 'm/d/Y', strtotime( $building['Building']['created'] ) ) ?></td>
       </tr>
@@ -35,4 +37,5 @@
 <div id="getstart">
   <h2><?php __( 'Let\'s Get Started' ) ?></h2>
   <?php echo $this->Html->image( 'DownloadQ.png', array( 'url' => '/files/questionnaire.pdf' ) ) ?>
+  <?php echo $this->Html->image( 'AddAnotherQ.png', array( 'url' => Router::url( '/questionnaire' ) ) ) ?>
 </div>
