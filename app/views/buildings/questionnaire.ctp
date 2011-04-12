@@ -32,16 +32,16 @@
 
         <div id="demographics">
           <h2><?php __( 'Demographics' ) ?></h2>
-          <?php echo $this->Form->input( 'Occupant.age_0_5', array( 'label' => __( 'Ages 0-5', true ) ) ) ?>
-          <?php echo $this->Form->input( 'Occupant.age_6_13', array( 'label' => __( 'Ages 6-13', true ) ) ) ?>
-          <?php echo $this->Form->input( 'Occupant.age_14_64', array( 'label' => __( 'Ages 14-64', true ) ) ) ?>
-          <?php echo $this->Form->input( 'Occupant.age_65', array( 'label' => __( 'Ages 65+', true ) ) ) ?>
+          <?php echo $this->Form->input( 'Occupant.age_0_5', array( 'label' => __( 'Number of Occupants Age 0-5', true ), 'placeholder' => 'Example: 2', 'size' => '3' ) ) ?>
+          <?php echo $this->Form->input( 'Occupant.age_6_13', array( 'label' => __( 'Number of Occupants Age 6-13', true ), 'placeholder' => 'Example: 1', 'size' => '3' ) ) ?>
+          <?php echo $this->Form->input( 'Occupant.age_14_64', array( 'label' => __( 'Number of Occupants Age 14-64', true ), 'placeholder' => 'Example: 1', 'size' => '3' ) ) ?>
+          <?php echo $this->Form->input( 'Occupant.age_65', array( 'label' => __( 'Number of Occupants Age 65 or Older', true ), 'placeholder' => 'Example: 2', 'size' => '3' ) ) ?>
           <?php echo $this->Form->input( 'Occupant.daytime_occupancy', array( 'label' => __( 'Are occupants at home during the day?', true ) ) ) ?>
           
-          <?php echo $this->Form->input( 'Building.setpoint_heating', array( 'label' => __( 'Thermostat setting (heating)', true ) ) ) ?>
-          <?php echo $this->Form->input( 'Occupant.heating_override', array( 'label' => __( 'Frequently adjusted?', true ) ) ) ?>
-          <?php echo $this->Form->input( 'Building.setpoint_cooling', array( 'label' => __( 'Thermostat setting (cooling)', true ) ) ) ?>
-          <?php echo $this->Form->input( 'Occupant.cooling_override', array( 'label' => __( 'Frequently adjusted?', true ) ) ) ?>
+          <?php echo $this->Form->input( 'Building.setpoint_heating', array( 'label' => __( 'Thermostat setting (heating)', true ), 'placeholder' => 'Example: 68' ) ) ?>
+          <?php echo $this->Form->input( 'Occupant.heating_override', array( 'label' => __( 'Is the heat setting adjusted frequently?', true ) ) ) ?>
+          <?php echo $this->Form->input( 'Building.setpoint_cooling', array( 'label' => __( 'Thermostat setting (cooling)', true ), 'placeholder' => 'Example: 75' ) ) ?>
+          <?php echo $this->Form->input( 'Occupant.cooling_override', array( 'label' => __( 'Is the cooling setting adjusted frequently?', true ) ) ) ?>
       
           <div id="utility-providers" style="display: none;">
             <h3><?php __( 'Utility Providers' ) ?></h3>
@@ -92,11 +92,11 @@
         <div id="building_characteristics">
           <h2><?php __( 'Building Characteristics' ) ?></h2>
           <?php echo $this->Form->input( 'Building.exposure_type_id', array( 'empty' => true ) ) ?>
-          <?php echo $this->Form->input( 'Building.year_built' ) ?>
-          <?php echo $this->Form->input( 'Building.finished_sf' ) ?>
+          <?php echo $this->Form->input( 'Building.year_built', array( 'placeholder' => 'Example: 1965' ) ) ?>
+          <?php echo $this->Form->input( 'Building.finished_sf', array( 'placeholder' => 'Example: 4000 (no comma)' ) ) ?>
           <?php echo $this->Form->input( 'Building.building_type_id' ) ?>
           <?php echo $this->Form->input( 'Building.maintenance_level_id', array( 'empty' => true ) ) ?>
-          <?php echo $this->Form->input( 'Building.stories_above_ground' ) ?>
+          <?php echo $this->Form->input( 'Building.stories_above_ground', array( 'placeholder' => 'Example: 2' ) ) ?>
           <?php echo $this->Form->input( 'Building.building_shape_id', array( 'empty' => true ) ) ?>
           <?php echo $this->Form->input( 'Building.basement_type_id', array( 'empty' => true ) ) ?>
           <?php echo $this->Form->input( 'Building.insulated_foundation' ) ?>
@@ -113,17 +113,18 @@
           <?php echo $this->Form->input( 'BuildingWindowSystem.0.tinted' ) ?>
           <?php echo $this->Form->input( 'BuildingWindowSystem.0.low_e' ) ?>
           <?php echo $this->Form->input( 'BuildingWindowSystem.0.frame_material_id', array( 'empty' => true ) ) ?>
-          <?php echo $this->Form->input( 'Building.window_percent_average', array( 'label' => __( 'Average (6-8 sf)', true ) ) ) ?>
-          <?php echo $this->Form->input( 'Building.window_percent_small', array( 'label' => __( 'Few/Small (less than 6 sf, low natural light)', true ) ) ) ?>
-          <?php echo $this->Form->input( 'Building.window_percent_large', array( 'label' => __( 'Large (more than 8 sf, bright natural light)', true ) ) ) ?>
+          <?php echo $this->Form->input( 'Building.window_percent_average', array( 'label' => __( 'Number of Average Size Windows (6-8 sf)', true ), 'placeholder' => __( 'Example: 10', true ) ) ) ?>
+          <?php echo $this->Form->input( 'Building.window_percent_small', array( 'label' => __( 'Number of Small Windows (less than 6 sf)', true ), 'placeholder' => __( 'Example: 5', true ) ) ) ?>
+          <?php echo $this->Form->input( 'Building.window_percent_large', array( 'label' => __( 'Number of Large Windows (more than 8 sf)', true ), 'placeholder' => __( 'Example: 2', true ) ) ) ?>
           <?php echo $this->Form->input( 'Building.window_wall' ) ?>
-          <?php echo $this->Form->input( 'Building.window_wall_sf', array( 'label' => __( 'Estimated Size (sf)', true ) ) ) ?>
+          <?php echo $this->Form->input( 'Building.window_wall_sf', array( 'label' => __( 'Estimated Size (sf)', true ), 'placeholder' => __( 'Example: 80', true ) ) ) ?>
           <?php echo $this->Form->radio( 'Building.window_wall_side', array( __( 'North', true ), __( 'South', true ), __( 'East', true ), __( 'West', true ) ), array( 'legend' => false ) ) ?>
-          <?php echo $this->Form->input( 'Building.skylight_count' ) ?>
+          <?php echo $this->Form->input( 'Building.skylight_count', array( 'label' => __( 'Number of Skylights', true ), 'placeholder' => __( 'Example: 5', true ) ) ) ?>
         
           <?php echo $this->Form->input( 'Building.shading_type_id', array( 'label' => __( 'Sun Cover (lot &amp; interior)', true ), 'empty' => true ) ) ?>
            
           <h3><?php __( 'Air Tightness' ) ?></h3>
+          <p>Check the box if there is evidence of:</p>
           <?php echo $this->Form->input( 'Building.drafts' ) ?>
           <?php echo $this->Form->input( 'Building.visible_weather_stripping' ) ?>
           <?php echo $this->Form->input( 'Building.visible_caulking' ) ?>
@@ -133,7 +134,7 @@
           <?php foreach( $roofSystems as $i => $roof_system ): ?>
             <?php echo $this->Form->checkbox( 'BuildingRoofSystem.' . $i . '.roof_system_id', array( 'value' => $roof_system['RoofSystem']['id'] ) ) ?>
             <label for="BuildingRoofSystem<?php echo $i ?>RoofSystemId"><?php echo $roof_system['RoofSystem']['name'] ?></label>
-            <?php echo $this->Form->input( 'BuildingRoofSystem.' . $i . '.living_space_ratio' ) ?>
+            <?php echo $this->Form->input( 'BuildingRoofSystem.' . $i . '.living_space_ratio', array( 'label' => __( 'Percentage of the total roof that is this shape', true ), 'placeholder' => __( 'Example: 100', true ) ) ) ?>
           <?php endforeach; ?>
           
           <?php echo $this->Form->input( 'BuildingRoofSystem.insulation_level_id', array( 'label' => __( 'Roof/Ceiling Insulation', true ), 'empty' => true ) ) ?>

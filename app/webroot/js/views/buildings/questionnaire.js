@@ -186,4 +186,11 @@ $(document).ready( function() {
       $energy_select.removeAttr( 'disabled' );
     });
   });
+  
+  // Set the cancel button to return to the homepage
+  $('.button input[type="reset"]').click( function() {
+    location.href = '/';
+  });
+  // Hide the submit button. It doesn't do anything right now.
+  $('.button input[value="Submit"]').css( 'display', 'none' );
 });
