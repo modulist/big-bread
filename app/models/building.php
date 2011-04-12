@@ -59,7 +59,96 @@ class Building extends AppModel {
     )
   );
   
-	public $validate = array();
+	public $validate = array(
+    'year_built' => array(
+      'integer' => array(
+        'rule'  => array( 'integer' ),
+        'message' => 'Invalid year.',
+        'allowEmpty' => true,
+        'required'   => false,
+      )
+    ),
+    'finished_sf' => array(
+      'integer' => array(
+        'rule'  => array( 'integer' ),
+        'message' => 'Invalid square footage.',
+        'allowEmpty' => true,
+        'required'   => false,
+      )
+    ),
+    'stories_above_ground' => array(
+      'integer' => array(
+        'rule'  => array( 'integer' ),
+        'message' => 'Invalid number of stories.',
+        'allowEmpty' => true,
+        'required'   => false,
+      )
+    ),
+    'skylight_count' => array(
+      'integer' => array(
+        'rule'  => array( 'integer' ),
+        'message' => 'Invalid number of skylights.',
+        'allowEmpty' => true,
+        'required'   => false,
+      )
+    ),
+    'setpoint_heating' => array(
+      'integer' => array(
+        'rule'  => array( 'integer' ),
+        'message' => 'Invalid thermostat setting.',
+        'allowEmpty' => true,
+        'required'   => false,
+      )
+    ),
+    'setpoint_cooling' => array(
+      'integer' => array(
+        'rule'  => array( 'integer' ),
+        'message' => 'Invalid thermostat setting.',
+        'allowEmpty' => true,
+        'required'   => false,
+      )
+    ),
+    'window_percent_average' => array(
+      'integer' => array(
+        'rule'  => array( 'integer' ),
+        'message' => 'Invalid number of average windows.',
+        'allowEmpty' => true,
+        'required'   => false,
+      )
+    ),
+    'window_percent_small' => array(
+      'integer' => array(
+        'rule'  => array( 'integer' ),
+        'message' => 'Invalid number of small windows.',
+        'allowEmpty' => true,
+        'required'   => false,
+      )
+    ),
+    'window_percent_large' => array(
+      'integer' => array(
+        'rule'  => array( 'integer' ),
+        'message' => 'Invalid number of large windows.',
+        'allowEmpty' => true,
+        'required'   => false,
+      )
+    ),
+    'window_wall_sf' => array(
+      'integer' => array(
+        'rule'  => array( 'integer' ),
+        'message' => 'Invalid square footage.',
+        'allowEmpty' => true,
+        'required'   => false,
+      )
+    ),
+    'window_wall_sf' => array(
+      'numeric' => array(
+        'rule'  => 'numeric',
+        'message' => 'Invalid square footage.',
+        'allowEmpty' => true,
+        'required'   => false,
+      )
+    ),
+  );
   
   /**
    * PUBLIC METHODS

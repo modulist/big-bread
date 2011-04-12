@@ -85,6 +85,26 @@ class AppModel extends Model {
 		
 		return false;
 	}
+  
+  /**
+   * Custom validation method specific to integers.
+   *
+   * @param   $field
+   * @access  public
+   * @todo    Add this to the boilerplate
+   */
+  public function integer( $field = array() ) {
+    foreach( $field as $key => $value ) { 
+      if( !preg_match( '/^\d+$/', $value ) ) {
+        return false; 
+      }
+      else { 
+        continue; 
+      } 
+    }
+    
+    return true; 
+  } 
 
   /**
    * PROTECTED METHODS
