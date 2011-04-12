@@ -261,11 +261,11 @@ ALTER TABLE technologies
   ADD CONSTRAINT uix__incentive_tech_id UNIQUE INDEX( incentive_tech_id );
 
 -- Identify the technology products we care about:
--- Boiler, AC, Dishwasher, Dryer, Freezer, Furnace, Heat Pump, Room AC,
--- Space Heater, Washer, Water Heater, Range/Cooktop
+-- Boiler, AC, Dishwasher, Dryer, Freezer, Furnace, Heat Pump, Refrigerator,
+-- Room AC, Space Heater, Washer, Water Heater, Range/Cooktop
 UPDATE technologies
    SET questionnaire_product = 1
- WHERE incentive_tech_id IN ( 'BOIL','CAC','DISHW','DRYER','FREEZ','FURN','HP','RMAC','SPHEAT','WASH','WH','COOK' );
+ WHERE incentive_tech_id IN ( 'BOIL','CAC','DISHW','DRYER','FREEZ','FURN','HP', 'RFRG', 'RMAC','SPHEAT','WASH','WH','COOK' );
 
     /**
      * TABLES ASSOCIATED WITH technologies (nee incentive_tech)
