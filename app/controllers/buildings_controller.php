@@ -314,13 +314,19 @@ class BuildingsController extends AppController {
   public function incentives( $building_id = null ) {
     $this->layout = 'sidebar';
     
-    # All of the buildings associated with a given user (sidebar)
-    $buildings = $this->Building->Client->buildings( $this->Auth->user( 'id' ) );
+    # All of the addresses associated with a given user (sidebar display)
+    $addresses = $this->Building->Client->buildings( $this->Auth->user( 'id' ) );
+    
+    # This user is not associated with any buildings
+    if( empty( $addresses ) ) {
+      $this->Session->setFlash( 'We can\'t help you save unless you fill out the questionnaire.', null, null, 'warning' );
+      $this->redirect( Router::url( '/questionnaire' ) );
+    }
     
     # If no building is specified, use the most recent for the user
-    $building_id = !empty( $building_id ) ? $building_id : $buildings[0]['Building']['id'];
+    $building_id = !empty( $building_id ) ? $building_id : $addresses[0]['Building']['id'];
     
-    $building  = $this->Building->find(
+    $building = $this->Building->find(
       'first',
       array(
         'contain' => array(
@@ -337,23 +343,14 @@ class BuildingsController extends AppController {
     
     # Something bad happened.
     if( empty( $building ) ) {
-      $this->Session->setFlash( 'We\'re sorry, but we couldn\'t find the building you requested.', null, null, 'validation' );
+      $this->Session->setFlash( 'We\'re sorry, but we couldn\'t find a structure to show incentives for.', null, null, 'warning' );
       $this->redirect( Router::url( '/questionnaire' ) );
     }
     
     $incentives = $this->Building->incentives( $building_id );
-    # Group by technology group
+    # Group the incentives by technology group for display
     $incentives = Set::combine( $incentives, '{n}.TechnologyIncentive.id', '{n}', '{n}.TechnologyGroup.name');
-# new PHPDump( $incentives, 'Incentives' ); exit;
-    # Within a group, group by technology
-/** 
-    foreach( $incentives as $group => $incentive ) {
-      $incentives[$group] = Set::combine( $incentive, '{n}.TechnologyIncentive.id', '{n}', '{n}.Technology.name' );
-    }
-*/
 
-# new PHPDump( $incentives, 'Grouped', '', true );
-    
     $this->set( compact( 'building', 'buildings', 'incentives' ) );
   }
 }
