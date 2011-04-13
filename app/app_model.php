@@ -91,7 +91,6 @@ class AppModel extends Model {
    *
    * @param   $field
    * @access  public
-   * @todo    Add this to the boilerplate
    */
   public function integer( $field = array() ) {
     foreach( $field as $key => $value ) { 
