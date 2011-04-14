@@ -28,10 +28,11 @@
 </div>
 
 <div id="contentbody">
+  <?php new PHPDump( $incentives, 'Incentives', '', true ); ?>
   <?php if( !empty( $incentives ) ): ?>
     <?php foreach( $incentives as $group => $technology ): ?>
       <div id="info">
-        <h2><?php echo !empty( $group ) ? h( $group ) : 'Unspecified Group' ?></h2>
+        <h2 id="<?php echo strtolower( Inflector::slug( $group ) ) ?>"><?php echo !empty( $group ) ? h( $group ) : 'Unspecified Group' ?></h2>
       </div>
       
       <?php $technologies = array() ?>
