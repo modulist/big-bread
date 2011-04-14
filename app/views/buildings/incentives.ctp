@@ -28,7 +28,6 @@
 </div>
 
 <div id="contentbody">
-  <?php new PHPDump( $incentives, 'Incentives', '', true ); ?>
   <?php if( !empty( $incentives ) ): ?>
     <?php foreach( $incentives as $group => $technology ): ?>
       <div id="info">
