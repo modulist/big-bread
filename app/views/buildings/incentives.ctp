@@ -39,17 +39,16 @@
         <?php if( !in_array( $details['Technology']['name'], $technologies ) ): ?>
           <?php if( empty( $details['Technology']['Product'] ) ): ?>
             <div id="item">
-              <ul>
-                <li>
-                  <div>My <?php echo h( $details['Technology']['name'] ) ?></div>
-                  <p><?php echo sprintf( __( 'No %s information has been entered.', true ), strtolower( Inflector::singularize( h( $details['Technology']['name'] ) ) ) ) ?></p>
-                </li>
-              </ul>
+              <?php echo $this->Html->image( 'washer_i.png', array( 'alt' => h( Inflector::singularize( $details['Technology']['name'] ) ) ) ) ?>
+              <h3>My <?php echo h( $details['Technology']['name'] ) ?></h3>
+              <p><?php echo sprintf( __( 'No %s information has been entered.', true ), strtolower( Inflector::singularize( h( $details['Technology']['name'] ) ) ) ) ?></p>
               <div class="clear"></div>
             </div>
           <?php else: ?>
             <?php foreach( $details['Technology']['Product'] as $product ): ?>
+
               <div id="item">
+                <?php echo $this->Html->image( 'washer_i.png', array( 'alt' => h( Inflector::singularize( $details['Technology']['name'] ) ) ) ) ?>
                 <h3>My <?php echo h( $details['Technology']['name'] ) ?></h3>
                 <ul>
                   <li><?php __( 'Make' ) ?><br /><div><?php echo h( $product['make'] ) ?></div></li>
@@ -89,11 +88,13 @@
           <?php # Add the tech name to the stack so we don't print it again. ?>
           <?php array_push( $technologies, $details['Technology']['name'] ) ?>
         <?php endif; ?>
-
+          
+        <?php new PHPDump( $details ); ?>
         <div class="itemprice_border">
           <div class="itemprice">
-            <div class="price <?php echo Inflector::slug( h( $details['TechnologyIncentive']['incentive_amount_type_id'] ) ) ?>">
-              <p><?php echo h( $details['TechnologyIncentive']['amount'] ) ?></p>
+            <div class="price">
+              <p class="pricevalue"><?php echo h( $details['TechnologyIncentive']['amount'] ) ?></p>
+              <p class="priceunit"><?php echo $details['IncentiveAmountType']['name'] ?></p>
             </div>
             <ul>
               <li class="itemname"><b><?php echo h( $details['Incentive']['name'] ) ?></b></li>
@@ -110,7 +111,7 @@
             <?php endforeach; ?>
           <?php endif; ?>
           
-          <table cellspacing="0" border="1" class="incentive-details">
+          <table cellspacing="0" class="incentive-details">
           <thead>
             <tr>
               <th>Technology</th>
@@ -146,7 +147,7 @@
           </table>
           
           <?php if( !empty( $details['TechnologyTerm'] ) ): ?>
-            <table cellspacing="0" class="incentive-tnc" border="1">
+            <table cellspacing="0" class="incentive-tnc">
             <thead>
               <tr>
                 <th class="terms"><?php __( 'Terms' ) ?></th>

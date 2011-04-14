@@ -8,7 +8,7 @@
 <![endif]-->
 
 <?php echo $this->Html->css( 'screen', 'stylesheet', array( 'media' => 'screen' ) ) ?>
-<?php # echo $this->Html->css( 'print', 'stylesheet', array( 'media' => 'print' ) ) ?>
+<?php echo $this->Html->css( 'print', 'stylesheet', array( 'media' => 'print' ) ) ?>
 
 <!-- Colorbox creates a nice looking modal -->
 <?php echo $this->Html->css( '/js/jquery/colorbox/colorbox.css' ) ?>
