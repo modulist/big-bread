@@ -122,7 +122,9 @@ class TechnologyIncentive extends AppModel {
           'TechnologyIncentive.incentive_amount_type_id',
           'TechnologyIncentive.weblink',
           'TechnologyIncentive.rebate_link',
-          'TechnologyGroup.name',
+          'TechnologyGroup.id',
+          'TechnologyGroup.incentive_tech_group_id',
+          'TechnologyGroup.title',
         ),
         'conditions' => array(
           'Incentive.excluded' => 0,

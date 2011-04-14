@@ -14,6 +14,17 @@ class BuildingsController extends AppController {
     # $this->Auth->allow( 'questionnaire', 'create', 'rebates' );
   }
 
+  public function beforeRender() {
+    # Generate a list of tech groups for the rebate bar
+    $technology_groups = $this->Building->BuildingProduct->Product->Technology->TechnologyGroup->find(
+      'list',
+      array(
+        'conditions' => array( 'TechnologyGroup.rebate_bar' => 1 ),
+        'order' => array( 'TechnologyGroup.title' ),
+      )
+    );
+    $this->set( compact( 'technology_groups' ) );
+  }
   
   /**
    * Displays the survey form.
@@ -347,10 +358,12 @@ class BuildingsController extends AppController {
       $this->redirect( Router::url( '/questionnaire' ) );
     }
     
-    $incentives = $this->Building->incentives( $building_id );
+    $incentives      = $this->Building->incentives( $building_id );
+    # Count the incentives before grouping them
+    $incentive_count = count( $incentives );
     # Group the incentives by technology group for display
-    $incentives = Set::combine( $incentives, '{n}.TechnologyIncentive.id', '{n}', '{n}.TechnologyGroup.name');
+    $incentives      = Set::combine( $incentives, '{n}.TechnologyIncentive.id', '{n}', '{n}.TechnologyGroup.title');
 
-    $this->set( compact( 'building', 'buildings', 'incentives' ) );
+    $this->set( compact( 'building', 'buildings', 'incentive_count', 'incentives' ) );
   }
 }
