@@ -30,7 +30,9 @@
 <div id="contentbody">
   <?php if( !empty( $incentives ) ): ?>
     <?php foreach( $incentives as $group => $technology ): ?>
+      <?php # new PHPDump( Set::extract( '/' . $group . '/TechnologyGroup[:first]/title', $incentives ), 'Technology', '', true ); ?>
       <div id="info">
+        <?php echo $this->Html->image( 'ico_' . strtolower( Inflector::slug( h( $group ) ) ) . '.png', array( 'alt' => h( $group ) ) ) ?>
         <h2 id="<?php echo strtolower( Inflector::slug( $group ) ) ?>"><?php echo !empty( $group ) ? h( $group ) : 'Unspecified Group' ?></h2>
       </div>
       
@@ -39,8 +41,7 @@
         <?php if( !in_array( $details['Technology']['name'], $technologies ) ): ?>
           <?php if( empty( $details['Technology']['Product'] ) ): ?>
             <div id="item">
-              <?php echo $this->Html->image( 'washer_i.png', array( 'alt' => h( Inflector::singularize( $details['Technology']['name'] ) ) ) ) ?>
-              <h3>My <?php echo h( $details['Technology']['name'] ) ?></h3>
+              <h3 id="<?php echo strtolower( Inflector::slug( h( $details['Technology']['name'] ), '' ) ) ?>">My <?php echo h( $details['Technology']['name'] ) ?></h3>
               <p><?php echo sprintf( __( 'No %s information has been entered.', true ), strtolower( Inflector::singularize( h( $details['Technology']['name'] ) ) ) ) ?></p>
               <div class="clear"></div>
             </div>
@@ -48,8 +49,7 @@
             <?php foreach( $details['Technology']['Product'] as $product ): ?>
 
               <div id="item">
-                <?php echo $this->Html->image( 'washer_i.png', array( 'alt' => h( Inflector::singularize( $details['Technology']['name'] ) ) ) ) ?>
-                <h3>My <?php echo h( $details['Technology']['name'] ) ?></h3>
+                <h3 id="<?php echo strtolower( Inflector::slug( h( $details['Technology']['name'] ), '' ) ) ?>">My <?php echo h( $details['Technology']['name'] ) ?></h3>
                 <ul>
                   <li><?php __( 'Make' ) ?><br /><div><?php echo h( $product['make'] ) ?></div></li>
                   <li><?php __( 'Model' ) ?><br /><div><?php echo h( $product['model'] ) ?></div></li>
@@ -89,7 +89,7 @@
           <?php array_push( $technologies, $details['Technology']['name'] ) ?>
         <?php endif; ?>
           
-        <?php new PHPDump( $details ); ?>
+        <?php # new PHPDump( $details, 'Details', '', true ); ?>
         <div class="itemprice_border">
           <div class="itemprice">
             <div class="price">
