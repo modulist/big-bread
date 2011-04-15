@@ -34,8 +34,4 @@
   </table>
 <?php endif; ?>
 
-<div id="getstart">
-  <h2><?php __( 'Let\'s Get Started' ) ?></h2>
-  <?php echo $this->Html->image( 'DownloadQ.png', array( 'url' => '/files/questionnaire.pdf' ) ) ?>
-  <?php echo $this->Html->image( 'AddAnotherQ.png', array( 'url' => Router::url( '/questionnaire' ) ) ) ?>
-</div>
+<?php echo $this->element( 'layout/sidebar/_get_started' ) ?>

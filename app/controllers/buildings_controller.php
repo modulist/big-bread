@@ -366,4 +366,20 @@ class BuildingsController extends AppController {
 
     $this->set( compact( 'building', 'addresses', 'incentive_count', 'incentives' ) );
   }
+  
+  /**
+   * Downloads the questionnaire PDF.
+   */
+  public function download_questionnaire() {
+    $this->view = 'Media';
+    $params     = array(
+      'id'        => 'questionnaire.pdf',
+      'name'      => 'questionnaire',
+      'download'  => true,
+      'extension' => 'pdf',  // must be lower case
+      'path'      => 'files' . DS   // don't forget terminal 'DS'
+   );
+    
+   $this->set( $params );
+  }
 }
