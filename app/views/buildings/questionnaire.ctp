@@ -10,16 +10,6 @@
     <h1 id="infohead"><?php __( 'General Information' ) ?></h1>
       <div class="form">
         <div id="general_info">
-          <?php echo $this->Form->input( 'Realtor.first_name', array( 'label' => __( 'Realtor First Name', true ) ) ) ?>
-          <?php echo $this->Form->input( 'Realtor.last_name', array( 'label' => __( 'Realtor Last Name', true ) ) ) ?>
-          <?php echo $this->Form->input( 'Realtor.email', array( 'label' => __( 'Realtor Email', true ) ) ) ?>
-          <?php echo $this->Form->input( 'Realtor.user_type_id', array( 'type' => 'hidden', 'value' => '4d6d9699-f19c-41e3-a723-45ae6e891b5e' ) ) ?>
-          
-          <?php echo $this->Form->input( 'Inspector.first_name', array( 'label' => __( 'Inspector First Name', true ) ) ) ?>
-          <?php echo $this->Form->input( 'Inspector.last_name', array( 'label' => __( 'Inspector Last Name', true ) ) ) ?>
-          <?php echo $this->Form->input( 'Inspector.email', array( 'label' => __( 'Inspector Email', true ) ) ) ?>
-          <?php echo $this->Form->input( 'Inspector.user_type_id', array( 'type' => 'hidden', 'value' => '4d6d9699-5088-48db-9f56-47ea6e891b5e' ) ) ?>
-          
           <?php echo $this->Form->input( 'Client.first_name', array( 'label' => __( 'Client First Name', true ) ) ) ?>
           <?php echo $this->Form->input( 'Client.last_name', array( 'label' => __( 'Client Last Name', true ) ) ) ?>
           <?php echo $this->Form->input( 'Client.email', array( 'label' => __( 'Client Email', true ) ) ) ?>
@@ -29,6 +19,15 @@
           <?php echo $this->Form->input( 'Address.address_1' ) ?>
           <?php echo $this->Form->input( 'Address.address_2' ) ?>
           <?php echo $this->Form->input( 'Address.zip_code' ) ?>
+          <?php echo $this->Form->input( 'Realtor.first_name', array( 'label' => __( 'Realtor First Name', true ) ) ) ?>
+          <?php echo $this->Form->input( 'Realtor.last_name', array( 'label' => __( 'Realtor Last Name', true ) ) ) ?>
+          <?php echo $this->Form->input( 'Realtor.email', array( 'label' => __( 'Realtor Email', true ) ) ) ?>
+          <?php echo $this->Form->input( 'Realtor.user_type_id', array( 'type' => 'hidden', 'value' => '4d6d9699-f19c-41e3-a723-45ae6e891b5e' ) ) ?>
+          
+          <?php echo $this->Form->input( 'Inspector.first_name', array( 'label' => __( 'Inspector First Name', true ) ) ) ?>
+          <?php echo $this->Form->input( 'Inspector.last_name', array( 'label' => __( 'Inspector Last Name', true ) ) ) ?>
+          <?php echo $this->Form->input( 'Inspector.email', array( 'label' => __( 'Inspector Email', true ) ) ) ?>
+          <?php echo $this->Form->input( 'Inspector.user_type_id', array( 'type' => 'hidden', 'value' => '4d6d9699-5088-48db-9f56-47ea6e891b5e' ) ) ?>
         </div> <!-- #general_info -->
 
         <div id="demographics">
