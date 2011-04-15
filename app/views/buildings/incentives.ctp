@@ -122,7 +122,15 @@
             </tr>
           <thead>
           <tbody>
-            <td><?php echo h( $details['Technology']['name'] ) ?></td>
+            <td>
+              <?php echo h( $details['Technology']['name'] ) ?>
+              <?php if( !empty( $details['TechnologyIncentive']['weblink'] ) ): ?>
+                <?php echo $this->Html->image( 'ico_web_link.gif', array( 'url' => $details['TechnologyIncentive']['weblink'], 'title' => 'Click here for more information regarding this rebate', 'alt' => 'Sponsor link' ) ) ?>
+              <?php endif; ?>
+              <?php if( !empty( $details['TechnologyIncentive']['rebate_link'] ) ): ?>
+                <?php echo $this->Html->image( 'ico_rebate_link.gif', array( 'url' => '#', 'title' => 'Click here for rebate forms and processing', 'alt' => 'Rebate link' ) ) ?>
+              <?php endif; ?>
+            </td>
             <td>
               <?php if( !empty( $details['TechnologyOption'] ) ): ?>
                 <ul>
