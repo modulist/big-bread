@@ -34,8 +34,8 @@ class ContactsController extends AppController {
         $this->SwiftMailer->sendAs   = 'text'; 
         $this->SwiftMailer->from     = $this->data['Contact']['email']; 
         $this->SwiftMailer->fromName = $this->data['Contact']['name'];
-        # TODO: Change the To address. Everywhere.
-        $this->SwiftMailer->to       = 'rob@robwilkerson.org';
+        # TODO: Change this? Maybe once we get bigbread.net email up.
+        $this->SwiftMailer->to       = 'wamaull@federatedpower.com';
         
         $this->set( 'name', $this->data['Contact']['name'] );
         $this->set( 'company', $this->data['Contact']['company'] );
