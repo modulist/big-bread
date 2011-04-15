@@ -278,7 +278,7 @@ class BuildingsController extends AppController {
       # Send new user invites
       foreach( $roles as $role ) {
         if( isset( $this->data[$role]['invite_code'] ) ) {
-          if( Configure::read( 'debug' ) > 0 ) $this->log( '{BuildingsController::crete} Sending invite to a ' . $role . ' (' . $this->data[$role]['email'] . '). Code: ' . $this->data[$role]['invite_code'], LOG_DEBUG );
+          if( Configure::read( 'debug' ) > 0 ) $this->log( '{BuildingsController::create} Sending invite to a ' . $role . ' (' . $this->data[$role]['email'] . '). Code: ' . $this->data[$role]['invite_code'], LOG_DEBUG );
           /** 
           $this->SwiftMailer->smtpType = 'tls'; 
           $this->SwiftMailer->smtpHost = 'smtp.gmail.com'; 
@@ -286,11 +286,11 @@ class BuildingsController extends AppController {
           $this->SwiftMailer->smtpUsername = 'my_email@gmail.com'; 
           $this->SwiftMailer->smtpPassword = 'hard_to_guess'; 
           */
-          $this->SwiftMailer->sendAs = 'both'; 
-          $this->SwiftMailer->from = 'rob@robwilkerson.org'; 
+          $this->SwiftMailer->sendAs   = 'both'; 
+          $this->SwiftMailer->from     = 'DO-NOT-REPLY@bigbread.net'; 
           $this->SwiftMailer->fromName = 'BigBread.net';
           # TODO: Change To address
-          $this->SwiftMailer->to = 'rob@robwilkerson.org';
+          $this->SwiftMailer->to = $this->data[$role]['email'];
           
           //set variables to template as usual 
           $this->set( 'invite_code', $this->data[$role]['invite_code'] ); 
