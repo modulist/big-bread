@@ -1,4 +1,4 @@
-<?php $this->set( 'title_for_layout', __( 'Incentives', true )) ?>
+<?php $this->set( 'title_for_layout', __( 'Ways to Save', true )) ?>
 
 <div id="contentheader">
   <h3><?php __( 'House Information' ) ?></h3>

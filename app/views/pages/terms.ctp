@@ -1,3 +1,5 @@
+<?php $this->set( 'title_for_layout', __( 'Terms of Use', true ) ) ?>
+
 <h2>Federated Power Terms of Use</h2>
 <p>This website and the services of Federated Power, LLC available through BigBread.net (the "Site" ) are provided subject to the terms and conditions of these Terms of Use. By accessing or using the Site you agree to these Terms of Use and to the information practices described in our Privacy Policy. </p>
 <p>Federated Power reserves the right to make changes at any time to the Site or these Terms of Use. Any modifications to the Terms of Use will be effective upon posting. Your continued use of the Site following posting of any revised Terms of Use will constitute acceptance of the modified Terms of Use.</p>
