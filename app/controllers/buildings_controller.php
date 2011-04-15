@@ -364,6 +364,6 @@ class BuildingsController extends AppController {
     # Group the incentives by technology group for display
     $incentives      = Set::combine( $incentives, '{n}.TechnologyIncentive.id', '{n}', '{n}.TechnologyGroup.title');
 
-    $this->set( compact( 'building', 'buildings', 'incentive_count', 'incentives' ) );
+    $this->set( compact( 'building', 'addresses', 'incentive_count', 'incentives' ) );
   }
 }

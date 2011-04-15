@@ -7,7 +7,7 @@
   <div id="tipbtm"> </div>
 </div>
 
-<?php if( !empty( $buildings ) ): ?>
+<?php if( !empty( $addresses ) ): ?>
   <table id="address">
   <thead>
     <tr>
@@ -16,18 +16,18 @@
     </tr>
   </thead>
   <tbody>
-    <?php foreach( $buildings as $building ): ?>
+    <?php foreach( $addresses as $address ): ?>
       <tr>
         <td class="adrs">
-          <a href="<?php echo Router::url( array( 'action' => 'incentives', $building['Building']['id'] ) ) ?>">
-            <?php echo h( $building['Address']['address_1'] ) ?><br />
-            <?php if( !empty( $building['Address']['address_2'] ) ): ?>
-              <?php echo h( $building['Address']['address_2'] ) ?><br />
+          <a href="<?php echo Router::url( array( 'action' => 'incentives', $address['Building']['id'] ) ) ?>">
+            <?php echo h( $address['Address']['address_1'] ) ?><br />
+            <?php if( !empty( $address['Address']['address_2'] ) ): ?>
+              <?php echo h( $address['Address']['address_2'] ) ?><br />
             <?php endif; ?>
-            <?php echo h( $building['Address']['ZipCode']['city'] ) . ', ' . h( $building['Address']['ZipCode']['state'] ) . ' ' . h( $building['Address']['zip_code'] ) ?>
+            <?php echo h( $address['Address']['ZipCode']['city'] ) . ', ' . h( $address['Address']['ZipCode']['state'] ) . ' ' . h( $building['Address']['zip_code'] ) ?>
           </a>
         </td>
-        <td class="date"><?php echo date( 'm/d/Y', strtotime( $building['Building']['created'] ) ) ?></td>
+        <td class="date"><?php echo date( 'm/d/Y', strtotime( $address['Building']['created'] ) ) ?></td>
       </tr>
     <?php endforeach; ?>
   </tbody>
