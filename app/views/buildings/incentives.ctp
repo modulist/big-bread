@@ -1,5 +1,7 @@
 <?php $this->set( 'title_for_layout', __( 'Ways to Save', true )) ?>
 
+<h1 class="printable">Visit BigBread.net for the latest in personalized discounts and information</h1>
+
 <div id="contentheader">
   <h3><?php __( 'House Information' ) ?></h3>
   <div id="house_img">
