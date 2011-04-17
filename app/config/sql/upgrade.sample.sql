@@ -22,7 +22,6 @@ ALTER TABLE building_wall_systems
       ON DELETE SET NULL,
   ENABLE KEYS;
   
- 
 -- New title column is text that will appear in rebate bar
 ALTER TABLE technology_groups
   ADD COLUMN title varchar(255) NULL AFTER name,
@@ -62,5 +61,41 @@ UPDATE technology_groups
    SET rebate_bar = 1,
        title = 'Other'
  WHERE incentive_tech_group_id = 'OTH';
+ 
+-- Make incentive_amount_type conform
+DROP TABLE IF EXISTS incentive_amount_types;
+
+ALTER TABLE incentive_amount_type
+  RENAME TO incentive_amount_types;
+  
+-- Prepare for a new PK field
+ALTER TABLE incentive_amount_types
+  DROP PRIMARY KEY,
+  ADD COLUMN id char(36) NULL FIRST,
+  MODIFY COLUMN incentive_amount_type_id varchar(6) NULL;
+  
+-- Populate the new incentive.id
+UPDATE incentive_amount_types
+   SET id = UUID();
+   
+-- Reassign the PK and create a unique index on the old PK
+ALTER TABLE incentive_amount_types
+  MODIFY id char(36) NOT NULL,
+  ADD PRIMARY KEY( id ),
+  ADD CONSTRAINT uix__incentive_amount_type_id UNIQUE INDEX( incentive_amount_type_id );
+
+-- Point existing associations to the new key
+ALTER TABLE technology_incentives
+  MODIFY incentive_amount_type_id char(36) NULL;
+  
+UPDATE technology_incentives, incentive_amount_types
+   SET technology_incentives.incentive_amount_type_id = incentive_amount_types.id
+ WHERE technology_incentives.incentive_amount_type_id = incentive_amount_types.incentive_amount_type_id;
+ 
+ALTER TABLE technology_incentives
+  ADD CONSTRAINT fk__technology_incentives__incentive_amount_types FOREIGN KEY( incentive_amount_type_id )
+    REFERENCES incentive_amount_types( id )
+      ON UPDATE CASCADE
+      ON DELETE NO ACTION;
        
 SET foreign_key_checks = 1;

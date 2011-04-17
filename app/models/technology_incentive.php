@@ -9,11 +9,7 @@ class TechnologyIncentive extends AppModel {
       'className'  => 'Incentive',
       'type'       => 'inner',
     ),
-    'IncentiveAmountType' => array(
-      'className'  => 'IncentiveAmountType',
-      'foreignKey' => false,
-      'conditions' => array( 'TechnologyIncentive.incentive_amount_type_id = IncentiveAmountType.incentive_amount_type_id' ),
-    ),
+    'IncentiveAmountType',
     'Technology' => array(
       'className'  => 'Technology',
       'type'       => 'inner',

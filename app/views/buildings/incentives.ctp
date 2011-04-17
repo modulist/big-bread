@@ -32,7 +32,6 @@
 <div id="contentbody">
   <?php if( !empty( $incentives ) ): ?>
     <?php foreach( $incentives as $group => $technology ): ?>
-      <?php # new PHPDump( Set::extract( '/' . $group . '/TechnologyGroup[:first]/title', $incentives ), 'Technology', '', true ); ?>
       <div id="info">
         <?php echo $this->Html->image( 'ico_' . strtolower( Inflector::slug( h( $group ) ) ) . '.png', array( 'alt' => h( $group ) ) ) ?>
         <h2 id="<?php echo strtolower( Inflector::slug( $group ) ) ?>"><?php echo !empty( $group ) ? h( $group ) : 'Unspecified Group' ?></h2>
@@ -91,7 +90,6 @@
           <?php array_push( $technologies, $details['Technology']['name'] ) ?>
         <?php endif; ?>
           
-        <?php # new PHPDump( $details, 'Details', '', true ); ?>
         <div class="itemprice_border">
           <div class="itemprice">
             <div class="price">

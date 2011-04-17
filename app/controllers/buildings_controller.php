@@ -69,6 +69,7 @@ class BuildingsController extends AppController {
       'list',
       array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
     );
+    $roofInsulationLevels = $insulationLevels;
     $roofSystems = $this->Building->BuildingRoofSystem->RoofSystem->find(
       'all',
       array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
@@ -112,7 +113,7 @@ class BuildingsController extends AppController {
     */
     
     /** Prepare the view */
-    $this->set( compact( 'buildingTypes', 'basementTypes', 'buildingShapes', 'energySources', 'exposureTypes', 'frameMaterials', 'insulationLevels', 'maintenanceLevels', 'roofSystems', 'shadingTypes', 'technologies', 'userTypes', 'wallSystems', 'windowPaneTypes' ) );
+    $this->set( compact( 'addresses', 'buildingTypes', 'basementTypes', 'buildingShapes', 'energySources', 'exposureTypes', 'frameMaterials', 'insulationLevels', 'maintenanceLevels', 'roofInsulationLevels', 'roofSystems', 'shadingTypes', 'technologies', 'userTypes', 'wallSystems', 'windowPaneTypes' ) );
   }
   
   /**
