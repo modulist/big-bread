@@ -2,6 +2,19 @@ USE @DB_NAME@;
 
 SET foreign_key_checks = 0;
 
+ALTER TABLE buildings
+  ADD COLUMN roof_radiant_barrier boolean NULL AFTER windows_frequently_open,
+  ADD COLUMN roof_insulation_level_id char(36) NULL AFTER windows_frequently_open,
+  ADD CONSTRAINT fk__building__insulation_levels FOREIGN KEY( roof_insulation_level_id )
+    REFERENCES insulation_levels( id )
+      ON UPDATE CASCADE
+      ON DELETE SET NULL;
+
+ALTER TABLE building_roof_systems
+  DROP FOREIGN KEY fk__building_roof_systems__insulation_levels,
+  DROP COLUMN insulation_level_id,
+  DROP COLUMN radiant_barrier;
+
 ALTER TABLE building_wall_systems
   DISABLE KEYS,
   DROP FOREIGN KEY fk__building_wall_systems__buildings,

@@ -323,64 +323,17 @@ class BuildingsController extends AppController {
    *
    * @param 	$building_id
    */
-  public function incentives( $building_id = null ) {
-    $this->layout = 'sidebar';
-    
-    # All of the addresses associated with a given user (sidebar display)
-    $addresses = $this->Building->Client->buildings( $this->Auth->user( 'id' ) );
-    
-    # This user is not associated with any buildings
-    if( empty( $addresses ) ) {
-      $this->Session->setFlash( 'We can\'t help you save unless you fill out the questionnaire.', null, null, 'warning' );
-      $this->redirect( Router::url( '/questionnaire' ) );
+  private function prep_roof_data( $data ) {
+    foreach( $data['BuildingRoofSystem'] as $i => $roof_system ) {
+      if( !$roof_system['roof_system_id'] ) {
+        unset( $data['BuildingRoofSystem'][$i] );
+      }
     }
     
-    # If no building is specified, use the most recent for the user
-    $building_id = !empty( $building_id ) ? $building_id : $addresses[0]['Building']['id'];
-    
-    $building = $this->Building->find(
-      'first',
-      array(
-        'contain' => array(
-          'Address' => array(
-            'ZipCode'
-          ),
-          'Client',
-          'Inspector',
-          'Realtor',
-        ),
-        'conditions' => array( 'Building.id' => $building_id ),
-      )
-    );
-    
-    # Something bad happened.
-    if( empty( $building ) ) {
-      $this->Session->setFlash( 'We\'re sorry, but we couldn\'t find a structure to show incentives for.', null, null, 'warning' );
-      $this->redirect( Router::url( '/questionnaire' ) );
+    if( empty( $data['BuildingRoofSystem'] ) ) {
+      unset( $data['BuildingRoofSystem'] );
     }
     
-    $incentives      = $this->Building->incentives( $building_id );
-    # Count the incentives before grouping them
-    $incentive_count = count( $incentives );
-    # Group the incentives by technology group for display
-    $incentives      = Set::combine( $incentives, '{n}.TechnologyIncentive.id', '{n}', '{n}.TechnologyGroup.title');
-
-    $this->set( compact( 'building', 'addresses', 'incentive_count', 'incentives' ) );
-  }
-  
-  /**
-   * Downloads the questionnaire PDF.
-   */
-  public function download_questionnaire() {
-    $this->view = 'Media';
-    $params     = array(
-      'id'        => 'questionnaire.pdf',
-      'name'      => 'questionnaire',
-      'download'  => true,
-      'extension' => 'pdf',  // must be lower case
-      'path'      => 'files' . DS   // don't forget terminal 'DS'
-   );
-    
-   $this->set( $params );
+    return $data;
   }
 }
