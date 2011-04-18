@@ -1,4 +1,4 @@
-<?php if( !empty( $addresses ) ): ?>
+<?php if( !empty( $addresses ) && $this->action == 'incentives' ): ?>
   <table id="address">
   <thead>
     <tr>
