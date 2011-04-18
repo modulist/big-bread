@@ -2,13 +2,12 @@
   <div id="bodyheaderhead">
     <?php echo isset( $incentive_count ) && !empty( $incentive_count ) ? $incentive_count : 0 ?>
   </div>
+  
   <ul>
-    <?php $i = 0 ?>
     <?php foreach( $technology_groups as $id => $group ): ?>
-      <?php $i++; ?>
       <?php $group_incentive_count = isset( $incentives[$group] ) ? count( $incentives[$group] ) : 0 ?>
       <?php $dollars_available = isset( $incentives )
-        ? array_sum( Set::extract( '/' . $group . '/TechnologyIncentive[incentive_amount_type_id=USD]/amount', $incentives  ) )
+        ? array_sum( Set::extract( '/' . $group . '/IncentiveAmountType[incentive_amount_type_id=USD]/../TechnologyIncentive/amount', $incentives  ) )
         : 0
       ?>
       <li>
