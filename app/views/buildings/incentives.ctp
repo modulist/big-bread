@@ -126,7 +126,7 @@
                 <?php echo $this->Html->image( 'ico_web_link.gif', array( 'url' => $details['TechnologyIncentive']['weblink'], 'title' => 'Click here for more information regarding this rebate', 'alt' => 'Sponsor link' ) ) ?>
               <?php endif; ?>
               <?php if( !empty( $details['TechnologyIncentive']['rebate_link'] ) ): ?>
-                <?php echo $this->Html->image( 'ico_rebate_link.gif', array( 'url' => '#', 'title' => 'Click here for rebate forms and processing', 'alt' => 'Rebate link' ) ) ?>
+                <?php echo $this->Html->link( $this->Html->image( 'ico_rebate_link.gif', array( 'alt' => 'Rebate link' ) ), $details['TechnologyIncentive']['rebate_link'], array( 'target' => '_blank', 'title' => 'Click here for rebate forms and processing', 'escape' => false ) ) ?>
               <?php endif; ?>
             </td>
             <td>
