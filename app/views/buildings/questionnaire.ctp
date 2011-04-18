@@ -19,6 +19,7 @@
           <?php echo $this->Form->input( 'Address.address_1' ) ?>
           <?php echo $this->Form->input( 'Address.address_2' ) ?>
           <?php echo $this->Form->input( 'Address.zip_code' ) ?>
+          
           <?php echo $this->Form->input( 'Realtor.first_name', array( 'label' => __( 'Realtor First Name', true ) ) ) ?>
           <?php echo $this->Form->input( 'Realtor.last_name', array( 'label' => __( 'Realtor Last Name', true ) ) ) ?>
           <?php echo $this->Form->input( 'Realtor.email', array( 'label' => __( 'Realtor Email', true ) ) ) ?>
@@ -146,7 +147,6 @@
               <?php $coverage = '' ?>
             <?php endif; ?>
             
-            <?php echo $this->Form->input( 'BuildingRoofSystem.' . $i . '.id', array( 'type' => 'hidden' ) ) ?>
             <?php echo $this->Form->checkbox(
               'BuildingRoofSystem.' . $i . '.roof_system_id',
               array( 'value' => $roof_system['RoofSystem']['id'], 'checked' => $checked )
