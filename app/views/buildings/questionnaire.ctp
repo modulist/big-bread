@@ -1,6 +1,6 @@
 <?php $this->set( 'title_for_layout', __( 'My House', true ) ) ?>
 
-<?php echo $this->Html->css( 'jqueryui/themes/jquery-ui-1.8.10.custom.css', null, array( 'inline' => false ) ) ?>
+<?php echo $this->Html->css( 'jqueryui/themes/aristo/jquery-ui-1.8.7.custom.css', null, array( 'inline' => false ) ) ?>
 
 <?php echo $this->Form->create( 'Building', array( 'url' => array( 'action' => 'create' ) ) ) ?>
 <?php # Really just a placeholder so that a Questionnaire record gets saved by saveAll() ?>
