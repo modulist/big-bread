@@ -51,7 +51,7 @@ class ContactsController extends AppController {
           }
           else {
             $this->Session->setFlash( 'Your feedback has been sent. Thank you for taking the time to let us know how we\'re doing.', null, null, 'success' );
-            unset( $this->data );
+            unset( $this->data['Contact'] );
           }
         } 
         catch( Exception $e ) {
@@ -63,7 +63,8 @@ class ContactsController extends AppController {
     $userTypes = $this->UserType->find(
       'list',
       array(
-        'order' => 'UserType.name',
+        'fields' => array( 'UserType.name', 'UserType.name' ),
+        'order'  => 'UserType.name',
       )
     );
     

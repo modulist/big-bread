@@ -1,4 +1,4 @@
-<?php echo $message . "\n\n" ?>
+<?php echo $message . "\n" ?>
 
 <?php echo __( 'Additional information:', true ) . "\n" ?>
 =======================
