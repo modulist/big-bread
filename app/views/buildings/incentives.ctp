@@ -93,8 +93,16 @@
         <div class="itemprice_border">
           <div class="itemprice">
             <div class="price">
-              <p class="pricevalue"><?php echo h( $details['TechnologyIncentive']['amount'] ) ?></p>
-              <p class="priceunit"><?php echo $details['IncentiveAmountType']['name'] ?></p>
+              <p class="pricevalue">
+                <?php if( $details['IncentiveAmountType']['incentive_amount_type_id'] == 'PERC' ): ?>
+                  <?php echo h( $details['TechnologyIncentive']['amount'] ) . h( $details['IncentiveAmountType']['name'] ) ?>
+                <?php else: ?>
+                  <?php echo '$' . h( $details['TechnologyIncentive']['amount'] ) ?>
+                <?php endif; ?>
+              </p>
+              <?php if( !in_array( $details['IncentiveAmountType']['incentive_amount_type_id'], array( 'USD', 'PERC' ) ) ): ?>
+                <p class="priceunit">(<?php echo h( $details['IncentiveAmountType']['name'] ) ?>)</p>
+              <?php endif; ?>
             </div>
             <ul>
               <li class="itemname"><b><?php echo h( $details['Incentive']['name'] ) ?></b></li>
