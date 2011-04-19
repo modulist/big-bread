@@ -48,22 +48,24 @@
             </div>
           <?php else: ?>
             <?php foreach( $details['Technology']['Product'] as $product ): ?>
-
-              <div id="item">
-                <h3 id="<?php echo strtolower( Inflector::slug( h( $details['Technology']['name'] ), '' ) ) ?>">My <?php echo h( $details['Technology']['name'] ) ?></h3>
-                <ul>
-                  <li><?php __( 'Make' ) ?><br /><div><?php echo h( $product['make'] ) ?></div></li>
-                  <li><?php __( 'Model' ) ?><br /><div><?php echo h( $product['model'] ) ?></div></li>
-                  <li><?php __( 'Serial Number' ) ?><br />
-                    <?php foreach( $product['BuildingProduct'] as $building_product ): ?>
-                      <div><?php echo h( $building_product['serial_number'] ) ?></div>
-                    <?php endforeach; ?>
-                  </li>
-                </ul>
+              <?php # Display the product if it's associated with a building ?>
+              <?php if( !empty( $product['BuildingProduct'] ) ): ?>
+                <div id="item">
+                  <h3 id="<?php echo strtolower( Inflector::slug( h( $details['Technology']['name'] ), '' ) ) ?>">My <?php echo h( $details['Technology']['name'] ) ?></h3>
+                  <ul>
+                    <li><?php __( 'Make' ) ?><br /><div><?php echo h( $product['make'] ) ?></div></li>
+                    <li><?php __( 'Model' ) ?><br /><div><?php echo h( $product['model'] ) ?></div></li>
+                    <li><?php __( 'Serial Number' ) ?><br />
+                      <?php foreach( $product['BuildingProduct'] as $building_product ): ?>
+                        <div><?php echo h( $building_product['serial_number'] ) ?></div>
+                      <?php endforeach; ?>
+                    </li>
+                  </ul>
+                  <div class="clear"></div>
+                  <p>Product recall, safety &amp; warranty information coming soon.</p>
+                </div>
                 <div class="clear"></div>
-                <p>Product recall, safety &amp; warranty information coming soon.</p>
-              </div>
-              <div class="clear"></div>
+              <?php endif; ?>
             <?php endforeach; ?>
           <?php endif; ?>
           

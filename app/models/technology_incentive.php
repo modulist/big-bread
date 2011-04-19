@@ -114,12 +114,14 @@ class TechnologyIncentive extends AppModel {
           'TechnologyIncentive.incentive_amount_type_id',
           'TechnologyIncentive.weblink',
           'TechnologyIncentive.rebate_link',
+          'TechnologyIncentive.is_active',
           'TechnologyGroup.id',
           'TechnologyGroup.incentive_tech_group_id',
           'TechnologyGroup.title',
         ),
         'conditions' => array(
           'Incentive.excluded' => 0,
+          'TechnologyIncentive.is_active' => 1,
           'OR' => array(
             'Incentive.state' => 'US',  # nationwide incentives
             array(
@@ -141,14 +143,7 @@ class TechnologyIncentive extends AppModel {
         ),
       )
     );
-    
-/**      
-    new PHPDump( $incentives, 'Full Incentives (' . count( $incentives ) . ')' ); exit;
-    new PHPDump( array_unique( Set::extract( '/Incentive/incentive_id', $incentives ) ) );
-    
-    $log = $this->getDataSource()->getLog(false, false);
-    new PHPDump( $log, 'LOG' ); exit;
-*/
+  
     return $incentives;
   }
 }
