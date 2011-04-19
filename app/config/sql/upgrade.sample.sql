@@ -52,7 +52,7 @@ UPDATE technology_groups
  
 UPDATE technology_groups
    SET rebate_bar = 1,
-       title = 'Heating/Cooling'
+       title = 'Heating & Cooling'
  WHERE incentive_tech_group_id = 'HVAC';
  
 UPDATE technology_groups
