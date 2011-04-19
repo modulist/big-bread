@@ -12,7 +12,7 @@
       ?>
       <li>
         <div class="savings"><?php echo $this->Number->currency( $dollars_available, 'USD' ) ?></div>
-        <a href="#<?php echo strtolower( Inflector::slug( $group ) ) ?>"><span id="eq_<?php echo Inflector::slug( $id, '' ) ?><?php echo $group_incentive_count === 0 ? '_off' : '' ?>" class="eq"><?php echo $group_incentive_count ?></spanb></a>
+        <a href="#<?php echo strtolower( Inflector::slug( $group ) ) ?>"><span id="eq_<?php echo Inflector::slug( $id, '' ) ?><?php echo $group_incentive_count === 0 ? '_off' : '' ?>" class="eq"><?php echo $group_incentive_count ?></span></a>
         <p><?php echo $group ?></p>
       </li>
     <?php endforeach; ?>

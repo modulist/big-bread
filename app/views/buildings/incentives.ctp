@@ -119,14 +119,14 @@
             <?php endforeach; ?>
           <?php endif; ?>
           
-          <table cellspacing="0" class="incentive-details">
+          <table class="incentive-details">
           <thead>
             <tr>
               <th>Technology</th>
               <th>Options</th>
               <th>Energy Source</th>
             </tr>
-          <thead>
+          </thead>
           <tbody>
             <td>
               <?php echo h( $details['Technology']['name'] ) ?>
@@ -158,12 +158,12 @@
               <?php else: ?>
                 None
               <?php endif; ?>
-            <td>
+            </td>
           </tbody>
           </table>
           
           <?php if( !empty( $details['TechnologyTerm'] ) ): ?>
-            <table cellspacing="0" class="incentive-tnc">
+            <table class="incentive-tnc">
             <thead>
               <tr>
                 <th class="terms"><?php __( 'Terms' ) ?></th>
