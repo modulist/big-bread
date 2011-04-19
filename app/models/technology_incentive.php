@@ -44,10 +44,6 @@ class TechnologyIncentive extends AppModel {
    * @return	array
    */
   public function by_zip( $zip ) {
-    $es = $this->find( 'all', array(
-      'conditions' => array( 'TechnologyIncentive.id' => 11703 ),
-    ) );
-
     # All kinds of non-standard db fields involved here.
     # $this->Behaviors->attach( 'Containable', array( 'autoFields' => false ) );
     
@@ -154,6 +150,5 @@ class TechnologyIncentive extends AppModel {
     new PHPDump( $log, 'LOG' ); exit;
 */
     return $incentives;
-    
   }
 }

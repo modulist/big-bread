@@ -161,15 +161,6 @@ class Building extends AppModel {
    * @return	array
    */
   public function incentives( $building_id ) {
-    $address = $this->Address->find(
-      'first',
-      array(
-        'contain'    => array( 'Building' ),
-        'fields'     => array( 'Address.zip_code' ),
-        'conditions' => array( 'Building.id' => $building_id ),
-      )
-    );
-    
     # Pull the incentives
     return $this->Address->ZipCode->incentives( $this->zipcode( $building_id ) );
   }
@@ -184,12 +175,9 @@ class Building extends AppModel {
     $address = $this->Address->find(
       'first',
       array(
-        'contain'    => array(
-          'Building' => array(
-            'conditions' => array( 'Building.id' => $building_id )
-          )
-        ),
+        'contain'    => array( 'Building' ),
         'fields'     => array( 'Address.zip_code' ),
+        'conditions' => array( 'Building.id' => $building_id ),
       )
     );
     
