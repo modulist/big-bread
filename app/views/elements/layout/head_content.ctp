@@ -10,12 +10,5 @@
 <?php echo $this->Html->css( 'screen', 'stylesheet', array( 'media' => 'screen' ) ) ?>
 <?php echo $this->Html->css( 'print', 'stylesheet', array( 'media' => 'print' ) ) ?>
 
-<!--[if IE]>
-<?php echo $this->Html->css ?>
-<LINK rel=stylesheet type=text/css href="css/ie.css" media=screen>
-<LINK rel=stylesheet type=text/css href="css/ie-print.css" media=print>
-<![endif]-->
-
-
 <!-- Colorbox creates a nice looking modal -->
 <?php echo $this->Html->css( '/js/jquery/colorbox/colorbox.css' ) ?>
