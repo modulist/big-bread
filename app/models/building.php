@@ -162,7 +162,7 @@ class Building extends AppModel {
    */
   public function incentives( $building_id ) {
     # Pull the incentives
-    return $this->Address->ZipCode->incentives( $this->zipcode( $building_id ) );
+    return $this->Address->ZipCode->incentives( $building_id, $this->zipcode( $building_id ) );
   }
   
   /**

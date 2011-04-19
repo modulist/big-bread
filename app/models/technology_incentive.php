@@ -43,7 +43,7 @@ class TechnologyIncentive extends AppModel {
    * @param 	$zip
    * @return	array
    */
-  public function by_zip( $zip ) {
+  public function by_zip( $building_id, $zip ) {
     # All kinds of non-standard db fields involved here.
     # $this->Behaviors->attach( 'Containable', array( 'autoFields' => false ) );
     
@@ -82,7 +82,7 @@ class TechnologyIncentive extends AppModel {
           'Technology' => array(
             'Product' => array(
               'BuildingProduct' => array(
-                'conditions' => array( 'BuildingProduct.building_id' => '4da0c96d-cb1c-42de-b15b-6c0e6e891b5e' ),
+                'conditions' => array( 'BuildingProduct.building_id' => $building_id ),
               ),
             ),
           ),
