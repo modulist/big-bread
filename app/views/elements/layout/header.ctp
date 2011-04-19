@@ -24,7 +24,7 @@
     <?php echo $this->Html->image( 'facebook.png', array( 'url' => '#', 'alt' => 'Follow us on Facebook', 'title' => 'Follow us on Facebook' ) ) ?>
     <?php echo $this->Html->image( 'twitter.png', array( 'url' => '#', 'alt' => 'Follow us on Twitter', 'title' => 'Follow us on Twitter' ) ) ?>
   </div>
-  <?php if( $this->Session->check( 'Auth.User' ) ): ?>in
+  <?php if( $this->Session->check( 'Auth.User' ) ): ?>
     <div id="menubar">
       <?php $state = $this->name == 'Buildings' && $this->action == 'incentives' ? 'on' : 'off' ?>
       <?php echo $this->Html->image( 'menubtn1_' . $state . '.png', array( 'url' => array( 'controller' => 'buildings', 'action' => 'incentives' ), 'alt' => 'Ways to Save', 'title' => 'Ways to Save' ) ) ?>
