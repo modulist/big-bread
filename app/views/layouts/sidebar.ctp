@@ -1,4 +1,4 @@
-<!DOCTYPEhtml>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <?php echo $this->element( 'layout/head_content' ) ?>
