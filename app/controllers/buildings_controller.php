@@ -225,8 +225,6 @@ class BuildingsController extends AppController {
     else {
       $invalid_fields = $this->Building->invalidFields();
       
-      debug( $invalid_fields );
-      
       if( !empty( $invalid_fields ) ) {
         $this->Session->setFlash( 'There is a problem with the data you provided. Please correct the errors below.', null, null, 'validation' );
       }
