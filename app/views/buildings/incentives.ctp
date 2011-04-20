@@ -71,20 +71,15 @@
           
           <div id="sponser">
             <h3>Sponsors</h3>
-            <ul>
-              <li><b>American Home Shield</b>-Avoid Costly Home A/C Repairs.<br />
-                    Get A Home Warranty Quote Free!<br />
-                    <a href="#">homewarranty.ahs.com</a>
-              </li>
-              <li><b>Virginia Repair AC</b>-Find Prescreened Cooling Pros Free!<br />
-                    Repair, Replace &amp; Service Your A/C.<br />
-                    <a href="#">www.servicemagic.com</a>
-              </li>
-              <li><b>Windsor, VA HVAC Services</b>-Local, Quality Heating &amp; AC Service<br />
-                  Serving Windsor &amp; Surrounding Areas<br />
-                  <a href="#">www.tidewaterpetro.com/HVAC</a>
-              </li>
-            </ul>
+            <script type="text/javascript"><!--
+              google_ad_client = "pub-8579999294251764";
+              /* Ways to Save, 468x60, created 4/18/11 */
+              google_ad_slot   = "3280931539";
+              google_ad_width  = 468;
+              google_ad_height = 60;
+              //-->
+            </script>
+            <script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
             <div class="clear"></div>
           </div>
           
