@@ -11,5 +11,7 @@
     | <?php echo $this->Html->link( 'Terms of Use', array( 'controller' => 'pages', 'action' => 'terms' ) ) ?>
   </p>
   
-    <p>© 2009-<?php echo date( 'Y', time() ) ?> Federated Power, Inc. | Beta 1.0</p>
+  <p>© 2009-<?php echo date( 'Y', time() ) ?> Federated Power, Inc. | Beta 1.0</p>
 </div>
+
+<div class="printable">www.BigBread.net</div>
