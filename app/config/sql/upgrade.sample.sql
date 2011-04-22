@@ -1,5 +1,5 @@
 USE @DB_NAME@;
-
+/*
 SET foreign_key_checks = 0;
 
 ALTER TABLE buildings
@@ -112,3 +112,4 @@ ALTER TABLE technology_incentives
       ON DELETE NO ACTION;
        
 SET foreign_key_checks = 1;
+*/
