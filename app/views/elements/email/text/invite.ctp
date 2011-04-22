@@ -4,4 +4,4 @@ You're one step away from saving hundreds of dollars on the repair of your home.
 
 We're looking forward to your visit.
 
-<?php echo $this->Html->link( __( 'Register now and start saving.', true ), $this->Html->url( array( 'controller' => 'users', 'action' => 'register', $invite_code ), true ) ) ?>
+<?php echo $this->Html->url( array( 'controller' => 'users', 'action' => 'register', $invite_code ), true ) ?>

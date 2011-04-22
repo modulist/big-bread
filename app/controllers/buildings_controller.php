@@ -179,6 +179,7 @@ class BuildingsController extends AppController {
         $this->data[$role]['invite_code'] = md5( String::uuid() );
         $this->Building->{$role}->save( $this->data[$role] );
         $this->data['Building'][strtolower( $role ) . '_id'] = $this->Building->{$role}->id;
+        $this->data[$role]['role'] = $role;
         array_push( $invites, $this->data[$role] );
         unset($this->data[$role] );
       }
@@ -204,15 +205,16 @@ class BuildingsController extends AppController {
         $this->SwiftMailer->sendAs   = 'both'; 
         $this->SwiftMailer->from     = 'DO-NOT-REPLY@bigbread.net'; 
         $this->SwiftMailer->fromName = 'BigBread.net';
-        # TODO: Change To address
-        $this->SwiftMailer->to = $invite['email'];
+        $this->SwiftMailer->to       = $invite['email'];
         
         //set variables to template as usual 
         $this->set( 'invite_code', $invite['invite_code'] ); 
          
         try { 
-          if( !$this->SwiftMailer->send( 'invite', 'You\'ve been invited to save', 'native' ) ) { 
-            $this->log( 'Error sending email' ); 
+          if( !$this->SwiftMailer->send( 'invite', 'You\'ve been invited to save', 'native' ) ) {
+            foreach($this->SwiftMailer->postErrors as $failed_send_to) { 
+              $this->log( 'Failed to send invitation email to ' . $failed_send_to . ' (' . $invite['role'] . ')' ); 
+            }
           } 
         } 
         catch( Exception $e ) { 
