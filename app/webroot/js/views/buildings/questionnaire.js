@@ -82,8 +82,11 @@ $(document).ready( function() {
         var $provider_name = $('#Building' + utility_type + 'ProviderName');
         var $provider_id   = $('#Building' + utility_type + 'ProviderId');
         
-        // alert( utility_type );
-        // alert( data.Utilities[0].Utility.name );
+        // Massage the Cake data into something autocomplete-friendly
+        // @see http://stackoverflow.com/questions/5708128/jqueryui-autocomplete-doesnt-really-autocomplete
+        var $friendly = $.map( data.Utilities, function( util ) {
+          return { label: util.Utility.name, value: util.Utility.id };
+        });
         
         if( data.Utilities.length == 1 ) {
           /** If there's only one, just set that value as a default */
@@ -93,21 +96,21 @@ $(document).ready( function() {
         else {
           /** If more than one, populate the provider autocomplete options */
           $provider_name.autocomplete({
-            source: data.Utilities,
+            source: $friendly, // use the autocomplete-friendly data
             minLength: 0,
             focus: function( event, ui ) {
-              $provider_name.val( ui.item.Utility.name );
+              $provider_name.val( ui.item.label );
               return false;
             },
             select: function( event, ui ) {
-              $provider_name.val( ui.item.Utility.name );
-              $provider_id.val( ui.item.Utility.id );
+              $provider_name.val( ui.item.label );
+              $provider_id.val( ui.item.value );
               return false;
             }
           }).data( 'autocomplete' )._renderItem = function( ul, item ) {
             return $( "<li></li>" )
               .data( "item.autocomplete", item )
-              .append( '<a>' + item.Utility.name + '</a>' )
+              .append( '<a>' + item.label + '</a>' )
               .appendTo( ul );
           };
         }
