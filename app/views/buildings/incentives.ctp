@@ -44,14 +44,12 @@
           <?php $products = Set::extract( '/Technology/Product/BuildingProduct/id', $details ) ?>
       
           <?php if( empty( $products ) ): ?>
-            <?php echo '<p>None entered</p>'; ?>
             <div id="item">
               <h3 id="<?php echo strtolower( Inflector::slug( h( $details['Technology']['name'] ), '' ) ) ?>">My <?php echo h( $details['Technology']['name'] ) ?></h3>
               <p><?php echo sprintf( __( 'No %s information has been entered.', true ), strtolower( Inflector::singularize( h( $details['Technology']['name'] ) ) ) ) ?></p>
               <div class="clear"></div>
             </div>
           <?php else: ?>
-            <?php echo '<p>Yay! We have some.</p>'; ?>
             <?php foreach( $details['Technology']['Product'] as $product ): ?>
               <?php # Display the product if it's associated with a building ?>
               <?php if( !empty( $product['BuildingProduct'] ) ): ?>
