@@ -45,12 +45,12 @@ class ContactsController extends AppController {
         $this->set( 'message', $this->data['Contact']['message'] );
         
         try { 
-          if( !$this->SwiftMailer->send( 'contact', 'New Contact Request from BigBread.net', 'native' ) ) {
+          if( !$this->SwiftMailer->send( 'contact', 'Feedback from from BigBread.net', 'native' ) ) {
             $this->Session->setFlash( 'An error occurred when attempting to send your feeback. Please try again later.', null, null, 'warning' );
             $this->log( 'Error sending email' );
           }
           else {
-            $this->Session->setFlash( 'Your feedback has been sent. Thank you for taking the time to let us know how we\'re doing.', null, null, 'success' );
+            $this->Session->setFlash( 'Your feedback has been sent. Thank you for taking the time to let us know what you think.', null, null, 'success' );
             unset( $this->data['Contact'] );
           }
         } 
