@@ -105,8 +105,6 @@ class UsersController extends AppController {
       else {
         $this->redirect( $this->Auth->redirect() );
       }
-      
-			
 		}
     /** Probably an error logging in */
     else if( !empty( $this->data ) ) {

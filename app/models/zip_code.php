@@ -34,8 +34,8 @@ class ZipCode extends AppModel {
    * @param 	$zip_code
    * @return	array
    */
-  public function incentives( $zip ) {
-    return $this->Incentive->TechnologyIncentive->by_zip( $zip );
+  public function incentives( $building_id, $zip ) {
+    return $this->Incentive->TechnologyIncentive->by_zip( $building_id, $zip );
   }
 }
 

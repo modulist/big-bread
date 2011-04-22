@@ -8,5 +8,7 @@ $(document).ready( function() {
       $(this).html('Show Details');
   });
   // Hide the print button until we have a stylesheet
-  $('.buttons').css( 'visibility', 'hidden' );
+  $('.buttons input[type="submit"]').click( function() {
+    window.print();
+  })
 });

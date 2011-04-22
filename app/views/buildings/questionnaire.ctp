@@ -1,5 +1,6 @@
-<?php $this->set( 'title_for_layout', __( 'Questionnaire', true )) ?>
-<?php echo $this->Html->css( 'jqueryui/themes/jquery-ui-1.8.10.custom.css', null, array( 'inline' => false ) ) ?>
+<?php $this->set( 'title_for_layout', __( 'My House', true ) ) ?>
+
+<?php echo $this->Html->css( 'jqueryui/themes/aristo/jquery-ui-1.8.7.custom.css', null, array( 'inline' => false ) ) ?>
 
 <?php echo $this->Form->create( 'Building', array( 'url' => array( 'action' => 'create' ) ) ) ?>
 <?php # Really just a placeholder so that a Questionnaire record gets saved by saveAll() ?>
@@ -9,16 +10,6 @@
     <h1 id="infohead"><?php __( 'General Information' ) ?></h1>
       <div class="form">
         <div id="general_info">
-          <?php echo $this->Form->input( 'Realtor.first_name', array( 'label' => __( 'Realtor First Name', true ) ) ) ?>
-          <?php echo $this->Form->input( 'Realtor.last_name', array( 'label' => __( 'Realtor Last Name', true ) ) ) ?>
-          <?php echo $this->Form->input( 'Realtor.email', array( 'label' => __( 'Realtor Email', true ) ) ) ?>
-          <?php echo $this->Form->input( 'Realtor.user_type_id', array( 'type' => 'hidden', 'value' => '4d6d9699-f19c-41e3-a723-45ae6e891b5e' ) ) ?>
-          
-          <?php echo $this->Form->input( 'Inspector.first_name', array( 'label' => __( 'Inspector First Name', true ) ) ) ?>
-          <?php echo $this->Form->input( 'Inspector.last_name', array( 'label' => __( 'Inspector Last Name', true ) ) ) ?>
-          <?php echo $this->Form->input( 'Inspector.email', array( 'label' => __( 'Inspector Email', true ) ) ) ?>
-          <?php echo $this->Form->input( 'Inspector.user_type_id', array( 'type' => 'hidden', 'value' => '4d6d9699-5088-48db-9f56-47ea6e891b5e' ) ) ?>
-          
           <?php echo $this->Form->input( 'Client.first_name', array( 'label' => __( 'Client First Name', true ) ) ) ?>
           <?php echo $this->Form->input( 'Client.last_name', array( 'label' => __( 'Client Last Name', true ) ) ) ?>
           <?php echo $this->Form->input( 'Client.email', array( 'label' => __( 'Client Email', true ) ) ) ?>
@@ -28,6 +19,16 @@
           <?php echo $this->Form->input( 'Address.address_1' ) ?>
           <?php echo $this->Form->input( 'Address.address_2' ) ?>
           <?php echo $this->Form->input( 'Address.zip_code' ) ?>
+          
+          <?php echo $this->Form->input( 'Realtor.first_name', array( 'label' => __( 'Realtor First Name', true ) ) ) ?>
+          <?php echo $this->Form->input( 'Realtor.last_name', array( 'label' => __( 'Realtor Last Name', true ) ) ) ?>
+          <?php echo $this->Form->input( 'Realtor.email', array( 'label' => __( 'Realtor Email', true ) ) ) ?>
+          <?php echo $this->Form->input( 'Realtor.user_type_id', array( 'type' => 'hidden', 'value' => '4d6d9699-f19c-41e3-a723-45ae6e891b5e' ) ) ?>
+          
+          <?php echo $this->Form->input( 'Inspector.first_name', array( 'label' => __( 'Inspector First Name', true ) ) ) ?>
+          <?php echo $this->Form->input( 'Inspector.last_name', array( 'label' => __( 'Inspector Last Name', true ) ) ) ?>
+          <?php echo $this->Form->input( 'Inspector.email', array( 'label' => __( 'Inspector Email', true ) ) ) ?>
+          <?php echo $this->Form->input( 'Inspector.user_type_id', array( 'type' => 'hidden', 'value' => '4d6d9699-5088-48db-9f56-47ea6e891b5e' ) ) ?>
         </div> <!-- #general_info -->
 
         <div id="demographics">
@@ -132,13 +133,33 @@
           
           <h3><?php __( 'Roof' ) ?></h3>
           <?php foreach( $roofSystems as $i => $roof_system ): ?>
-            <?php echo $this->Form->checkbox( 'BuildingRoofSystem.' . $i . '.roof_system_id', array( 'value' => $roof_system['RoofSystem']['id'] ) ) ?>
+            <?php if( !empty( $this->data['BuildingRoofSystem'] ) ): ?>
+              <?php foreach( $this->data['BuildingRoofSystem'] as $building_roof ): ?>
+                <?php $checked  = $building_roof['roof_system_id'] == $roof_system['RoofSystem']['id'] ? 'checked' : false; ?>
+                <?php $coverage = $checked ? $building_roof['living_space_ratio'] : '' ?>
+                
+                <?php if( $checked ): ?>
+                  <?php break; ?>
+                <?php endif; ?>
+              <?php endforeach; ?>
+            <?php else: ?>
+              <?php $checked  = false ?>
+              <?php $coverage = '' ?>
+            <?php endif; ?>
+            
+            <?php echo $this->Form->checkbox(
+              'BuildingRoofSystem.' . $i . '.roof_system_id',
+              array( 'value' => $roof_system['RoofSystem']['id'], 'checked' => $checked )
+            ) ?>
             <label for="BuildingRoofSystem<?php echo $i ?>RoofSystemId"><?php echo $roof_system['RoofSystem']['name'] ?></label>
-            <?php echo $this->Form->input( 'BuildingRoofSystem.' . $i . '.living_space_ratio', array( 'label' => __( 'Percentage of the total roof that is this shape', true ), 'placeholder' => __( 'Example: 100', true ) ) ) ?>
+            <?php echo $this->Form->input(
+              'BuildingRoofSystem.' . $i . '.living_space_ratio',
+              array( 'value' => $coverage, 'label' => __( 'Percentage of the total roof that is this shape', true ), 'placeholder' => __( 'Example: 100', true ) )
+            ) ?>
           <?php endforeach; ?>
           
-          <?php echo $this->Form->input( 'BuildingRoofSystem.insulation_level_id', array( 'label' => __( 'Roof/Ceiling Insulation', true ), 'empty' => true ) ) ?>
-          <?php echo $this->Form->input( 'BuildingRoofSystem.radiant_barrier' ) ?>
+          <?php echo $this->Form->input( 'Building.roof_insulation_level_id', array( 'label' => __( 'Roof/Ceiling Insulation', true ), 'empty' => true ) ) ?>
+          <?php echo $this->Form->input( 'Building.roof_radiant_barrier', array( 'type' => 'checkbox' ) ) ?>
         </div> <!-- #building_envelope -->
         
         <div class="buttons">

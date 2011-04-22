@@ -51,6 +51,39 @@ class AppModel extends Model {
 	}
 
 	/**
+	 * Override Model::deconstruct() in order to use an integrated date
+	 * value, but multipart time value. The parent method expects both
+	 * date and time to be segmented, but, if a date picker is used to
+	 * select the date, then that component is unified.
+	 *
+	 * In order to use what's already in place, we'll deconstruct the date
+	 * portion here and then pass everything to the parent method for
+	 * reassimilation.
+	 *
+	 * @param		string	$field 	The name of the field to be deconstructed
+	 * @param		mixed 	$data 	An array or object to be deconstructed into a field
+	 * @return	mixed						The resulting data that should be assigned to a field
+	 * @access  protected
+	 */
+	public function deconstruct( $field, $data ) {
+		$type = $this->getColumnType( $field );
+		
+		if( in_array( $type, array( 'datetime', 'timestamp' ) ) ) {
+			if( isset( $data['date'] ) && !empty( $data['date'] ) ) {
+				$date = date( 'U', strtotime( $data['date'] ) );
+				
+				if( $date ) {
+					$data['month'] = date( 'm', $date );
+					$data['day']   = date( 'd', $date );
+					$data['year']  = date( 'Y', $date );
+				}
+			}
+		}
+		
+		return parent::deconstruct( $field, $data );
+	}
+  
+	/**
 	 * Returns the current user object/array. Useful in the context of
 	 * the Auditable behavior.
 	 *
@@ -91,7 +124,6 @@ class AppModel extends Model {
    *
    * @param   $field
    * @access  public
-   * @todo    Add this to the boilerplate
    */
   public function integer( $field = array() ) {
     foreach( $field as $key => $value ) { 
@@ -104,42 +136,15 @@ class AppModel extends Model {
     }
     
     return true; 
-  } 
-
-  /**
-   * PROTECTED METHODS
-   */
+  }
   
-	/**
-	 * Override Model::deconstruct() in order to use an integrated date
-	 * value, but multipart time value. The parent method expects both
-	 * date and time to be segmented, but, if a date picker is used to
-	 * select the date, then that component is unified.
-	 *
-	 * In order to use what's already in place, we'll deconstruct the date
-	 * portion here and then pass everything to the parent method for
-	 * reassimilation.
-	 *
-	 * @param		string	$field 	The name of the field to be deconstructed
-	 * @param		mixed 	$data 	An array or object to be deconstructed into a field
-	 * @return	mixed						The resulting data that should be assigned to a field
-	 * @access  protected
-	 */
-	public function deconstruct( $field, $data ) {
-		$type = $this->getColumnType( $field );
-		
-		if( in_array( $type, array( 'datetime', 'timestamp' ) ) ) {
-			if( isset( $data['date'] ) && !empty( $data['date'] ) ) {
-				$date = date( 'U', strtotime( $data['date'] ) );
-				
-				if( $date ) {
-					$data['month'] = date( 'm', $date );
-					$data['day']   = date( 'd', $date );
-					$data['year']  = date( 'Y', $date );
-				}
-			}
-		}
-		
-		return parent::deconstruct( $field, $data );
-	}
+  /**
+   * Returns the generated SQL executed during the request.
+   *
+   * @return array
+   * @access public
+   */
+  public function sql() {
+    return $this->getDataSource()->getLog( false, false );
+  }
 }

@@ -9,11 +9,7 @@ class TechnologyIncentive extends AppModel {
       'className'  => 'Incentive',
       'type'       => 'inner',
     ),
-    'IncentiveAmountType' => array(
-      'className'  => 'IncentiveAmountType',
-      'foreignKey' => false,
-      'conditions' => array( 'TechnologyIncentive.incentive_amount_type_id = IncentiveAmountType.incentive_amount_type_id' ),
-    ),
+    'IncentiveAmountType',
     'Technology' => array(
       'className'  => 'Technology',
       'type'       => 'inner',
@@ -47,11 +43,7 @@ class TechnologyIncentive extends AppModel {
    * @param 	$zip
    * @return	array
    */
-  public function by_zip( $zip ) {
-    $es = $this->find( 'all', array(
-      'conditions' => array( 'TechnologyIncentive.id' => 11703 ),
-    ) );
-
+  public function by_zip( $building_id, $zip ) {
     # All kinds of non-standard db fields involved here.
     # $this->Behaviors->attach( 'Containable', array( 'autoFields' => false ) );
     
@@ -90,7 +82,7 @@ class TechnologyIncentive extends AppModel {
           'Technology' => array(
             'Product' => array(
               'BuildingProduct' => array(
-                'conditions' => array( 'BuildingProduct.building_id' => '4da0c96d-cb1c-42de-b15b-6c0e6e891b5e' ),
+                'conditions' => array( 'BuildingProduct.building_id' => $building_id ),
               ),
             ),
           ),
@@ -122,10 +114,14 @@ class TechnologyIncentive extends AppModel {
           'TechnologyIncentive.incentive_amount_type_id',
           'TechnologyIncentive.weblink',
           'TechnologyIncentive.rebate_link',
-          'TechnologyGroup.name',
+          'TechnologyIncentive.is_active',
+          'TechnologyGroup.id',
+          'TechnologyGroup.incentive_tech_group_id',
+          'TechnologyGroup.title',
         ),
         'conditions' => array(
           'Incentive.excluded' => 0,
+          'TechnologyIncentive.is_active' => 1,
           'OR' => array(
             'Incentive.state' => 'US',  # nationwide incentives
             array(
@@ -147,15 +143,7 @@ class TechnologyIncentive extends AppModel {
         ),
       )
     );
-    
-/**      
-    new PHPDump( $incentives, 'Full Incentives (' . count( $incentives ) . ')' ); exit;
-    new PHPDump( array_unique( Set::extract( '/Incentive/incentive_id', $incentives ) ) );
-    
-    $log = $this->getDataSource()->getLog(false, false);
-    new PHPDump( $log, 'LOG' ); exit;
-*/
+  
     return $incentives;
-    
   }
 }

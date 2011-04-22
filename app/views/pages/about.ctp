@@ -1,3 +1,5 @@
+<?php $this->set( 'title_for_layout', __( 'Why BigBread.net?', true ) ) ?>
+
 <h1>Why BigBread.net?</h1>
 
 <p>

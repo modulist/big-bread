@@ -3,13 +3,13 @@
 class Contact extends AppModel {
   public $useTable = false;
   public $_schema  = array(
-    'name'              => array( 'type' => 'string', 'length' => 255 ), 
-    'email'             => array( 'type' => 'string', 'length' => 255 ), 
-    'company'           => array( 'type' => 'string', 'length' => 255 ), 
-    'phone_number'      => array( 'type' => 'string', 'length' => 255 ), 
-    'zip_code'          => array( 'type' => 'string', 'length' => 255 ),
-    'organization_type' => array( 'type' => 'string', 'length' => 255 ),
-    'message'           => array( 'type' => 'text' ),
+    'name'         => array( 'type' => 'string', 'length' => 255 ), 
+    'email'        => array( 'type' => 'string', 'length' => 255 ), 
+    'company'      => array( 'type' => 'string', 'length' => 255 ), 
+    'phone_number' => array( 'type' => 'string', 'length' => 255 ), 
+    'zip_code'     => array( 'type' => 'string', 'length' => 255 ),
+    'user_type'    => array( 'type' => 'string', 'length' => 255 ),
+    'message'      => array( 'type' => 'text' ),
   );
   
 	public $validate = array(
@@ -53,10 +53,10 @@ class Contact extends AppModel {
 				'required'   => true,
 			),
 		),
-		'organization_type' => array(
+		'user_type' => array(
 			'notempty' => array(
 				'rule'       => 'notEmpty',
-				'message'    => 'Organization type cannot be empty.',
+				'message'    => 'User type cannot be empty.',
 				'allowEmpty' => false,
 				'required'   => true,
 			),

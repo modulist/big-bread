@@ -4,7 +4,7 @@ class ContactsController extends AppController {
   public $name       = 'Contacts';
 	public $helpers    = array( 'Form' );
   public $components = array( 'SwiftMailer' );
-  public $uses       = array( 'UserType' );
+  public $uses       = array( 'UserType', 'Contact' );
   
   /**
    * CALLBACKS
@@ -34,38 +34,40 @@ class ContactsController extends AppController {
         $this->SwiftMailer->sendAs   = 'text'; 
         $this->SwiftMailer->from     = $this->data['Contact']['email']; 
         $this->SwiftMailer->fromName = $this->data['Contact']['name'];
-        # TODO: Change the To address. Everywhere.
-        $this->SwiftMailer->to       = 'rob@robwilkerson.org';
+        # TODO: Change this? Maybe once we get bigbread.net email up.
+        $this->SwiftMailer->to       = 'wamaull@federatedpower.com';
         
         $this->set( 'name', $this->data['Contact']['name'] );
         $this->set( 'company', $this->data['Contact']['company'] );
         $this->set( 'phone_number', $this->data['Contact']['phone_number'] );
         $this->set( 'zip_code', $this->data['Contact']['zip_code'] );
-        $this->set( 'organization_type', $this->data['Contact']['organization_type'] );
+        $this->set( 'user_type', $this->data['Contact']['user_type'] );
         $this->set( 'message', $this->data['Contact']['message'] );
         
         try { 
-          if( !$this->SwiftMailer->send( 'contact', 'New Contact Request from BigBread.net', 'native' ) ) { 
-              $this->log( 'Error sending email' ); 
+          if( !$this->SwiftMailer->send( 'contact', 'New Contact Request from BigBread.net', 'native' ) ) {
+            $this->Session->setFlash( 'An error occurred when attempting to send your feeback. Please try again later.', null, null, 'warning' );
+            $this->log( 'Error sending email' );
           }
           else {
-            # TODO: Set flash message
+            $this->Session->setFlash( 'Your feedback has been sent. Thank you for taking the time to let us know how we\'re doing.', null, null, 'success' );
+            unset( $this->data['Contact'] );
           }
         } 
-        catch( Exception $e ) { 
+        catch( Exception $e ) {
+          $this->Session->setFlash( 'An error occurred when attempting to send your feeback. Please try again later.', null, null, 'error' );
           $this->log( 'Failed to send email: ' . $e->getMessage() ); 
         }
-        
-        # TODO: Redirect somewhere
       }
     }
-    $organizationTypes = $this->UserType->find(
+    $userTypes = $this->UserType->find(
       'list',
       array(
-        'order' => 'UserType.name',
+        'fields' => array( 'UserType.name', 'UserType.name' ),
+        'order'  => 'UserType.name',
       )
     );
     
-    $this->set( compact( 'organizationTypes' ) );
+    $this->set( compact( 'userTypes' ) );
   }
 }

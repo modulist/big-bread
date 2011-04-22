@@ -9,7 +9,6 @@
   </ul>
 </div><!-- #questionnaire -->
 
-<div id="getstart">
-  <h2><?php __( 'Let\'s Get Started' ) ?></h2>
-  <?php echo $this->Html->image( 'DownloadQ.png', array( 'url' => '/files/questionnaire.pdf' ) ) ?>
-</div>
+<?php echo $this->element( 'layout/sidebar/_address_list' ) ?>
+
+<?php echo $this->element( 'layout/sidebar/_get_started' ) ?>

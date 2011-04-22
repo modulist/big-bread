@@ -1,4 +1,6 @@
-<?php $this->set( 'title_for_layout', __( 'Incentives', true )) ?>
+<?php $this->set( 'title_for_layout', __( 'Ways to Save', true )) ?>
+
+<h1 class="printable">Visit BigBread.net for the latest in personalized discounts and information</h1>
 
 <div id="contentheader">
   <h3><?php __( 'House Information' ) ?></h3>
@@ -31,69 +33,76 @@
   <?php if( !empty( $incentives ) ): ?>
     <?php foreach( $incentives as $group => $technology ): ?>
       <div id="info">
-        <h2><?php echo !empty( $group ) ? h( $group ) : 'Unspecified Group' ?></h2>
+        <?php echo $this->Html->image( 'ico_' . strtolower( Inflector::slug( h( $group ) ) ) . '.png', array( 'alt' => h( $group ) ) ) ?>
+        <h2 id="<?php echo strtolower( Inflector::slug( $group ) ) ?>"><?php echo !empty( $group ) ? h( $group ) : 'Unspecified Group' ?></h2>
       </div>
       
       <?php $technologies = array() ?>
       <?php foreach( $technology as $id => $details ): ?>
         <?php if( !in_array( $details['Technology']['name'], $technologies ) ): ?>
-          <?php if( empty( $details['Technology']['Product'] ) ): ?>
+          <?php # Any products that have been entered for this building and this technology ?>
+          <?php $products = Set::extract( '/Technology/Product/BuildingProduct/id', $details ) ?>
+      
+          <?php if( empty( $products ) ): ?>
             <div id="item">
-              <ul>
-                <li>
-                  <div>My <?php echo h( $details['Technology']['name'] ) ?></div>
-                  <p><?php echo sprintf( __( 'No %s information has been entered.', true ), strtolower( Inflector::singularize( h( $details['Technology']['name'] ) ) ) ) ?></p>
-                </li>
-              </ul>
+              <h3 id="<?php echo strtolower( Inflector::slug( h( $details['Technology']['name'] ), '' ) ) ?>">My <?php echo h( $details['Technology']['name'] ) ?></h3>
+              <p><?php echo sprintf( __( 'No %s information has been entered.', true ), strtolower( Inflector::singularize( h( $details['Technology']['name'] ) ) ) ) ?></p>
               <div class="clear"></div>
             </div>
           <?php else: ?>
             <?php foreach( $details['Technology']['Product'] as $product ): ?>
-              <div id="item">
-                <h3>My <?php echo h( $details['Technology']['name'] ) ?></h3>
-                <ul>
-                  <li><?php __( 'Make' ) ?><br /><div><?php echo h( $product['make'] ) ?></div></li>
-                  <li><?php __( 'Model' ) ?><br /><div><?php echo h( $product['model'] ) ?></div></li>
-                  <li><?php __( 'Serial Number' ) ?><br />
-                    <?php foreach( $product['BuildingProduct'] as $building_product ): ?>
-                      <div><?php echo h( $building_product['serial_number'] ) ?></div>
-                    <?php endforeach; ?>
-                  </li>
-                </ul>
+              <?php # Display the product if it's associated with a building ?>
+              <?php if( !empty( $product['BuildingProduct'] ) ): ?>
+                <div id="item">
+                  <h3 id="<?php echo strtolower( Inflector::slug( h( $details['Technology']['name'] ), '' ) ) ?>">My <?php echo h( $details['Technology']['name'] ) ?></h3>
+                  <ul>
+                    <li><?php __( 'Make' ) ?><br /><div><?php echo h( $product['make'] ) ?></div></li>
+                    <li><?php __( 'Model' ) ?><br /><div><?php echo h( $product['model'] ) ?></div></li>
+                    <li><?php __( 'Serial Number' ) ?><br />
+                      <?php foreach( $product['BuildingProduct'] as $building_product ): ?>
+                        <div><?php echo h( $building_product['serial_number'] ) ?></div>
+                      <?php endforeach; ?>
+                    </li>
+                  </ul>
+                  <div class="clear"></div>
+                  <p>Product recall, safety &amp; warranty information coming soon.</p>
+                </div>
                 <div class="clear"></div>
-                <p>Product recall, safety &amp; warranty information coming soon.</p>
-              </div>
-              <div class="clear"></div>
+              <?php endif; ?>
             <?php endforeach; ?>
           <?php endif; ?>
           
           <div id="sponser">
             <h3>Sponsors</h3>
-            <ul>
-              <li><b>American Home Shield</b>-Avoid Costly Home A/C Repairs.<br />
-                    Get A Home Warranty Quote Free!<br />
-                    <a href="#">homewarranty.ahs.com</a>
-              </li>
-              <li><b>Virginia Repair AC</b>-Find Prescreened Cooling Pros Free!<br />
-                    Repair, Replace &amp; Service Your A/C.<br />
-                    <a href="#">www.servicemagic.com</a>
-              </li>
-              <li><b>Windsor, VA HVAC Services</b>-Local, Quality Heating &amp; AC Service<br />
-                  Serving Windsor &amp; Surrounding Areas<br />
-                  <a href="#">www.tidewaterpetro.com/HVAC</a>
-              </li>
-            </ul>
+            <script type="text/javascript"><!--
+              google_ad_client = "pub-8579999294251764";
+              /* Ways to Save, 468x60, created 4/18/11 */
+              google_ad_slot   = "3280931539";
+              google_ad_width  = 468;
+              google_ad_height = 60;
+              //-->
+            </script>
+            <script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
             <div class="clear"></div>
           </div>
           
           <?php # Add the tech name to the stack so we don't print it again. ?>
           <?php array_push( $technologies, $details['Technology']['name'] ) ?>
         <?php endif; ?>
-
+          
         <div class="itemprice_border">
           <div class="itemprice">
-            <div class="price <?php echo Inflector::slug( h( $details['TechnologyIncentive']['incentive_amount_type_id'] ) ) ?>">
-              <p><?php echo h( $details['TechnologyIncentive']['amount'] ) ?></p>
+            <div class="price">
+              <p class="pricevalue">
+                <?php if( $details['IncentiveAmountType']['incentive_amount_type_id'] == 'PERC' ): ?>
+                  <?php echo h( $details['TechnologyIncentive']['amount'] ) . h( $details['IncentiveAmountType']['name'] ) ?>
+                <?php else: ?>
+                  <?php echo '$' . h( $details['TechnologyIncentive']['amount'] ) ?>
+                <?php endif; ?>
+              </p>
+              <?php if( !in_array( $details['IncentiveAmountType']['incentive_amount_type_id'], array( 'USD', 'PERC' ) ) ): ?>
+                <p class="priceunit">(<?php echo h( $details['IncentiveAmountType']['name'] ) ?>)</p>
+              <?php endif; ?>
             </div>
             <ul>
               <li class="itemname"><b><?php echo h( $details['Incentive']['name'] ) ?></b></li>
@@ -110,16 +119,24 @@
             <?php endforeach; ?>
           <?php endif; ?>
           
-          <table cellspacing="0" border="1" class="incentive-details">
+          <table class="incentive-details">
           <thead>
             <tr>
               <th>Technology</th>
               <th>Options</th>
               <th>Energy Source</th>
             </tr>
-          <thead>
+          </thead>
           <tbody>
-            <td><?php echo h( $details['Technology']['name'] ) ?></td>
+            <td>
+              <?php echo h( $details['Technology']['name'] ) ?>
+              <?php if( !empty( $details['TechnologyIncentive']['weblink'] ) ): ?>
+                <?php echo $this->Html->image( 'ico_web_link.gif', array( 'url' => $details['TechnologyIncentive']['weblink'], 'title' => 'Click here for more information regarding this rebate', 'alt' => 'Sponsor link' ) ) ?>
+              <?php endif; ?>
+              <?php if( !empty( $details['TechnologyIncentive']['rebate_link'] ) ): ?>
+                <?php echo $this->Html->link( $this->Html->image( 'ico_rebate_link.gif', array( 'alt' => 'Rebate link' ) ), $details['TechnologyIncentive']['rebate_link'], array( 'target' => '_blank', 'title' => 'Click here for rebate forms and processing', 'escape' => false ) ) ?>
+              <?php endif; ?>
+            </td>
             <td>
               <?php if( !empty( $details['TechnologyOption'] ) ): ?>
                 <ul>
@@ -141,12 +158,12 @@
               <?php else: ?>
                 None
               <?php endif; ?>
-            <td>
+            </td>
           </tbody>
           </table>
           
           <?php if( !empty( $details['TechnologyTerm'] ) ): ?>
-            <table cellspacing="0" class="incentive-tnc" border="1">
+            <table class="incentive-tnc">
             <thead>
               <tr>
                 <th class="terms"><?php __( 'Terms' ) ?></th>

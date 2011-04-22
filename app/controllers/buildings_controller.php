@@ -14,6 +14,17 @@ class BuildingsController extends AppController {
     # $this->Auth->allow( 'questionnaire', 'create', 'rebates' );
   }
 
+  public function beforeRender() {
+    # Generate a list of tech groups for the rebate bar
+    $technology_groups = $this->Building->BuildingProduct->Product->Technology->TechnologyGroup->find(
+      'list',
+      array(
+        'conditions' => array( 'TechnologyGroup.rebate_bar' => 1 ),
+        'order' => array( 'TechnologyGroup.title' ),
+      )
+    );
+    $this->set( compact( 'technology_groups' ) );
+  }
   
   /**
    * Displays the survey form.
@@ -21,9 +32,40 @@ class BuildingsController extends AppController {
    * @param 	$arg
    * @return	type		description
    */
-  public function questionnaire() {
+  public function questionnaire( $building_id = null ) {
     $this->helpers[] = 'Form';
     $this->layout    = 'sidebar';
+    
+    if( !empty( $building_id ) ) {
+      $this->data = $this->Building->find(
+        'first',
+        array(
+          'contain' => array(
+            'Address',
+            'BuildingProduct',
+            'BuildingRoofSystem',
+            'BuildingWallSystem',
+            'BuildingWindowSystem',
+            'Client',
+            'Inspector',
+            'Occupant',
+            'Product',
+            'Realtor',
+          ),
+          'conditions' => array( 'Building.id' => $building_id ),
+        )
+      );
+      
+      if( empty( $this->data ) ) {
+        $this->Session->setFlash( 'We were unable to find that building.', null, null, 'warning' );
+      }
+      else {
+        $this->Building->id = $this->data['Building']['id'];
+      }
+    }
+    
+    # All of the addresses associated with a given user (sidebar display)
+    $addresses = $this->Building->Client->buildings( $this->Auth->user( 'id' ) );
     
     /** Populate Lookups */
     $basementTypes = $this->Building->BasementType->find(
@@ -58,6 +100,7 @@ class BuildingsController extends AppController {
       'list',
       array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
     );
+    $roofInsulationLevels = $insulationLevels;
     $roofSystems = $this->Building->BuildingRoofSystem->RoofSystem->find(
       'all',
       array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
@@ -101,7 +144,7 @@ class BuildingsController extends AppController {
     */
     
     /** Prepare the view */
-    $this->set( compact( 'buildingTypes', 'basementTypes', 'buildingShapes', 'energySources', 'exposureTypes', 'frameMaterials', 'insulationLevels', 'maintenanceLevels', 'roofSystems', 'shadingTypes', 'technologies', 'userTypes', 'wallSystems', 'windowPaneTypes' ) );
+    $this->set( compact( 'addresses', 'buildingTypes', 'basementTypes', 'buildingShapes', 'energySources', 'exposureTypes', 'frameMaterials', 'insulationLevels', 'maintenanceLevels', 'roofInsulationLevels', 'roofSystems', 'shadingTypes', 'technologies', 'userTypes', 'wallSystems', 'windowPaneTypes' ) );
   }
   
   /**
@@ -111,24 +154,17 @@ class BuildingsController extends AppController {
    * @see $this::questionnaire()
    */
   public function create() {
-    if( !$this->RequestHandler->isPost() || empty( $this->data ) ) {
+    if( empty( $this->data ) ) {
       $this->redirect( '/questionnaire' );
     }
     
-    /**
-     * We can only take one user with a given email address. If anyone
-     * associated with the building has an email that already exists,
-     * we're just going to assume that it's the same person and save
-     * only the id.
-     */
-    $roles = array( 'Realtor', 'Inspector', 'Client' );
+    $roles   = array( 'Realtor', 'Inspector', 'Client' );
+    $invites = array();
     foreach( $roles as $role ) {
       # Realtor and Inspector are optional. If key fields are empty, Move along.
-      if( $role != 'Client' ) {
-        if( empty( $this->data[$role]['first_name'] ) && empty( $this->data[$role]['last_name'] ) && empty( $this->data[$role]['email'] ) ) {
-          unset( $this->data[$role] );
-          continue;
-        }
+      if( $role != 'Client' && empty( $this->data[$role]['email'] ) ) {
+        unset( $this->data[$role] );
+        continue;
       }
       
       $user = !empty( $this->data[$role]['email'] )
@@ -139,166 +175,56 @@ class BuildingsController extends AppController {
         $this->data['Building'][strtolower( $role ) . '_id'] = $user;
         unset( $this->data[$role] );
       }
-      else { # We don't know this user, create an invite code
+      else { # We don't know this user, create an invite code & save
         $this->data[$role]['invite_code'] = md5( String::uuid() );
-      }
-    }
-    /** END : user detection */
-  
-    /** Handle utility providers if an unknown was specified */
-    /** TODO: Can we move this down the stack somewhere? */
-    foreach( $this->Building->Address->ZipCode->ZipCodeUtility->type_codes as $code => $type ) {
-      $type = strtolower( $type );
-      $name = $this->data['Building'][$type . '_provider_name'];
-      
-      # Empty the utility id if the name is empty
-      $this->data['Building'][$type . '_provider_id'] = !empty( $name )
-        ? $this->data['Building'][$type . '_provider_id']
-        : null;
-      
-      $id = $this->data['Building'][$type . '_provider_id'];
-      
-      if( !empty( $name ) ) {
-        $provider = $this->Building->Address->ZipCode->ZipCodeUtility->Utility->known( $name, $id );
-        
-        if( !$provider ) { # The specified provider is not recognized
-          # Pull the state code for the building zip code
-          if( !isset( $state ) ) {
-            $state = $this->Building->Address->ZipCode->find(
-              'first',
-              array(
-                'contain'    => false,
-                'fields'     => array( 'ZipCode.state' ),
-                'conditions' => array( 'ZipCode.zip' => $this->data['Address']['zip_code'] ),
-              )
-            );
-          }
-          
-          # Build and save a Utility record and a ZipCodeUtility record
-          $this->data['Utility'] = array(
-            'name'     => $name,
-            'source'   => 'User',
-            'reviewed' => 0,
-          );
-          $this->data['ZipCodeUtility'] = array(
-            'zip'      => $this->data['Address']['zip_code'],
-            'state'    => $state['ZipCode']['state'],
-            'coverage' => 0,
-            'source'   => 'User',
-            'reviewed' => 0,
-            'type'     => $code
-          );
-         
-          if( $this->Building->Address->ZipCode->ZipCodeUtility->Utility->save( $this->data['Utility'] ) ) {
-            $this->data['ZipCodeUtility']['utility_id'] = $this->Building->Address->ZipCode->ZipCodeUtility->Utility->id;
-            
-            if( $this->Building->Address->ZipCode->ZipCodeUtility->save( $this->data['ZipCodeUtility'] ) ) {
-              # At this point, we should have a provider id for the new record.
-              $this->data['Building'][$type . '_provider_id'] = $this->Building->Address->ZipCode->ZipCodeUtility->Utility->id;
-            }
-            else {
-              # TODO: Do we want to do something else here?
-              $this->Session->setFlash( 'Unable to attach the specified ' . strtolower( $type ) . ' provider (' . $name . ') to the ' . $this->data['Address']['zip_code'] . ' zip code.', null, null, 'warning' );
-              
-              new PHPDump( $this->Building->Address->ZipCode->ZipCodeUtility->invalidFields(), 'Utility-Zip Errors' ); exit;
-            }
-          }
-          else {
-            # TODO: Do we want to do something else here?
-            $this->Session->setFlash( 'Unable to save ' . strtolower( $type ) . ' provider name (' . $name . ')', null, null, 'warning' );
-            
-            new PHPDump( $this->Building->Address->ZipCode->ZipCodeUtility->Utility->invalidFields(), 'Utility Errors' );
-            new PHPDump( $this->data, 'Data' ); exit;
-          }
-        }
-        else {
-          # If the name is known, use the id from the database
-          $this->data['Building'][$type . '_provider_id'] = $provider;
-        }
+        $this->Building->{$role}->save( $this->data[$role] );
+        $this->data['Building'][strtolower( $role ) . '_id'] = $this->Building->{$role}->id;
+        array_push( $invites, $this->data[$role] );
+        unset($this->data[$role] );
       }
     }
     
-    /**
-     * As with users, we don't want redundant products in our catalog.
-     * For products, the combination of make, model & serial number
-     * determines uniqueness.
-     */
-    foreach( $this->data['Product'] as $i => $product ) {
-      $make       = $product['make'];
-      $model      = $product['model'];
-      $energy     = isset( $product['energy_source_id'] ) ? $product['energy_source_id'] : null;
-      
-      # Ensure that the product is valid. If not, kill it.
-      if( empty( $product['technology_id'] ) || empty( $make ) || empty( $model ) || empty( $energy ) ) {
-        # TODO: Maybe pull the tech name and display a warning if the tech_id was entered?
-        unset( $this->data['Product'][$i] );
-        unset( $this->data['BuildingProduct'][$i] );
-        continue;
-      }
-      
-      $product_id = $this->Building->BuildingProduct->Product->known( $make, $model, $energy );
-      
-      if( !$product_id ) {
-        $this->Building->BuildingProduct->Product->create();
-        if( $this->Building->BuildingProduct->Product->save( $product ) ) {
-          $product_id = $this->Building->BuildingProduct->Product->id;
-        }
-        else {
-          $this->Session->setFlash( 'Unable to save product (' . $make . ' ' . $model . ')', null, null, 'warning' );
-        }
-      }
-      
-      if( $product_id ) {
-        $this->data['BuildingProduct'][$i]['product_id'] = $product_id;
-      }
-    }
-    
-    # Clear the product structures if empty.
-    if( empty( $this->data['Product'] ) ) {
-      unset( $this->data['Product'] );
-    }
-    if( empty( $this->data['BuildingProduct'] ) ) {
-      unset( $this->data['BuildingProduct'] );
-    }
+    $this->data = $this->prep_utility_data( $this->data );
+    $this->data = $this->prep_product_data( $this->data );
+    $this->data = $this->prep_roof_data( $this->data );
     
     if( $this->Building->saveAll( $this->data ) ) {
       $this->Session->setFlash( 'Thanks for participating.', null, null, 'success' );
       
       # Send new user invites
-      foreach( $roles as $role ) {
-        if( isset( $this->data[$role]['invite_code'] ) ) {
-          if( Configure::read( 'debug' ) > 0 ) $this->log( '{BuildingsController::crete} Sending invite to a ' . $role . ' (' . $this->data[$role]['email'] . '). Code: ' . $this->data[$role]['invite_code'], LOG_DEBUG );
-          /** 
-          $this->SwiftMailer->smtpType = 'tls'; 
-          $this->SwiftMailer->smtpHost = 'smtp.gmail.com'; 
-          $this->SwiftMailer->smtpPort = 465; 
-          $this->SwiftMailer->smtpUsername = 'my_email@gmail.com'; 
-          $this->SwiftMailer->smtpPassword = 'hard_to_guess'; 
-          */
-          $this->SwiftMailer->sendAs = 'both'; 
-          $this->SwiftMailer->from = 'rob@robwilkerson.org'; 
-          $this->SwiftMailer->fromName = 'BigBread.net';
-          # TODO: Change To address
-          $this->SwiftMailer->to = 'rob@robwilkerson.org';
-          
-          //set variables to template as usual 
-          $this->set( 'invite_code', $this->data[$role]['invite_code'] ); 
-           
-          try { 
-            if( !$this->SwiftMailer->send( 'invite', 'You\'ve been invited to save', 'native' ) ) { 
-              $this->log( 'Error sending email' ); 
-            } 
+      foreach( $invites as $invite ) {
+        $this->log( '{BuildingsController::create} Sending invite to ' . $invite['email'] . '. Code: ' . $invite['invite_code'], LOG_DEBUG );
+        /** 
+        $this->SwiftMailer->smtpType = 'tls'; 
+        $this->SwiftMailer->smtpHost = 'smtp.gmail.com'; 
+        $this->SwiftMailer->smtpPort = 465; 
+        $this->SwiftMailer->smtpUsername = 'my_email@gmail.com'; 
+        $this->SwiftMailer->smtpPassword = 'hard_to_guess'; 
+        */
+        $this->SwiftMailer->sendAs   = 'both'; 
+        $this->SwiftMailer->from     = 'DO-NOT-REPLY@bigbread.net'; 
+        $this->SwiftMailer->fromName = 'BigBread.net';
+        # TODO: Change To address
+        $this->SwiftMailer->to = $invite['email'];
+        
+        //set variables to template as usual 
+        $this->set( 'invite_code', $invite['invite_code'] ); 
+         
+        try { 
+          if( !$this->SwiftMailer->send( 'invite', 'You\'ve been invited to save', 'native' ) ) { 
+            $this->log( 'Error sending email' ); 
           } 
-          catch( Exception $e ) { 
-            $this->log( 'Failed to send email: ' . $e->getMessage() ); 
-          } 
-        }
+        } 
+        catch( Exception $e ) { 
+          $this->log( 'Failed to send email: ' . $e->getMessage() ); 
+        } 
       }
       
       $this->redirect( array( 'action' => 'incentives', $this->Building->id ) );
     }
     else {
       $invalid_fields = $this->Building->invalidFields();
+      
       if( !empty( $invalid_fields ) ) {
         $this->Session->setFlash( 'There is a problem with the data you provided. Please correct the errors below.', null, null, 'validation' );
       }
@@ -314,13 +240,19 @@ class BuildingsController extends AppController {
   public function incentives( $building_id = null ) {
     $this->layout = 'sidebar';
     
-    # All of the buildings associated with a given user (sidebar)
-    $buildings = $this->Building->Client->buildings( $this->Auth->user( 'id' ) );
+    # All of the addresses associated with a given user (sidebar display)
+    $addresses = $this->Building->Client->buildings( $this->Auth->user( 'id' ) );
+    
+    # This user is not associated with any buildings
+    if( empty( $addresses ) ) {
+      $this->Session->setFlash( 'We can\'t help you save unless you fill out the questionnaire.', null, null, 'warning' );
+      $this->redirect( Router::url( '/questionnaire' ) );
+    }
     
     # If no building is specified, use the most recent for the user
-    $building_id = !empty( $building_id ) ? $building_id : $buildings[0]['Building']['id'];
+    $building_id = !empty( $building_id ) ? $building_id : $addresses[0]['Building']['id'];
     
-    $building  = $this->Building->find(
+    $building = $this->Building->find(
       'first',
       array(
         'contain' => array(
@@ -337,23 +269,190 @@ class BuildingsController extends AppController {
     
     # Something bad happened.
     if( empty( $building ) ) {
-      $this->Session->setFlash( 'We\'re sorry, but we couldn\'t find the building you requested.', null, null, 'validation' );
+      $this->Session->setFlash( 'We\'re sorry, but we couldn\'t find a structure to show incentives for.', null, null, 'warning' );
       $this->redirect( Router::url( '/questionnaire' ) );
     }
     
-    $incentives = $this->Building->incentives( $building_id );
-    # Group by technology group
-    $incentives = Set::combine( $incentives, '{n}.TechnologyIncentive.id', '{n}', '{n}.TechnologyGroup.name');
-# new PHPDump( $incentives, 'Incentives' ); exit;
-    # Within a group, group by technology
-/** 
-    foreach( $incentives as $group => $incentive ) {
-      $incentives[$group] = Set::combine( $incentive, '{n}.TechnologyIncentive.id', '{n}', '{n}.Technology.name' );
-    }
-*/
+    $incentives      = $this->Building->incentives( $building_id );
+    # Count the incentives before grouping them
+    $incentive_count = count( $incentives );
+    # Group the incentives by technology group for display
+    $incentives      = Set::combine( $incentives, '{n}.TechnologyIncentive.id', '{n}', '{n}.TechnologyGroup.title');
 
-# new PHPDump( $incentives, 'Grouped', '', true );
+    $this->set( compact( 'building', 'addresses', 'incentive_count', 'incentives' ) );
+  }
+  
+  /**
+   * Downloads the questionnaire PDF.
+   */
+  public function download_questionnaire() {
+    $this->view = 'Media';
+    $params     = array(
+      'id'        => 'questionnaire.pdf',
+      'name'      => 'questionnaire',
+      'download'  => true,
+      'extension' => 'pdf',  // must be lower case
+      'path'      => 'files' . DS   // don't forget terminal 'DS'
+   );
     
-    $this->set( compact( 'building', 'buildings', 'incentives' ) );
+   $this->set( $params );
+  }
+  
+  /**
+   * PRIVATE METHODS
+   */
+  
+  /**
+   * 
+   *
+   * @param 	$data
+   */
+  private function prep_utility_data( $data ) {
+    /** Handle utility providers if an unknown was specified */
+    /** TODO: Can we move this down the stack somewhere? */
+    foreach( $this->Building->Address->ZipCode->ZipCodeUtility->type_codes as $code => $type ) {
+      $type = strtolower( $type );
+      $name = $data['Building'][$type . '_provider_name'];
+      
+      # Empty the utility id if the name is empty
+      $data['Building'][$type . '_provider_id'] = !empty( $name )
+        ? $data['Building'][$type . '_provider_id']
+        : null;
+      
+      $id = $data['Building'][$type . '_provider_id'];
+      
+      if( !empty( $name ) ) {
+        $provider = $this->Building->Address->ZipCode->ZipCodeUtility->Utility->known( $name, $id );
+        
+        if( !$provider ) { # The specified provider is not recognized
+          # Pull the state code for the building zip code
+          if( !isset( $state ) ) {
+            $state = $this->Building->Address->ZipCode->find(
+              'first',
+              array(
+                'contain'    => false,
+                'fields'     => array( 'ZipCode.state' ),
+                'conditions' => array( 'ZipCode.zip' => $data['Address']['zip_code'] ),
+              )
+            );
+          }
+          
+          # Build and save a Utility record and a ZipCodeUtility record
+          $data['Utility'] = array(
+            'name'     => $name,
+            'source'   => 'User',
+            'reviewed' => 0,
+          );
+          $data['ZipCodeUtility'] = array(
+            'zip'      => $data['Address']['zip_code'],
+            'state'    => $state['ZipCode']['state'],
+            'coverage' => 0,
+            'source'   => 'User',
+            'reviewed' => 0,
+            'type'     => $code
+          );
+         
+          if( $this->Building->Address->ZipCode->ZipCodeUtility->Utility->save( $data['Utility'] ) ) {
+            $data['ZipCodeUtility']['utility_id'] = $this->Building->Address->ZipCode->ZipCodeUtility->Utility->id;
+            
+            if( $this->Building->Address->ZipCode->ZipCodeUtility->save( $data['ZipCodeUtility'] ) ) {
+              # At this point, we should have a provider id for the new record.
+              $data['Building'][$type . '_provider_id'] = $this->Building->Address->ZipCode->ZipCodeUtility->Utility->id;
+            }
+            else {
+              # TODO: Do we want to do something else here?
+              $this->Session->setFlash( 'Unable to attach the specified ' . strtolower( $type ) . ' provider (' . $name . ') to the ' . $data['Address']['zip_code'] . ' zip code.', null, null, 'warning' );
+              
+              # new PHPDump( $this->Building->Address->ZipCode->ZipCodeUtility->invalidFields(), 'Utility-Zip Errors' ); exit;
+            }
+          }
+          else {
+            # TODO: Do we want to do something else here?
+            $this->Session->setFlash( 'Unable to save ' . strtolower( $type ) . ' provider name (' . $name . ')', null, null, 'warning' );
+            
+            # new PHPDump( $this->Building->Address->ZipCode->ZipCodeUtility->Utility->invalidFields(), 'Utility Errors' );
+            # new PHPDump( $data, 'Data' ); exit;
+          }
+        }
+        else {
+          # If the name is known, use the id from the database
+          $data['Building'][$type . '_provider_id'] = $provider;
+        }
+      }
+    }
+    
+    return $data;
+  }
+  
+  /**
+   * description
+   *
+   * @param 	$data
+   */
+  private function prep_product_data( $data ) {
+  
+    /**
+     * As with users, we don't want redundant products in our catalog.
+     * For products, the combination of make, model & serial number
+     * determines uniqueness.
+     */
+    foreach( $data['Product'] as $i => $product ) {
+      $make       = $product['make'];
+      $model      = $product['model'];
+      $energy     = isset( $product['energy_source_id'] ) ? $product['energy_source_id'] : null;
+      
+      # Ensure that the product is valid. If not, kill it.
+      if( empty( $product['technology_id'] ) || empty( $make ) || empty( $model ) || empty( $energy ) ) {
+        # TODO: Maybe pull the tech name and display a warning if the tech_id was entered?
+        unset( $data['Product'][$i] );
+        unset( $data['BuildingProduct'][$i] );
+        continue;
+      }
+      
+      $product_id = $this->Building->BuildingProduct->Product->known( $make, $model, $energy );
+      
+      if( !$product_id ) {
+        $this->Building->BuildingProduct->Product->create();
+        if( $this->Building->BuildingProduct->Product->save( $product ) ) {
+          $product_id = $this->Building->BuildingProduct->Product->id;
+        }
+        else {
+          $this->Session->setFlash( 'Unable to save product (' . $make . ' ' . $model . ')', null, null, 'warning' );
+        }
+      }
+      
+      if( $product_id ) {
+        $data['BuildingProduct'][$i]['product_id'] = $product_id;
+      }
+    }
+    
+    # Clear the product structures if empty.
+    if( empty( $data['Product'] ) ) {
+      unset( $data['Product'] );
+    }
+    if( empty( $data['BuildingProduct'] ) ) {
+      unset( $data['BuildingProduct'] );
+    }
+    
+    return $data;
+  }
+  
+  /**
+   * 
+   *
+   * @param 	$data
+   */
+  private function prep_roof_data( $data ) {
+    foreach( $data['BuildingRoofSystem'] as $i => $roof_system ) {
+      if( !$roof_system['roof_system_id'] ) {
+        unset( $data['BuildingRoofSystem'][$i] );
+      }
+    }
+    
+    if( empty( $data['BuildingRoofSystem'] ) ) {
+      unset( $data['BuildingRoofSystem'] );
+    }
+    
+    return $data;
   }
 }

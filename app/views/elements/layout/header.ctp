@@ -26,9 +26,12 @@
   </div>
   <?php if( $this->Session->check( 'Auth.User' ) ): ?>
     <div id="menubar">
-      <?php echo $this->Html->image( 'menubtn1_off.png', array( 'url' => array( 'controller' => 'buildings', 'action' => 'incentives' ), 'alt' => 'Ways to Save', 'title' => 'Ways to Save' ) ) ?>
-      <?php echo $this->Html->image( 'menubtn2_off.png', array( 'url' => Router::url( '/questionnaire' ), 'alt' => 'My House', 'title' => 'My House' ) ) ?>
-      <?php echo $this->Html->image( 'menubtn3_off.png', array( 'url' => Router::url( '/contact' ), 'alt' => 'Feedback', 'title' => 'Feedback' ) ) ?>
+      <?php $state = $this->name == 'Buildings' && $this->action == 'incentives' ? 'on' : 'off' ?>
+      <?php echo $this->Html->image( 'menubtn1_' . $state . '.png', array( 'url' => array( 'controller' => 'buildings', 'action' => 'incentives' ), 'alt' => 'Ways to Save', 'title' => 'Ways to Save' ) ) ?>
+      <?php $state = $this->name == 'Buildings' && $this->action == 'questionnaire' ? 'on' : 'off' ?>
+      <?php echo $this->Html->image( 'menubtn2_' . $state . '.png', array( 'url' => Router::url( '/questionnaire' ), 'alt' => 'My House', 'title' => 'My House' ) ) ?>
+      <?php $state = $this->name == 'Contacts' && $this->action == 'index' ? 'on' : 'off' ?>
+      <?php echo $this->Html->image( 'menubtn3_' . $state . '.png', array( 'url' => Router::url( '/contact' ), 'alt' => 'Feedback', 'title' => 'Feedback' ) ) ?>
     </div>
   <?php endif; ?>
 </div>

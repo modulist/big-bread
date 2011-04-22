@@ -1,3 +1,5 @@
+<?php $this->set( 'title_for_layout', __( 'Welcome', true ) ) ?>
+
 <div class="intro">
   <?php # TODO: Remove inline style ?>
   <?php echo $this->Html->image( 'laptop_hm.png', array( 'width' => 564, 'height' => 416, 'alt' => 'laptop', 'style' => 'float: right;' ) ) ?>

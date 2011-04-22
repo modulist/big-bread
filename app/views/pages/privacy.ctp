@@ -1,3 +1,5 @@
+<?php $this->set( 'title_for_layout', __( 'Privacy Policy', true ) ) ?>
+
 <h2>Federated Power Privacy Policy</h2>
 
 <p><strong>BY USING THE SERVICE, YOU REPRESENT THAT YOU HAVE READ AND UNDERSTOOD THIS ENTIRE PRIVACY POLICY AND YOU AGREE TO ALL OF ITS TERMS.</strong></p>
