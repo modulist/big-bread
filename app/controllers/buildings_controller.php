@@ -138,11 +138,27 @@ class BuildingsController extends AppController {
     
     # Looks like we're updating something
     if( !empty( $model ) ) {
-      if( method_exists( $this, 'update_' . strtolower( $model ) ) ) {
+      $model    = Inflector::classify( $model ); // normalize the model name
+      $redirect = false;
+      
+      // Save associated model data
+      if( !empty( $this->data[$model] ) && method_exists( $this, 'update_' . strtolower( $model ) ) ) {
         if( $this->{'update_' . strtolower( $model )}( $building_id ) ) {
-          # Redirect to this page without the model designation
-          $this->redirect( array( 'action' => $this->action, $building_id ) );
+          $redirect = true;
         }
+      }
+      
+      // We have to edit actual building properties too...
+      if( !empty( $this->data['Building'] ) ) {
+        $this->Building->id = $building_id;
+        
+        if( $this->Building->save( $this->data ) ) {
+          $redirect = $redirect && true;
+        }
+      }
+      
+      if( $redirect ) {
+        $this->redirect( array( 'action' => 'edit', $building_id ) );
       }
     }
     
@@ -152,14 +168,18 @@ class BuildingsController extends AppController {
         array(
           'contain' => array(
             'Address' => array( 'ZipCode' ),
-            'BuildingProduct',
+            'BuildingProduct' => array(
+              'Product' => array(
+                'EnergySource',
+                'Technology' => array( 'EnergySource' => array( 'fields' => array( 'incentive_tech_energy_type_id', 'name' ) ) )
+              ),
+            ),
             'BuildingRoofSystem',
             'BuildingWallSystem',
             'BuildingWindowSystem',
             'Client',
             'Inspector',
             'Occupant',
-            'Product',
             'Realtor',
           ),
           'conditions' => array( 'Building.id' => $building_id ),
@@ -169,16 +189,20 @@ class BuildingsController extends AppController {
       if( empty( $this->data ) ) {
         $this->Session->setFlash( 'We were unable to find that building.', null, null, 'warning' );
       }
-      else {
-        $this->Building->id = $this->data['Building']['id'];
-      }
     }
     
-    # new PHPDump( $this->data, 'Building', '', true );
+    # Lookups
+    $technologies = $this->Building->BuildingProduct->Product->Technology->find(
+      'list',
+      array(
+        'conditions' => array( 'Technology.questionnaire_product' => 1 ),
+        'order' => array( 'Technology.name' ),
+      )
+    );
     
     $this->set( 'building', $this->data );
     
-    $this->set( compact( 'addresses' ) );
+    $this->set( compact( 'addresses', 'technologies' ) );
   }
   
   /**
@@ -384,16 +408,57 @@ class BuildingsController extends AppController {
   private function update_occupant( $building_id ) {
     if( !empty( $this->data['Occupant']['id'] ) ) {
       $this->Building->Occupant->id = $this->data['Occupant']['id'];
-      if( !$this->Building->Occupant->save( $this->data ) ) {
-        echo json_encode( $this->Building->Occupant->validationErrors );
-        $this->header( 'HTTP/1.1 400 Bad Request' );
-        exit;
+      
+      if( $this->Building->Occupant->save( $this->data ) ) {
+        return true;
       }
     }
-    else {
-      echo json_encode( array( 'id' => 'Occupancy identifier was not specified.' ) );
-      $this->header( 'HTTP/1.1 400 Bad Request' );
+    
+    return false;
+  }
+  
+  /**
+   * Updates building technologies
+   *
+   * @param 	$building_id
+   * @access	private
+   */
+  private function update_product( $building_id ) {
+    # In an edit scenario, we'll have an indexed array of products, although
+    # there will always be only one. If a property (make) cannot be accessed
+    # directly, it's probably indexed so we need to normalize.
+    if( !isset( $this->data['Product']['make'] ) ) {
+      $this->data['Product']         = array_shift( $this->data['Product'] );
+      $this->data['BuildingProduct'] = array_shift( $this->data['BuildingProduct'] );
     }
+    
+    $this->Building->BuildingProduct->id = $this->data['BuildingProduct']['id'];
+    
+    $make   = $this->data['Product']['make'];
+    $model  = $this->data['Product']['model'];
+    $energy = isset( $this->data['Product']['energy_source_id'] ) ? $this->data['Product']['energy_source_id'] : null;
+    
+    $product_id = $this->Building->Product->known( $make, $model, $energy );
+    
+    if( !$product_id ) {
+      if( $this->Building->Product->save( $this->data ) ) {
+        $this->log( 'Product saved successfully', LOG_DEBUG );
+        $product_id = $this->Building->Product->id;
+      }
+    }
+    
+    if( $product_id ) {
+      $this->data['BuildingProduct']['product_id']  = $product_id;
+      $this->data['BuildingProduct']['building_id'] = $building_id;
+      
+      if( $this->Building->BuildingProduct->save( $this->data ) ) {
+        return true;
+      }
+    }
+    
+    $this->log( 'Zoiks! Returning false', LOG_DEBUG );
+    
+    return false;
   }
   
   /**

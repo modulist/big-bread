@@ -26,45 +26,31 @@
 
       <div id="demographics">
         <h1><?php __( 'Demographics' ) ?></h1>
-        <?php echo $this->Form->input( 'Occupant.age_0_5', array( 'label' => __( 'Number of Occupants Age 0-5', true ), 'placeholder' => 'Example: 2', 'size' => '3' ) ) ?>
-        <?php echo $this->Form->input( 'Occupant.age_6_13', array( 'label' => __( 'Number of Occupants Age 6-13', true ), 'placeholder' => 'Example: 1', 'size' => '3' ) ) ?>
-        <?php echo $this->Form->input( 'Occupant.age_14_64', array( 'label' => __( 'Number of Occupants Age 14-64', true ), 'placeholder' => 'Example: 1', 'size' => '3' ) ) ?>
-        <?php echo $this->Form->input( 'Occupant.age_65', array( 'label' => __( 'Number of Occupants Age 65 or Older', true ), 'placeholder' => 'Example: 2', 'size' => '3' ) ) ?>
-        <?php echo $this->Form->input( 'Occupant.daytime_occupancy', array( 'label' => __( 'Are occupants at home during the day?', true ) ) ) ?>
-        
-        <?php echo $this->Form->input( 'Building.setpoint_heating', array( 'label' => __( 'Thermostat setting (heating)', true ), 'placeholder' => 'Example: 68' ) ) ?>
-        <?php echo $this->Form->input( 'Occupant.heating_override', array( 'label' => __( 'Is the heat setting adjusted frequently?', true ) ) ) ?>
-        <?php echo $this->Form->input( 'Building.setpoint_cooling', array( 'label' => __( 'Thermostat setting (cooling)', true ), 'placeholder' => 'Example: 75' ) ) ?>
-        <?php echo $this->Form->input( 'Occupant.cooling_override', array( 'label' => __( 'Is the cooling setting adjusted frequently?', true ) ) ) ?>
-    
-        <div id="utility-providers" style="display: none;">
-          <h3><?php __( 'Utility Providers' ) ?></h3>
-          <?php echo $this->Form->input( 'Building.electricity_provider_name', array( 'type' => 'text' ) ) ?>
-          <?php echo $this->Form->input( 'Building.electricity_provider_id', array( 'type' => 'hidden' ) ) ?>
-          
-          <?php echo $this->Form->input( 'Building.gas_provider_name', array( 'type' => 'text' ) ) ?>
-          <?php echo $this->Form->input( 'Building.gas_provider_id', array( 'type' => 'hidden' ) ) ?>
-          
-          <?php echo $this->Form->input( 'Building.water_provider_name', array( 'type' => 'text' ) ) ?>
-          <?php echo $this->Form->input( 'Building.water_provider_id', array( 'type' => 'hidden' ) ) ?>
-          
-          <h4><?php __( 'Alternative Heating Source' ) ?></h4>
-          <?php echo $this->Form->input( 'Building.other_heating_source', array( 'type' => 'radio', 'options' => array( 'PROPANE' => 'Propane', 'HEATING OIL' => 'Heating Oil', 'OTHER' => 'Other' ), 'legend' => false ) ) ?>
-        </div>
+        <?php echo $this->element( '../buildings/_demographic_inputs' ) ?>
       </div> <!-- #demographics -->
+      
+      <div id="utility-providers" style="display: none;">
+        <h3><?php __( 'Utility Providers' ) ?></h3>
+        <?php echo $this->Form->input( 'Building.electricity_provider_name', array( 'type' => 'text' ) ) ?>
+        <?php echo $this->Form->input( 'Building.electricity_provider_id', array( 'type' => 'hidden' ) ) ?>
+        
+        <?php echo $this->Form->input( 'Building.gas_provider_name', array( 'type' => 'text' ) ) ?>
+        <?php echo $this->Form->input( 'Building.gas_provider_id', array( 'type' => 'hidden' ) ) ?>
+        
+        <?php echo $this->Form->input( 'Building.water_provider_name', array( 'type' => 'text' ) ) ?>
+        <?php echo $this->Form->input( 'Building.water_provider_id', array( 'type' => 'hidden' ) ) ?>
+        
+        <h4><?php __( 'Alternative Heating Source' ) ?></h4>
+        <?php echo $this->Form->input( 'Building.other_heating_source', array( 'type' => 'radio', 'options' => array( 'PROPANE' => 'Propane', 'HEATING OIL' => 'Heating Oil', 'OTHER' => 'Other' ), 'legend' => false ) ) ?>
+      </div>
   
       <div id="equipment_list">
-        <h2><?php __( 'Equipment Listing' ) ?></h2>
+        <h1><?php __( 'Equipment Listing' ) ?></h1>
         
         <fieldset class="group">
           <?php if( empty( $this->data['Product'] ) ): ?>
             <div class="cloneable">
-              <?php echo $this->Form->input( 'Product.0.technology_id', array( 'label' => 'Equipment Type', 'div' => 'input select equipment-type', 'required' => true, 'empty' => true ) ) ?>
-              <?php echo $this->Form->input( 'Product.0.make' ) # TODO: Make this an autocomplete field ?>
-              <?php echo $this->Form->input( 'Product.0.model' ) # TODO: Make this an autocomplete field ?>
-              <?php echo $this->Form->input( 'Product.0.energy_source_id', array( 'empty' => 'Select equipment type', 'options' => array(), 'div' => 'input select energy-source', 'disabled' => 'disabled' ) ) ?>
-              <?php echo $this->Form->input( 'BuildingProduct.0.serial_number' ) ?>
-              <?php echo $this->Form->input( 'BuildingProduct.0.notes' ) ?>
+              <?php echo $this->element( '../buildings/_building_product_inputs' ) ?>
             </div>
           <?php else: ?>
             <?php foreach( $this->data['Product'] as $i => $product ): ?>

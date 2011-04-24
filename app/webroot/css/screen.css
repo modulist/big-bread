@@ -361,6 +361,7 @@ a.button {
 .intro button,
 .intro a.button {font-size: 14px; margin-bottom: 10px; text-decoration: none;}
 .intro .link-action { clear: left; }
+input[type=text][disabled] { background: transparent; border: none; color: #eee }
 
 /* ============================= Join ======================= */
 #join {background-color: #C2D89A;}

@@ -6,7 +6,7 @@ class Technology extends AppModel {
   public $hasMany = array(
     'EnergySource' => array(
       'className'  => 'EnergySource',
-      'foreignKey' => 'incentive_tech_id',
+      'foreignKey' => 'technology_id',
     ),
     'Product',
     'TechnologyIncentive' => array(
