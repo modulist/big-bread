@@ -1,4 +1,4 @@
-<?php if( !empty( $addresses ) && $this->action == 'incentives' ): ?>
+<?php if( !empty( $addresses ) ): ?>
   <table id="address">
   <thead>
     <tr>
@@ -10,7 +10,7 @@
     <?php foreach( $addresses as $address ): ?>
       <tr>
         <td class="adrs">
-          <a href="<?php echo Router::url( array( 'action' => $this->action, $address['Building']['id'] ) ) ?>">
+          <a href="<?php echo $this->Html->url( array( 'action' => $this->action, $address['Building']['id'] ) ) ?>">
             <?php echo h( $address['Address']['address_1'] ) ?><br />
             <?php if( !empty( $address['Address']['address_2'] ) ): ?>
               <?php echo h( $address['Address']['address_2'] ) ?><br />

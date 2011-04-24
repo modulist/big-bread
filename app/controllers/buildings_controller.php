@@ -37,31 +37,7 @@ class BuildingsController extends AppController {
     $this->layout    = 'sidebar';
     
     if( !empty( $building_id ) ) {
-      $this->data = $this->Building->find(
-        'first',
-        array(
-          'contain' => array(
-            'Address',
-            'BuildingProduct',
-            'BuildingRoofSystem',
-            'BuildingWallSystem',
-            'BuildingWindowSystem',
-            'Client',
-            'Inspector',
-            'Occupant',
-            'Product',
-            'Realtor',
-          ),
-          'conditions' => array( 'Building.id' => $building_id ),
-        )
-      );
-      
-      if( empty( $this->data ) ) {
-        $this->Session->setFlash( 'We were unable to find that building.', null, null, 'warning' );
-      }
-      else {
-        $this->Building->id = $this->data['Building']['id'];
-      }
+      $this->redirect( array( 'action' => 'edit', $building_id ) );
     }
     
     # All of the addresses associated with a given user (sidebar display)
@@ -148,6 +124,64 @@ class BuildingsController extends AppController {
   }
   
   /**
+   * Displays questionnaire information with the ability to edit
+   *
+   * @param 	$building_id
+   * @access	public
+   */
+  public function edit( $building_id, $model = null ) {
+    $this->helpers[] = 'Form';
+    $this->layout    = 'sidebar';
+    
+    # All of the addresses associated with a given user (sidebar display)
+    $addresses = $this->Building->Client->buildings( $this->Auth->user( 'id' ) );
+    
+    # Looks like we're updating something
+    if( !empty( $model ) ) {
+      if( method_exists( $this, 'update_' . strtolower( $model ) ) ) {
+        if( $this->{'update_' . strtolower( $model )}( $building_id ) ) {
+          # Redirect to this page without the model designation
+          $this->redirect( array( 'action' => $this->action, $building_id ) );
+        }
+      }
+    }
+    
+    if( !empty( $building_id ) ) {
+      $this->data = $this->Building->find(
+        'first',
+        array(
+          'contain' => array(
+            'Address' => array( 'ZipCode' ),
+            'BuildingProduct',
+            'BuildingRoofSystem',
+            'BuildingWallSystem',
+            'BuildingWindowSystem',
+            'Client',
+            'Inspector',
+            'Occupant',
+            'Product',
+            'Realtor',
+          ),
+          'conditions' => array( 'Building.id' => $building_id ),
+        )
+      );
+      
+      if( empty( $this->data ) ) {
+        $this->Session->setFlash( 'We were unable to find that building.', null, null, 'warning' );
+      }
+      else {
+        $this->Building->id = $this->data['Building']['id'];
+      }
+    }
+    
+    # new PHPDump( $this->data, 'Building', '', true );
+    
+    $this->set( 'building', $this->data );
+    
+    $this->set( compact( 'addresses' ) );
+  }
+  
+  /**
    * Creates a building record (and associated records) from the
    * questionnaire form.
    *
@@ -193,34 +227,7 @@ class BuildingsController extends AppController {
       $this->Session->setFlash( 'Thanks for participating.', null, null, 'success' );
       
       # Send new user invites
-      foreach( $invites as $invite ) {
-        $this->log( '{BuildingsController::create} Sending invite to ' . $invite['email'] . '. Code: ' . $invite['invite_code'], LOG_DEBUG );
-        /** 
-        $this->SwiftMailer->smtpType = 'tls'; 
-        $this->SwiftMailer->smtpHost = 'smtp.gmail.com'; 
-        $this->SwiftMailer->smtpPort = 465; 
-        $this->SwiftMailer->smtpUsername = 'my_email@gmail.com'; 
-        $this->SwiftMailer->smtpPassword = 'hard_to_guess'; 
-        */
-        $this->SwiftMailer->sendAs   = 'both'; 
-        $this->SwiftMailer->from     = 'DO-NOT-REPLY@bigbread.net'; 
-        $this->SwiftMailer->fromName = 'BigBread.net';
-        $this->SwiftMailer->to       = $invite['email'];
-        
-        //set variables to template as usual 
-        $this->set( 'invite_code', $invite['invite_code'] ); 
-         
-        try { 
-          if( !$this->SwiftMailer->send( 'invite', 'You\'ve been invited to save', 'native' ) ) {
-            foreach($this->SwiftMailer->postErrors as $failed_send_to) { 
-              $this->log( 'Failed to send invitation email to ' . $failed_send_to . ' (' . $invite['role'] . ')' ); 
-            }
-          } 
-        } 
-        catch( Exception $e ) { 
-          $this->log( 'Failed to send email: ' . $e->getMessage() ); 
-        } 
-      }
+      $this->send_invite( $invites );
       
       $this->redirect( array( 'action' => 'incentives', $this->Building->id ) );
     }
@@ -303,6 +310,128 @@ class BuildingsController extends AppController {
   /**
    * PRIVATE METHODS
    */
+  
+  /**
+   * Updates realtor information
+   *
+   * @param 	$building_id
+   * @return	boolean
+   * @access	private
+   */
+  private function update_realtor( $building_id ) {
+    return $this->update_user( $building_id, 'realtor' );
+  }
+  
+  /**
+   * Updates inspector information
+   *
+   * @param 	$building_id
+   * @return	boolean
+   * @access	private
+   */
+  private function update_inspector( $building_id ) {
+    return $this->update_user( $building_id, 'inspector' );
+  }
+  
+  /**
+   * Updates associated user data.
+   *
+   * @param 	$role
+   * @return	boolean
+   * @access	private
+   */
+  private function update_user( $building_id, $role ) {
+    $model = Inflector::classify( $role );
+    
+    $this->Building->id = $building_id; // Ultimately, we're here to update the building data
+    
+    $user = !empty( $this->data[$model]['email'] )
+        ? $this->Building->{$model}->known( $this->data[$model]['email'] )
+        : false;
+      
+    if( !$user ) { # We don't know this user.
+      $this->data[$model]['invite_code'] = md5( String::uuid() );
+      
+      if( $this->Building->{$model}->save( $this->data ) ) {
+        $user = $this->Building->{$model}->id;
+        $this->send_invite( array( $this->data[$model] ) );
+      }
+      else {
+        $this->Session->setFlash( 'We weren\'t able to make that change.', null, null, 'validation' );
+        
+        return false;
+      }
+    }
+    
+    # Update the building property if we have a user at this point.
+    if( $user ) {
+      $this->Building->saveField( $role . '_id', $user );
+      $this->Session->setFlash( 'The building\'s ' . $role . ' has been updated.', null, null, 'success' );
+      
+      return true;
+    }
+    
+    return false;
+  }
+  
+  /**
+   * Updates associated occupancy data
+   *
+   * @param 	$building_id
+   * @return  boolean
+   * @access	private
+   */
+  private function update_occupant( $building_id ) {
+    if( !empty( $this->data['Occupant']['id'] ) ) {
+      $this->Building->Occupant->id = $this->data['Occupant']['id'];
+      if( !$this->Building->Occupant->save( $this->data ) ) {
+        echo json_encode( $this->Building->Occupant->validationErrors );
+        $this->header( 'HTTP/1.1 400 Bad Request' );
+        exit;
+      }
+    }
+    else {
+      echo json_encode( array( 'id' => 'Occupancy identifier was not specified.' ) );
+      $this->header( 'HTTP/1.1 400 Bad Request' );
+    }
+  }
+  
+  /**
+   * Sends an invitation email
+   *
+   * @param 	$to     An INDEXED array of invited users
+   * @access	public
+   */
+  private function send_invite( $to ) {
+    foreach( $to as $invitee ) {
+      $this->log( '{BuildingsController::create} Sending invite to ' . $invitee['email'] . '. Code: ' . $invitee['invite_code'], LOG_DEBUG );
+      /** 
+      $this->SwiftMailer->smtpType = 'tls'; 
+      $this->SwiftMailer->smtpHost = 'smtp.gmail.com'; 
+      $this->SwiftMailer->smtpPort = 465; 
+      $this->SwiftMailer->smtpUsername = 'my_email@gmail.com'; 
+      $this->SwiftMailer->smtpPassword = 'hard_to_guess'; 
+      */
+      $this->SwiftMailer->sendAs   = 'both'; 
+      $this->SwiftMailer->from     = 'DO-NOT-REPLY@bigbread.net'; 
+      $this->SwiftMailer->fromName = 'BigBread.net';
+      $this->SwiftMailer->to       = $invitee['email'];
+      
+      //set variables to template as usual 
+      $this->set( 'invite_code', $invitee['invite_code'] ); 
+       
+      try { 
+        if( !$this->SwiftMailer->send( 'invite', 'You\'ve been invited to save', 'native' ) ) {
+          foreach($this->SwiftMailer->postErrors as $failed_send_to) { 
+            $this->log( 'Failed to send invitation email to ' . $failed_send_to . ' (' . $invitee['role'] . ')' ); 
+          }
+        } 
+      } 
+      catch( Exception $e ) { 
+        $this->log( 'Failed to send email: ' . $e->getMessage() ); 
+      } 
+    }
+  }
   
   /**
    * 

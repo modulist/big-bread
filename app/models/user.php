@@ -103,14 +103,6 @@ class User extends AppModel {
 	);
   
   /**
-   * CALLBACKS
-   */
-
-  /**
-   * PUBLIC METHODS
-   */
-  
-  /**
    * Constructor.
    *
    * This model uses several aliases (e.g. Client, Realtor, Inspector),
@@ -122,6 +114,14 @@ class User extends AppModel {
     
     $this->virtualFields['full_name'] = sprintf( 'CONCAT(%s.first_name, " ", %s.last_name)', $this->alias, $this->alias );
   }
+  
+  /**
+   * CALLBACKS
+   */
+  
+  /**
+   * PUBLIC METHODS
+   */
   
   /**
    * Retrieves the buildings associated with a given user.
