@@ -80,7 +80,7 @@
               <?php endif; ?>
             </div>
             <ul>
-              <li class="itemname"><b><?php echo h( $details['Incentive']['name'] ) ?></b></li>
+              <li class="itemname"><b><?php echo $details['Incentive']['name'] ?></b></li>
               <li><b><?php __( 'Expiration Date:' ) ?><br /><?php echo empty( $details['Incentive']['expiration_date'] ) ? __( 'When Funds Exhausted', true ) : date( 'm/d/Y', strtotime( $details['Incentive']['expiration_date'] ) ) ?></b></li>
             </ul>
           </div>
@@ -90,7 +90,7 @@
         <div class="incentive">
           <?php if( !empty( $details['Incentive']['AdditionalIncentiveNote'] ) ): ?>
             <?php foreach( $details['Incentive']['AdditionalIncentiveNote'] as $note ): ?>
-              <p><?php echo h( $note['note'] ) ?></p>
+              <p><?php echo $note['note'] ?></p>
             <?php endforeach; ?>
           <?php endif; ?>
           
@@ -175,7 +175,7 @@
             <h4>Notes</h4>
             <ul>
               <?php foreach( $details['Incentive']['PublicNote'] as $note ): ?>
-                <li><?php echo h( $note['note'] ) ?></li>
+                <li><?php echo $note['note'] ?></li>
               <?php endforeach; ?>
             </ul>
           <?php endif; ?>
