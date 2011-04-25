@@ -40,6 +40,53 @@ class BuildingsController extends AppController {
       $this->redirect( array( 'action' => 'edit', $building_id ) );
     }
     
+    if( !empty( $this->data ) ) {
+      # Save off user data
+      $roles   = array( 'Realtor', 'Inspector', 'Client' );
+      $invites = array();
+      foreach( $roles as $role ) {
+        # Realtor and Inspector are optional. If key fields are empty, Move along.
+        if( $role != 'Client' && empty( $this->data[$role]['email'] ) ) {
+          unset( $this->data[$role] );
+          continue;
+        }
+        
+        $user = !empty( $this->data[$role]['email'] )
+          ? $this->Building->{$role}->known( $this->data[$role]['email'] )
+          : false;
+        
+        if( $user ) { # This user is already in the system
+          $this->data['Building'][strtolower( $role ) . '_id'] = $user;
+          unset( $this->data[$role] );
+        }
+        else { # We don't know this user, create an invite code & save
+          $this->data[$role]['invite_code'] = md5( String::uuid() );
+          $this->Building->{$role}->save( $this->data[$role] );
+          $this->data[$role]['id'] = $this->Building->{$role}->id;
+          $this->data['Building'][strtolower( $role ) . '_id'] = $this->Building->{$role}->id;
+          $this->data[$role]['role'] = $role;
+          
+          # Send new user invite
+          $this->send_invite( array( $this->data[$role] ) );
+        }
+      }
+      
+      # Massage other specialized data bits
+      $this->data = $this->prep_utility_data( $this->data );
+      $this->data = $this->prep_product_data( $this->data );
+      $this->data = $this->prep_roof_data( $this->data );
+      
+      # Save it. Save it all...
+      if( $this->Building->saveAll( $this->data ) ) {
+        $this->Session->setFlash( 'Thanks for participating.', null, null, 'success' );
+        
+        $this->redirect( array( 'action' => 'incentives', $this->Building->id ) );
+      }
+      else {
+        $this->Session->setFlash( 'There is a problem with the data you provided. Please correct the errors below.', null, null, 'validation' );
+      }
+    }
+    
     # All of the addresses associated with a given user (sidebar display)
     $addresses = $this->Building->Client->buildings( $this->Auth->user( 'id' ) );
     
@@ -203,66 +250,6 @@ class BuildingsController extends AppController {
     $this->set( 'building', $this->data );
     
     $this->set( compact( 'addresses', 'technologies' ) );
-  }
-  
-  /**
-   * Creates a building record (and associated records) from the
-   * questionnaire form.
-   *
-   * @see $this::questionnaire()
-   */
-  public function create() {
-    if( empty( $this->data ) ) {
-      $this->redirect( '/questionnaire' );
-    }
-    
-    $roles   = array( 'Realtor', 'Inspector', 'Client' );
-    $invites = array();
-    foreach( $roles as $role ) {
-      # Realtor and Inspector are optional. If key fields are empty, Move along.
-      if( $role != 'Client' && empty( $this->data[$role]['email'] ) ) {
-        unset( $this->data[$role] );
-        continue;
-      }
-      
-      $user = !empty( $this->data[$role]['email'] )
-        ? $this->Building->{$role}->known( $this->data[$role]['email'] )
-        : false;
-      
-      if( $user ) { # This user is already in the system
-        $this->data['Building'][strtolower( $role ) . '_id'] = $user;
-        unset( $this->data[$role] );
-      }
-      else { # We don't know this user, create an invite code & save
-        $this->data[$role]['invite_code'] = md5( String::uuid() );
-        $this->Building->{$role}->save( $this->data[$role] );
-        $this->data['Building'][strtolower( $role ) . '_id'] = $this->Building->{$role}->id;
-        $this->data[$role]['role'] = $role;
-        array_push( $invites, $this->data[$role] );
-        unset($this->data[$role] );
-      }
-    }
-    
-    $this->data = $this->prep_utility_data( $this->data );
-    $this->data = $this->prep_product_data( $this->data );
-    $this->data = $this->prep_roof_data( $this->data );
-    
-    if( $this->Building->saveAll( $this->data ) ) {
-      $this->Session->setFlash( 'Thanks for participating.', null, null, 'success' );
-      
-      # Send new user invites
-      $this->send_invite( $invites );
-      
-      $this->redirect( array( 'action' => 'incentives', $this->Building->id ) );
-    }
-    else {
-      $invalid_fields = $this->Building->invalidFields();
-      
-      if( !empty( $invalid_fields ) ) {
-        $this->Session->setFlash( 'There is a problem with the data you provided. Please correct the errors below.', null, null, 'validation' );
-      }
-      $this->setAction( 'questionnaire' );
-    }
   }
   
   /**

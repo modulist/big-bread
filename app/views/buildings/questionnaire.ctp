@@ -2,7 +2,7 @@
 
 <?php echo $this->Html->css( 'jqueryui/themes/aristo/jquery-ui-1.8.7.custom.css', null, array( 'inline' => false ) ) ?>
 
-<?php echo $this->Form->create( 'Building', array( 'url' => array( 'action' => 'create' ) ) ) ?>
+<?php echo $this->Form->create( 'Building' ) ?>
 <?php # Really just a placeholder so that a Questionnaire record gets saved by saveAll() ?>
 <?php echo $this->Form->input( 'Questionnaire.deleted', array( 'type' => 'hidden', 'value' => 0 ) ) ?>
 <div id="general_Info">

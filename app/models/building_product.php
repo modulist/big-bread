@@ -6,18 +6,10 @@ class BuildingProduct extends AppModel {
   public $belongsTo = array( 'Building', 'Product' );
   
 	public $validate = array(
-		'building_id' => array(
-			'notempty' => array(
-				'rule'       => 'notEmpty',
-				'message'    => 'First name cannot be empty.',
-				'allowEmpty' => false,
-				'required'   => true,
-			),
-		),
 		'product_id' => array(
 			'notempty' => array(
 				'rule'       => 'notEmpty',
-				'message'    => 'Last name cannot be empty.',
+				'message'    => 'Product cannot be empty.',
 				'allowEmpty' => false,
 				'required'   => true,
 			),
