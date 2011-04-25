@@ -124,27 +124,6 @@ class User extends AppModel {
    */
   
   /**
-   * Registers (creates) a new user that is being created by any means
-   * other than user registration. For example, a 3rd party associated with
-   * a building who is created via the questionnaire.
-   *
-   * @param 	$data
-   * @return	array
-   * @access	public
-   */
-  public function save( $data ) {
-    $user = !empty( $data[$this->alias]['email'] )
-      ? $this->known( $data[$this->alias]['email'] )
-      : false;
-    
-    if( !$user ) { # This is a new user (or the same user with a different email addy)
-      $data[$this->alias]['invite_code'] = md5( String::uuid() );
-      
-      parent::save( $data[$this->alias] );
-    }
-  }
-  
-  /**
    * Retrieves the buildings associated with a given user.
    *
    * @param 	$user_id
