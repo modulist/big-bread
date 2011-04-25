@@ -205,9 +205,14 @@ class BuildingsController extends AppController {
       }
       
       if( $redirect ) {
+        $this->Session->setFlash( 'Your changes have been saved.', null, null, 'success' );
         $this->redirect( array( 'action' => 'edit', $building_id ) );
       }
+      else {
+        $this->Session->setFlash( 'There was a problem saving your changes.', null, null, 'error' );
+      }
     }
+    
     
     if( !empty( $building_id ) ) {
       $this->data = $this->Building->find(
@@ -443,7 +448,7 @@ class BuildingsController extends AppController {
       }
     }
     
-    $this->log( 'Zoiks! Returning false', LOG_DEBUG );
+    # $this->log( 'Zoiks! Returning false', LOG_DEBUG );
     
     return false;
   }

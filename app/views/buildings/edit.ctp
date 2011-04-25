@@ -5,8 +5,6 @@
 
 <?php echo $this->element( 'building_info', array( 'edit' => true ) ) ?>
 
-<?php new PHPDump( $this->data, 'data', '', true ); ?>
-
 <div id="general_Info">
   <div id="info">
     <div class="sliding-panel" id="realtor">
