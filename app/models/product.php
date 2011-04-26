@@ -6,11 +6,11 @@ class Product extends AppModel {
 	public $hasMany   = array( 'BuildingProduct' );
 	public $belongsTo = array(
     'Technology' => array(
-      'fields'     => array( 'id', 'incentive_tech_group_id', 'name', 'description' ),
+      'fields'     => array( 'id', 'technology_group_id', 'name', 'description' ),
       'conditions' => array( 'Technology.questionnaire_product' => 1 ),
     ),
     'EnergySource' => array(
-      'fields'     => array( 'id', 'incentive_tech_energy_group_id', 'name', 'description' ),
+      'fields'     => array( 'incentive_tech_energy_type_id', 'incentive_tech_energy_group_id', 'name', 'description' ),
     ),
   );
   

@@ -170,6 +170,9 @@ $(document).ready( function() {
     return false;
   });
   
+  
+  // This is copied into edit.js
+  // TODO: Make this DRY
   $('.equipment-type select').live( 'change', function() {
     var $select        = $(this);
     var $energy_select = $select.parent().nextAll( '.energy-source' ).first().find( 'select' );
