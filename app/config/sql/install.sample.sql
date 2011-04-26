@@ -40,7 +40,6 @@ DROP TABLE IF EXISTS incentive_tech__incentive_tech_energy_group; -- redundant, 
 DROP TABLE IF EXISTS dsireincentive;
 DROP TABLE IF EXISTS dsireincentive_detail;
 DROP TABLE IF EXISTS dsireincentive_dsireincentive_detail;
-DROP TABLE IF EXISTS error_log;
 DROP TABLE IF EXISTS error_log_bak;
 
 ALTER TABLE incentive
@@ -203,10 +202,31 @@ UPDATE incentive
         REFERENCES us_zipcode( zip )
           ON UPDATE CASCADE
           ON DELETE NO ACTION;
+          
+    -- INCENTIVE_AMOUNT_TYPE
+    ALTER TABLE incentive_amount_type
+      RENAME TO incentive_amount_types;
+      
+    -- Prepare for a new PK field
+    ALTER TABLE incentive_amount_types
+      DROP PRIMARY KEY,
+      ADD COLUMN id char(36) NULL FIRST,
+      MODIFY COLUMN incentive_amount_type_id varchar(6) NULL;
+      
+    -- Populate the new incentive.id
+    UPDATE incentive_amount_types
+       SET id = UUID();
+       
+    -- Reassign the PK and create a unique index on the old PK
+    ALTER TABLE incentive_amount_types
+      MODIFY id char(36) NOT NULL,
+      ADD PRIMARY KEY( id ),
+      ADD CONSTRAINT uix__incentive_amount_type_id UNIQUE INDEX( incentive_amount_type_id );
 
 /**
  * TECHNOLOGY GROUP
  */
+ 
 ALTER TABLE incentive_tech_group
   RENAME TO technology_groups;
   
@@ -214,6 +234,8 @@ ALTER TABLE incentive_tech_group
 ALTER TABLE technology_groups
   DROP PRIMARY KEY,
   ADD COLUMN id char(36) NULL FIRST,
+  ADD COLUMN title varchar(255) NULL AFTER name,
+  ADD COLUMN rebate_bar boolean NOT NULL DEFAULT 0
   MODIFY COLUMN incentive_tech_group_id varchar(6) NULL; -- whether this piece of tech is represented by a product on the questionnaire
   
 -- Populate the new incentive.id
@@ -226,7 +248,41 @@ ALTER TABLE technology_groups
   ADD PRIMARY KEY( id ),
   ADD CONSTRAINT uix__incentive_tech_group_id UNIQUE INDEX( incentive_tech_group_id );
 
-
+UPDATE technology_groups
+   SET rebate_bar = 1,
+       title = 'Appliances'
+ WHERE incentive_tech_group_id = 'APP';
+ 
+UPDATE technology_groups
+   SET rebate_bar = 1,
+       title = 'Building Shell'
+ WHERE incentive_tech_group_id = 'ENV';
+ 
+UPDATE technology_groups
+   SET rebate_bar = 1,
+       title = 'Heating & Cooling'
+ WHERE incentive_tech_group_id = 'HVAC';
+ 
+UPDATE technology_groups
+   SET rebate_bar = 1,
+       title = 'Hot Water'
+ WHERE incentive_tech_group_id = 'HW';
+ 
+UPDATE technology_groups
+   SET rebate_bar = 1,
+       title = 'Lighting'
+ WHERE incentive_tech_group_id = 'LIGHT';
+ 
+UPDATE technology_groups
+   SET rebate_bar = 1,
+       title = 'Whole House'
+ WHERE incentive_tech_group_id = 'WHOLE';
+ 
+UPDATE technology_groups
+   SET rebate_bar = 1,
+       title = 'Other'
+ WHERE incentive_tech_group_id = 'OTH';
+ 
 /**
  * TECHNOLOGIES
  */
@@ -266,6 +322,11 @@ ALTER TABLE technologies
 UPDATE technologies
    SET questionnaire_product = 1
  WHERE incentive_tech_id IN ( 'BOIL','CAC','DISHW','DRYER','FREEZ','FURN','HP', 'RFRG', 'RMAC','SPHEAT','WASH','WH','COOK' );
+     
+UPDATE technologies
+   SET name = 'Range/Cooktop/Oven'
+ WHERE incentive_tech_id = 'COOK';
+ 
 
     /**
      * TABLES ASSOCIATED WITH technologies (nee incentive_tech)
@@ -292,6 +353,7 @@ UPDATE technologies
 ALTER TABLE incentive__incentive_tech
   RENAME TO technology_incentives,
   CHANGE COLUMN incentive_tech_id technology_id char(36) NOT NULL,
+  MODIFY incentive_amount_type_id char(36) NULL,
   MODIFY COLUMN incentive_id char(36) NOT NULL;
   
 -- Set the new technology_incentives.incentive_id value to the UUID, where appropriate
@@ -312,6 +374,16 @@ ALTER TABLE technology_incentives
       ON DELETE NO ACTION,
   ADD CONSTRAINT fk__technology_incentives__incentive FOREIGN KEY( incentive_id )
     REFERENCES incentive( id )
+      ON UPDATE CASCADE
+      ON DELETE NO ACTION;
+
+UPDATE technology_incentives, incentive_amount_types
+   SET technology_incentives.incentive_amount_type_id = incentive_amount_types.id
+ WHERE technology_incentives.incentive_amount_type_id = incentive_amount_types.incentive_amount_type_id;
+ 
+ALTER TABLE technology_incentives
+  ADD CONSTRAINT fk__technology_incentives__incentive_amount_types FOREIGN KEY( incentive_amount_type_id )
+    REFERENCES incentive_amount_types( id )
       ON UPDATE CASCADE
       ON DELETE NO ACTION;
 
@@ -760,6 +832,8 @@ CREATE TABLE buildings(
   visible_weather_stripping boolean           NULL,
   visible_caulking          boolean           NULL,
   windows_frequently_open   boolean           NULL,
+  roof_insulation_level_id  boolean           NULL
+  roof_radiant_barrier      boolean           NULL,
   -- other stuff
   notes                     text              NULL,
   deleted                   boolean           NOT NULL DEFAULT 0,
@@ -807,10 +881,14 @@ CREATE TABLE buildings(
     REFERENCES exposure_types( id )
     ON UPDATE CASCADE
     ON DELETE SET NULL,
-  CONSTRAINT fk__buildings__insulation_levels FOREIGN KEY( insulation_level_id )
+  CONSTRAINT fk__buildings__insulation_levels__insulation_level_id FOREIGN KEY( insulation_level_id )
     REFERENCES insulation_levels( id )
     ON UPDATE CASCADE
     ON DELETE SET NULL,
+  CONSTRAINT fk__buildings__insulation_levels__roof_insulation_id FOREIGN KEY( roof_insulation_level_id )
+    REFERENCES insulation_levels( id )
+    ON UPDATE CASCADE
+    ON DELETE SET NULL
   CONSTRAINT fk__buildings__utility_ele FOREIGN KEY( electricity_provider_id )
     REFERENCES utility( id )
     ON UPDATE CASCADE
@@ -901,9 +979,7 @@ CREATE TABLE building_roof_systems(
   id                    char(36)    NOT NULL,
   building_id           char(36)    NOT NULL,
   roof_system_id        char(36)    NOT NULL,
-  insulation_level_id   char(36)    NULL,
   living_space_ratio    float       NULL,
-  radiant_barrier       boolean     NULL,
   
   PRIMARY KEY( id ),
   CONSTRAINT fk__building_roof_systems__buildings FOREIGN KEY( building_id )
@@ -913,29 +989,25 @@ CREATE TABLE building_roof_systems(
   CONSTRAINT fk__building_roof_systems__roof_systems FOREIGN KEY( roof_system_id )
     REFERENCES roof_systems( id )
     ON UPDATE CASCADE
-    ON DELETE NO ACTION,
-  CONSTRAINT fk__building_roof_systems__insulation_levels FOREIGN KEY( insulation_level_id )
-    REFERENCES insulation_levels( id )
-    ON UPDATE CASCADE
-    ON DELETE SET NULL
+    ON DELETE NO ACTION
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS building_wall_systems;
 CREATE TABLE building_wall_systems(
   id                  char(36)  NOT NULL,
   building_id         char(36)  NOT NULL,
-  wall_system_id      char(36)  NOT NULL,
+  wall_system_id      char(36)  NULL,
   insulation_level_id char(36)  NULL,
   
   PRIMARY KEY( building_id, wall_system_id ),
   CONSTRAINT fk__building_wall_systems__buildings FOREIGN KEY( building_id )
     REFERENCES buildings( id )
     ON UPDATE CASCADE
-    ON DELETE CASCADE,
+    ON DELETE NO ACTION,
   CONSTRAINT fk__building_wall_systems__wall_systems FOREIGN KEY( wall_system_id )
     REFERENCES wall_systems( id )
     ON UPDATE CASCADE
-    ON DELETE NO ACTION,
+    ON DELETE SET NULL,
   CONSTRAINT fk__building_wall_systems__insulation_levels FOREIGN KEY( insulation_level_id )
     REFERENCES insulation_levels( id )
     ON UPDATE CASCADE
