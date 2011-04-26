@@ -12,7 +12,7 @@ UPDATE technologies
  WHERE incentive_tech_id = 'COOK';
  
 -- Replacing the error_log table that I deleted from the original import
-CREATE TABLE error_log (
+CREATE TABLE IF NOT EXISTS error_log (
   id        int(11)       NOT NULL AUTO_INCREMENT,
   date_time datetime      NOT NULL,
   query     varchar(5000) NOT NULL,
