@@ -293,6 +293,9 @@ table.incentive-tnc td.conditions {}
     margin: 10px 0 15px;
     padding: 0 0 10px;}
 
+/* ============================= questionnaire ====================== */
+.section { display: none; }
+.section.active { display: block; }
 
 /* ============================= one column "company info" pages ====================== */
 body.onecolumn #content h1 {margin: 0 0 .25em 0;}

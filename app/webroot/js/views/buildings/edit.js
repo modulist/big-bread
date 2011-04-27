@@ -1,4 +1,37 @@
-$(document).ready( function() {
+$(document).ready( function( e ) {
+  // Which target are we initially activating?
+  if( document.location.hash.length === 0 ) {
+    $location = $( '#demographics' );
+  }
+  else {
+    $location = $( document.location.hash );
+    document.location.hash = ''; // reset the hash to prevent scrolling
+  }
+  
+  // Style the active target link
+  $( 'a[href="#' + $location.attr( 'id' ) + '"]' ).addClass( 'active' );
+  // Show the div specified by the anchor
+  $location.addClass( 'active' );
+  $( '.section' ).not( '.active' ).hide();
+  
+  $( '#sidebar #questionnaire a[href^="#"]' ).click( function( e ) {
+    var $link    = $(this);
+    var $section = $( $link.attr( 'href' ) );
+    
+    $( '#sidebar #questionnaire a.active' ).removeClass( 'active' );
+    $link.addClass( 'active' );
+    
+    $( '.section.active' ).slideUp( 'slow', function() {
+      $deactivated = $(this);
+      $section.slideDown( 'fast', function() {
+        $deactivated.removeClass( 'active' );
+        $(this).addClass( 'active' );
+      })
+    })
+    
+    e.preventDefault();
+  });
+  
   // Toggle an editable user form
   $('.toggle-form').click( function( e ) {
     var $this  = $(this);
