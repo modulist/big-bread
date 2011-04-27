@@ -53,6 +53,35 @@ $(document).ready( function() {
     e.preventDefault();
   });
   
+  $( '.action.delete.retire' ).click( function( e ) {
+    var $this = $(this);
+    
+    $.post(
+      $this.attr( 'href' ),
+      null,
+      function( data, status, jqXHR ) {
+        $tbody = $this.closest( 'tbody' );
+        $tr    = $this.closest( 'tr' );
+        
+        $tr
+          .html( '<td colspan="4" class="flash success">Equipment retired successfully.</td>' )
+          .fadeOut( 5000, function() {
+            // If we just deleted the last child, display a msg to the user
+            if( $tbody.children().length === 1 ) {
+              $(this)
+                .html( '<td colspan="4">No equipment has been added.</td>' )
+                .fadeIn( 2000 );
+            }
+            else {
+              $(this).remove();
+            }
+          });
+      }
+    );
+    
+    e.preventDefault();
+  });
+  
   // Copied from questionnaire.js
   // TODO: Make this DRY
   $('.equipment-type select').live( 'change', function() {
@@ -74,51 +103,4 @@ $(document).ready( function() {
       $energy_select.removeAttr( 'disabled' );
     });
   });
-  
-  // Inline editing...
-  /*
-  var editable_options = {
-    submit: 'Change',
-    cancel: 'Cancel',
-    onEdit: function() {
-      var $this = $(this);
-      
-      $this.find( 'input' ).select();
-    },
-    onSubmit: function( content ) {
-      if( content.current == content.previous ) { // Nothing changed
-        return false;
-      }
-      
-      var $this  = $(this);
-      var $form  = $this.parents( 'form' );
-      var model  = $this.attr( 'data-model' );
-      var field  = $this.attr( 'data-field' );
-      var data   = $form.serialize() + '&data[' + model + '][' + field + ']=' + content.current;
-      
-      // Update and report back any errors
-      $.ajax({
-        url: $form.attr( 'action' ),
-        type: 'POST',
-        data: data,
-        dataType: 'json',
-        error: function( jqXHR, textStatus, errorThrown ){
-          var errors = $.parseJSON( jqXHR.responseText );
-          
-          $this.text( content.previous );
-          
-          for( var i in errors ) {
-            alert( errors[i] );
-          }
-        }
-      });
-    }
-  };
-  
-  var editable_boolean_options = editable_options.clone();
-  editable_boolean_options['type'] = 'select';
-  editable_boolean_options['options'] = { 1:'Yes', 0:'No' };
-  $( '.editable' ).editable( editable_options );
-  $( '.editable-boolean' ).editable( editable_boolean_options );
-  */
 });

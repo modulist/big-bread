@@ -224,6 +224,7 @@ class BuildingsController extends AppController {
           'contain' => array(
             'Address' => array( 'ZipCode' ),
             'BuildingProduct' => array(
+              'conditions' => array( 'BuildingProduct.service_out' => null ),
               'Product' => array(
                 'EnergySource',
                 'Technology' => array( 'EnergySource' => array( 'fields' => array( 'incentive_tech_energy_type_id', 'name' ) ) )

@@ -11,6 +11,10 @@ UPDATE technologies
    SET name = 'Range/Cooktop/Oven'
  WHERE incentive_tech_id = 'COOK';
  
+ALTER TABLE building_products
+  ADD service_out datetime NULL AFTER service_in;
+  CHANGE year_built service_in datetime NULL AFTER serial_number,
+ 
 -- Replacing the error_log table that I deleted from the original import
 CREATE TABLE IF NOT EXISTS error_log (
   id        int(11)       NOT NULL AUTO_INCREMENT,
