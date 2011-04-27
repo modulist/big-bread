@@ -44,7 +44,7 @@
         <?php echo $this->Form->input( 'Building.other_heating_source', array( 'type' => 'radio', 'options' => array( 'PROPANE' => 'Propane', 'HEATING OIL' => 'Heating Oil', 'OTHER' => 'Other' ), 'legend' => false ) ) ?>
       </div>
   
-      <div id="equipment_list">
+      <div id="equipment">
         <h1><?php __( 'Equipment Listing' ) ?></h1>
         
         <fieldset class="group">
@@ -69,12 +69,12 @@
         </fieldset>
       </div> <!-- #equipment_list -->
   
-      <div id="building_characteristics">
+      <div id="characteristics">
         <h2><?php __( 'Building Characteristics' ) ?></h2>
         <?php echo $this->element( '../buildings/_building_characteristics_inputs' ) ?>
       </div> <!-- #building_characteristics -->
   
-      <div id="building_envelope">
+      <div id="envelope">
         <h2><?php __( 'Insulation, Windows &amp; Doors' ) ?></h2>
         
         <h3><?php __( 'Windows' ) ?></h3>
