@@ -64,12 +64,12 @@ $(document).ready( function() {
         $tr    = $this.closest( 'tr' );
         
         $tr
-          .html( '<td colspan="4" class="flash success">Equipment retired successfully.</td>' )
+          .html( '<td colspan="5" class="flash success">Equipment retired successfully.</td>' )
           .fadeOut( 5000, function() {
             // If we just deleted the last child, display a msg to the user
             if( $tbody.children().length === 1 ) {
               $(this)
-                .html( '<td colspan="4">No equipment has been added.</td>' )
+                .html( '<td colspan="5">No equipment has been added.</td>' )
                 .fadeIn( 2000 );
             }
             else {

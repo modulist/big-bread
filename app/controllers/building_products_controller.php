@@ -14,7 +14,7 @@ class BuildingProductsController extends AppController {
     
     if( $this->RequestHandler->isAjax() && $this->RequestHandler->isPost() ) {
       $this->BuildingProduct->id = $id;
-      // $this->BuildingProduct->saveField( 'service_out', date( 'Y-m-d H:i:s', time() ) );
+      $this->BuildingProduct->saveField( 'service_out', date( 'Y-m-d H:i:s', time() ) );
     }
     else {
       // Send HTTP error status (400?)
