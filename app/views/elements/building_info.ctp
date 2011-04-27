@@ -18,26 +18,25 @@
         <?php echo h( $building['Client']['full_name'] ) ?> |
         <?php echo $this->Html->link( $building['Client']['email'], 'mailto:' . $building['Client']['email'] ) ?>
       </li>
-      <?php if( !empty( $building['Realtor']['email'] ) ): ?>
+      
+      <?php foreach( array( 'Realtor', 'Inspector' ) as $role ): ?>
+        <?php $display = $role == 'Realtor' ? __( 'Realtor', true ) : __( 'Inspector', true ) ?>
         <li>
-          <b><?php __( 'Realtor' ) ?></b> |
-          <?php echo h( $building['Realtor']['full_name'] ) ?> |
-          <?php echo $this->Html->link( $building['Realtor']['email'], 'mailto:' . $building['Realtor']['email'] ) ?>
-          <?php if( !empty( $edit ) ): ?>
-            | <?php echo $this->Html->link( __( 'Change Realtor', true ), '#', array( 'class' => 'toggle-form', 'data-model' => 'Realtor' ) ) ?>
+          <b><?php echo $display ?></b> |
+          <?php if( !empty( $building[$role]['email'] ) ): ?>
+            <?php echo h( $building[$role]['full_name'] ) ?> |
+            <?php echo $this->Html->link( $building[$role]['email'], 'mailto:' . $building[$role]['email'] ) ?>
+            <?php if( !empty( $edit ) ): ?>
+              <?php $link_text = $role == 'Realtor' ? __( 'Change Realtor', true ) : __( 'Change Inspector', true ) ?>
+              | <?php echo $this->Html->link( $link_text, '#', array( 'class' => 'toggle-form', 'data-model' => $role ) ) ?>
+            <?php endif; ?>
+          <?php else: ?>
+            <?php $link_text = $role == 'Realtor' ? __( 'Add Realtor Info', true ) : __( 'Add Inspector Info', true ) ?>
+            <?php __( 'Not specified' ) ?>
+            | <?php echo $this->Html->link( $link_text, '#', array( 'class' => 'toggle-form', 'data-model' => $role ) ) ?>
           <?php endif; ?>
         </li>
-      <?php endif; ?>
-      <?php if( !empty( $building['Inspector']['email'] ) ): ?>
-        <li>
-          <b><?php __( 'Inspector' ) ?></b> |
-          <?php echo h( $building['Inspector']['full_name'] ) ?> |
-          <?php echo $this->Html->link( $building['Inspector']['email'], 'mailto:' . $building['Inspector']['email'] ) ?>
-          <?php if( !empty( $edit ) ): ?>
-            | <?php echo $this->Html->link( __( 'Change Inspector', true ), '#', array( 'class' => 'toggle-form', 'data-model' => 'Inspector' ) ) ?>
-          <?php endif; ?>
-        </li>
-      <?php endif; ?>
+      <?php endforeach; ?>
     </ul>
   </div>
   <div class="clear"></div>

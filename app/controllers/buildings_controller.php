@@ -176,7 +176,7 @@ class BuildingsController extends AppController {
    * @param 	$building_id
    * @access	public
    */
-  public function edit( $building_id, $model = null ) {
+  public function edit( $building_id, $anchor = null ) {
     $this->helpers[] = 'Form';
     $this->layout    = 'sidebar';
     
@@ -184,22 +184,28 @@ class BuildingsController extends AppController {
     $addresses = $this->Building->Client->buildings( $this->Auth->user( 'id' ) );
     
     # Looks like we're updating something
-    if( !empty( $model ) ) {
-      $model    = Inflector::classify( $model ); // normalize the model name
+    if( !empty( $this->data ) ) {
       $redirect = false;
       
-      # Save associated model data
-      if( !empty( $this->data[$model] ) && method_exists( $this, 'update_' . Inflector::underscore( $model ) ) ) {
-        if( $this->{'update_' . Inflector::underscore( $model )}( $building_id ) ) {
+      foreach( $this->data as $model => $data ) {
+        # We'll handle the building model last
+        # Also ignore User data passed from the controller for the AuditableBehavior
+        if( in_array( $model, array( 'Building', 'User' ) ) ) { 
+          continue;
+        }
+        
+        if( method_exists( $this, 'update_' . Inflector::underscore( $model ) ) ) {
+          if( $this->{'update_' . Inflector::underscore( $model )}( $building_id ) ) {
+            $redirect = true;
+          }
+        }
+        else {
+          # No update method exists for whatever reason. That's cool.
           $redirect = true;
         }
       }
-      else {
-        # There is not associated model data. That's cool.
-        $redirect = true;
-      }
       
-      // We have to edit actual building properties too...
+      # We have to edit actual building properties too...
       if( !empty( $this->data['Building'] ) ) {
         $this->Building->id = $building_id;
         
@@ -210,7 +216,7 @@ class BuildingsController extends AppController {
       
       if( $redirect ) {
         $this->Session->setFlash( 'Your changes have been saved.', null, null, 'success' );
-        $this->redirect( array( 'action' => 'edit', $building_id ) );
+        $this->redirect( array( 'action' => 'edit', $building_id, '#' => $anchor ) );
       }
       else {
         $this->Session->setFlash( 'There was a problem saving your changes.', null, null, 'error' );

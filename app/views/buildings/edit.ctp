@@ -37,7 +37,7 @@
     
     <div id="demographics" class="section">
       <h1><?php __( 'Demographics' ) ?></h1>
-      <?php echo $this->Form->create( 'Building', array( 'url' => array( 'action' => 'edit', $this->data['Building']['id'], 'occupant' ) ) ) ?>
+      <?php echo $this->Form->create( 'Building', array( 'url' => array( 'action' => 'edit', $this->data['Building']['id'], 'demographics' ) ) ) ?>
         <?php echo $this->Form->input( 'Occupant.id' ) ?>
         <?php echo $this->element( '../buildings/_demographic_inputs' ) ?>
         
@@ -93,7 +93,7 @@
       </table>
       
       <div class="sliding-panel" id="product">
-        <?php echo $this->Form->create( 'Building', array( 'url' => array( 'action' => 'edit', $this->data['Building']['id'], 'product' ) ) ) ?>
+        <?php echo $this->Form->create( 'Building', array( 'url' => array( 'action' => 'edit', $this->data['Building']['id'], 'equipment' ) ) ) ?>
           <?php echo $this->Form->input( 'BuildingProduct.id' ) ?>
           
           <?php echo $this->element( '../buildings/_building_product_inputs' ) ?>
@@ -111,7 +111,7 @@
       
       <?php foreach( $this->data['BuildingProduct'] as $i => $building_product ): ?>
         <div class="sliding-panel" id="product-<?php echo $building_product['id'] ?>">
-          <?php echo $this->Form->create( 'Building', array( 'url' => array( 'action' => 'edit', $this->data['Building']['id'], 'product' ) ) ) ?>
+          <?php echo $this->Form->create( 'Building', array( 'url' => array( 'action' => 'edit', $this->data['Building']['id'], 'equipment' ) ) ) ?>
             <?php echo $this->Form->input( 'BuildingProduct.' . $i . '.id' ) ?>
             
             <?php echo $this->element( '../buildings/_building_product_inputs', array( 'index' => $i, 'product' => $building_product ) ) ?>
@@ -131,7 +131,7 @@
     
     <div id="characteristics" class="section">
       <h1><?php __( 'Building Characteristics' ) ?></h1>
-      <?php echo $this->Form->create( 'Building', array( 'url' => array( 'action' => 'edit', $this->data['Building']['id'], 'building_wall_system' ) ) ) ?>
+      <?php echo $this->Form->create( 'Building', array( 'url' => array( 'action' => 'edit', $this->data['Building']['id'], 'characteristics' ) ) ) ?>
         <?php echo $this->Form->input( 'BuildingWallSystem.id' ) ?>
         <?php echo $this->element( '../buildings/_building_characteristics_inputs' ) ?>
         
@@ -149,39 +149,18 @@
     <div id="envelope" class="section">
       <h1><?php __( 'Insulation, Windows &amp; Doors' ) ?></h1>
       
-      <h3><?php __( 'Windows' ) ?></h3>
-      <?php echo $this->Form->create( 'Building', array( 'url' => array( 'action' => 'edit', $this->data['Building']['id'], 'building_window_system' ) ) ) ?>
+      <?php echo $this->Form->create( 'Building', array( 'url' => array( 'action' => 'edit', $this->data['Building']['id'], 'envelope' ) ) ) ?>
+        <h3><?php __( 'Windows' ) ?></h3>
+        
         <?php echo $this->Form->input( 'BuildingWindowSystem.0.id' ) ?>
         
         <label>Window Pane Type</label>
         <?php echo $this->element( '../buildings/_window_inputs' ) ?>
         
-        <div class="buttons">
-          <div class="button">
-            <input type="submit" value="Save" />
-          </div>
-          <div class="button">
-            <input type="reset" value="Cancel" />
-          </div>
-        </div>
-      <?php echo $this->Form->end() ?>
-      
-      <h3><?php __( 'Air Tightness' ) ?></h3>
-      <?php echo $this->Form->create( 'Building', array( 'url' => array( 'action' => 'edit', $this->data['Building']['id'], 'building' ) ) ) ?>
+        <h3><?php __( 'Air Tightness' ) ?></h3>
         <?php echo $this->element( '../buildings/_air_tightness_inputs' ) ?>
         
-        <div class="buttons">
-          <div class="button">
-            <input type="submit" value="Save" />
-          </div>
-          <div class="button">
-            <input type="reset" value="Cancel" />
-          </div>
-        </div>
-      <?php echo $this->Form->end() ?>
-      
-      <h3><?php __( 'Roof' ) ?></h3>
-      <?php echo $this->Form->create( 'Building', array( 'url' => array( 'action' => 'edit', $this->data['Building']['id'], 'building_roof_system' ) ) ) ?>
+        <h3><?php __( 'Roof' ) ?></h3>
         <?php echo $this->element( '../buildings/_roof_inputs' ) ?>
         
         <div class="buttons">
