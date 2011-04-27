@@ -12,8 +12,8 @@ UPDATE technologies
  WHERE incentive_tech_id = 'COOK';
  
 ALTER TABLE building_products
-  ADD service_out datetime NULL AFTER service_in;
-  CHANGE year_built service_in datetime NULL AFTER serial_number,
+  ADD service_out DATETIME NULL AFTER serial_number,
+  CHANGE year_built service_in DATETIME NULL AFTER serial_number;
  
 -- Replacing the error_log table that I deleted from the original import
 CREATE TABLE IF NOT EXISTS error_log (
