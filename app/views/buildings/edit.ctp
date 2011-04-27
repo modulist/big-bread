@@ -75,7 +75,7 @@
               <td><?php echo h( $building_product['serial_number'] ) ?></td>
               <td>
                 <?php echo $this->Html->link( __( 'edit', true ), '#', array( 'class' => 'toggle-form', 'data-model' => 'Product', 'data-id' => $building_product['id'] ) ) ?>
-                | <?php echo $this->Html->link( __( 'retire', true ), array( 'controller' => 'BuildingProducts', 'action' => 'retire', $building_product['id'] ), array( 'class' => 'action delete retire' ) ) ?></td>
+                | <?php echo $this->Html->link( __( 'retire', true ), array( 'controller' => 'BuildingProducts', 'action' => 'retire', $building_product['id'] ), array( 'class' => 'action delete retire' ), __( 'Are you sure you want to retire this piece of equipment?', true ) ) ?></td>
             </tr>
           <?php endforeach; ?>
         <?php else: ?>
