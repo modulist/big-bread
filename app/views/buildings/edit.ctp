@@ -85,7 +85,7 @@
       <?php if( !empty( $this->data['BuildingProduct'] ) ): ?>
       <tfoot>
         <tr>
-          <td colspan="4"><?php echo $this->Html->link( __( 'Add a new piece of equipment', true ), '#', array( 'class' => 'toggle-form', 'data-model' => 'Product' ) ) ?></td>
+          <td colspan="4"><?php echo $this->Html->link( __( 'Add a new piece of equipment', true ), '#', array( 'class' => 'button toggle-form', 'data-model' => 'Product' ) ) ?></td>
         </tr>
       </tfoot>
       <?php endif; ?>
