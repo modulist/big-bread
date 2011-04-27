@@ -12,6 +12,7 @@
   <?php else: ?>
     <?php $checked  = false ?>
     <?php $coverage = '' ?>
+    <?php $id       = false ?>
   <?php endif; ?>
   
   <?php echo $this->Form->input( 'BuildingRoofSystem.' . $i . '.id', array( 'type' => 'hidden', 'value' => $id ) ) ?>
