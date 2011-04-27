@@ -13,7 +13,7 @@
         <?php echo $this->element( '../buildings/_realtor_inputs' ) ?>
         <div class="buttons">
           <div class="button">
-            <input type="submit" value="Change" />
+            <input type="submit" value="Save" />
           </div>
           <div class="button">
             <input type="reset" value="Cancel" />
@@ -27,7 +27,7 @@
         <?php echo $this->element( '../buildings/_inspector_inputs' ) ?>
         <div class="buttons">
           <div class="button">
-            <input type="submit" value="Change" />
+            <input type="submit" value="Save" />
           </div>
           <div class="button">
             <input type="reset" value="Cancel" />
@@ -44,7 +44,7 @@
         
         <div class="buttons">
           <div class="button">
-            <input type="submit" value="Change" />
+            <input type="submit" value="Save" />
           </div>
           <div class="button">
             <input type="reset" value="Cancel" />
@@ -99,7 +99,7 @@
           
           <div class="buttons">
             <div class="button">
-              <input type="submit" value="Change" />
+              <input type="submit" value="Save" />
             </div>
             <div class="button">
               <input type="reset" value="Cancel" />
@@ -117,7 +117,7 @@
             
             <div class="buttons">
               <div class="button">
-                <input type="submit" value="Change" />
+                <input type="submit" value="Save" />
               </div>
               <div class="button">
                 <input type="reset" value="Cancel" />
@@ -136,7 +136,7 @@
         
         <div class="buttons">
           <div class="button">
-            <input type="submit" value="Change" />
+            <input type="submit" value="Save" />
           </div>
           <div class="button">
             <input type="reset" value="Cancel" />
@@ -157,7 +157,7 @@
         
         <div class="buttons">
           <div class="button">
-            <input type="submit" value="Change" />
+            <input type="submit" value="Save" />
           </div>
           <div class="button">
             <input type="reset" value="Cancel" />
@@ -171,7 +171,7 @@
         
         <div class="buttons">
           <div class="button">
-            <input type="submit" value="Change" />
+            <input type="submit" value="Save" />
           </div>
           <div class="button">
             <input type="reset" value="Cancel" />
@@ -185,7 +185,7 @@
         
         <div class="buttons">
           <div class="button">
-            <input type="submit" value="Change" />
+            <input type="submit" value="Save" />
           </div>
           <div class="button">
             <input type="reset" value="Cancel" />
