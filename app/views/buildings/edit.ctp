@@ -126,6 +126,72 @@
           <?php echo $this->Form->end() ?>
         </div>
       <?php endforeach; ?>
-    </div>
+    </div> <!-- #equipment_listing -->
+    
+    <div id="building_characteristics">
+      <h1><?php __( 'Building Characteristics' ) ?></h1>
+      <?php echo $this->Form->create( 'Building', array( 'url' => array( 'action' => 'edit', $this->data['Building']['id'], 'building_wall_system' ) ) ) ?>
+        <?php echo $this->Form->input( 'BuildingWallSystem.id' ) ?>
+        <?php echo $this->element( '../buildings/_building_characteristics_inputs' ) ?>
+        
+        <div class="buttons">
+          <div class="button">
+            <input type="submit" value="Change" />
+          </div>
+          <div class="button">
+            <input type="reset" value="Cancel" />
+          </div>
+        </div>
+      <?php echo $this->Form->end() ?>
+    </div> <!-- #building_characteristics -->
+    
+    <div id="building_envelope">
+      <h1><?php __( 'Insulation, Windows &amp; Doors' ) ?></h1>
+      
+      <h3><?php __( 'Windows' ) ?></h3>
+      <?php echo $this->Form->create( 'Building', array( 'url' => array( 'action' => 'edit', $this->data['Building']['id'], 'building_window_system' ) ) ) ?>
+        <?php echo $this->Form->input( 'BuildingWindowSystem.0.id' ) ?>
+        
+        <label>Window Pane Type</label>
+        <?php echo $this->element( '../buildings/_window_inputs' ) ?>
+        
+        <div class="buttons">
+          <div class="button">
+            <input type="submit" value="Change" />
+          </div>
+          <div class="button">
+            <input type="reset" value="Cancel" />
+          </div>
+        </div>
+      <?php echo $this->Form->end() ?>
+      
+      <h3><?php __( 'Air Tightness' ) ?></h3>
+      <?php echo $this->Form->create( 'Building', array( 'url' => array( 'action' => 'edit', $this->data['Building']['id'], 'building' ) ) ) ?>
+        <?php echo $this->element( '../buildings/_air_tightness_inputs' ) ?>
+        
+        <div class="buttons">
+          <div class="button">
+            <input type="submit" value="Change" />
+          </div>
+          <div class="button">
+            <input type="reset" value="Cancel" />
+          </div>
+        </div>
+      <?php echo $this->Form->end() ?>
+      
+      <h3><?php __( 'Roof' ) ?></h3>
+      <?php echo $this->Form->create( 'Building', array( 'url' => array( 'action' => 'edit', $this->data['Building']['id'], 'building_roof_system' ) ) ) ?>
+        <?php echo $this->element( '../buildings/_roof_inputs' ) ?>
+        
+        <div class="buttons">
+          <div class="button">
+            <input type="submit" value="Change" />
+          </div>
+          <div class="button">
+            <input type="reset" value="Cancel" />
+          </div>
+        </div>
+      <?php echo $this->Form->end() ?>
+    </div> <!-- #building_envelope -->
   </div>
 </div>

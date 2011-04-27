@@ -1,4 +1,4 @@
-<?php if( $this->action == 'incentives' ): ?>
+<?php # if( $this->action == 'incentives' ): ?>
   <?php if( !empty( $addresses ) ): ?>
     <table id="address">
     <thead>
@@ -25,4 +25,4 @@
     </tbody>
     </table>
   <?php endif; ?>
-<?php endif; ?>
+<?php # endif; ?>

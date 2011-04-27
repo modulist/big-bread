@@ -188,11 +188,15 @@ class BuildingsController extends AppController {
       $model    = Inflector::classify( $model ); // normalize the model name
       $redirect = false;
       
-      // Save associated model data
-      if( !empty( $this->data[$model] ) && method_exists( $this, 'update_' . strtolower( $model ) ) ) {
-        if( $this->{'update_' . strtolower( $model )}( $building_id ) ) {
+      # Save associated model data
+      if( !empty( $this->data[$model] ) && method_exists( $this, 'update_' . Inflector::underscore( $model ) ) ) {
+        if( $this->{'update_' . Inflector::underscore( $model )}( $building_id ) ) {
           $redirect = true;
         }
+      }
+      else {
+        # There is not associated model data. That's cool.
+        $redirect = true;
       }
       
       // We have to edit actual building properties too...
@@ -212,7 +216,6 @@ class BuildingsController extends AppController {
         $this->Session->setFlash( 'There was a problem saving your changes.', null, null, 'error' );
       }
     }
-    
     
     if( !empty( $building_id ) ) {
       $this->data = $this->Building->find(
@@ -244,6 +247,43 @@ class BuildingsController extends AppController {
     }
     
     # Lookups
+    $basementTypes = $this->Building->BasementType->find(
+      'list',
+      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
+    );
+    $buildingShapes = $this->Building->BuildingShape->find(
+      'list',
+      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
+    );
+    $buildingTypes = $this->Building->BuildingType->find(
+      'list',
+      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
+    );
+    $exposureTypes = $this->Building->ExposureType->find(
+      'list',
+      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
+    );
+    $frameMaterials = $this->Building->BuildingWindowSystem->FrameMaterial->find(
+      'list',
+      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
+    );
+    $insulationLevels = $this->Building->BuildingWallSystem->InsulationLevel->find(
+      'list',
+      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
+    );
+    $maintenanceLevels = $this->Building->MaintenanceLevel->find(
+      'list',
+      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
+    );
+    $roofInsulationLevels = $insulationLevels;
+    $roofSystems = $this->Building->BuildingRoofSystem->RoofSystem->find(
+      'all',
+      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
+    );
+    $shadingTypes = $this->Building->ShadingType->find(
+      'list',
+      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
+    );
     $technologies = $this->Building->BuildingProduct->Product->Technology->find(
       'list',
       array(
@@ -251,10 +291,18 @@ class BuildingsController extends AppController {
         'order' => array( 'Technology.name' ),
       )
     );
+    $wallSystems = $this->Building->BuildingWallSystem->WallSystem->find(
+      'list',
+      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
+    );
+    $windowPaneTypes = $this->Building->BuildingWindowSystem->WindowPaneType->find(
+      'list',
+      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
+    );
     
     $this->set( 'building', $this->data );
     
-    $this->set( compact( 'addresses', 'technologies' ) );
+    $this->set( compact( 'addresses', 'basementTypes', 'buildingShapes', 'buildingTypes', 'exposureTypes', 'frameMaterials', 'insulationLevels', 'maintenanceLevels', 'roofInsulationLevels', 'roofSystems', 'shadingTypes', 'technologies', 'wallSystems', 'windowPaneTypes' ) );
   }
   
   /**
@@ -451,6 +499,48 @@ class BuildingsController extends AppController {
     # $this->log( 'Zoiks! Returning false', LOG_DEBUG );
     
     return false;
+  }
+  
+  /**
+   * Updates the building wall system
+   *
+   * @param 	$building_id
+   * @return	boolean
+   * @access	private
+   */
+  private function update_building_wall_system( $building_id ) {
+    return $this->Building->BuildingWallSystem->save( $this->data );
+  }
+  
+  /**
+   * Updates the building window system
+   *
+   * @param 	$building_id
+   * @return	boolean
+   * @access	private
+   */
+  private function update_building_window_system( $building_id ) {
+    # There will only be one (at least for now)
+    $this->data['BuildingWindowSystem'] = array_shift( $this->data['BuildingWindowSystem'] );
+    
+    return $this->Building->BuildingWindowSystem->save( $this->data );
+  }
+  
+  /**
+   * Updates the building roof system
+   *
+   * @param 	$building_id
+   * @return	boolean
+   * @access	private
+   */
+  private function update_building_roof_system( $building_id ) {
+    $this->data = $this->prep_roof_data( $this->data );
+    
+    foreach( $this->data['BuildingRoofSystem'] as $i => $roof_system ) {
+      $this->data['BuildingRoofSystem'][$i]['building_id'] = $building_id;
+    }
+    
+    return $this->Building->BuildingRoofSystem->saveAll( $this->data['BuildingRoofSystem'] );
   }
   
   /**
