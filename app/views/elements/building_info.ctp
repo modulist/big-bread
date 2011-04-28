@@ -33,7 +33,9 @@
           <?php else: ?>
             <?php $link_text = $role == 'Realtor' ? __( 'Add Realtor Info', true ) : __( 'Add Inspector Info', true ) ?>
             <?php __( 'Not specified' ) ?>
+            <?php if( !empty( $edit ) ): ?>
             | <?php echo $this->Html->link( $link_text, '#', array( 'class' => 'toggle-form', 'data-model' => $role ) ) ?>
+            <?php endif; ?>
           <?php endif; ?>
         </li>
       <?php endforeach; ?>
