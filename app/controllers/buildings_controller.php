@@ -42,9 +42,11 @@ class BuildingsController extends AppController {
     
     if( !empty( $this->data ) ) {
       # Save off user data
-      $roles   = array( 'Realtor', 'Inspector', 'Client' );
+      $roles   = array( 'Client', 'Realtor', 'Inspector' );
       $invites = array();
       foreach( $roles as $role ) {
+        $foreign_key = strtolower( $role ) . '_id';
+        
         # Realtor and Inspector are optional. If key fields are empty, Move along.
         if( $role != 'Client' && empty( $this->data[$role]['email'] ) ) {
           unset( $this->data[$role] );
@@ -56,18 +58,31 @@ class BuildingsController extends AppController {
           : false;
         
         if( $user ) { # This user is already in the system
-          $this->data['Building'][strtolower( $role ) . '_id'] = $user;
-          unset( $this->data[$role] );
+          $this->data['Building'][$foreign_key] = $user;
+          unset( $this->data[$role] ); # User record exists. Do not include in saveAll below.
         }
-        else { # We don't know this user, create an invite code & save
-          $this->data[$role]['invite_code'] = md5( String::uuid() );
-          $this->Building->{$role}->save( $this->data[$role] );
-          $this->data[$role]['id'] = $this->Building->{$role}->id;
-          $this->data['Building'][strtolower( $role ) . '_id'] = $this->Building->{$role}->id;
-          $this->data[$role]['role'] = $role;
+        else { # We don't know this user, add him/her
+          $this->Building->{$role}->create(); # We're in a loop
           
-          # Send new user invite
-          $this->send_invite( array( $this->data[$role] ) );
+          if( $this->Building->{$role}->add( $this->data ) ) {
+            # Generate an invite code and save it off
+            $this->data[$role]['invite_code'] = md5( String::uuid() );
+            $this->Building->{$role}->saveField( 'invite_code', $this->data[$role]['invite_code'] );
+            
+            # Temporary property used in this::send_invite()
+            $this->data[$role]['role'] = $role; 
+            
+            # Set the building's foreign key
+            $this->data['Building'][$foreign_key] = $this->Building->{$role}->id;
+            
+            # Send new user invite
+            $this->send_invite( array( $this->data[$role] ) );
+            
+            unset( $this->data[$role] ); # User has been saved. Do not include in saveAll below.
+          }
+          else {
+            $this->Building->invalidate( $role . '_id' );
+          }
         }
       }
       
@@ -90,7 +105,192 @@ class BuildingsController extends AppController {
     # All of the addresses associated with a given user (sidebar display)
     $addresses = $this->Building->Client->buildings( $this->Auth->user( 'id' ) );
     
-    /** Populate Lookups */
+    if( in_array( $this->Session->read( 'Auth.UserType.name' ), array( 'Homeowner', 'Buyer' ) ) ) {
+      $this->data['Client'] = $this->Session->read( 'Auth.User' );
+    }
+    else {
+      $this->data[$this->Session->read( 'Auth.UserType.name' )] = $this->Session->read( 'Auth.User' );
+    }
+    
+    /** 
+    $this->Building->Realtor->validate['first_name']['notempty']['required'] = false;
+    $this->Building->Realtor->validate['last_name']['notempty']['required'] = false;
+    $this->Building->Realtor->validate['email']['notempty']['required'] = false;
+    # debug( $this->Building->Realtor->validate );
+    */
+    
+    /** Prepare the view */
+    $this->populate_lookups();
+    $this->set( compact( 'addresses' ) );
+  }
+  
+  /**
+   * Displays questionnaire information with the ability to edit
+   *
+   * @param 	$building_id
+   * @access	public
+   */
+  public function edit( $building_id, $anchor = null ) {
+    $this->helpers[] = 'Form';
+    $this->layout    = 'sidebar';
+    
+    # All of the addresses associated with a given user (sidebar display)
+    $addresses = $this->Building->Client->buildings( $this->Auth->user( 'id' ) );
+    
+    # Looks like we're updating something
+    if( !empty( $this->data ) ) {
+      $redirect = false;
+      
+      foreach( $this->data as $model => $data ) {
+        # We'll handle the building model last
+        # Also ignore User data passed from the controller for the AuditableBehavior
+        if( in_array( $model, array( 'Building', 'User' ) ) ) { 
+          continue;
+        }
+        
+        if( method_exists( $this, 'update_' . Inflector::underscore( $model ) ) ) {
+          if( $this->{'update_' . Inflector::underscore( $model )}( $building_id ) ) {
+            $redirect = true;
+          }
+        }
+        else {
+          # No update method exists for whatever reason. That's cool.
+          $redirect = true;
+        }
+      }
+      
+      # We have to edit actual building properties too...
+      if( !empty( $this->data['Building'] ) ) {
+        $this->Building->id = $building_id;
+        
+        if( $this->Building->save( $this->data ) ) {
+          $redirect = $redirect && true;
+        }
+      }
+      
+      if( $redirect ) {
+        $this->Session->setFlash( 'Your changes have been saved.', null, null, 'success' );
+        $this->redirect( array( 'action' => 'edit', $building_id, '#' => $anchor ) );
+      }
+      else {
+        $this->Session->setFlash( 'There was a problem saving your changes.', null, null, 'error' );
+      }
+    }
+    
+    if( !empty( $building_id ) ) {
+      $this->data = $this->Building->find(
+        'first',
+        array(
+          'contain' => array(
+            'Address' => array( 'ZipCode' ),
+            'BuildingProduct' => array(
+              'conditions' => array( 'BuildingProduct.service_out' => null ),
+              'Product' => array(
+                'EnergySource',
+                'Technology' => array( 'EnergySource' => array( 'fields' => array( 'incentive_tech_energy_type_id', 'name' ) ) )
+              ),
+            ),
+            'BuildingRoofSystem',
+            'BuildingWallSystem',
+            'BuildingWindowSystem',
+            'Client',
+            'Inspector',
+            'Occupant',
+            'Realtor',
+          ),
+          'conditions' => array( 'Building.id' => $building_id ),
+        )
+      );
+      
+      if( empty( $this->data ) ) {
+        $this->Session->setFlash( 'We were unable to find that building.', null, null, 'warning' );
+      }
+    }
+    
+    $this->populate_lookups();
+    $this->set( 'building', $this->data );
+    $this->set( compact( 'addresses' ) );
+  }
+  
+  /**
+   * Displays the set of rebates available for a given building.
+   *
+   * @param 	$building_id
+   * @param   $technology_group_slug
+   */
+  public function incentives( $building_id = null, $technology_group_slug = null ) {
+    $this->layout = 'sidebar';
+    
+    # All of the addresses associated with a given user (sidebar display)
+    $addresses = $this->Building->Client->buildings( $this->Auth->user( 'id' ) );
+    
+    # This user is not associated with any buildings
+    if( empty( $addresses ) ) {
+      $this->Session->setFlash( 'We can\'t help you save unless you fill out the questionnaire.', null, null, 'warning' );
+      $this->redirect( Router::url( '/questionnaire' ) );
+    }
+    
+    # If no building is specified, use the most recent for the user
+    $building_id = !empty( $building_id ) ? $building_id : $addresses[0]['Building']['id'];
+    
+    $building = $this->Building->find(
+      'first',
+      array(
+        'contain' => array(
+          'Address' => array(
+            'ZipCode'
+          ),
+          'Client',
+          'Inspector',
+          'Realtor',
+        ),
+        'conditions' => array( 'Building.id' => $building_id ),
+      )
+    );
+    
+    # Something bad happened.
+    if( empty( $building ) ) {
+      $this->Session->setFlash( 'We\'re sorry, but we couldn\'t find a structure to show incentives for.', null, null, 'warning' );
+      $this->redirect( Router::url( '/questionnaire' ) );
+    }
+    
+    $incentives      = $this->Building->incentives( $building_id );
+    # Count the incentives before grouping them
+    $incentive_count = count( $incentives );
+    # Group the incentives by technology group for display
+    $incentives      = Set::combine( $incentives, '{n}.TechnologyIncentive.id', '{n}', '{n}.TechnologyGroup.title' );
+    
+    $this->set( compact( 'building', 'addresses', 'incentive_count', 'incentives', 'technology_group_slug' ) );
+  }
+  
+  /**
+   * Downloads the questionnaire PDF.
+   */
+  public function download_questionnaire() {
+    $this->view = 'Media';
+    $params     = array(
+      'id'        => 'questionnaire.pdf',
+      'name'      => 'questionnaire',
+      'download'  => true,
+      'extension' => 'pdf',  // must be lower case
+      'path'      => 'files' . DS   // don't forget terminal 'DS'
+   );
+    
+   $this->set( $params );
+  }
+  
+  /**
+   * PRIVATE METHODS
+   */
+  
+  /**
+   * Sets the variables required to populate all of the dropdowns used
+   * in the questionnaire. This method returns nothing because it sets
+   * the variables in the view space.
+   *
+   * @access	public
+   */
+  public function populate_lookups() {
     $basementTypes = $this->Building->BasementType->find(
       'list',
       array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
@@ -152,180 +352,8 @@ class BuildingsController extends AppController {
       array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
     );
     
-    if( in_array( $this->Session->read( 'Auth.UserType.name' ), array( 'Homeowner', 'Buyer' ) ) ) {
-      $this->data['Client'] = $this->Session->read( 'Auth.User' );
-    }
-    else {
-      $this->data[$this->Session->read( 'Auth.UserType.name' )] = $this->Session->read( 'Auth.User' );
-    }
-    
-    /** 
-    $this->Building->Realtor->validate['first_name']['notempty']['required'] = false;
-    $this->Building->Realtor->validate['last_name']['notempty']['required'] = false;
-    $this->Building->Realtor->validate['email']['notempty']['required'] = false;
-    # debug( $this->Building->Realtor->validate );
-    */
-    
-    /** Prepare the view */
-    $this->set( compact( 'addresses', 'buildingTypes', 'basementTypes', 'buildingShapes', 'energySources', 'exposureTypes', 'frameMaterials', 'insulationLevels', 'maintenanceLevels', 'roofInsulationLevels', 'roofSystems', 'shadingTypes', 'technologies', 'userTypes', 'wallSystems', 'windowPaneTypes' ) );
+    $this->set( compact( 'basementTypes', 'buildingShapes', 'buildingTypes', 'exposureTypes', 'frameMaterials', 'insulationLevels', 'maintenanceLevels', 'roofInsulationLevels', 'roofSystems', 'shadingTypes', 'technologies', 'userTypes', 'wallSystems', 'windowPaneTypes' ) );
   }
-  
-  /**
-   * Displays questionnaire information with the ability to edit
-   *
-   * @param 	$building_id
-   * @access	public
-   */
-  public function edit( $building_id, $model = null ) {
-    $this->helpers[] = 'Form';
-    $this->layout    = 'sidebar';
-    
-    # All of the addresses associated with a given user (sidebar display)
-    $addresses = $this->Building->Client->buildings( $this->Auth->user( 'id' ) );
-    
-    # Looks like we're updating something
-    if( !empty( $model ) ) {
-      $model    = Inflector::classify( $model ); // normalize the model name
-      $redirect = false;
-      
-      // Save associated model data
-      if( !empty( $this->data[$model] ) && method_exists( $this, 'update_' . strtolower( $model ) ) ) {
-        if( $this->{'update_' . strtolower( $model )}( $building_id ) ) {
-          $redirect = true;
-        }
-      }
-      
-      // We have to edit actual building properties too...
-      if( !empty( $this->data['Building'] ) ) {
-        $this->Building->id = $building_id;
-        
-        if( $this->Building->save( $this->data ) ) {
-          $redirect = $redirect && true;
-        }
-      }
-      
-      if( $redirect ) {
-        $this->Session->setFlash( 'Your changes have been saved.', null, null, 'success' );
-        $this->redirect( array( 'action' => 'edit', $building_id ) );
-      }
-      else {
-        $this->Session->setFlash( 'There was a problem saving your changes.', null, null, 'error' );
-      }
-    }
-    
-    
-    if( !empty( $building_id ) ) {
-      $this->data = $this->Building->find(
-        'first',
-        array(
-          'contain' => array(
-            'Address' => array( 'ZipCode' ),
-            'BuildingProduct' => array(
-              'Product' => array(
-                'EnergySource',
-                'Technology' => array( 'EnergySource' => array( 'fields' => array( 'incentive_tech_energy_type_id', 'name' ) ) )
-              ),
-            ),
-            'BuildingRoofSystem',
-            'BuildingWallSystem',
-            'BuildingWindowSystem',
-            'Client',
-            'Inspector',
-            'Occupant',
-            'Realtor',
-          ),
-          'conditions' => array( 'Building.id' => $building_id ),
-        )
-      );
-      
-      if( empty( $this->data ) ) {
-        $this->Session->setFlash( 'We were unable to find that building.', null, null, 'warning' );
-      }
-    }
-    
-    # Lookups
-    $technologies = $this->Building->BuildingProduct->Product->Technology->find(
-      'list',
-      array(
-        'conditions' => array( 'Technology.questionnaire_product' => 1 ),
-        'order' => array( 'Technology.name' ),
-      )
-    );
-    
-    $this->set( 'building', $this->data );
-    
-    $this->set( compact( 'addresses', 'technologies' ) );
-  }
-  
-  /**
-   * Displays the set of rebates available for a given building.
-   *
-   * @param 	$building_id
-   */
-  public function incentives( $building_id = null ) {
-    $this->layout = 'sidebar';
-    
-    # All of the addresses associated with a given user (sidebar display)
-    $addresses = $this->Building->Client->buildings( $this->Auth->user( 'id' ) );
-    
-    # This user is not associated with any buildings
-    if( empty( $addresses ) ) {
-      $this->Session->setFlash( 'We can\'t help you save unless you fill out the questionnaire.', null, null, 'warning' );
-      $this->redirect( Router::url( '/questionnaire' ) );
-    }
-    
-    # If no building is specified, use the most recent for the user
-    $building_id = !empty( $building_id ) ? $building_id : $addresses[0]['Building']['id'];
-    
-    $building = $this->Building->find(
-      'first',
-      array(
-        'contain' => array(
-          'Address' => array(
-            'ZipCode'
-          ),
-          'Client',
-          'Inspector',
-          'Realtor',
-        ),
-        'conditions' => array( 'Building.id' => $building_id ),
-      )
-    );
-    
-    # Something bad happened.
-    if( empty( $building ) ) {
-      $this->Session->setFlash( 'We\'re sorry, but we couldn\'t find a structure to show incentives for.', null, null, 'warning' );
-      $this->redirect( Router::url( '/questionnaire' ) );
-    }
-    
-    $incentives      = $this->Building->incentives( $building_id );
-    # Count the incentives before grouping them
-    $incentive_count = count( $incentives );
-    # Group the incentives by technology group for display
-    $incentives      = Set::combine( $incentives, '{n}.TechnologyIncentive.id', '{n}', '{n}.TechnologyGroup.title');
-
-    $this->set( compact( 'building', 'addresses', 'incentive_count', 'incentives' ) );
-  }
-  
-  /**
-   * Downloads the questionnaire PDF.
-   */
-  public function download_questionnaire() {
-    $this->view = 'Media';
-    $params     = array(
-      'id'        => 'questionnaire.pdf',
-      'name'      => 'questionnaire',
-      'download'  => true,
-      'extension' => 'pdf',  // must be lower case
-      'path'      => 'files' . DS   // don't forget terminal 'DS'
-   );
-    
-   $this->set( $params );
-  }
-  
-  /**
-   * PRIVATE METHODS
-   */
   
   /**
    * Updates realtor information
@@ -451,6 +479,48 @@ class BuildingsController extends AppController {
     # $this->log( 'Zoiks! Returning false', LOG_DEBUG );
     
     return false;
+  }
+  
+  /**
+   * Updates the building wall system
+   *
+   * @param 	$building_id
+   * @return	boolean
+   * @access	private
+   */
+  private function update_building_wall_system( $building_id ) {
+    return $this->Building->BuildingWallSystem->save( $this->data );
+  }
+  
+  /**
+   * Updates the building window system
+   *
+   * @param 	$building_id
+   * @return	boolean
+   * @access	private
+   */
+  private function update_building_window_system( $building_id ) {
+    # There will only be one (at least for now)
+    $this->data['BuildingWindowSystem'] = array_shift( $this->data['BuildingWindowSystem'] );
+    
+    return $this->Building->BuildingWindowSystem->save( $this->data );
+  }
+  
+  /**
+   * Updates the building roof system
+   *
+   * @param 	$building_id
+   * @return	boolean
+   * @access	private
+   */
+  private function update_building_roof_system( $building_id ) {
+    $this->data = $this->prep_roof_data( $this->data );
+    
+    foreach( $this->data['BuildingRoofSystem'] as $i => $roof_system ) {
+      $this->data['BuildingRoofSystem'][$i]['building_id'] = $building_id;
+    }
+    
+    return $this->Building->BuildingRoofSystem->saveAll( $this->data['BuildingRoofSystem'] );
   }
   
   /**

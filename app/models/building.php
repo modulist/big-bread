@@ -60,6 +60,14 @@ class Building extends AppModel {
   );
   
 	public $validate = array(
+    'client_id'  => array(
+      'notEmpty' => array(
+        'rule'       => 'notEmpty',
+        'message'    => 'A building must be created on behalf of a client.',
+        'allowEmpty' => false,
+        'required'   => true,
+      )
+    ),
     'year_built' => array(
       'integer' => array(
         'rule'  => array( 'integer' ),
