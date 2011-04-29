@@ -65,7 +65,7 @@
           <?php array_push( $technologies, $details['Technology']['name'] ) ?>
         <?php endif; ?>
           
-        <div class="itemprice_border">
+        <div class="itemprice_border" data-id="<?php echo $details['TechnologyIncentive']['id'] ?>">
           <div class="itemprice">
             <div class="price">
               <p class="pricevalue">
@@ -106,7 +106,7 @@
             <td>
               <?php echo h( $details['Technology']['name'] ) ?>
               <?php if( !empty( $details['TechnologyIncentive']['weblink'] ) ): ?>
-                <?php echo $this->Html->image( 'ico_web_link.gif', array( 'url' => $details['TechnologyIncentive']['weblink'], 'title' => 'Click here for more information regarding this rebate', 'alt' => 'Sponsor link' ) ) ?>
+                <?php echo $this->Html->link( $this->Html->image( 'ico_web_link.gif', array( 'alt' => 'Sponsor link' ) ), $details['TechnologyIncentive']['weblink'], array( 'target' => '_blank', 'title' => 'Click here for more information regarding this rebate', 'escape' => false ) ) ?>
               <?php endif; ?>
               <?php if( !empty( $details['TechnologyIncentive']['rebate_link'] ) ): ?>
                 <?php echo $this->Html->link( $this->Html->image( 'ico_rebate_link.gif', array( 'alt' => 'Rebate link' ) ), $details['TechnologyIncentive']['rebate_link'], array( 'target' => '_blank', 'title' => 'Click here for rebate forms and processing', 'escape' => false ) ) ?>
