@@ -60,11 +60,9 @@ class TechnologyIncentive extends AppModel {
     );
     $zip_code_incentives = Set::extract( '/ZipCodeIncentive/incentive_id', $zip_code_incentives );
     
-    # new PHPDump( $zip_code_incentives );
-    
     #
     # BEWARE: Crazy query follows. Lots of shit included.
-    # 
+    #
     
     # Pull the incentive details
     $incentives = $this->find(

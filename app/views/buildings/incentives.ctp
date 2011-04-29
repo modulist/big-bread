@@ -7,6 +7,14 @@
 <div id="contentbody">
   <?php if( !empty( $incentives ) ): ?>
     <?php foreach( $incentives as $group => $technology ): ?>
+      <?php if( !empty( $technology_group_slug ) && strtolower( Inflector::slug( $group ) ) != $technology_group_slug ) {
+          # If a group filter is applied, ignore other groups. All results
+          # are still being returned so that we can pull the right numbers
+          # for the rebate bar.
+          # TODO: There's an opportunity for optimization here
+          continue;
+      } ?>
+      
       <div id="info">
         <?php echo $this->Html->image( 'ico_' . strtolower( Inflector::slug( h( $group ) ) ) . '.png', array( 'alt' => h( $group ) ) ) ?>
         <h2 id="<?php echo strtolower( Inflector::slug( $group ) ) ?>"><?php echo !empty( $group ) ? h( $group ) : 'Unspecified Group' ?></h2>

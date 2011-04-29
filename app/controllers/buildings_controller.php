@@ -316,8 +316,9 @@ class BuildingsController extends AppController {
    * Displays the set of rebates available for a given building.
    *
    * @param 	$building_id
+   * @param   $technology_group_slug
    */
-  public function incentives( $building_id = null ) {
+  public function incentives( $building_id = null, $technology_group_slug = null ) {
     $this->layout = 'sidebar';
     
     # All of the addresses associated with a given user (sidebar display)
@@ -357,9 +358,9 @@ class BuildingsController extends AppController {
     # Count the incentives before grouping them
     $incentive_count = count( $incentives );
     # Group the incentives by technology group for display
-    $incentives      = Set::combine( $incentives, '{n}.TechnologyIncentive.id', '{n}', '{n}.TechnologyGroup.title');
-
-    $this->set( compact( 'building', 'addresses', 'incentive_count', 'incentives' ) );
+    $incentives      = Set::combine( $incentives, '{n}.TechnologyIncentive.id', '{n}', '{n}.TechnologyGroup.title' );
+    
+    $this->set( compact( 'building', 'addresses', 'incentive_count', 'incentives', 'technology_group_slug' ) );
   }
   
   /**
