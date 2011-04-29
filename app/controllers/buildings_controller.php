@@ -42,9 +42,11 @@ class BuildingsController extends AppController {
     
     if( !empty( $this->data ) ) {
       # Save off user data
-      $roles   = array( 'Realtor', 'Inspector', 'Client' );
+      $roles   = array( 'Client', 'Realtor', 'Inspector' );
       $invites = array();
       foreach( $roles as $role ) {
+        $foreign_key = strtolower( $role ) . '_id';
+        
         # Realtor and Inspector are optional. If key fields are empty, Move along.
         if( $role != 'Client' && empty( $this->data[$role]['email'] ) ) {
           unset( $this->data[$role] );
@@ -56,18 +58,31 @@ class BuildingsController extends AppController {
           : false;
         
         if( $user ) { # This user is already in the system
-          $this->data['Building'][strtolower( $role ) . '_id'] = $user;
-          unset( $this->data[$role] );
+          $this->data['Building'][$foreign_key] = $user;
+          unset( $this->data[$role] ); # User record exists. Do not include in saveAll below.
         }
-        else { # We don't know this user, create an invite code & save
-          $this->data[$role]['invite_code'] = md5( String::uuid() );
-          $this->Building->{$role}->save( $this->data[$role] );
-          $this->data[$role]['id'] = $this->Building->{$role}->id;
-          $this->data['Building'][strtolower( $role ) . '_id'] = $this->Building->{$role}->id;
-          $this->data[$role]['role'] = $role;
+        else { # We don't know this user, add him/her
+          $this->Building->{$role}->create(); # We're in a loop
           
-          # Send new user invite
-          $this->send_invite( array( $this->data[$role] ) );
+          if( $this->Building->{$role}->add( $this->data ) ) {
+            # Generate an invite code and save it off
+            $this->data[$role]['invite_code'] = md5( String::uuid() );
+            $this->Building->{$role}->saveField( 'invite_code', $this->data[$role]['invite_code'] );
+            
+            # Temporary property used in this::send_invite()
+            $this->data[$role]['role'] = $role; 
+            
+            # Set the building's foreign key
+            $this->data['Building'][$foreign_key] = $this->Building->{$role}->id;
+            
+            # Send new user invite
+            $this->send_invite( array( $this->data[$role] ) );
+            
+            unset( $this->data[$role] ); # User has been saved. Do not include in saveAll below.
+          }
+          else {
+            $this->Building->invalidate( $role . '_id' );
+          }
         }
       }
       
@@ -90,68 +105,6 @@ class BuildingsController extends AppController {
     # All of the addresses associated with a given user (sidebar display)
     $addresses = $this->Building->Client->buildings( $this->Auth->user( 'id' ) );
     
-    /** Populate Lookups */
-    $basementTypes = $this->Building->BasementType->find(
-      'list',
-      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
-    );
-    $buildingShapes = $this->Building->BuildingShape->find(
-      'list',
-      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
-    );
-    $buildingTypes = $this->Building->BuildingType->find(
-      'list',
-      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
-    );
-    $energySources = $this->Building->BuildingProduct->Product->EnergySource->find(
-      'list',
-      array( 'order' => 'name' )
-    );
-    $exposureTypes = $this->Building->ExposureType->find(
-      'list',
-      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
-    );
-    $frameMaterials = $this->Building->BuildingWindowSystem->FrameMaterial->find(
-      'list',
-      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
-    );
-    $insulationLevels = $this->Building->BuildingWallSystem->InsulationLevel->find(
-      'list',
-      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
-    );
-    $maintenanceLevels = $this->Building->MaintenanceLevel->find(
-      'list',
-      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
-    );
-    $roofInsulationLevels = $insulationLevels;
-    $roofSystems = $this->Building->BuildingRoofSystem->RoofSystem->find(
-      'all',
-      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
-    );
-    $shadingTypes = $this->Building->ShadingType->find(
-      'list',
-      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
-    );
-    $technologies = $this->Building->BuildingProduct->Product->Technology->find(
-      'list',
-      array(
-        'conditions' => array( 'Technology.questionnaire_product' => 1 ),
-        'order' => array( 'Technology.name' ),
-      )
-    );
-    $userTypes = $this->Building->Client->UserType->find(
-      'list',
-      array( 'conditions' => array( 'name' => array( 'Homeowner', 'Buyer' ), 'deleted' => 0 ), 'order' => 'name' )
-    );
-    $wallSystems = $this->Building->BuildingWallSystem->WallSystem->find(
-      'list',
-      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
-    );
-    $windowPaneTypes = $this->Building->BuildingWindowSystem->WindowPaneType->find(
-      'list',
-      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
-    );
-    
     if( in_array( $this->Session->read( 'Auth.UserType.name' ), array( 'Homeowner', 'Buyer' ) ) ) {
       $this->data['Client'] = $this->Session->read( 'Auth.User' );
     }
@@ -167,7 +120,8 @@ class BuildingsController extends AppController {
     */
     
     /** Prepare the view */
-    $this->set( compact( 'addresses', 'buildingTypes', 'basementTypes', 'buildingShapes', 'energySources', 'exposureTypes', 'frameMaterials', 'insulationLevels', 'maintenanceLevels', 'roofInsulationLevels', 'roofSystems', 'shadingTypes', 'technologies', 'userTypes', 'wallSystems', 'windowPaneTypes' ) );
+    $this->populate_lookups();
+    $this->set( compact( 'addresses' ) );
   }
   
   /**
@@ -253,63 +207,9 @@ class BuildingsController extends AppController {
       }
     }
     
-    # Lookups
-    $basementTypes = $this->Building->BasementType->find(
-      'list',
-      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
-    );
-    $buildingShapes = $this->Building->BuildingShape->find(
-      'list',
-      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
-    );
-    $buildingTypes = $this->Building->BuildingType->find(
-      'list',
-      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
-    );
-    $exposureTypes = $this->Building->ExposureType->find(
-      'list',
-      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
-    );
-    $frameMaterials = $this->Building->BuildingWindowSystem->FrameMaterial->find(
-      'list',
-      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
-    );
-    $insulationLevels = $this->Building->BuildingWallSystem->InsulationLevel->find(
-      'list',
-      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
-    );
-    $maintenanceLevels = $this->Building->MaintenanceLevel->find(
-      'list',
-      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
-    );
-    $roofInsulationLevels = $insulationLevels;
-    $roofSystems = $this->Building->BuildingRoofSystem->RoofSystem->find(
-      'all',
-      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
-    );
-    $shadingTypes = $this->Building->ShadingType->find(
-      'list',
-      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
-    );
-    $technologies = $this->Building->BuildingProduct->Product->Technology->find(
-      'list',
-      array(
-        'conditions' => array( 'Technology.questionnaire_product' => 1 ),
-        'order' => array( 'Technology.name' ),
-      )
-    );
-    $wallSystems = $this->Building->BuildingWallSystem->WallSystem->find(
-      'list',
-      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
-    );
-    $windowPaneTypes = $this->Building->BuildingWindowSystem->WindowPaneType->find(
-      'list',
-      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
-    );
-    
+    $this->populate_lookups();
     $this->set( 'building', $this->data );
-    
-    $this->set( compact( 'addresses', 'basementTypes', 'buildingShapes', 'buildingTypes', 'exposureTypes', 'frameMaterials', 'insulationLevels', 'maintenanceLevels', 'roofInsulationLevels', 'roofSystems', 'shadingTypes', 'technologies', 'wallSystems', 'windowPaneTypes' ) );
+    $this->set( compact( 'addresses' ) );
   }
   
   /**
@@ -382,6 +282,78 @@ class BuildingsController extends AppController {
   /**
    * PRIVATE METHODS
    */
+  
+  /**
+   * Sets the variables required to populate all of the dropdowns used
+   * in the questionnaire. This method returns nothing because it sets
+   * the variables in the view space.
+   *
+   * @access	public
+   */
+  public function populate_lookups() {
+    $basementTypes = $this->Building->BasementType->find(
+      'list',
+      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
+    );
+    $buildingShapes = $this->Building->BuildingShape->find(
+      'list',
+      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
+    );
+    $buildingTypes = $this->Building->BuildingType->find(
+      'list',
+      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
+    );
+    $energySources = $this->Building->BuildingProduct->Product->EnergySource->find(
+      'list',
+      array( 'order' => 'name' )
+    );
+    $exposureTypes = $this->Building->ExposureType->find(
+      'list',
+      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
+    );
+    $frameMaterials = $this->Building->BuildingWindowSystem->FrameMaterial->find(
+      'list',
+      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
+    );
+    $insulationLevels = $this->Building->BuildingWallSystem->InsulationLevel->find(
+      'list',
+      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
+    );
+    $maintenanceLevels = $this->Building->MaintenanceLevel->find(
+      'list',
+      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
+    );
+    $roofInsulationLevels = $insulationLevels;
+    $roofSystems = $this->Building->BuildingRoofSystem->RoofSystem->find(
+      'all',
+      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
+    );
+    $shadingTypes = $this->Building->ShadingType->find(
+      'list',
+      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
+    );
+    $technologies = $this->Building->BuildingProduct->Product->Technology->find(
+      'list',
+      array(
+        'conditions' => array( 'Technology.questionnaire_product' => 1 ),
+        'order' => array( 'Technology.name' ),
+      )
+    );
+    $userTypes = $this->Building->Client->UserType->find(
+      'list',
+      array( 'conditions' => array( 'name' => array( 'Homeowner', 'Buyer' ), 'deleted' => 0 ), 'order' => 'name' )
+    );
+    $wallSystems = $this->Building->BuildingWallSystem->WallSystem->find(
+      'list',
+      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
+    );
+    $windowPaneTypes = $this->Building->BuildingWindowSystem->WindowPaneType->find(
+      'list',
+      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
+    );
+    
+    $this->set( compact( 'basementTypes', 'buildingShapes', 'buildingTypes', 'exposureTypes', 'frameMaterials', 'insulationLevels', 'maintenanceLevels', 'roofInsulationLevels', 'roofSystems', 'shadingTypes', 'technologies', 'userTypes', 'wallSystems', 'windowPaneTypes' ) );
+  }
   
   /**
    * Updates realtor information

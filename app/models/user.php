@@ -119,9 +119,40 @@ class User extends AppModel {
    * CALLBACKS
    */
   
+  public function beforeSave() {
+    if( empty( $this->id ) ) {
+      $this->log( '{User::beforeSave} Creating ' . $this->data[$this->alias]['email'], LOG_DEBUG );
+    }
+    return true;
+  }
+  
   /**
    * PUBLIC METHODS
    */
+  
+  /**
+   * Creates a user record.
+   *
+   * @param 	$data
+   * @return	boolean
+   * @access	public
+   */
+  public function add( $data ) {
+    $user = !empty( $data[$this->alias]['email'] )
+      ? $this->known( $data[$this->alias]['email'] ) # returns the user's id
+      : false;
+    
+    if( !$user ) { # We don't know this user, create a new record
+      if( $this->save( $data[$this->alias] ) ) {
+        $user = $this->id;
+      }
+    }
+    
+$this->log( '{User::add} Returning "' . $user . '"', LOG_DEBUG );
+    
+    return $user;
+  }
+  
   
   /**
    * Retrieves the buildings associated with a given user.
