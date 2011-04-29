@@ -87,6 +87,10 @@ $(document).ready( function( e ) {
   });
   
   $( '.action.delete.retire' ).click( function( e ) {
+    if( !confirm( 'Are you sure you want to retire this piece of equipment?' ) ) {
+      return false;
+    }
+    
     var $this = $(this);
     
     $.post(
@@ -97,7 +101,7 @@ $(document).ready( function( e ) {
         $tr    = $this.closest( 'tr' );
         
         $tr
-          .html( '<td colspan="5" class="flash success">Equipment retired successfully.</td>' )
+          .html( '<td colspan="5"><div class="flash success">Equipment retired successfully.</div></td>' )
           .fadeOut( 5000, function() {
             // If we just deleted the last child, display a msg to the user
             if( $tbody.children().length === 1 ) {
