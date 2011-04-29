@@ -308,6 +308,10 @@ table.incentive-tnc td.conditions {}
   border-bottom: 1px dotted #000;
   padding: 5px 0;
 }
+#equipment table tbody td.flash {
+  border-bottom: 1px dotted #000;
+  padding: 5px 0;
+}
 #equipment table thead th {
   border-bottom: 2px solid #000;
 }
