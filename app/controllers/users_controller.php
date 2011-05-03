@@ -124,7 +124,23 @@ class UsersController extends AppController {
 	public function logout() {
     $this->redirect( $this->Auth->logout() );
 	}
-	
+  
+  /**
+   * Dismisses an optional notice.
+   *
+   * @return	void
+   * @access	public
+   */
+  public function dismiss_notice( $notice ) {
+    $this->autoRender = false;
+    
+    $this->User->id = $this->Auth->user( 'id' );
+    if( $this->User->saveField( 'show_' . $notice, 0 ) ) {
+      # Update the session value
+      $this->Session->write( 'Auth.User.show_questionnaire_instructions', 0 );
+    }
+  }
+  
   /**
    * Presents the admin options menu.
    *
