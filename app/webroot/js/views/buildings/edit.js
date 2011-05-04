@@ -1,4 +1,5 @@
 $(document).ready( function( e ) {
+  alert( document.location.hash );
   // Which target are we initially activating?
   if( document.location.hash.length === 0 ) {
     $location = $( '#demographics' );
@@ -8,11 +9,18 @@ $(document).ready( function( e ) {
     document.location.hash = ''; // reset the hash to prevent scrolling
   }
   
+alert( $location.attr( 'id' ) );
+
   // Style the active target link
   $( 'a[href="#' + $location.attr( 'id' ) + '"]' ).addClass( 'active' );
+  // Set the current anchor in the form for later. @see BuildingsController::questionnaire()
+  $( '#BuildingAnchor' ).val( $location.attr( 'id' ) );
   // Show the div specified by the anchor
   $location.addClass( 'active' );
   $( '.section' ).not( '.active' ).hide();
+  // If we're in the equipment, show the "Save & Return" button
+  alert( $location.attr( 'id' ) );
+
   
   $( '#sidebar #questionnaire a[href^="#"]' ).click( function( e ) {
     var $link    = $(this);
@@ -86,38 +94,7 @@ $(document).ready( function( e ) {
     e.preventDefault();
   });
   
-  $( '.action.delete.retire' ).click( function( e ) {
-    if( !confirm( 'Are you sure you want to retire this piece of equipment?' ) ) {
-      return false;
-    }
-    
-    var $this = $(this);
-    
-    $.post(
-      $this.attr( 'href' ),
-      null,
-      function( data, status, jqXHR ) {
-        $tbody = $this.closest( 'tbody' );
-        $tr    = $this.closest( 'tr' );
-        
-        $tr
-          .html( '<td colspan="5"><div class="flash success">Equipment retired successfully.</div></td>' )
-          .fadeOut( 5000, function() {
-            // If we just deleted the last child, display a msg to the user
-            if( $tbody.children().length === 1 ) {
-              $(this)
-                .html( '<td colspan="5">No equipment has been added.</td>' )
-                .fadeIn( 2000 );
-            }
-            else {
-              $(this).remove();
-            }
-          });
-      }
-    );
-    
-    e.preventDefault();
-  });
+
   
   // Copied from questionnaire.js
   // TODO: Make this DRY

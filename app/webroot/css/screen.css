@@ -372,6 +372,7 @@ input[type=reset]{
 .buttons {text-align:center !important;}
 .form .buttons {text-align:left;}
 .buttons div.button {display:inline; margin-right:10px;}
+.buttons .button.disabled { display: none; }
 button,
 a.button {
 	border: 0 none;

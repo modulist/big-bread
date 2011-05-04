@@ -163,6 +163,34 @@ class Building extends AppModel {
    */
   
   /**
+   * Determines whether a given user is associated with a given building.
+   *
+   * @param 	$building_id
+   * @return	boolean
+   * @access	public
+   */
+  public function belongs_to( $building_id, $user_id = null ) {
+    $user_id = !empty( $user_id )
+      ? $user_id
+      : $this->current_user( 'id' );
+    
+    return $this->find(
+      'count',
+      array(
+        'contain'    => false,
+        'conditions' => array(
+          'Building.id' => $building_id,
+          'OR' => array(
+            'Building.client_id'    => $user_id,
+            'Building.realtor_id'   => $user_id,
+            'Building.inspector_id' => $user_id,
+          )
+        ),
+      )
+    );
+  }
+  
+  /**
    * Retrieves the relevant incentives (rebates) for a given building.
    *
    * @param 	$building_id

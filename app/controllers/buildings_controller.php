@@ -36,149 +36,15 @@ class BuildingsController extends AppController {
     $this->helpers[] = 'Form';
     $this->layout    = 'sidebar';
     
+    $anchor = empty( $this->data['Building']['anchor'] ) ? 'general' : $this->data['Building']['anchor'];
+    
+    # Steps to progress through the pseudo-wizard
+    $steps = array( 'general', 'demographics', 'equipment', 'characteristics', 'envelope' );
+    
+    # Pull the existing record to pre-populate data, if available
+    $building = array();
     if( !empty( $building_id ) ) {
-      $this->redirect( array( 'action' => 'edit', $building_id ) );
-    }
-    
-    if( !empty( $this->data ) ) {
-      # Save off user data
-      $roles   = array( 'Client', 'Realtor', 'Inspector' );
-      $invites = array();
-      foreach( $roles as $role ) {
-        $foreign_key = strtolower( $role ) . '_id';
-        
-        # Realtor and Inspector are optional. If key fields are empty, Move along.
-        if( $role != 'Client' && empty( $this->data[$role]['email'] ) ) {
-          unset( $this->data[$role] );
-          continue;
-        }
-        
-        $user = !empty( $this->data[$role]['email'] )
-          ? $this->Building->{$role}->known( $this->data[$role]['email'] )
-          : false;
-        
-        if( $user ) { # This user is already in the system
-          $this->data['Building'][$foreign_key] = $user;
-          unset( $this->data[$role] ); # User record exists. Do not include in saveAll below.
-        }
-        else { # We don't know this user, add him/her
-          $this->Building->{$role}->create(); # We're in a loop
-          
-          if( $this->Building->{$role}->add( $this->data ) ) {
-            # Generate an invite code and save it off
-            $this->data[$role]['invite_code'] = md5( String::uuid() );
-            $this->Building->{$role}->saveField( 'invite_code', $this->data[$role]['invite_code'] );
-            
-            # Temporary property used in this::send_invite()
-            $this->data[$role]['role'] = $role; 
-            
-            # Set the building's foreign key
-            $this->data['Building'][$foreign_key] = $this->Building->{$role}->id;
-            
-            # Send new user invite
-            $this->send_invite( array( $this->data[$role] ) );
-            
-            unset( $this->data[$role] ); # User has been saved. Do not include in saveAll below.
-          }
-          else {
-            $this->Building->invalidate( $role . '_id' );
-          }
-        }
-      }
-      
-      # Massage other specialized data bits
-      $this->data = $this->prep_utility_data( $this->data );
-      $this->data = $this->prep_product_data( $this->data );
-      $this->data = $this->prep_roof_data( $this->data );
-      
-      # Save it. Save it all...
-      if( $this->Building->saveAll( $this->data ) ) {
-        $this->Session->setFlash( 'Thanks for participating.', null, null, 'success' );
-        
-        $this->redirect( array( 'action' => 'incentives', $this->Building->id ) );
-      }
-      else {
-        $this->Session->setFlash( 'There is a problem with the data you provided. Please correct the errors below.', null, null, 'validation' );
-      }
-    }
-    
-    # All of the addresses associated with a given user (sidebar display)
-    $addresses = $this->Building->Client->buildings( $this->Auth->user( 'id' ) );
-    
-    if( in_array( $this->Session->read( 'Auth.UserType.name' ), array( 'Homeowner', 'Buyer' ) ) ) {
-      $this->data['Client'] = $this->Session->read( 'Auth.User' );
-    }
-    else {
-      $this->data[$this->Session->read( 'Auth.UserType.name' )] = $this->Session->read( 'Auth.User' );
-    }
-    
-    /** 
-    $this->Building->Realtor->validate['first_name']['notempty']['required'] = false;
-    $this->Building->Realtor->validate['last_name']['notempty']['required'] = false;
-    $this->Building->Realtor->validate['email']['notempty']['required'] = false;
-    # debug( $this->Building->Realtor->validate );
-    */
-    
-    /** Prepare the view */
-    $this->populate_lookups();
-    $this->set( compact( 'addresses' ) );
-  }
-  
-  /**
-   * Displays questionnaire information with the ability to edit
-   *
-   * @param 	$building_id
-   * @access	public
-   */
-  public function edit( $building_id, $anchor = null ) {
-    $this->helpers[] = 'Form';
-    $this->layout    = 'sidebar';
-    
-    # All of the addresses associated with a given user (sidebar display)
-    $addresses = $this->Building->Client->buildings( $this->Auth->user( 'id' ) );
-    
-    # Looks like we're updating something
-    if( !empty( $this->data ) ) {
-      $redirect = false;
-      
-      foreach( $this->data as $model => $data ) {
-        # We'll handle the building model last
-        # Also ignore User data passed from the controller for the AuditableBehavior
-        if( in_array( $model, array( 'Building', 'User' ) ) ) { 
-          continue;
-        }
-        
-        if( method_exists( $this, 'update_' . Inflector::underscore( $model ) ) ) {
-          if( $this->{'update_' . Inflector::underscore( $model )}( $building_id ) ) {
-            $redirect = true;
-          }
-        }
-        else {
-          # No update method exists for whatever reason. That's cool.
-          $redirect = true;
-        }
-      }
-      
-      # We have to edit actual building properties too...
-      if( !empty( $this->data['Building'] ) ) {
-        $this->Building->id = $building_id;
-        
-        if( $this->Building->save( $this->data ) ) {
-          $redirect = $redirect && true;
-        }
-      }
-      
-      if( $redirect ) {
-        $this->Session->setFlash( 'Your changes have been saved.', null, null, 'success' );
-        $this->redirect( array( 'action' => 'edit', $building_id, '#' => $anchor ) );
-      }
-      else {
-        $this->Session->setFlash( 'There was a problem saving your changes.', null, null, 'error' );
-      }
-    }
-    
-    if( !empty( $building_id ) ) {
-      $this->data = $this->Building->find(
+      $building = $this->Building->find(
         'first',
         array(
           'contain' => array(
@@ -193,25 +59,112 @@ class BuildingsController extends AppController {
             'BuildingRoofSystem',
             'BuildingWallSystem',
             'BuildingWindowSystem',
-            'Client',
-            'Inspector',
+            'Client' => array( 'fields' => array( 'Client.id', 'Client.user_type_id', 'Client.first_name', 'Client.last_name', 'Client.full_name', 'Client.email', 'Client.phone_number' ) ),
+            'Inspector' => array( 'fields' => array( 'Inspector.id', 'Inspector.user_type_id', 'Inspector.first_name', 'Inspector.last_name', 'Inspector.full_name', 'Inspector.email', 'Inspector.phone_number' ) ),
             'Occupant',
-            'Realtor',
+            'Realtor' => array( 'fields' => array( 'Realtor.id', 'Realtor.user_type_id', 'Realtor.first_name', 'Realtor.last_name', 'Realtor.full_name', 'Realtor.email', 'Realtor.phone_number' ) ),
           ),
           'conditions' => array( 'Building.id' => $building_id ),
         )
       );
       
-      if( empty( $this->data ) ) {
-        $this->Session->setFlash( 'We were unable to find that building.', null, null, 'warning' );
+      # Whoops, no record of that building
+      if( empty( $building ) ) {
+        $this->Session->setFlash( 'We were unable to find your building.', null, null, 'warning' );
+        $this->redirect( array( 'action' => $this->action ) );
       }
     }
     
+    # Process incoming data
+    if( !empty( $this->data ) ) {
+      $this->Building->id = $building_id;
+      
+      # Merge existing data with incoming to avoid validation errors
+      # and other such fun. Incoming data overrides existing.
+      $this->data = Set::merge( $building, $this->data );
+      
+      # Ensure that the current user is associated with the building they
+      # may be trying to update.
+      if( !empty( $building_id ) && !$this->Building->belongs_to( $building_id ) ) {
+        $this->Session->setFlash( 'You\'re not authorized to modify this property.', null, null, 'warning' );
+        $this->redirect( array( 'action' => $this->action ) );
+      }
+      
+      $success = true;
+      
+      # Handle associated models that must be saved before the building
+      # or that require some pre-processing
+      foreach( $this->data as $model => $data ) {
+        # Ignore the "User" model that's passed by default. The User model
+        # data we care about here is all aliased (Client, Realtor, Inspector).
+        if( in_array( $model, array( 'User' ) ) ) {
+          continue;
+        }
+        
+        $method = 'save_' . Inflector::underscore( $model );
+        if( method_exists( $this, $method ) ) {
+          $success = $success && $this->{$method}( $building_id );
+        }
+        else {
+          # No update method exists for whatever reason. That's cool.
+          $success = $success && true;
+        }
+      }
+
+      # Save anything that's left. This updates the building record in
+      # the process, but we can live with that.
+      if( $this->Building->saveAll( $this->data ) ) {
+        $building_id = $this->Building->id;
+        
+        if( empty( $anchor ) ) { # Assume we just finished the first step
+          $current = array( 'action' => $this->action, $building_id, '#' => $steps[0] );
+          $next    = array( 'action' => $this->action, $building_id, '#' => $steps[1] );
+        }
+        else if( $anchor == end( $steps ) ) { # Just finished the last step
+          $current = array( 'action' => $this->action, $building_id, '#' => end( $steps ) );
+          $next    = array( 'action' => 'incentives', $building_id );
+        }
+        else {
+          $current = array_search( $anchor, $steps );
+          $next    = array( 'action' => $this->action, $building_id, '#' => $steps[$current + 1] );
+          $current = array( 'action' => $this->action, $building_id, '#' => $steps[$current] );
+        }
+        
+        $this->Session->setFlash( 'Your property data has been saved.', null, null, 'success' );
+        
+        if( $this->data['Building']['continue'] ) {
+          $this->redirect( $next );
+        }
+        else {
+          $this->redirect( $current );
+        }
+      }
+      else {
+        $this->log( '{BuildingsController::questionnaire} Error saving building data: ' . json_encode( $this->Building->validationErrors ), LOG_ERR );
+        $this->Session->setFlash( 'There is a problem with the data you provided. Please correct the errors below.', null, null, 'validation' );
+      }
+    }
+    else {
+      # No incoming data. Just set the data array so that form inputs
+      # can be pre-populated.
+      $this->data = $building;
+    }
+    
+    # All of the addresses associated with a given user (sidebar display)
+    $addresses = $this->Building->Client->buildings( $this->Auth->user( 'id' ) );
+    
+    if( in_array( $this->Session->read( 'Auth.UserType.name' ), array( 'Homeowner', 'Buyer' ) ) ) {
+      $this->data['Client'] = $this->Session->read( 'Auth.User' );
+    }
+    else {
+      $this->data[$this->Session->read( 'Auth.UserType.name' )] = $this->Session->read( 'Auth.User' );
+    }
+    
+    /** Prepare the view */
     $this->populate_lookups();
-    $this->set( 'building', $this->data );
     $this->set( compact( 'addresses' ) );
   }
-  
+
   /**
    * Displays the set of rebates available for a given building.
    *
@@ -264,6 +217,60 @@ class BuildingsController extends AppController {
   }
   
   /**
+   * Creates a new user of a given type and updates the appropriate
+   * building association.
+   *
+   * @param   $building_id
+   * @param 	$role
+   * @access	public
+   */
+  public function change_user( $building_id, $role ) {
+    $foreign_key = strtolower( $role ) . '_id';
+    $user        = $this->save_user( $building_id, 'Inspector' );
+    
+    if( $user ) {
+      $this->Building->id = $building_id;
+      $this->Building->saveField( $foreign_key, $user );
+    }
+  }
+
+  /**
+   * Creates a new user identified as a client and associates the building
+   * with the new client.
+   *
+   * @param   $building_id
+   * @param 	$role
+   * @access	public
+   */
+  public function change_client( $building_id ) {
+    $this->change_user( $building_id, 'Client' );
+  }
+
+  /**
+   * Creates a new user identified as an inspector and associates the building
+   * with the new inspector.
+   *
+   * @param   $building_id
+   * @param 	$role
+   * @access	public
+   */
+  public function change_inspector( $building_id ) {
+    $this->change_user( $building_id, 'Inspector' );
+  }
+  
+  /**
+   * Creates a new user identified as a realtor and associates the building
+   * with the new inspector.
+   *
+   * @param   $building_id
+   * @param 	$role
+   * @access	public
+   */
+  public function change_realtor( $building_id ) {
+    $this->change_user( $building_id, 'Realtor' );
+  }
+  
+  /**
    * Downloads the questionnaire PDF.
    */
   public function download_questionnaire() {
@@ -288,9 +295,9 @@ class BuildingsController extends AppController {
    * in the questionnaire. This method returns nothing because it sets
    * the variables in the view space.
    *
-   * @access	public
+   * @access	private
    */
-  public function populate_lookups() {
+  private function populate_lookups() {
     $basementTypes = $this->Building->BasementType->find(
       'list',
       array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
@@ -356,171 +363,185 @@ class BuildingsController extends AppController {
   }
   
   /**
-   * Updates realtor information
+   * Saves a client record.
    *
    * @param 	$building_id
    * @return	boolean
    * @access	private
    */
-  private function update_realtor( $building_id ) {
-    return $this->update_user( $building_id, 'realtor' );
+  private function save_client( $building_id = null ) {
+    return $this->save_user( $building_id, 'Client' );
   }
   
   /**
-   * Updates inspector information
+   * Saves an inspector record. An inspector is not required so if no
+   * email value is passed, don't even bother to save.
    *
    * @param 	$building_id
    * @return	boolean
    * @access	private
    */
-  private function update_inspector( $building_id ) {
-    return $this->update_user( $building_id, 'inspector' );
+  private function save_inspector( $building_id = null ) {
+    if( empty( $this->data['Inspector']['email'] ) ) {
+      unset( $this->data['Inspector'] );
+      $response = true;
+    }
+    else {
+      $response = $this->save_user( $building_id, 'Inspector' );
+    }
+    
+    return $response;
   }
   
   /**
-   * Updates associated user data.
+   * Saves a realtor record. A realtor is not required so if no
+   * email value is passed, don't even bother to save.
    *
-   * @param 	$role
+   * @param 	$building_id
    * @return	boolean
    * @access	private
    */
-  private function update_user( $building_id, $role ) {
-    $model = Inflector::classify( $role );
+  private function save_realtor( $building_id = null ) {
+    if( empty( $this->data['Realtor']['email'] ) ) {
+      unset( $this->data['Realtor'] );
+      $response = true;
+    }
+    else {
+      $response = $this->save_user( $building_id, 'Realtor' );
+    }
     
-    $this->Building->id = $building_id; // Ultimately, we're here to update the building data
+    return $response;
+  }
+  
+  /**
+   * Saves a user record.
+   *
+   * @param 	$building_id
+   * @return	boolean
+   * @access	private
+   */
+  private function save_user( $building_id = null, $role ) {
+    $foreign_key = strtolower( $role ) . '_id';
     
-    $user = !empty( $this->data[$model]['email'] )
-        ? $this->Building->{$model}->known( $this->data[$model]['email'] )
-        : false;
+    $user = !empty( $this->data[$role]['email'] )
+      ? $this->Building->{$role}->known( $this->data[$role]['email'] )
+      : false;
+    
+    if( $user ) { # This user is already in the system
+      $this->data[$role]['id']              = $user;
+      $this->data['Building'][$foreign_key] = $user;
+    }
+    else { # We don't know this user, add him/her
+      $this->Building->{$role}->create(); # We're in a loop so let's be safe, kids.
       
-    if( !$user ) { # We don't know this user.
-      $this->data[$model]['invite_code'] = md5( String::uuid() );
-      
-      if( $this->Building->{$model}->save( $this->data ) ) {
-        $user = $this->Building->{$model}->id;
-        $this->send_invite( array( $this->data[$model] ) );
+      if( $this->Building->{$role}->add( $this->data ) ) {
+        $user                    = $this->Building->{$role}->id;
+        $this->data[$role]['id'] = $user;
+        
+        # Generate an invite code and save it off
+        $this->data[$role]['invite_code'] = md5( String::uuid() );
+        $this->Building->{$role}->saveField( 'invite_code', $this->data[$role]['invite_code'] );
+        
+        # Temporary property used in this::send_invite()
+        $this->data[$role]['role'] = $role; 
+        
+        # Set the building's foreign key
+        $this->data['Building'][$foreign_key] = $user;
+        
+        # Send new user invite
+        $this->send_invite( array( $this->data[$role] ) );
       }
       else {
-        $this->Session->setFlash( 'We weren\'t able to make that change.', null, null, 'validation' );
-        
-        return false;
+        $this->Building->invalidate( $role . '_id' );
       }
     }
     
-    # Update the building property if we have a user at this point.
-    if( $user ) {
-      $this->Building->saveField( $role . '_id', $user );
-      $this->Session->setFlash( 'The building\'s ' . $role . ' has been updated.', null, null, 'success' );
-      
-      return true;
-    }
-    
-    return false;
+    return $user;
   }
-  
+
   /**
-   * Updates associated occupancy data
+   * Saves a product record and the associated building-product record.
    *
    * @param 	$building_id
    * @return  boolean
-   * @access	private
+   * @access  private
    */
-  private function update_occupant( $building_id ) {
-    if( !empty( $this->data['Occupant']['id'] ) ) {
-      $this->Building->Occupant->id = $this->data['Occupant']['id'];
+  private function save_product( $building_id ) {
+    foreach( $this->data['Product'] as $i => $product ) {
+      $make       = $product['make'];
+      $model      = $product['model'];
+      $energy     = isset( $product['energy_source_id'] ) ? $product['energy_source_id'] : null;
       
-      if( $this->Building->Occupant->save( $this->data ) ) {
-        return true;
+      # Ensure that the product is valid. If not, kill it.
+      if( empty( $product['technology_id'] ) || empty( $make ) || empty( $model ) || empty( $energy ) ) {
+        # TODO: Maybe pull the tech name and display a warning if the tech_id was entered?
+        unset( $this->data['Product'][$i] );
+        unset( $this->data['BuildingProduct'][$i] );
+        continue;
       }
-    }
-    
-    return false;
-  }
-  
-  /**
-   * Updates building technologies
-   *
-   * @param 	$building_id
-   * @access	private
-   */
-  private function update_product( $building_id ) {
-    # In an edit scenario, we'll have an indexed array of products, although
-    # there will always be only one. If a property (make) cannot be accessed
-    # directly, it's probably indexed so we need to normalize.
-    if( !isset( $this->data['Product']['make'] ) ) {
-      $this->data['Product']         = array_shift( $this->data['Product'] );
-      $this->data['BuildingProduct'] = array_shift( $this->data['BuildingProduct'] );
-    }
-    
-    $this->Building->BuildingProduct->id = $this->data['BuildingProduct']['id'];
-    
-    $make   = $this->data['Product']['make'];
-    $model  = $this->data['Product']['model'];
-    $energy = isset( $this->data['Product']['energy_source_id'] ) ? $this->data['Product']['energy_source_id'] : null;
-    
-    $product_id = $this->Building->Product->known( $make, $model, $energy );
-    
-    if( !$product_id ) {
-      if( $this->Building->Product->save( $this->data ) ) {
-        $this->log( 'Product saved successfully', LOG_DEBUG );
-        $product_id = $this->Building->Product->id;
-      }
-    }
-    
-    if( $product_id ) {
-      $this->data['BuildingProduct']['product_id']  = $product_id;
-      $this->data['BuildingProduct']['building_id'] = $building_id;
+        
+      /**
+       * As with users, we don't want redundant products in our catalog.
+       * For products, the combination of make, model & serial number
+       * determines uniqueness.
+       */
+      $product_id = $this->Building->BuildingProduct->Product->known( $make, $model, $energy );
       
-      if( $this->Building->BuildingProduct->save( $this->data ) ) {
-        return true;
+      if( !$product_id ) { # This product is not in the catalog yet
+        $this->Building->BuildingProduct->Product->create();
+        if( $this->Building->BuildingProduct->Product->save( $product ) ) {
+          $product_id = $this->Building->BuildingProduct->Product->id; 
+        }
+        else {
+          $this->log( '{BuildingsController::save_product} Unable to save product to the catalog. ' . json_encode( $this->Building->BuildingProduct->Product->validationErrors ), LOG_ERR );
+        }
+      }
+      
+      # If we have a product, we can save off the building equipment
+      if( $product_id ) {
+        $this->data['BuildingProduct'][$i]['product_id']  = $product_id;
+        
+        if( !empty( $building_id ) ) {
+          $this->data['BuildingProduct'][$i]['building_id']  = $building_id;
+        } 
       }
     }
     
-    # $this->log( 'Zoiks! Returning false', LOG_DEBUG );
+    # If there's nothing left, then clear it all
+    if( empty( $this->data['Product'] ) ) {
+      unset( $this->data['Product'] );
+    }
+    if( empty( $this->data['BuildingProduct'] ) ) {
+      unset( $this->data['BuildingProduct'] );
+    }
     
-    return false;
+    return true;
   }
-  
+
   /**
-   * Updates the building wall system
+   * Updates the building roof system(s).
    *
    * @param 	$building_id
    * @return	boolean
    * @access	private
    */
-  private function update_building_wall_system( $building_id ) {
-    return $this->Building->BuildingWallSystem->save( $this->data );
-  }
-  
-  /**
-   * Updates the building window system
-   *
-   * @param 	$building_id
-   * @return	boolean
-   * @access	private
-   */
-  private function update_building_window_system( $building_id ) {
-    # There will only be one (at least for now)
-    $this->data['BuildingWindowSystem'] = array_shift( $this->data['BuildingWindowSystem'] );
-    
-    return $this->Building->BuildingWindowSystem->save( $this->data );
-  }
-  
-  /**
-   * Updates the building roof system
-   *
-   * @param 	$building_id
-   * @return	boolean
-   * @access	private
-   */
-  private function update_building_roof_system( $building_id ) {
-    $this->data = $this->prep_roof_data( $this->data );
-    
+  private function save_building_roof_system( $building_id ) {
+    # Cull out the unselected roof systems
     foreach( $this->data['BuildingRoofSystem'] as $i => $roof_system ) {
-      $this->data['BuildingRoofSystem'][$i]['building_id'] = $building_id;
+      if( empty( $roof_system['roof_system_id'] ) ) {
+        unset( $this->data['BuildingRoofSystem'][$i] );
+      }
+      else if( !empty( $building_id ) ) {
+        $this->data['BuildingRoofSystem'][$i]['building_id'] = $building_id;
+      }
     }
     
-    return $this->Building->BuildingRoofSystem->saveAll( $this->data['BuildingRoofSystem'] );
+    # If there's nothing left, then clear it all
+    if( empty( $this->data['BuildingRoofSystem'] ) ) {
+      unset( $this->data['BuildingRoofSystem'] );
+    }
+    
+    return true;
   }
   
   /**
@@ -637,78 +658,6 @@ class BuildingsController extends AppController {
           $data['Building'][$type . '_provider_id'] = $provider;
         }
       }
-    }
-    
-    return $data;
-  }
-  
-  /**
-   * description
-   *
-   * @param 	$data
-   */
-  private function prep_product_data( $data ) {
-  
-    /**
-     * As with users, we don't want redundant products in our catalog.
-     * For products, the combination of make, model & serial number
-     * determines uniqueness.
-     */
-    foreach( $data['Product'] as $i => $product ) {
-      $make       = $product['make'];
-      $model      = $product['model'];
-      $energy     = isset( $product['energy_source_id'] ) ? $product['energy_source_id'] : null;
-      
-      # Ensure that the product is valid. If not, kill it.
-      if( empty( $product['technology_id'] ) || empty( $make ) || empty( $model ) || empty( $energy ) ) {
-        # TODO: Maybe pull the tech name and display a warning if the tech_id was entered?
-        unset( $data['Product'][$i] );
-        unset( $data['BuildingProduct'][$i] );
-        continue;
-      }
-      
-      $product_id = $this->Building->BuildingProduct->Product->known( $make, $model, $energy );
-      
-      if( !$product_id ) {
-        $this->Building->BuildingProduct->Product->create();
-        if( $this->Building->BuildingProduct->Product->save( $product ) ) {
-          $product_id = $this->Building->BuildingProduct->Product->id;
-        }
-        else {
-          $this->Session->setFlash( 'Unable to save product (' . $make . ' ' . $model . ')', null, null, 'warning' );
-        }
-      }
-      
-      if( $product_id ) {
-        $data['BuildingProduct'][$i]['product_id'] = $product_id;
-      }
-    }
-    
-    # Clear the product structures if empty.
-    if( empty( $data['Product'] ) ) {
-      unset( $data['Product'] );
-    }
-    if( empty( $data['BuildingProduct'] ) ) {
-      unset( $data['BuildingProduct'] );
-    }
-    
-    return $data;
-  }
-  
-  /**
-   * 
-   *
-   * @param 	$data
-   */
-  private function prep_roof_data( $data ) {
-    foreach( $data['BuildingRoofSystem'] as $i => $roof_system ) {
-      if( !$roof_system['roof_system_id'] ) {
-        unset( $data['BuildingRoofSystem'][$i] );
-      }
-    }
-    
-    if( empty( $data['BuildingRoofSystem'] ) ) {
-      unset( $data['BuildingRoofSystem'] );
     }
     
     return $data;

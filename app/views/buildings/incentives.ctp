@@ -2,7 +2,7 @@
 
 <h1 class="printable">Visit BigBread.net for the latest in personalized discounts and information</h1>
 
-<?php echo $this->element( 'building_info' ) ?>
+<?php echo $this->element( 'building_info', array( 'data' => $building ) ) ?>
 
 <div id="contentbody">
   <?php if( !empty( $incentives ) ): ?>

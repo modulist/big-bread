@@ -102,6 +102,11 @@ class User extends AppModel {
 		),
 	);
   
+  const TYPE_HOMEOWNER = '4d71115d-0f74-43c5-93e9-2f8a3b196446';
+  const TYPE_HOMEBUYER = '4d6d9699-a7a4-42a1-855e-4f606e891b5e';
+  const TYPE_INSPECTOR = '4d6d9699-5088-48db-9f56-47ea6e891b5e';
+  const TYPE_REALTOR   = '4d6d9699-f19c-41e3-a723-45ae6e891b5e';
+  
   /**
    * Constructor.
    *
@@ -118,13 +123,6 @@ class User extends AppModel {
   /**
    * CALLBACKS
    */
-  
-  public function beforeSave() {
-    if( empty( $this->id ) ) {
-      $this->log( '{User::beforeSave} Creating ' . $this->data[$this->alias]['email'], LOG_DEBUG );
-    }
-    return true;
-  }
   
   /**
    * PUBLIC METHODS
@@ -147,8 +145,6 @@ class User extends AppModel {
         $user = $this->id;
       }
     }
-    
-$this->log( '{User::add} Returning "' . $user . '"', LOG_DEBUG );
     
     return $user;
   }
@@ -237,11 +233,11 @@ $this->log( '{User::add} Returning "' . $user . '"', LOG_DEBUG );
    * @see     http://bakery.cakephp.org/articles/aranworld/2008/01/14/using-equalto-validation-to-compare-two-form-fields
    * @todo    Move this to app_model? Could be useful elsewhere.
    */
-  public function identical( $field = array(), $confirm_field = null ) { 
-    foreach( $field as $key => $value ) { 
+  public function identical( $field = array(), $confirm_field = null ) {
+    foreach( $field as $key => $value ) {
       $compare = $this->data[$this->alias][$confirm_field];
       
-      if( $value !== $compare ) { 
+      if( !empty( $compare ) && $value !== $compare ) {
         return false; 
       }
       else { 

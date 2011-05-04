@@ -1,8 +1,8 @@
 <div id="questionnaire">
   <h2>Questionnaire</h2>
   <ul>
-    <?php if( $this->action == 'questionnaire' ): # handled differently in edit ?>
-      <li><?php echo $this->Html->link( __( 'General Information', true ), '#info', array( 'class' => 'active' ) ) ?></li>
+    <?php if( empty( $this->data['Building']['id'] ) ): # handled differently in edit ?>
+      <li><?php echo $this->Html->link( __( 'General Information', true ), '#general' ) ?></li>
     <?php endif; ?>
     <li><?php echo $this->Html->link( __( 'Demographics & Behavior', true ), '#demographics' ) ?></li>
     <li><?php echo $this->Html->link( __( 'Equipment Listing', true ), '#equipment' ) ?></li>
