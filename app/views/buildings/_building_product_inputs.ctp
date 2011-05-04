@@ -5,7 +5,7 @@
   <?php echo $this->Form->input( 'Product.0.make' ) # TODO: Make this an autocomplete field ?>
   <?php echo $this->Form->input( 'Product.0.model' ) # TODO: Make this an autocomplete field ?>
   <?php echo $this->Form->input( 'Product.0.energy_source_id', array( 'empty' => 'Select equipment type', 'options' => array(), 'div' => 'input select energy-source', 'disabled' => 'disabled' ) ) ?>
-  <?php echo $this->Form->input( 'BuildingProduct.0.serial_number' ) ?>
+  <?php echo $this->Form->input( 'BuildingProduct.0.serial_number', array( 'after' => '<p>The optional serial number will help us identify when the equipment was manufactured and the applicable warranty periods for that equipment.</p>' ) ) ?>
   <?php echo $this->Form->input( 'BuildingProduct.0.notes' ) ?>
 <?php else: ?>
   <?php if( !isset( $product ) || empty( $product ) ): ?>
@@ -18,7 +18,7 @@
     <?php echo $this->Form->input( 'Product.make' ) # TODO: Make this an autocomplete field ?>
     <?php echo $this->Form->input( 'Product.model' ) # TODO: Make this an autocomplete field ?>
     <?php echo $this->Form->input( 'Product.energy_source_id', array( 'empty' => 'Select equipment type', 'options' => array(), 'div' => 'input select energy-source', 'disabled' => 'disabled' ) ) ?>
-    <?php echo $this->Form->input( 'BuildingProduct.serial_number' ) ?>
+    <?php echo $this->Form->input( 'BuildingProduct.serial_number', array( 'after' => '<p>The optional serial number will help us identify when the equipment was manufactured and the applicable warranty periods for that equipment.</p>' ) ) ?>
     <?php echo $this->Form->input( 'BuildingProduct.notes' ) ?>
   <?php else: ?>
     <?php # Here we're editing an existing piece of equipment ?>
@@ -29,7 +29,7 @@
     <?php echo $this->Form->input( 'Product.' . $index . '.make', array( 'default' => $product['Product']['make'] ) ) # TODO: Make this an autocomplete field ?>
     <?php echo $this->Form->input( 'Product.' . $index . '.model', array( 'default' => $product['Product']['model'] ) ) # TODO: Make this an autocomplete field ?>
     <?php echo $this->Form->input( 'Product.' . $index . '.energy_source_id', array( 'div' => 'input select', 'options' => $energy_source_options, 'selected' => $product['Product']['energy_source_id'] ) ) ?>
-    <?php echo $this->Form->input( 'BuildingProduct.' . $index . '.serial_number', array( 'default' => $product['serial_number'] ) ) ?>
+    <?php echo $this->Form->input( 'BuildingProduct.' . $index . '.serial_number', array( 'default' => $product['serial_number'], 'after' => '<p>The optional serial number will help us identify when the equipment was manufactured and the applicable warranty periods for that equipment.</p>' ) ) ?>
     <?php echo $this->Form->input( 'BuildingProduct.' . $index . '.notes', array( 'default' => $product['notes'] ) ) ?>
   <?php endif; ?>
 <?php endif; ?>

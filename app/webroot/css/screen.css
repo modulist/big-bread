@@ -21,7 +21,7 @@ a {color:#eee; outline:none; text-decoration:none;}
 a:hover{text-decoration:underline;}
 a.toggle-form { color: #e48d3f; }
 p { margin:0; padding:0;}
-#content h1, #infohead {font-size: 24px; font-weight:normal; margin: 0; padding:0; line-height:1em;}
+#content h1, #infohead {font-size: 24px; font-weight:normal; margin: 0 0 10px 0; padding:0; line-height:1em;}
 #content h2 {font-size: 16px; margin: 1.75em 0 0.25em 0; padding: 0;}
 #sidebar h2 {font-size: 14px; margin: 1.5em 0 0.25em 0; padding: 0;}
 #content h3 {font-size: 14px; margin: 10px 0; padding: 0;}
@@ -431,6 +431,20 @@ input[type=text][disabled] { background: transparent; border: none; color: #eee 
   color: #d63301;
   background-color: #ffccba;
   background-image: url( '../img/validation.png' );
+}
+
+.flash.long {
+  background-position: 10px 10px;
+}
+.flash p {
+  color: inherit;
+  margin: 10px 0;
+}
+.flash p.first {
+  margin-top: 0;
+}
+.flash p.last {
+  margin-bottom: 0;
 }
 
 /* hide print specific styles */

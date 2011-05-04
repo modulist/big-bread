@@ -79,6 +79,9 @@ UPDATE incentive
    SET name = 'Benton PUD - ENERGY STAR Homes'
  WHERE id = 'ad50dc90-6f7f-11e0-be41-80593d270cc9';
 
+ALTER TABLE users
+  ADD show_questionnaire_instructions boolean NOT NULL DEFAULT 1 AFTER password;
+
 -- TODO: Insert updated search_view script
 
 SET foreign_key_checks = 1;

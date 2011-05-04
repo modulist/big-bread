@@ -7,6 +7,20 @@
 <?php echo $this->Form->input( 'Questionnaire.deleted', array( 'type' => 'hidden', 'value' => 0 ) ) ?>
 <div id="general_Info">
   <div id="info">
+    <?php if( $this->Session->read( 'Auth.User.show_questionnaire_instructions' ) ): ?>
+      <div class="flash info long">
+        <p class="first">
+        Welcome to BigBread.net.  All we need to get started is to have you provide the client's (either the homeowner or buyer) name, address and zip code.
+        If the client is a home buyer, please enter the address information for the home you're contemplating buying so we can provide the applicable rebates for that house.
+        We'd love your comments, please use the feedback button so we can improve your experience.  Thank you for visiting us.
+        </p>
+        
+        <p>If you provide more information found on our questionnaire (<?php echo $this->Html->link( 'download the attached form', array( 'action' => 'download_questionnaire' ), array() ) ?> to take notes as you go through the house) and add that information to your online form, we can find even more savings for you.</p>
+        
+        <p class="last"><a href="#" class="dismiss" data-notice="questionnaire_instructions">Don't show this message again.</a></p>
+      </div>
+    <?php endif; ?>
+    
     <div class="form">
       <div id="general_info">
         <h1 id="infohead"><?php __( 'General Information' ) ?></h1>
@@ -47,6 +61,8 @@
       <div id="equipment">
         <h1><?php __( 'Equipment Listing' ) ?></h1>
         
+        <p>The equipment detail allows us to research product safety, recall, and warranty information on what you already own.</p>
+        
         <fieldset class="group">
           <?php if( empty( $this->data['Product'] ) ): ?>
             <div class="cloneable">
@@ -59,7 +75,7 @@
                 <?php echo $this->Form->input( 'Product.' . $i . '.make' ) # TODO: Make this an autocomplete field ?>
                 <?php echo $this->Form->input( 'Product.' . $i . '.model' ) # TODO: Make this an autocomplete field ?>
                 <?php echo $this->Form->input( 'Product.' . $i . '.energy_source_id', array( 'empty' => '' ) ) ?>
-                <?php echo $this->Form->input( 'BuildingProduct.' . $i . '.serial_number' ) ?>
+                <?php echo $this->Form->input( 'BuildingProduct.' . $i . '.serial_number', array( 'after' => '<p>The optional serial number will help us identify when the equipment was manufactured and the applicable warranty periods for that equipment.</p>' ) ) ?>
                 <?php echo $this->Form->input( 'BuildingProduct.' . $i . '.notes' ) ?>
               </div>
             <?php endforeach; ?>

@@ -101,6 +101,10 @@ class AppController extends Controller {
 	}
   
   /**
+   * PUBLIC FUNCTIONS
+   */
+  
+  /**
    * PROTECTED METHODS
    */
   
