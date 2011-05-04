@@ -28,7 +28,9 @@
       <div class="clear"></div>
       
     </div><!-- #bodymain -->
+    <div class="clear"></div>
   </div><!-- #page_content -->
+  <div class="clear"></div>
   
   <div id="footer">
     <?php echo $this->element( 'layout/footer' ) ?>
