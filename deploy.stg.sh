@@ -27,6 +27,7 @@ rsync -vcrlDtOzi --progress \
       --exclude "app/config/bootstrap.*.php" \
       --exclude "app/config/database.php" \
       --exclude "app/config/database.*.php" \
+      --exclude "app/config/sql/bigbread.empty.sql" \
       --exclude "deploy.*.sh" \
       --links \
       --delete \
