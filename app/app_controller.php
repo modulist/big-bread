@@ -116,10 +116,19 @@ class AppController extends Controller {
    * @return  array
    * @access  protected
    */
-  protected function current_user() {
+  protected function current_user( $property = null) {
     $user = $this->Auth->user();
     
-    return $user ? $user[$this->Auth->userModel] : null;
+    if( !empty( $user ) ) {
+      if( empty( $property ) ) {
+        $user = $user[$this->Auth->userModel]; # Return the complete user array
+      }
+      else {
+        $user = $this->Auth->user( $property ); # Return a specific property
+      }
+    }
+    
+    return $user;
   }
   
   /**
