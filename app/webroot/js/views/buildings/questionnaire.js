@@ -3,61 +3,20 @@ $(document).ready( function() {
   $('#RealtorFirstName,#RealtorLastName,#RealtorEmail').parent().removeClass( 'required' );
   $('#InspectorFirstName,#InspectorLastName,#InspectorEmail').parent().removeClass( 'required' );
 
-  // NAVIGATION
   // Which target are we initially activating?
-  if( document.location.hash.length === 0 ) {
-    $location = $( '#BuildingId' ).val().length === 0
-      ? $( '#general' )
-      : $( '#demographics' );
-  }
-  else {
-    $location = $( document.location.hash );
-    document.location.hash = ''; // reset the hash to prevent scrolling
-  }
-  
-  // If we're in the equipment section, enable the "Save & Return" button
-  if( $location.attr( 'id' ) == 'equipment' ) {
-    $( '#btn-return[type="submit"]' ).parent().removeClass( 'disabled' );
-  }
-  // Style the active target link in the questionnaire section nav
-  $( 'a[href="#' + $location.attr( 'id' ) + '"]' ).addClass( 'active' );
-  // Set the current anchor in the form for later. @see BuildingsController::questionnaire()
-  $( '#BuildingAnchor' ).val( $location.attr( 'id' ) );
-  // Show the div specified by the anchor
-  $location.addClass( 'active' );
   $( '.section' ).not( '.active' ).hide();
-  
-  // Allow random access to sections via the nav
-  $( '#sidebar #questionnaire a[href^="#"]' ).click( function( e ) {
-    var $link    = $(this);
-    var $section = $( $link.attr( 'href' ) );
-    
-    $( '#sidebar #questionnaire a.active' ).removeClass( 'active' );
-    $link.addClass( 'active' );
-    
-    $( '.section.active' ).slideUp( 'slow', function() {
-      $deactivated = $(this);
-      $section.slideDown( 'fast', function() {
-        $deactivated.removeClass( 'active' );
-        $(this).addClass( 'active' );
-      })
-    })
-    
-    e.preventDefault();
-  });
-  // END NAVIGATION
 
   // Save and continue by default, but allow the user to save and return
   // to the current anchor.
   $( '#btn-return[type="submit"]').click( function( e ) {
-    $( '#BuildingContinue' ).val( 0 );
+    $( '#WizardContinue' ).val( 0 );
   });
 
   // Toggle an editable user form (inspector, realtor)
   $('.toggle-form').click( function( e ) {
-    var $this  = $(this);
-    var model  = $this.attr( 'data-model' ).toLowerCase();
-    var $panel = $( '#' + model );
+    var $this       = $(this);
+    var model       = $this.attr( 'data-model' ).toLowerCase();
+    var $panel      = $( '#' + model );
     
     // In some cases, there's an add form for new models and edit forms
     // for each existing model. The edits are uniquely identified by
@@ -72,7 +31,6 @@ $(document).ready( function() {
     
     if( $panel.is( ':visible' ) ) {
       $panel.slideUp();
-      // $this.text( 'Change ' + $this.attr( 'data-model' ) );
     }
     else {
       // Don't clear existing data if we're editing.
@@ -81,11 +39,29 @@ $(document).ready( function() {
       }
       
       $panel.slideDown();
-      // $this.text( 'Cancel Change' );
     }
+    
+    // In a sliding panel, the form should return to the current page
+    $panel.find( 'input[value="Save"]').click( function( e ) {
+      $( '#WizardContinue' ).val( 0 );
+    });
+    
+    // Wire the cancel button in a sliding panel to close the panel
+    $panel.find( 'input[value="Cancel"]').click( function( e ) {
+      $this.trigger( 'click' );
+      e.preventDefault();
+    });
     
     e.preventDefault();
   });
+  
+  // If an error exists on a form, show the form
+  if( $( '#realtor form .error' ).length ) {
+    $( '.toggle-form[data-model="Realtor"]' ).trigger( 'click' );
+  }
+  if( $( '#realtor form .error' ).length ) {
+    $( '.toggle-form[data-model="Inspector"]' ).trigger( 'click' );
+  }
   
   // Retire a piece of equipment
   $( '.action.delete.retire' ).click( function( e ) {
@@ -197,7 +173,13 @@ $(document).ready( function() {
     
     $energy_select.attr( 'disabled', 'disabled' );
     $energy_select.children( 'option' ).remove();
-    $energy_select.append( '<option value="">Loading...</option>' );
+    
+    if( technology_id.length > 0 ) {
+      $energy_select.append( '<option value="">Loading...</option>' );
+    }
+    else {
+      $energy_select.append( '<option value="">Select equipment type</option>' );
+    }
     
     /** get energy sources */
     $.getJSON( '/products/energy_sources/' + technology_id + '.json', null, function( data, status ) {

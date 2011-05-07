@@ -169,11 +169,7 @@ class Building extends AppModel {
    * @return	boolean
    * @access	public
    */
-  public function belongs_to( $building_id, $user_id = null ) {
-    $user_id = !empty( $user_id )
-      ? $user_id
-      : $this->current_user( 'id' );
-    
+  public function belongs_to( $building_id, $user_id ) {
     return $this->find(
       'count',
       array(

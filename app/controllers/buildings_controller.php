@@ -29,17 +29,30 @@ class BuildingsController extends AppController {
   /**
    * Displays the survey form.
    *
-   * @param 	$arg
+   * @param 	$building_id
+   * @param   $section
    * @return	type		description
    */
-  public function questionnaire( $building_id = null ) {
+  public function questionnaire( $building_id = 'new', $anchor = null ) {
     $this->helpers[] = 'Form';
     $this->layout    = 'sidebar';
     
-    $anchor = empty( $this->data['Building']['anchor'] ) ? 'general' : $this->data['Building']['anchor'];
+    # Empty the default building_id placeholder so that later processing
+    # doesn't think it's a real value.
+    if( $building_id == 'new' ) {
+      $building_id = null;
+    }
     
     # Steps to progress through the pseudo-wizard
     $steps = array( 'general', 'demographics', 'equipment', 'characteristics', 'envelope' );
+    
+    # Set the default anchor based on parameters
+    if( empty( $building_id ) ) {
+      $anchor = 'general';
+    }
+    else if( empty( $anchor ) ) {
+      $anchor = 'demographics';
+    }
     
     # Pull the existing record to pre-populate data, if available
     $building = array();
@@ -85,7 +98,7 @@ class BuildingsController extends AppController {
       
       # Ensure that the current user is associated with the building they
       # may be trying to update.
-      if( !empty( $building_id ) && !$this->Building->belongs_to( $building_id ) ) {
+      if( !empty( $building_id ) && !$this->Building->belongs_to( $building_id, $this->Auth->user( 'id' ) ) ) {
         $this->Session->setFlash( 'You\'re not authorized to modify this property.', null, null, 'warning' );
         $this->redirect( array( 'action' => $this->action ) );
       }
@@ -103,36 +116,36 @@ class BuildingsController extends AppController {
         
         $method = 'save_' . Inflector::underscore( $model );
         if( method_exists( $this, $method ) ) {
-          $success = $success && $this->{$method}( $building_id );
+          $success = $this->{$method}( $building_id ) && $success;
         }
         else {
           # No update method exists for whatever reason. That's cool.
-          $success = $success && true;
+          $success = true && $success;
         }
       }
-
+      
       # Save anything that's left. This updates the building record in
       # the process, but we can live with that.
-      if( $this->Building->saveAll( $this->data ) ) {
+      if( $success && $this->Building->saveAll( $this->data ) ) {
         $building_id = $this->Building->id;
         
         if( empty( $anchor ) ) { # Assume we just finished the first step
-          $current = array( 'action' => $this->action, $building_id, '#' => $steps[0] );
-          $next    = array( 'action' => $this->action, $building_id, '#' => $steps[1] );
+          $current = array( 'action' => $this->action, $building_id, $steps[0] );
+          $next    = array( 'action' => $this->action, $building_id, $steps[1] );
         }
         else if( $anchor == end( $steps ) ) { # Just finished the last step
-          $current = array( 'action' => $this->action, $building_id, '#' => end( $steps ) );
+          $current = array( 'action' => $this->action, $building_id, end( $steps ) );
           $next    = array( 'action' => 'incentives', $building_id );
         }
         else {
           $current = array_search( $anchor, $steps );
-          $next    = array( 'action' => $this->action, $building_id, '#' => $steps[$current + 1] );
-          $current = array( 'action' => $this->action, $building_id, '#' => $steps[$current] );
+          $next    = array( 'action' => $this->action, $building_id, $steps[$current + 1] );
+          $current = array( 'action' => $this->action, $building_id, $steps[$current] );
         }
         
         $this->Session->setFlash( 'Your property data has been saved.', null, null, 'success' );
         
-        if( $this->data['Building']['continue'] ) {
+        if( $this->data['Wizard']['continue'] ) {
           $this->redirect( $next );
         }
         else {
@@ -160,9 +173,12 @@ class BuildingsController extends AppController {
       $this->data[$this->Session->read( 'Auth.UserType.name' )] = $this->Session->read( 'Auth.User' );
     }
     
+    # Set a default building_id as a place holder
+    $building_id = empty( $building_id ) ? 'new' : $building_id;
+    
     /** Prepare the view */
     $this->populate_lookups();
-    $this->set( compact( 'addresses' ) );
+    $this->set( compact( 'addresses', 'anchor', 'building_id' ) );
   }
 
   /**
@@ -467,23 +483,23 @@ class BuildingsController extends AppController {
    * @access  private
    */
   private function save_product( $building_id ) {
+    $validates = true;
+    
     foreach( $this->data['Product'] as $i => $product ) {
       $make       = $product['make'];
       $model      = $product['model'];
       $energy     = isset( $product['energy_source_id'] ) ? $product['energy_source_id'] : null;
       
-      # Ensure that the product is valid. If not, kill it.
+      # If no product was specified, ignore everything
       if( empty( $product['technology_id'] ) || empty( $make ) || empty( $model ) || empty( $energy ) ) {
         # TODO: Maybe pull the tech name and display a warning if the tech_id was entered?
         unset( $this->data['Product'][$i] );
         unset( $this->data['BuildingProduct'][$i] );
         continue;
       }
-        
+       
       /**
-       * As with users, we don't want redundant products in our catalog.
-       * For products, the combination of make, model & serial number
-       * determines uniqueness.
+       * Determine whether this product already exists in our catalog.
        */
       $product_id = $this->Building->BuildingProduct->Product->known( $make, $model, $energy );
       

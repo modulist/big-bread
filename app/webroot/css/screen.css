@@ -19,6 +19,7 @@ img {
 a img { border:0;}
 a {color:#eee; outline:none; text-decoration:none;}
 a:hover{text-decoration:underline;}
+a.disabled { cursor: default; }
 a.toggle-form { color: #e48d3f; }
 p { margin:0; padding:0;}
 #content h1, #infohead {font-size: 24px; font-weight:normal; margin: 0 0 10px 0; padding:0; line-height:1em;}
@@ -118,6 +119,8 @@ body.onecolumn #content {background: #FFFFFF; min-height:400px; padding: 50px 60
 #questionnaire h2{padding: 0 0 20px 20px; color:#fff;}
 #questionnaire li a{padding: 10px 0 10px 50px; font-size:14px; background: url(../img/WhiteCircle.png) no-repeat 20px 5px; color:#fff;font-weight:bold;  display: block;}
 #questionnaire li a:hover, #questionnaire li a.active{background:#fff url(../img/WhiteCircleCheck.png) no-repeat 20px 5px; color:#000;font-weight:bold;  filter:alpha(opacity=50);-moz-opacity:0.5;-khtml-opacity: 0.5;opacity: 0.5; text-decoration:none;}
+#questionnaire li a.disabled { filter:alpha(opacity=50);-moz-opacity:0.5;-khtml-opacity: 0.5;opacity: 0.5; }
+#questionnaire li a.disabled:hover { padding: 10px 0 10px 50px; font-size:14px; background: url(../img/WhiteCircle.png) no-repeat 20px 5px; color:#fff;font-weight:bold;display: block; }
 
 #questionnaire_nav li, #questionnaire_act li {float:left; }
 #getstart {background:#F9FAF4; padding: 20px;}

@@ -43,6 +43,7 @@ class UsersController extends AppController {
         $this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
         $this->Auth->login( $this->data );
         $this->set_user_type();
+        
         $this->redirect( $this->Auth->redirect() );
       }
       else {

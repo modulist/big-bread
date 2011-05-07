@@ -6,9 +6,8 @@
   <?php echo $this->element( 'building_info', array( 'building' => $this->data, 'editable' => true ) ) ?>
 <?php endif; ?>
 
-<?php echo $this->Form->create( 'Building' ) ?>
-<?php echo $this->Form->hidden( 'Building.anchor' ) ?>
-<?php echo $this->Form->hidden( 'Building.continue', array( 'value' => 1 ) ) ?>
+<?php echo $this->Form->create( 'Building', array( 'url' => array( 'action' => 'questionnaire', $building_id, $anchor ) ) ) ?>
+<?php echo $this->Form->hidden( 'Wizard.continue', array( 'value' => 1 ) ) ?>
 <?php echo $this->Form->input( 'Building.id' ) ?>
 <?php # Really just a placeholder so that a Questionnaire record gets saved by saveAll() ?>
 <?php echo $this->Form->input( 'Questionnaire.deleted', array( 'type' => 'hidden', 'value' => 0 ) ) ?>
@@ -31,7 +30,7 @@
     
     <div class="form">
       <?php if( empty( $this->data['Building']['id'] ) ): ?>
-        <div id="general" class="section">
+        <div id="general" class="section<?php echo $anchor == 'general' ? ' active' : '' ?>">
           <h1 id="infohead"><?php __( 'General Information' ) ?></h1>
           <?php echo $this->Form->input( 'Client.id' ) ?>
           <?php echo $this->Form->input( 'Client.first_name', array( 'label' => __( 'Client First Name', true ) ) ) ?>
@@ -45,48 +44,45 @@
           <?php echo $this->Form->input( 'Address.address_2' ) ?>
           <?php echo $this->Form->input( 'Address.zip_code' ) ?>
           
-          <?php echo $this->Form->input( 'Realtor.id' ) ?>
           <?php echo $this->element( '../buildings/_realtor_inputs' ) ?>
-          <?php echo $this->Form->input( 'Inspector.id' ) ?>
+          
           <?php echo $this->element( '../buildings/_inspector_inputs' ) ?>
         </div> <!-- #general -->
       <?php else: ?>
-        <div class="sliding-panel" id="realtor">
+        <div class="sliding-panel aside" id="realtor">
           <h1><?php __( 'Change Realtor' ) ?></h1>
-          <?php echo $this->Form->create( 'Building', array( 'url' => array( 'action' => 'change_realtor', $this->data['Building']['id'] ) ) ) ?>
-            <?php echo $this->element( '../buildings/_realtor_inputs' ) ?>
-            <div class="buttons">
-              <div class="button">
-                <input type="submit" value="Save" />
-              </div>
-              <div class="button">
-                <input type="reset" value="Cancel" />
-              </div>
+          <?php echo $this->element( '../buildings/_realtor_inputs' ) ?>
+          
+          <div class="buttons">
+            <div class="button">
+              <input type="submit" value="Save" />
             </div>
-          <?php echo $this->Form->end() ?>
+            <div class="button">
+              <input type="reset" value="Cancel" />
+            </div>
+          </div>
         </div>
-        <div class="sliding-panel" id="inspector">
+        <div class="sliding-panel aside" id="inspector">
           <h1><?php __( 'Change Inspector' ) ?></h1>
-          <?php echo $this->Form->create( 'Building', array( 'url' => array( 'action' => 'change_inspector', $this->data['Building']['id'] ) ) ) ?>
-            <?php echo $this->element( '../buildings/_inspector_inputs' ) ?>
-            <div class="buttons">
-              <div class="button">
-                <input type="submit" value="Save" />
-              </div>
-              <div class="button">
-                <input type="reset" value="Cancel" />
-              </div>
+          <?php echo $this->element( '../buildings/_inspector_inputs' ) ?>
+          
+          <div class="buttons">
+            <div class="button">
+              <input type="submit" value="Save" />
             </div>
-          <?php echo $this->Form->end() ?>
+            <div class="button">
+              <input type="reset" value="Cancel" />
+            </div>
+          </div>
         </div>
       <?php endif; ?>
   
-      <div id="demographics" class="section">
+      <div id="demographics" class="section<?php echo $anchor == 'demographics' ? ' active' : '' ?>">
         <h1><?php __( 'Demographics' ) ?></h1>
         <?php echo $this->element( '../buildings/_demographic_inputs' ) ?>
       </div> <!-- #demographics -->
         
-      <div id="equipment" class="section">
+      <div id="equipment" class="section<?php echo $anchor == 'equipment' ? ' active' : '' ?>">
         <!--
         <div id="utility-providers">
           <h3><?php __( 'Utility Providers' ) ?></h3>
@@ -173,12 +169,12 @@
          
       </div> <!-- #equipment -->
     
-      <div id="characteristics" class="section">
+      <div id="characteristics" class="section<?php echo $anchor == 'characteristics' ? ' active' : '' ?>">
         <h2><?php __( 'Building Characteristics' ) ?></h2>
         <?php echo $this->element( '../buildings/_building_characteristics_inputs' ) ?>
       </div> <!-- #characteristics -->
     
-      <div id="envelope" class="section">
+      <div id="envelope" class="section<?php echo $anchor == 'envelope' ? ' active' : '' ?>">
         <h2><?php __( 'Insulation, Windows &amp; Doors' ) ?></h2>
         
         <h3><?php __( 'Windows' ) ?></h3>
@@ -195,7 +191,8 @@
         <div class="button">
           <input type="submit" value="Continue" id="btn-continue" />
         </div>
-        <div class="button disabled">
+        
+        <div class="button<?php echo $anchor !== 'equipment' ? ' disabled' : '' ?>">
           <input type="submit" value="Save &amp; Return" id="btn-return" />
         </div>
     </div> <!-- .form -->

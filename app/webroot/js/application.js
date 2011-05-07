@@ -1,4 +1,9 @@
 $(document).ready( function() {
+  // Handle disabled links
+  $( 'a.disabled' ).click( function( e ) {
+    e.preventDefault();
+  });
+  
   // Dismisses optional flash messages
   $( '.dismiss' ).click( function( e ) {
     var $flash  = $(this).closest( '.flash' );
@@ -11,17 +16,5 @@ $(document).ready( function() {
     );
     
     e.preventDefault();  
-  });
-
-  
-  $('a[rel="modal"]').colorbox({
-    href: function() {
-      return $(this).attr( 'href' );  
-    },
-    title: function() {
-      var title = $(this).attr( 'title' );
-      return title != 'undefined' ? title : false;
-    },
-    rel: 'nofollow'
   });
 });

@@ -1,12 +1,23 @@
 <div id="questionnaire">
   <h2>Questionnaire</h2>
   <ul>
-    <?php if( empty( $this->data['Building']['id'] ) ): # handled differently in edit ?>
-      <li><?php echo $this->Html->link( __( 'General Information', true ), '#general' ) ?></li>
-    <?php endif; ?>
-    <li><?php echo $this->Html->link( __( 'Demographics & Behavior', true ), '#demographics' ) ?></li>
-    <li><?php echo $this->Html->link( __( 'Equipment Listing', true ), '#equipment' ) ?></li>
-    <li><?php echo $this->Html->link( __( 'Building Characteristics', true ), '#characteristics' ) ?></li>
-    <li><?php echo $this->Html->link( __( 'Insulation, Windows, Doors', true ), '#envelope' ) ?></li>
+    <?php foreach( Questionnaire::$navigation as $id => $label ): ?>
+      <?php
+      # Don't display the general tab once a building record exists
+      if( $id == 'general' && $building_id != 'new' ) {
+        continue;
+      }
+      
+      $class = array();
+      if( $id == $anchor ) {
+        array_push( $class, 'active' );
+      }
+      if( $id != 'general' && $building_id == 'new' ) {
+        array_push( $class, 'disabled' );
+      }
+      ?>
+      
+      <li><?php echo $this->Html->link( $label, array( 'action' => 'questionnaire', $building_id, $id ), array( 'class' => join( ' ', $class ) ) ) ?></li>
+    <?php endforeach; ?>
   </ul>
 </div><!-- #questionnaire -->
