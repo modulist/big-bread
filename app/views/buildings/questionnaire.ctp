@@ -163,7 +163,7 @@
         <?php $i = !empty( $this->data['BuildingProduct'] ) ? count( $this->data['BuildingProduct'] ) : 0  ?>
         <div class="sliding-panel" id="product">
           <?php echo $this->Form->input( 'BuildingProduct.' . $i . '.id' ) ?>
-          <?php echo $this->Form->input( 'Product.' . $i . '.technology_id', array( 'label' => 'Equipment Type', 'div' => 'input select equipment-type', 'required' => true, 'empty' => true ) ) ?>
+          <?php echo $this->Form->input( 'Product.' . $i . '.technology_id', array( 'label' => 'Equipment Type', 'div' => 'input select equipment-type required', 'empty' => true ) ) ?>
           <?php echo $this->Form->input( 'Product.' . $i . '.make' ) # TODO: Make this an autocomplete field ?>
           <?php echo $this->Form->input( 'Product.' . $i . '.model' ) # TODO: Make this an autocomplete field ?>
           <?php echo $this->Form->input( 'Product.' . $i . '.energy_source_id', array( 'empty' => 'Select equipment type', 'options' => array(), 'div' => 'input select energy-source', 'disabled' => 'disabled' ) ) ?>
