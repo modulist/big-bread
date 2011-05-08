@@ -126,7 +126,7 @@
               <?php if( !empty( $details['TechnologyOption'] ) ): ?>
                 <ul>
                   <?php foreach( $details['TechnologyOption'] as $option ): ?>
-                    <li><?php echo h( $option['name'] ) ?></li>
+                    <li<?php echo !empty( $option['GlossaryTerm']['definition'] ) ? ' class="help-available" title="' . $option['GlossaryTerm']['definition'] . '"' : '' ?>><?php echo h( $option['name'] ) ?></li>
                   <?php endforeach; ?>
                 </ul>
               <?php else: ?>

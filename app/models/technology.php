@@ -7,8 +7,9 @@ class Technology extends AppModel {
     'GlossaryTerm' => array(
       'className'  => 'GlossaryTerm',
       'foreignKey' => 'foreign_key',
+      'fields'     => array( 'GlossaryTerm.definition' ),
       'conditions' => array( 'GlossaryTerm.model' => 'Technology' ),
-    )
+    ),
   );
   public $hasMany = array(
     'EnergySource' => array(
