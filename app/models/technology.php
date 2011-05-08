@@ -3,6 +3,13 @@
 class Technology extends AppModel {
 	public $name         = 'Technology';
   
+  public $hasOne = array(
+    'GlossaryTerm' => array(
+      'className'  => 'GlossaryTerm',
+      'foreignKey' => 'foreign_key',
+      'conditions' => array( 'GlossaryTerm.model' => 'Technology' ),
+    )
+  );
   public $hasMany = array(
     'EnergySource' => array(
       'className'  => 'EnergySource',

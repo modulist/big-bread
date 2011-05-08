@@ -26,18 +26,20 @@
           <?php # Any products that have been entered for this building and this technology ?>
           <?php $products = Set::extract( '/Technology/Product/BuildingProduct/id', $details ) ?>
       
-          <?php if( empty( $products ) ): ?>
-            <div id="item">
-              <h3 id="<?php echo strtolower( Inflector::slug( h( $details['Technology']['name'] ), '' ) ) ?>">My <?php echo h( $details['Technology']['name'] ) ?></h3>
+          <div id="item">
+            <h3 id="<?php echo strtolower( Inflector::slug( h( $details['Technology']['name'] ), '' ) ) ?>"
+                <?php if( !empty( $details['Technology']['GlossaryTerm']['definition'] ) ): ?>
+                  class="help-available"
+                  title="<?php echo $details['Technology']['GlossaryTerm']['definition'] ?>"
+                <?php endif; ?>
+          >My <?php echo h( $details['Technology']['name'] ) ?></h3>
+            
+            <?php if( empty( $products ) ): ?>
               <p><?php echo sprintf( __( 'No %s information has been entered.', true ), strtolower( Inflector::singularize( h( $details['Technology']['name'] ) ) ) ) ?></p>
-              <div class="clear"></div>
-            </div>
-          <?php else: ?>
-            <?php foreach( $details['Technology']['Product'] as $product ): ?>
-              <?php # Display the product if it's associated with a building ?>
-              <?php if( !empty( $product['BuildingProduct'] ) ): ?>
-                <div id="item">
-                  <h3 id="<?php echo strtolower( Inflector::slug( h( $details['Technology']['name'] ), '' ) ) ?>">My <?php echo h( $details['Technology']['name'] ) ?></h3>
+            <?php else: ?>
+              <?php foreach( $details['Technology']['Product'] as $product ): ?>
+                <?php # Display the product if it's associated with a building ?>
+                <?php if( !empty( $product['BuildingProduct'] ) ): ?>
                   <ul>
                     <li><?php __( 'Make' ) ?><br /><div><?php echo h( $product['make'] ) ?></div></li>
                     <li><?php __( 'Model' ) ?><br /><div><?php echo h( $product['model'] ) ?></div></li>
@@ -49,11 +51,11 @@
                   </ul>
                   <div class="clear"></div>
                   <p>Product recall, safety &amp; warranty information coming soon.</p>
-                </div>
-                <div class="clear"></div>
-              <?php endif; ?>
-            <?php endforeach; ?>
-          <?php endif; ?>
+                <?php endif; ?>
+              <?php endforeach; ?>
+            <?php endif; ?>
+          </div>
+          <div class="clear"></div>
           
           <div id="sponser">
             <h3>Sponsors</h3>
