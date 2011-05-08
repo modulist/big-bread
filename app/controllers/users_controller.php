@@ -19,7 +19,8 @@ class UsersController extends AppController {
 			'username' => 'email',
 			'password' => 'password'
 		);
-    $this->Auth->allow( 'register', 'login', 'logout' );
+    $this->Auth->allow( '*' );
+    $this->Auth->deny( 'dismiss_notice' );
   }
 
   /**

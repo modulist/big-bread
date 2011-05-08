@@ -455,7 +455,7 @@ class BuildingsController extends AppController {
         $this->data[$role]['id'] = $user;
         
         # Generate an invite code and save it off
-        $this->data[$role]['invite_code'] = md5( String::uuid() );
+        $this->data[$role]['invite_code'] = User::generate_invite_code();
         $this->Building->{$role}->saveField( 'invite_code', $this->data[$role]['invite_code'] );
         
         # Temporary property used in this::send_invite()

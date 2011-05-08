@@ -127,6 +127,16 @@ class User extends AppModel {
   /**
    * PUBLIC METHODS
    */
+
+  /**
+   * Generates an invite code
+   *
+   * @return	string
+   * @access	public
+   */
+  static public function generate_invite_code() {
+    return md5( String::uuid() );
+  }
   
   /**
    * Creates a user record.
@@ -148,7 +158,6 @@ class User extends AppModel {
     
     return $user;
   }
-  
   
   /**
    * Retrieves the buildings associated with a given user.
