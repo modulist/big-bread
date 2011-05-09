@@ -127,7 +127,9 @@
               </tr>
             <?php endforeach; ?>
           <?php else: ?>
-            <td colspan="4">No equipment has been added. <?php echo $this->Html->link( __( 'Add something now', true ), '#', array( 'class' => 'toggle-form', 'data-model' => 'Product' ) ) ?>.</td>
+            <tr>
+              <td colspan="4">No equipment has been added. <?php echo $this->Html->link( __( 'Add something now', true ), '#', array( 'class' => 'toggle-form', 'data-model' => 'Product' ) ) ?>.</td>
+            </tr>
           <?php endif; ?>
         </tbody>
         <tfoot>

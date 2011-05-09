@@ -113,37 +113,39 @@
             </tr>
           </thead>
           <tbody>
-            <td>
-              <?php echo h( $details['Technology']['name'] ) ?>
-              <?php if( !empty( $details['TechnologyIncentive']['weblink'] ) ): ?>
-                <?php echo $this->Html->link( $this->Html->image( 'ico_web_link.gif', array( 'alt' => 'Sponsor link' ) ), $details['TechnologyIncentive']['weblink'], array( 'target' => '_blank', 'title' => 'Click here for more information regarding this rebate', 'escape' => false ) ) ?>
-              <?php endif; ?>
-              <?php if( !empty( $details['TechnologyIncentive']['rebate_link'] ) ): ?>
-                <?php echo $this->Html->link( $this->Html->image( 'ico_rebate_link.gif', array( 'alt' => 'Rebate link' ) ), $details['TechnologyIncentive']['rebate_link'], array( 'target' => '_blank', 'title' => 'Click here for rebate forms and processing', 'escape' => false ) ) ?>
-              <?php endif; ?>
-            </td>
-            <td>
-              <?php if( !empty( $details['TechnologyOption'] ) ): ?>
-                <ul>
-                  <?php foreach( $details['TechnologyOption'] as $option ): ?>
-                    <li<?php echo !empty( $option['GlossaryTerm']['definition'] ) ? ' class="help-available" title="' . $option['GlossaryTerm']['definition'] . '"' : '' ?>><?php echo h( $option['name'] ) ?></li>
-                  <?php endforeach; ?>
-                </ul>
-              <?php else: ?>
-                None
-              <?php endif; ?>
-            </td>
-            <td>
-              <?php if( !empty( $details['EnergySource'] ) ): ?>
-                <ul>
-                  <?php foreach( $details['EnergySource'] as $esource ): ?>
-                    <li><?php echo h( $esource['name'] ) ?></li>
-                  <?php endforeach; ?>
-                </ul>
-              <?php else: ?>
-                None
-              <?php endif; ?>
-            </td>
+            <tr>
+              <td>
+                <?php echo h( $details['Technology']['name'] ) ?>
+                <?php if( !empty( $details['TechnologyIncentive']['weblink'] ) ): ?>
+                  <?php echo $this->Html->link( $this->Html->image( 'ico_web_link.gif', array( 'alt' => 'Sponsor link' ) ), $details['TechnologyIncentive']['weblink'], array( 'target' => '_blank', 'title' => 'Click here for more information regarding this rebate', 'escape' => false ) ) ?>
+                <?php endif; ?>
+                <?php if( !empty( $details['TechnologyIncentive']['rebate_link'] ) ): ?>
+                  <?php echo $this->Html->link( $this->Html->image( 'ico_rebate_link.gif', array( 'alt' => 'Rebate link' ) ), $details['TechnologyIncentive']['rebate_link'], array( 'target' => '_blank', 'title' => 'Click here for rebate forms and processing', 'escape' => false ) ) ?>
+                <?php endif; ?>
+              </td>
+              <td>
+                <?php if( !empty( $details['TechnologyOption'] ) ): ?>
+                  <ul>
+                    <?php foreach( $details['TechnologyOption'] as $option ): ?>
+                      <li<?php echo !empty( $option['GlossaryTerm']['definition'] ) ? ' class="help-available" title="' . $option['GlossaryTerm']['definition'] . '"' : '' ?>><?php echo h( $option['name'] ) ?></li>
+                    <?php endforeach; ?>
+                  </ul>
+                <?php else: ?>
+                  None
+                <?php endif; ?>
+              </td>
+              <td>
+                <?php if( !empty( $details['EnergySource'] ) ): ?>
+                  <ul>
+                    <?php foreach( $details['EnergySource'] as $esource ): ?>
+                      <li><?php echo h( $esource['name'] ) ?></li>
+                    <?php endforeach; ?>
+                  </ul>
+                <?php else: ?>
+                  None
+                <?php endif; ?>
+              </td>
+            </tr>
           </tbody>
           </table>
           
