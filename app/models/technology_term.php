@@ -5,6 +5,14 @@ class TechnologyTerm extends AppModel {
 	public $useTable     = 'incentive_tech_term_type';
 	public $primaryKey   = 'incentive_tech_term_type_id';
   
+  public $hasOne = array(
+    'GlossaryTerm' => array(
+      'className'  => 'GlossaryTerm',
+      'foreignKey' => 'foreign_key',
+      'fields'     => array( 'GlossaryTerm.definition' ),
+      'conditions' => array( 'GlossaryTerm.model' => 'TechnologyTerm' ),
+    ),
+  );
   public $hasAndBelongsToMany = array(
     'TechnologyIncentive' => array(
       'className'             => 'TechnologyIncentive',

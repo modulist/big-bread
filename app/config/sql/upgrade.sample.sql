@@ -101,9 +101,44 @@ INSERT INTO glossary_terms( id, foreign_key, model, definition ) VALUES
 -- ( '4dc6bf6c-6c20-41c0-9d88-e2b46e891b5e', '', 'TechnologyOption', 'Used for transporting or distributing natural or artificial light' ), -- Light tubes
 
 -- Whole building measures
-( '4dc6c101-e4e8-4873-944b-e3256e891b5e', 'WBAUD', 'TechnologyOption', 'An energy inspection of your home and identification of ways to save energy' ) -- Audit
+( '4dc6c101-e4e8-4873-944b-e3256e891b5e', 'WBAUD', 'TechnologyOption', 'An energy inspection of your home and identification of ways to save energy' ), -- Audit
 -- ( '4dc6c101-846c-463e-9952-e3256e891b5e', '', 'TechnologyOption', 'A comprehensive whole-house approach to identifying and fixing comfort and energy efficiency problems in a home' ), -- Home performance
-;
+
+-- Terms
+( '4dc732b2-a8b8-44b3-8421-44496e891b5e', 'AFUE', 'TechnologyTerm', 'A thermal efficiency measure of combustion equipment like furnaces, boilers, and water heaters.  The higher the number, the greater the efficiency' ),
+-- ( '4dc732b2-39a4-4e4f-bb35-45926e891b5e', '', 'TechnologyTerm', 'Approximately the amount of energy needed to heat 1 pound of water from 39&deg; F to 40&deg; F' ), -- BTU
+( '4dc732b2-bc80-42c2-acfa-436a6e891b5e', 'BTUH', 'TechnologyTerm', 'Used as a measurement for sizing the capacity of a piece of heating or cooling equipment' ),
+( '4dc732b2-4470-4f72-b92a-47d96e891b5e', 'CAE', 'TechnologyTerm', 'Combined Appliance Efficiency Rating (CAE) used to measure the efficiency of integrated space heating and hot water (combined furnace and hot water system)' ),
+-- ( '4dc732b2-bbf8-45da-8c6f-4b436e891b5e', '', 'TechnologyTerm', 'Consortium for Energy Efficiency energy performance rankings.  The higher the more efficient.' ), -- CEE tiers
+-- ( '4dc732b2-bbf8-45da-8c6f-4b436e891b5e', '', 'TechnologyTerm', 'cubic feet per minute' ), -- CFM
+( '4dc732b2-2e6c-484d-85d4-4b606e891b5e', 'CONGE', 'TechnologyTerm', 'Conversion of existing equipment from natural gas to electric' ),
+( '4dc732b2-a0e0-49c5-83d7-4cc06e891b5e', 'CONEG', 'TechnologyTerm', 'Conversion of existing equipment from electric to natural gas' ),
+-- ( '4dc732b2-1354-4f46-ad57-424c6e891b5e', '', 'TechnologyTerm', 'Conversion of existing equipment from heating oil to natural gas' ),
+-- ( '4dc732b2-8564-4ec5-aba3-44006e891b5e', '', 'TechnologyTerm', 'Conversion of existing equipment from heating oil to electric' ),
+-- ( '4dc732b2-f7d8-403b-93de-4a426e891b5e', '', 'TechnologyTerm', 'Conversion of equipment from any fuel to natural gas' ),
+-- ( '4dc73506-0780-4000-a04b-41ea6e891b5e', '', 'TechnologyTerm', 'Conversion of equipment from propane to natural gas' ),
+-- ( '4dc73506-66d0-4fbc-9166-4dc56e891b5e', '', 'TechnologyTerm', 'Conversion of equipment from propane to electric' ),
+-- ( '4dc73506-bd24-45e4-b78c-445a6e891b5e', '', 'TechnologyTerm', 'The coefficient of performance of a heat pump is the ratio of the change in heat at the "output" to the supplied work; the higher the number, the higher the performance of the equipment' ), -- COP
+( '4dc73506-1440-4cb6-b288-4a916e891b5e', 'EER', 'TechnologyTerm', 'The Energy Efficiency Ratio (EER) of a particular cooling device is the ratio of output cooling (in Btu/hr) to input electrical power (in Watts); the higher the number the greater the performance of the equipment' ), -- EER
+( '4dc73506-2740-494c-94b9-4b606e891b5e', 'EF', 'TechnologyTerm', 'The higher the "Energy Factor" number, the more efficient the water heater. Gas water heaters have energy factors between 0.5 to around 0.7. Electric models range from 0.75 to 0.95.' ), -- EF
+( '4dc73506-7fec-4329-b685-4c346e891b5e', 'FE', 'TechnologyTerm', 'A measure of how efficient the equipment is in converting the energy found in the fuel to actual output.  The higher the number, the more energy is extracted from the fuel making it more cost effective for the user.' ), -- FE
+( '4dc73506-e1f8-4bef-bccf-4db76e891b5e', 'HSPF', 'TechnologyTerm', 'Most commonly used measure of the heating efficiency of heat pumps.  The most efficient heat pumps have an HSPF of 10.  The higher the more efficient the unit.' ), -- HSPF
+( '4dc73506-4850-4937-b4a9-41316e891b5e', 'KW', 'TechnologyTerm', 'A measure of electric power' ), -- kW
+( '4dc73506-9f6c-44cd-b7f4-4ce26e891b5e', 'KWHY', 'TechnologyTerm', 'A measure of electric power consumer in a year' ), -- kWh/yr
+( '4dc73a5d-2d20-418a-9c69-41f46e891b5e', 'MBH', 'TechnologyTerm', 'Thousand BTU''s Per Hour' ), -- MBH
+( '4dc73506-f5c0-4658-af84-446a6e891b5e', 'MEF', 'TechnologyTerm', 'MEF considers the energy used to run the washer, heat the water, and run the dryer. The higher the MEF, the more efficient the clothes washer.' ),
+( '4dc736d5-1cb0-4350-8ec8-4b796e891b5e', 'NEWCON', 'TechnologyTerm', 'Available for newly built homes' ), -- New construction
+( '4dc736d5-7d90-4371-92f5-4a3e6e891b5e', 'NEWSYS', 'TechnologyTerm', 'Must be a system new to the home versus a replacement of a similar unit' ),
+( '4dc736d5-d3e4-44e8-b512-4e1e6e891b5e', 'RVAL', 'TechnologyTerm', 'A measure of thermal resistance of the building' ), -- R-Value
+( '4dc736d5-2a38-4354-b603-40e56e891b5e', 'REPL', 'TechnologyTerm', 'Rebate applies to replacement of existing equipment in an existing building' ), -- Replacement
+( '4dc736d5-80f0-4f5e-82e3-4b136e891b5e', 'SEER', 'TechnologyTerm', 'The higher the unit''s SEER rating the more energy efficient it is' ), -- SEER
+( '4dc736d5-d744-47bc-9337-44946e891b5e', 'SEF', 'TechnologyTerm', 'The solar energy factor is defined as the energy delivered by the system divided by the electrical or gas energy put into the system. The higher the number, the more energy efficient.' ), -- SEF
+( '4dc736d5-2d98-48ed-b0e5-491b6e891b5e', 'SRI', 'TechnologyTerm', 'A solar reflective index value indicates that the surface absorbs all solar radiation, and a value of 1 represents total reflectivity.' ), -- SRI
+( '4dc736d5-8388-43f9-aafe-4c1b6e891b5e', 'TE', 'TechnologyTerm', 'The thermal efficiency ratio measures the amount of heat output of a device versus the energy input.  The higher the number the greater the efficiency.' ), -- TE
+( '4dc736d5-d9dc-4d39-b53a-41146e891b5e', 'UVAL', 'TechnologyTerm', 'Describes how well a building element conducts heat.  The lower the number the less conductive and higher the benefit.' ), -- U-Value
+( '4dc736d5-2fcc-4226-ad95-4baf6e891b5e', 'UE', 'TechnologyTerm', 'Use efficiency identifies the water use efficiency in an appliance such as a clothes washer.  The higher the number the greater the efficiency.' ),
+( '4dc73821-5618-45c8-9184-41ac6e891b5e', 'WRNTY', 'TechnologyTerm', 'The number of years the manufacturer warrants the system' ), -- Warranty
+( '4dc73821-b504-4371-a85b-49e16e891b5e', 'WF', 'TechnologyTerm', 'Water Factor is a measurement of water efficiency.  The lower the WF, the more efficient the clothes washer.' ); -- Water factor
 
 UPDATE glossary_terms
    SET created = NOW(),

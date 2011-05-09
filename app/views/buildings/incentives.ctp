@@ -158,7 +158,7 @@
             <tbody>
               <?php foreach( $details['TechnologyTerm'] as $term ): ?>
               <tr>
-                <td class="terms"><?php echo h( $term['name'] ) ?></td>
+                <td class="terms<?php echo !empty( $term['GlossaryTerm']['definition'] ) ? ' help-available' : '' ?>"<?php echo !empty( $term['GlossaryTerm']['definition'] ) ? ' title="' . $term['GlossaryTerm']['definition'] . '"' : '' ?>><?php echo h( $term['name'] ) ?></td>
                 <td class="conditions">
                   <?php if( !empty( $term['field1_name'] ) || !empty( $term['field2_name'] ) || !empty( $term['field3_name'] )  ): ?>
                     <ul>
