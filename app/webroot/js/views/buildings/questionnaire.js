@@ -35,10 +35,15 @@ $(document).ready( function() {
     else {
       // Don't clear existing data if we're editing.
       if( !$this.attr( 'data-id' ) ) {
-        $( ':text', $panel ).val( '' ); // Clear existing data
+        $( ':text', $panel ).val( '' );
       }
       
       $panel.slideDown();
+    }
+    
+    // show/hide the Save & Return button for equipment
+    if( model.toLowerCase() == 'product' ) {
+      $( '#btn-return' ).parent().toggleClass( 'disabled' );
     }
     
     // In a sliding panel, the form should return to the current page

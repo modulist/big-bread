@@ -128,7 +128,7 @@
             <?php endforeach; ?>
           <?php else: ?>
             <tr>
-              <td colspan="4">No equipment has been added. <?php echo $this->Html->link( __( 'Add something now', true ), '#', array( 'class' => 'toggle-form', 'data-model' => 'Product' ) ) ?>.</td>
+              <td colspan="4"><?php __( 'No equipment has been added. Add a piece of equipment using the button below.' ) ?></td>
             </tr>
           <?php endif; ?>
         </tbody>
@@ -191,12 +191,16 @@
   
       <div class="buttons">
         <div class="button">
-          <input type="submit" value="Continue" id="btn-continue" />
+          <input type="submit" value="Next" id="btn-continue" />
         </div>
         
-        <div class="button<?php echo $anchor !== 'equipment' ? ' disabled' : '' ?>">
+        <div class="button disabled">
           <input type="submit" value="Save &amp; Return" id="btn-return" />
         </div>
+      
+        <?php if( !empty( $building_id ) && $building_id !== 'new' ): ?>
+          <?php echo $this->Html->link( __( 'See Rebates', true ), array( 'action' => 'incentives', $building_id ) ) ?>
+        <?php endif; ?>
     </div> <!-- .form -->
   </div> <!-- #info -->
 </div> <!-- #general_Info -->
