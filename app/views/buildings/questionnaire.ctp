@@ -198,7 +198,7 @@
           <input type="submit" value="Save &amp; Return" id="btn-return" />
         </div>
       
-        <?php if( !empty( $building_id ) && $building_id !== 'new' ): ?>
+        <?php if( $show_rebate_link ): ?>
           <?php echo $this->Html->link( __( 'See Rebates', true ), array( 'action' => 'incentives', $building_id ) ) ?>
         <?php endif; ?>
     </div> <!-- .form -->

@@ -177,8 +177,10 @@ class BuildingsController extends AppController {
     $building_id = empty( $building_id ) ? 'new' : $building_id;
     
     /** Prepare the view */
+    $middle_steps = array_slice( $steps, 1, count( $steps ) - 2 );
+    $show_rebate_link = in_array( $anchor, $middle_steps );
     $this->populate_lookups();
-    $this->set( compact( 'addresses', 'anchor', 'building_id' ) );
+    $this->set( compact( 'addresses', 'anchor', 'building_id', 'show_rebate_link' ) );
   }
 
   /**
