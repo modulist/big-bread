@@ -52,7 +52,7 @@ class UsersController extends AppController {
         $this->Auth->login( $this->data );
         $this->set_user_type();
         
-        $this->redirect( $this->Auth->redirect() );
+        $this->redirect( $this->Auth->redirect(), null, true );
       }
       else {
         $this->Session->setFlash( 'There\'s a problem with your registration. Please correct the errors below.', null, null, 'validation' );
@@ -75,7 +75,7 @@ class UsersController extends AppController {
       else { # Invited user found
         if( !empty( $user['User']['password'] ) ) { # Invited user has already registered
           $this->Session->setFlash( 'That invite code has already been used. Please login.', null, null, 'error' );
-          $this->redirect( array( 'action' => 'login' ) );
+          $this->redirect( array( 'action' => 'login' ), null, true );
         }
         else { # This is the invited user. We have what we need
           $this->data = $user;
@@ -98,10 +98,10 @@ class UsersController extends AppController {
 			$this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
       
       if( $this->User->has_building( $this->Auth->User('id') ) ) {
-        $this->redirect( array( 'controller' => 'buildings', 'action' => 'incentives' ) );
+        $this->redirect( array( 'controller' => 'buildings', 'action' => 'incentives' ), null, true );
       }
       else {
-        $this->redirect( $this->Auth->redirect() );
+        $this->redirect( $this->Auth->redirect(), null, true );
       }
 		}
     /** Probably an error logging in */
@@ -185,7 +185,7 @@ class UsersController extends AppController {
    * @access  public
    */
 	public function logout() {
-    $this->redirect( $this->Auth->logout() );
+    $this->redirect( $this->Auth->logout(), null, true );
 	}
   
   /**
