@@ -1,8 +1,8 @@
 <?php
 
 class UsersController extends AppController {
-	public $name    = 'Users';
-	public $helpers = array( 'Form' );
+  public $name    = 'Users';
+  public $helpers = array( 'Form' );
   public $components = array( 'SwiftMailer' );
   
   /**

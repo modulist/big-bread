@@ -84,7 +84,7 @@ class BuildingsController extends AppController {
       # Whoops, no record of that building
       if( empty( $building ) ) {
         $this->Session->setFlash( 'We were unable to find your building.', null, null, 'warning' );
-        $this->redirect( array( 'action' => $this->action ) );
+        $this->redirect( array( 'action' => $this->action ), null, true );
       }
     }
     
@@ -100,7 +100,7 @@ class BuildingsController extends AppController {
       # may be trying to update.
       if( !empty( $building_id ) && !$this->Building->belongs_to( $building_id, $this->Auth->user( 'id' ) ) ) {
         $this->Session->setFlash( 'You\'re not authorized to modify this property.', null, null, 'warning' );
-        $this->redirect( array( 'action' => $this->action ) );
+        $this->redirect( array( 'action' => $this->action ), null, true );
       }
       
       $success = true;
@@ -146,10 +146,10 @@ class BuildingsController extends AppController {
         $this->Session->setFlash( 'Your property data has been saved.', null, null, 'success' );
         
         if( $this->data['Wizard']['continue'] ) {
-          $this->redirect( $next );
+          $this->redirect( $next, null, true );
         }
         else {
-          $this->redirect( $current );
+          $this->redirect( $current, null, true );
         }
       }
       else {
@@ -196,7 +196,7 @@ class BuildingsController extends AppController {
     # This user is not associated with any buildings
     if( empty( $addresses ) ) {
       $this->Session->setFlash( 'We can\'t help you save unless you fill out the questionnaire.', null, null, 'warning' );
-      $this->redirect( Router::url( '/questionnaire' ) );
+      $this->redirect( Router::url( '/questionnaire' ), null, true );
     }
     
     # If no building is specified, use the most recent for the user
@@ -220,7 +220,7 @@ class BuildingsController extends AppController {
     # Something bad happened.
     if( empty( $building ) ) {
       $this->Session->setFlash( 'We\'re sorry, but we couldn\'t find a structure to show incentives for.', null, null, 'warning' );
-      $this->redirect( Router::url( '/questionnaire' ) );
+      $this->redirect( Router::url( '/questionnaire' ), null, true );
     }
     
     $incentives      = $this->Building->incentives( $building_id );
