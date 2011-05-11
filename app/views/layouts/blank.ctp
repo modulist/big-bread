@@ -4,9 +4,9 @@
   <?php echo $this->element( 'layout/head_content' ) ?>
 </head>
 
-<body id="join">
+<body>
 
-<div id="content">
+<div>
   <?php echo $this->element( 'layout/flash_messages' ) ?>
   
   <?php echo $content_for_layout ?>

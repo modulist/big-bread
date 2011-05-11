@@ -77,7 +77,6 @@ class User extends AppModel {
 				'message'    => 'Password cannot be empty.',
 				'allowEmpty' => false,
 				'required'   => false,
-        'on'         => 'create',
 			),
       'identical' => array(
         'rule'    => array( 'identical', 'password' ), 
@@ -102,6 +101,11 @@ class User extends AppModel {
 		),
 	);
   
+  const TYPE_HOMEOWNER = '4d71115d-0f74-43c5-93e9-2f8a3b196446';
+  const TYPE_HOMEBUYER = '4d6d9699-a7a4-42a1-855e-4f606e891b5e';
+  const TYPE_INSPECTOR = '4d6d9699-5088-48db-9f56-47ea6e891b5e';
+  const TYPE_REALTOR   = '4d6d9699-f19c-41e3-a723-45ae6e891b5e';
+  
   /**
    * Constructor.
    *
@@ -119,16 +123,46 @@ class User extends AppModel {
    * CALLBACKS
    */
   
-  public function beforeSave() {
-    if( empty( $this->id ) ) {
-      $this->log( '{User::beforeSave} Creating ' . $this->data[$this->alias]['email'], LOG_DEBUG );
+  /**
+   * beforeValidate
+   *
+   * @return	boolean
+   * @access	public
+   * @todo    What the hell is getting validated?
+   */
+  public function beforeValidate() {
+    /**
+     * When registering a user, an empty password value is salted and
+     * sent so that notempty rules do not validate properly. Detect that
+     * possibility and empty the value.
+     */
+    if( !empty( $this->data ) ) {
+      $empty_password = Security::hash( '', null, true );
+      
+      if( $this->data[$this->alias]['password'] == $empty_password ) {
+        $this->data[$this->alias]['password'] = '';
+      }
+      if( $this->data[$this->alias]['confirm_password'] == $empty_password ) {
+        $this->data[$this->alias]['confirm_password'] = '';
+      }
     }
+    
     return true;
   }
   
   /**
    * PUBLIC METHODS
    */
+
+  /**
+   * Generates an invite code
+   *
+   * @return	string
+   * @access	public
+   */
+  static public function generate_invite_code() {
+    return md5( String::uuid() );
+  }
   
   /**
    * Creates a user record.
@@ -148,11 +182,8 @@ class User extends AppModel {
       }
     }
     
-$this->log( '{User::add} Returning "' . $user . '"', LOG_DEBUG );
-    
     return $user;
   }
-  
   
   /**
    * Retrieves the buildings associated with a given user.
@@ -237,11 +268,11 @@ $this->log( '{User::add} Returning "' . $user . '"', LOG_DEBUG );
    * @see     http://bakery.cakephp.org/articles/aranworld/2008/01/14/using-equalto-validation-to-compare-two-form-fields
    * @todo    Move this to app_model? Could be useful elsewhere.
    */
-  public function identical( $field = array(), $confirm_field = null ) { 
-    foreach( $field as $key => $value ) { 
+  public function identical( $field = array(), $confirm_field = null ) {
+    foreach( $field as $key => $value ) {
       $compare = $this->data[$this->alias][$confirm_field];
       
-      if( $value !== $compare ) { 
+      if( !empty( $compare ) && $value !== $compare ) {
         return false; 
       }
       else { 

@@ -2,7 +2,7 @@
 
 <h1 class="printable">Visit BigBread.net for the latest in personalized discounts and information</h1>
 
-<?php echo $this->element( 'building_info' ) ?>
+<?php echo $this->element( 'building_info', array( 'data' => $building ) ) ?>
 
 <div id="contentbody">
   <?php if( !empty( $incentives ) ): ?>
@@ -26,18 +26,20 @@
           <?php # Any products that have been entered for this building and this technology ?>
           <?php $products = Set::extract( '/Technology/Product/BuildingProduct/id', $details ) ?>
       
-          <?php if( empty( $products ) ): ?>
-            <div id="item">
-              <h3 id="<?php echo strtolower( Inflector::slug( h( $details['Technology']['name'] ), '' ) ) ?>">My <?php echo h( $details['Technology']['name'] ) ?></h3>
+          <div id="item">
+            <h3 id="<?php echo strtolower( Inflector::slug( h( $details['Technology']['name'] ), '' ) ) ?>"
+                <?php if( !empty( $details['Technology']['GlossaryTerm']['definition'] ) ): ?>
+                  class="help-available"
+                  title="<?php echo $details['Technology']['GlossaryTerm']['definition'] ?>"
+                <?php endif; ?>
+          >My <?php echo h( $details['Technology']['name'] ) ?></h3>
+            
+            <?php if( empty( $products ) ): ?>
               <p><?php echo sprintf( __( 'No %s information has been entered.', true ), strtolower( Inflector::singularize( h( $details['Technology']['name'] ) ) ) ) ?></p>
-              <div class="clear"></div>
-            </div>
-          <?php else: ?>
-            <?php foreach( $details['Technology']['Product'] as $product ): ?>
-              <?php # Display the product if it's associated with a building ?>
-              <?php if( !empty( $product['BuildingProduct'] ) ): ?>
-                <div id="item">
-                  <h3 id="<?php echo strtolower( Inflector::slug( h( $details['Technology']['name'] ), '' ) ) ?>">My <?php echo h( $details['Technology']['name'] ) ?></h3>
+            <?php else: ?>
+              <?php foreach( $details['Technology']['Product'] as $product ): ?>
+                <?php # Display the product if it's associated with a building ?>
+                <?php if( !empty( $product['BuildingProduct'] ) ): ?>
                   <ul>
                     <li><?php __( 'Make' ) ?><br /><div><?php echo h( $product['make'] ) ?></div></li>
                     <li><?php __( 'Model' ) ?><br /><div><?php echo h( $product['model'] ) ?></div></li>
@@ -49,17 +51,18 @@
                   </ul>
                   <div class="clear"></div>
                   <p>Product recall, safety &amp; warranty information coming soon.</p>
-                </div>
-                <div class="clear"></div>
-              <?php endif; ?>
-            <?php endforeach; ?>
-          <?php endif; ?>
+                <?php endif; ?>
+              <?php endforeach; ?>
+            <?php endif; ?>
+          </div>
+          <div class="clear"></div>
           
+          <?php //* ?>
           <div id="sponser">
             <h3>Sponsors</h3>
             <script type="text/javascript"><!--
               google_ad_client = "pub-8579999294251764";
-              /* Ways to Save, 468x60, created 4/18/11 */
+              // Ways to Save, 468x60, created 4/18/11
               google_ad_slot   = "3280931539";
               google_ad_width  = 468;
               google_ad_height = 60;
@@ -68,6 +71,7 @@
             <script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
             <div class="clear"></div>
           </div>
+          <?php //*/ ?>
           
           <?php # Add the tech name to the stack so we don't print it again. ?>
           <?php array_push( $technologies, $details['Technology']['name'] ) ?>
@@ -111,37 +115,39 @@
             </tr>
           </thead>
           <tbody>
-            <td>
-              <?php echo h( $details['Technology']['name'] ) ?>
-              <?php if( !empty( $details['TechnologyIncentive']['weblink'] ) ): ?>
-                <?php echo $this->Html->link( $this->Html->image( 'ico_web_link.gif', array( 'alt' => 'Sponsor link' ) ), $details['TechnologyIncentive']['weblink'], array( 'target' => '_blank', 'title' => 'Click here for more information regarding this rebate', 'escape' => false ) ) ?>
-              <?php endif; ?>
-              <?php if( !empty( $details['TechnologyIncentive']['rebate_link'] ) ): ?>
-                <?php echo $this->Html->link( $this->Html->image( 'ico_rebate_link.gif', array( 'alt' => 'Rebate link' ) ), $details['TechnologyIncentive']['rebate_link'], array( 'target' => '_blank', 'title' => 'Click here for rebate forms and processing', 'escape' => false ) ) ?>
-              <?php endif; ?>
-            </td>
-            <td>
-              <?php if( !empty( $details['TechnologyOption'] ) ): ?>
-                <ul>
-                  <?php foreach( $details['TechnologyOption'] as $option ): ?>
-                    <li><?php echo h( $option['name'] ) ?></li>
-                  <?php endforeach; ?>
-                </ul>
-              <?php else: ?>
-                None
-              <?php endif; ?>
-            </td>
-            <td>
-              <?php if( !empty( $details['EnergySource'] ) ): ?>
-                <ul>
-                  <?php foreach( $details['EnergySource'] as $esource ): ?>
-                    <li><?php echo h( $esource['name'] ) ?></li>
-                  <?php endforeach; ?>
-                </ul>
-              <?php else: ?>
-                None
-              <?php endif; ?>
-            </td>
+            <tr>
+              <td>
+                <?php echo h( $details['Technology']['name'] ) ?>
+                <?php if( !empty( $details['TechnologyIncentive']['weblink'] ) ): ?>
+                  <?php echo $this->Html->link( $this->Html->image( 'ico_web_link.gif', array( 'alt' => 'Sponsor link' ) ), $details['TechnologyIncentive']['weblink'], array( 'target' => '_blank', 'title' => 'Click here for more information regarding this rebate', 'escape' => false ) ) ?>
+                <?php endif; ?>
+                <?php if( !empty( $details['TechnologyIncentive']['rebate_link'] ) ): ?>
+                  <?php echo $this->Html->link( $this->Html->image( 'ico_rebate_link.gif', array( 'alt' => 'Rebate link' ) ), $details['TechnologyIncentive']['rebate_link'], array( 'target' => '_blank', 'title' => 'Click here for rebate forms and processing', 'escape' => false ) ) ?>
+                <?php endif; ?>
+              </td>
+              <td>
+                <?php if( !empty( $details['TechnologyOption'] ) ): ?>
+                  <ul>
+                    <?php foreach( $details['TechnologyOption'] as $option ): ?>
+                      <li<?php echo !empty( $option['GlossaryTerm']['definition'] ) ? ' class="help-available" title="' . $option['GlossaryTerm']['definition'] . '"' : '' ?>><?php echo h( $option['name'] ) ?></li>
+                    <?php endforeach; ?>
+                  </ul>
+                <?php else: ?>
+                  None
+                <?php endif; ?>
+              </td>
+              <td>
+                <?php if( !empty( $details['EnergySource'] ) ): ?>
+                  <ul>
+                    <?php foreach( $details['EnergySource'] as $esource ): ?>
+                      <li><?php echo h( $esource['name'] ) ?></li>
+                    <?php endforeach; ?>
+                  </ul>
+                <?php else: ?>
+                  None
+                <?php endif; ?>
+              </td>
+            </tr>
           </tbody>
           </table>
           
@@ -156,7 +162,7 @@
             <tbody>
               <?php foreach( $details['TechnologyTerm'] as $term ): ?>
               <tr>
-                <td class="terms"><?php echo h( $term['name'] ) ?></td>
+                <td class="terms<?php echo !empty( $term['GlossaryTerm']['definition'] ) ? ' help-available' : '' ?>"<?php echo !empty( $term['GlossaryTerm']['definition'] ) ? ' title="' . $term['GlossaryTerm']['definition'] . '"' : '' ?>><?php echo h( $term['name'] ) ?></td>
                 <td class="conditions">
                   <?php if( !empty( $term['field1_name'] ) || !empty( $term['field2_name'] ) || !empty( $term['field3_name'] )  ): ?>
                     <ul>

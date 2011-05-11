@@ -10,5 +10,5 @@
 <?php echo $this->Html->css( 'screen', 'stylesheet', array( 'media' => 'screen' ) ) ?>
 <?php echo $this->Html->css( 'print', 'stylesheet', array( 'media' => 'print' ) ) ?>
 
-<!-- Colorbox creates a nice looking modal -->
-<?php echo $this->Html->css( '/js/jquery/colorbox/colorbox.css' ) ?>
+<!-- Fancybox creates a nice looking modal -->
+<?php echo $this->Html->css( '/js/jquery/fancybox/jquery.fancybox-1.3.4.css' ) ?>

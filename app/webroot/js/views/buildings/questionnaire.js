@@ -3,19 +3,106 @@ $(document).ready( function() {
   $('#RealtorFirstName,#RealtorLastName,#RealtorEmail').parent().removeClass( 'required' );
   $('#InspectorFirstName,#InspectorLastName,#InspectorEmail').parent().removeClass( 'required' );
 
-  $( '.dismiss' ).click( function( e ) {
-    var $flash  = $(this).closest( '.flash' );
-    var notice = $(this).attr( 'data-notice' );
-    $.get( '/users/dismiss_notice/' + notice,
+  // Which target are we initially activating?
+  $( '.section' ).not( '.active' ).hide();
+
+  // Save and continue by default, but allow the user to save and return
+  // to the current anchor.
+  $( '#btn-return[type="submit"]').click( function( e ) {
+    $( '#WizardContinue' ).val( 0 );
+  });
+
+  // Toggle an editable user form (inspector, realtor)
+  $('.toggle-form').click( function( e ) {
+    var $this       = $(this);
+    var model       = $this.attr( 'data-model' ).toLowerCase();
+    var $panel      = $( '#' + model );
+    
+    // In some cases, there's an add form for new models and edit forms
+    // for each existing model. The edits are uniquely identified by
+    // the primary model identifier.
+    if( $this.attr( 'data-id' ) ) {
+      var id = $this.attr( 'data-id' );
+      
+      $panel = $( '#' + model + '-' + id );
+    }
+    
+    $('.sliding-panel').slideUp(); // close any open panels
+    
+    if( $panel.is( ':visible' ) ) {
+      $panel.slideUp();
+    }
+    else {
+      // Don't clear existing data if we're editing.
+      if( !$this.attr( 'data-id' ) ) {
+        $( ':text', $panel ).val( '' );
+      }
+      
+      $panel.slideDown();
+    }
+    
+    // show/hide the Save & Return button for equipment
+    if( model.toLowerCase() == 'product' ) {
+      $( '#btn-return' ).parent().toggleClass( 'disabled' );
+    }
+    
+    // In a sliding panel, the form should return to the current page
+    $panel.find( 'input[value="Save"]').click( function( e ) {
+      $( '#WizardContinue' ).val( 0 );
+    });
+    
+    // Wire the cancel button in a sliding panel to close the panel
+    $panel.find( 'input[value="Cancel"]').click( function( e ) {
+      $this.trigger( 'click' );
+      e.preventDefault();
+    });
+    
+    e.preventDefault();
+  });
+  
+  // If an error exists on a form, show the form
+  if( $( '#realtor form .error' ).length ) {
+    $( '.toggle-form[data-model="Realtor"]' ).trigger( 'click' );
+  }
+  if( $( '#realtor form .error' ).length ) {
+    $( '.toggle-form[data-model="Inspector"]' ).trigger( 'click' );
+  }
+  
+  // Retire a piece of equipment
+  $( '.action.delete.retire' ).click( function( e ) {
+    if( !confirm( 'Are you sure you want to retire this piece of equipment?' ) ) {
+      return false;
+    }
+    
+    var $this = $(this);
+    
+    $.post(
+      $this.attr( 'href' ),
       null,
-      function( e ) {
-        $flash.fadeOut( 'slow' );
+      function( data, status, jqXHR ) {
+        $tbody = $this.closest( 'tbody' );
+        $tr    = $this.closest( 'tr' );
+        
+        $tr
+          .html( '<td colspan="5"><div class="flash success">Equipment retired successfully.</div></td>' )
+          .fadeOut( 5000, function() {
+            // If we just deleted the last child, display a msg to the user
+            if( $tbody.children().length === 1 ) {
+              $(this)
+                .html( '<td colspan="5">No equipment has been added.</td>' )
+                .fadeIn( 2000 );
+            }
+            else {
+              $(this).remove();
+            }
+          });
       }
     );
     
-    e.preventDefault();  
+    e.preventDefault();
   });
-
+  
+  // When the zip code changes, pull the city/state and utility data
   $('#AddressZipCode').change( function() {
     var $this = $(this);
     var zip   = $this.val();
@@ -28,7 +115,7 @@ $(document).ready( function() {
         .after( '<p>' + data.ZipCode.city + ', ' + data.ZipCode.state + '</p>' ).slideDown();
     });
     
-    /** Retrieve known utility providers for the given zip code */
+    // Retrieve known utility providers for the given zip code
     var utility_types = [ 'Electricity', 'Gas', 'Water' ];
     
     for( var i = 0; i < utility_types.length; i++ ) {
@@ -78,59 +165,12 @@ $(document).ready( function() {
     $('#utility-providers').slideDown();
   });
   
-  if( $('#AddressZipCode').val().length > 0 ) {
+  // Trigger the change event if the zip code is pre-populated
+  if( $('#AddressZipCode').length > 0 && $('#AddressZipCode').val().length > 0 ) {
     $('#AddressZipCode' ).change();
   }
   
-  /**
-   * Some building components can be entered as multiples. Each group of
-   * fields that makes up a record is contained within a "cloneable" div.
-   * Any number of cloneable elements can be contained by a fieldset "group"
-   */
-  $('.group .clone').click( function( e ) {
-    $this      = $(this); // The "add another..." link
-    $group     = $this.parent(); // The group fieldset
-    $cloneable = $group.children( '.cloneable' ).last(); // The last cloneable set in the group
-    $cloned    = $cloneable.clone(); // The new clone
-    
-    /** How many do we already have? */
-    var i = $( '.cloneable' ).length;
-    
-    /** Update the CakePHP name, id values on each cloned input */
-    $cloned.find( 'input, select, textarea' ).each( function() {
-      var $this = $(this);
-      var $label = $(this).parent().find( 'label' ).first();
-      var name  = $this.attr( 'name' );
-      var id    = $this.attr( 'id' );
-      
-      /** Empty any values cloned from the original */
-      $this.val('');
-      
-      /** Update the cloned field index with the next value */
-      var new_name = name.replace( new RegExp( '\[' + (i - 1) + '\]' ), i );
-      var new_id   = id.replace( new RegExp( i - 1 ), i );
-      $this.attr( 'name', new_name );
-      $this.attr( 'id', new_id );
-      
-      /** And update the label */
-      $label.attr( 'for', new_id );
-      
-      /** If we're cloning the energy source, clear and disable it */
-      if( $this.parent().hasClass( 'energy-source' ) ) {
-        $this.attr( 'disabled', 'disabled' );
-        $this.children( 'option' ).remove();
-        $this.append( '<option value="">Select equipment type</option>' );
-      }
-    });
-    
-    $cloneable.after( $cloned );
-    e.preventDefault();
-    return false;
-  });
-  
-  
-  // This is copied into edit.js
-  // TODO: Make this DRY
+  // Set energy source options based on the technology selected
   $('.equipment-type select').live( 'change', function() {
     var $select        = $(this);
     var $energy_select = $select.parent().nextAll( '.energy-source' ).first().find( 'select' );
@@ -138,7 +178,13 @@ $(document).ready( function() {
     
     $energy_select.attr( 'disabled', 'disabled' );
     $energy_select.children( 'option' ).remove();
-    $energy_select.append( '<option value="">Loading...</option>' );
+    
+    if( technology_id.length > 0 ) {
+      $energy_select.append( '<option value="">Loading...</option>' );
+    }
+    else {
+      $energy_select.append( '<option value="">Select equipment type</option>' );
+    }
     
     /** get energy sources */
     $.getJSON( '/products/energy_sources/' + technology_id + '.json', null, function( data, status ) {
@@ -150,11 +196,4 @@ $(document).ready( function() {
       $energy_select.removeAttr( 'disabled' );
     });
   });
-  
-  // Set the cancel button to return to the homepage
-  $('.button input[type="reset"]').click( function() {
-    location.href = '/';
-  });
-  // Hide the submit button. It doesn't do anything right now.
-  $('.button input[value="Submit"]').css( 'display', 'none' );
 });

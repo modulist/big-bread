@@ -1,4 +1,7 @@
-<?php echo $this->Form->create( 'User', array( 'action' => 'register' ) ) ?>
+<?php $ignore_validation = isset( $ignore_validation ) ? $ignore_validation : 0 ?>
+
+<?php echo $this->Form->create( 'User', array( 'action' => 'register', $this->data['User']['invite_code'] ) ) ?>
+<?php echo $this->Form->hidden( 'User.ignore_validation', array( 'value' => $ignore_validation ) ) ?>
 <?php echo $this->Form->input( 'User.invite_code', array( 'type' => 'hidden' ) ) ?>
 
 <div id="signupheader">

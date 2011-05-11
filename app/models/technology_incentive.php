@@ -75,9 +75,14 @@ class TechnologyIncentive extends AppModel {
             'AdditionalIncentiveNote',
           ),
           'IncentiveAmountType',
-          'TechnologyOption',
-          'TechnologyTerm',
+          'TechnologyOption' => array(
+            'GlossaryTerm',
+          ),
+          'TechnologyTerm' => array(
+            'GlossaryTerm',
+          ),
           'Technology' => array(
+            'GlossaryTerm',
             'Product' => array(
               'BuildingProduct' => array(
                 'conditions' => array( 'BuildingProduct.building_id' => $building_id ),

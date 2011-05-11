@@ -87,15 +87,22 @@ class AppModel extends Model {
 	 * Returns the current user object/array. Useful in the context of
 	 * the Auditable behavior.
 	 *
-	 * @return		array     Returns null if no
-	 * @access    protected
+	 * @return		mixed   null if empty,
+	 *                    an array if no property is specified,
+	 *                    a scalar if a property is specified
+	 * @access    public
 	 * @todo      Detect Auth user model automatically?
 	 */
-	public function current_user() {
+	public function current_user( $property = null ) {
 		$user = isset( $this->data['User'] )
       ? $this->data['User']
       : null;
-      
+    
+    # Pull just the property, if specified
+    if( !empty( $property ) ) {
+      $user = $user[$property];
+    }
+    
     return $user;
 	}
   

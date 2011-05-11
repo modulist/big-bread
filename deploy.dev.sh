@@ -27,14 +27,17 @@ rsync -vcrlDtOzi --progress \
       --exclude "app/config/bootstrap.*.php" \
       --exclude "app/config/database.php" \
       --exclude "app/config/database.*.php" \
+      --exclude "app/config/sql/bigbread.empty.sql" \
+      --exclude "app/webroot/robots.*.txt" \
       --exclude "deploy.*.sh" \
       --links \
       --delete \
       ./ bigbread:www/__subdomains/dev.bigbread.net
 
-echo "Uploading environment-specific config files..."
+echo "Uploading environment-specific files..."
 scp app/config/bootstrap.dev.php bigbread:www/__subdomains/dev.bigbread.net/app/config/bootstrap.local.php
 scp app/config/database.dev.php bigbread:www/__subdomains/dev.bigbread.net/app/config/database.php
+scp app/webroot/robots.dev.txt bigbread:www/__subdomains/dev.bigbread.net/app/webroot/robots.txt
 echo "...complete."
 
 # Execute the upgrade.sql file
