@@ -9,4 +9,11 @@ $(document).ready( function() {
   $('input[type="reset"]').click( function() {
     location.href = '/';
   });
+  
+  // Brute force. For some reason, validation errors are presenting
+  // when first entering the registration form with an invite code.
+  if( $( '#UserIgnoreValidation' ).val() === '1' ) {
+    $( '.input.error' ).removeClass( 'error' );
+    $( '.error-message' ).remove();
+  }
 });

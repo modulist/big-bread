@@ -57,11 +57,12 @@
           </div>
           <div class="clear"></div>
           
+          <?php //* ?>
           <div id="sponser">
             <h3>Sponsors</h3>
             <script type="text/javascript"><!--
               google_ad_client = "pub-8579999294251764";
-              /* Ways to Save, 468x60, created 4/18/11 */
+              // Ways to Save, 468x60, created 4/18/11
               google_ad_slot   = "3280931539";
               google_ad_width  = 468;
               google_ad_height = 60;
@@ -70,6 +71,7 @@
             <script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
             <div class="clear"></div>
           </div>
+          <?php //*/ ?>
           
           <?php # Add the tech name to the stack so we don't print it again. ?>
           <?php array_push( $technologies, $details['Technology']['name'] ) ?>

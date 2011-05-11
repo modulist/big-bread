@@ -31,12 +31,6 @@ class UsersController extends AppController {
    * @access  public
    */
   public function register( $invite = null ) {
-    $userTypes = $this->User->UserType->find(
-      'list',
-      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
-    );
-    $this->set( compact( 'userTypes' ) );
-    
     # Handle a submitted registration
     if( $this->RequestHandler->isPost() && !empty( $this->data ) ) {
       /**
@@ -79,9 +73,17 @@ class UsersController extends AppController {
         }
         else { # This is the invited user. We have what we need
           $this->data = $user;
+          $this->set( 'ignore_validation', true );
         }
       }
     }
+
+    // Populate the available user types
+    $userTypes = $this->User->UserType->find(
+      'list',
+      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
+    );
+    $this->set( compact( 'userTypes' ) );
   }
 
   /**

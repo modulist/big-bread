@@ -77,7 +77,6 @@ class User extends AppModel {
 				'message'    => 'Password cannot be empty.',
 				'allowEmpty' => false,
 				'required'   => false,
-        'on'         => 'create',
 			),
       'identical' => array(
         'rule'    => array( 'identical', 'password' ), 
@@ -123,6 +122,33 @@ class User extends AppModel {
   /**
    * CALLBACKS
    */
+  
+  /**
+   * beforeValidate
+   *
+   * @return	boolean
+   * @access	public
+   * @todo    What the hell is getting validated?
+   */
+  public function beforeValidate() {
+    /**
+     * When registering a user, an empty password value is salted and
+     * sent so that notempty rules do not validate properly. Detect that
+     * possibility and empty the value.
+     */
+    if( !empty( $this->data ) ) {
+      $empty_password = Security::hash( '', null, true );
+      
+      if( $this->data[$this->alias]['password'] == $empty_password ) {
+        $this->data[$this->alias]['password'] = '';
+      }
+      if( $this->data[$this->alias]['confirm_password'] == $empty_password ) {
+        $this->data[$this->alias]['confirm_password'] = '';
+      }
+    }
+    
+    return true;
+  }
   
   /**
    * PUBLIC METHODS
