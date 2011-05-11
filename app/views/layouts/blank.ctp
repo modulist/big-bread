@@ -6,7 +6,7 @@
 
 <body>
 
-<div id="content">
+<div>
   <?php echo $this->element( 'layout/flash_messages' ) ?>
   
   <?php echo $content_for_layout ?>
