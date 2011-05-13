@@ -139,15 +139,45 @@ class User extends AppModel {
     if( !empty( $this->data ) ) {
       $empty_password = Security::hash( '', null, true );
       
-      if( $this->data[$this->alias]['password'] == $empty_password ) {
+      if( isset( $this->data[$this->alias]['password'] ) && $this->data[$this->alias]['password'] == $empty_password ) {
         $this->data[$this->alias]['password'] = '';
       }
-      if( $this->data[$this->alias]['confirm_password'] == $empty_password ) {
+      if( isset( $this->data[$this->alias]['confirm_password'] ) && $this->data[$this->alias]['confirm_password'] == $empty_password ) {
         $this->data[$this->alias]['confirm_password'] = '';
       }
     }
     
     return true;
+  }
+  
+  /**
+   * beforeFind
+   *
+   * @param 	$query
+   * @return	mixed
+   * @access	public
+   */
+  public function beforeFind( $query ) {
+    if( empty( $query['fields'] ) ) {
+      // Don't return the password field when returning everything
+      $query['fields'] = array(
+        'id',
+        'user_type_id',
+        'first_name',
+        'last_name',
+        'full_name',
+        'email',
+        'phone_number',
+        'invite_code',
+        'show_questionnaire_instructions',
+        'last_login',
+        'deleted',
+        'created',
+        'modified',
+      );
+    }
+    
+    return $query;
   }
   
   /**

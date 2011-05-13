@@ -43,7 +43,7 @@ echo "...complete."
 # Execute the upgrade.sql file
 echo "Running upgrade.sql..."
 ssh bigbread 'cat www/__subdomains/stage.bigbread.net/app/config/sql/upgrade.sample.sql | sed -e s/@DB_NAME@/bigbread_stg/ > www/__subdomains/stage.bigbread.net/app/config/sql/upgrade.sql'
-ssh bigbread 'cat www/__subdomains/stage.bigbread.net/app/config/sql/upgrade.sql | mysql -ubigbread -p"cPd123011!!"'
+ssh bigbread "cat www/__subdomains/stage.bigbread.net/app/config/sql/upgrade.sql | mysql -ubigbread -p'$dbpassword'"
 echo "...complete."
 echo ""
 echo "That's it. Everything should be ready to go"

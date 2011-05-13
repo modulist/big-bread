@@ -57,7 +57,7 @@
           </div>
           <div class="clear"></div>
           
-          <?php //* ?>
+          <?php /* ?>
           <div id="sponser">
             <h3>Sponsors</h3>
             <script type="text/javascript"><!--
