@@ -2,6 +2,177 @@ USE @DB_NAME@;
 
 SET foreign_key_checks = 0;
 
+-- 
+-- Adjustments to original tables
+--
+
+-- state "US" is not part of states table any more - the federal selector is added where needed
+DELETE FROM us_states WHERE code='US';
+
+-- require incentive_id for any incentive
+ALTER TABLE incentive
+  MODIFY COLUMN incentive_id varchar(10) NOT NULL;
+
+-- need a special hidden incentive for temporary stuff in admin tool
+INSERT INTO incentive ( id, incentive_id, code, version, category, date_added, date_created, entire_state, excluded, start_date, start_date_comment, expiration_date, expiration_date_comment, last_updated, last_updated_by_administrator, maximum_amount, name, state, summary, incentive_type_id, funding_source, remaining_funding )
+VALUES ( 'ae9e367d-c28f-102e-bbd5-725e816c9ac0' , 'US000TEMP', NULL , '0', NULL , NULL , NULL , '0', '1', NULL , NULL , NULL , NULL , NULL , NULL , NULL , 'Temporary Incentive', '', 'DO NOT DELETE - REQUIRED by Admin Tool', NULL , NULL , NULL );
+
+-- need a special hidden technology_incentive for temporary stuff in admin tool
+INSERT INTO technology_incentives ( id, is_active, incentive_id, technology_id, date_created, version, last_updated, amount, incentive_amount_type_id, weblink, rebate_link ) VALUES
+( 1, 0, 'ae9e367d-c28f-102e-bbd5-725e816c9ac0', (SELECT id FROM technologies WHERE incentive_tech_id='CAC'), '0000-00-00 00:00:00', 0, '0000-00-00 00:00:00', NULL, NULL, NULL, NULL );
+
+-- update incentive_zip table to new UUIDs
+ALTER TABLE incentive_zip
+  MODIFY COLUMN incentive_id char(36) NOT NULL;
+  
+-- Set the values to the UUIDs
+UPDATE incentive_zip, incentive
+   SET incentive_zip.incentive_id = incentive.id
+ WHERE incentive_zip.incentive_id = incentive.incentive_id;
+
+-- delete orphaned zips where incentive doesn't exist any more
+DELETE iz.* FROM incentive_zip iz LEFT JOIN incentive i ON iz.incentive_id = i.id WHERE i.id IS NULL;
+-- delete orphaned zips where zip code doesn't exist any more
+DELETE iz.* FROM incentive_zip iz LEFT JOIN us_zipcode z ON iz.zip = z.zip WHERE z.zip IS NULL;
+ 
+-- Create real foreign keys
+ALTER TABLE incentive_zip
+  ADD CONSTRAINT fk__incentive_zip__incentive FOREIGN KEY( incentive_id )
+	REFERENCES incentive( id )
+	  ON UPDATE CASCADE
+	  ON DELETE CASCADE;
+	  
+ALTER TABLE incentive_zip 
+  DROP FOREIGN KEY fk__incentive_zip__us_zipcode;
+ALTER TABLE incentive_zip
+  ADD CONSTRAINT fk__incentive_zip__us_zipcode FOREIGN KEY( zip )
+	REFERENCES us_zipcode( zip )
+	  ON UPDATE CASCADE
+	  ON DELETE CASCADE;
+	  
+-- update incentive_county table to new UUIDs
+ALTER TABLE incentive_county
+  MODIFY COLUMN incentive_id char(36) NOT NULL;
+  
+-- Set the values to the UUIDs
+UPDATE incentive_county, incentive
+   SET incentive_county.incentive_id = incentive.id
+ WHERE incentive_county.incentive_id = incentive.incentive_id;
+
+-- (didn't find any orphans) 
+
+-- Create real foreign keys
+ALTER TABLE incentive_county
+  ADD CONSTRAINT fk__incentive_county__incentive FOREIGN KEY( incentive_id )
+	REFERENCES incentive( id )
+	  ON UPDATE CASCADE
+	  ON DELETE CASCADE;
+    
+ALTER TABLE incentive_county
+  ADD CONSTRAINT fk__incentive_county__us_county FOREIGN KEY( us_county_id )
+	REFERENCES us_county ( id )
+	  ON UPDATE CASCADE
+	  ON DELETE NO ACTION;
+
+-- delete orphaned incentive-utilities where incentive doesn't exist any more
+DELETE iu.* FROM incentive_utility iu LEFT JOIN incentive i ON iu.incentive_id = i.id WHERE i.id IS NULL;
+-- delete orphaned incentive-utilities where utility doesn't exist any more
+DELETE iu.* FROM incentive_utility iu LEFT JOIN utility u ON iu.utility_id = u.id WHERE u.id IS NULL;
+	  
+-- change to CASCADE deletions in incentive_utility table
+ALTER TABLE incentive_utility 
+  DROP FOREIGN KEY fk__incentive_utility__incentive;
+ALTER TABLE incentive_utility
+  ADD CONSTRAINT fk__incentive_utility__incentive FOREIGN KEY( incentive_id )
+	REFERENCES incentive( id )
+	  ON UPDATE CASCADE
+	  ON DELETE CASCADE;	  
+	  
+-- now also delete orphaned zips where incentive doesn't exist any more
+DELETE iz.* FROM incentive_zips iz LEFT JOIN incentive i ON iz.incentive_id = i.id WHERE i.id IS NULL;
+-- and also delete orphaned zips where zip code doesn't exist any more
+DELETE iz.* FROM incentive_zips iz LEFT JOIN us_zipcode z ON iz.zip = z.zip WHERE z.zip IS NULL;
+
+-- finally change to CASCADE deletions in compiled incentive_zips table
+ALTER TABLE incentive_zips 
+  DROP FOREIGN KEY fk__incentive_zips__incentive;
+  
+ALTER TABLE incentive_zips
+  ADD CONSTRAINT fk__incentive_zips__incentive FOREIGN KEY( incentive_id )
+	REFERENCES incentive( id )
+	  ON UPDATE CASCADE
+	  ON DELETE CASCADE;
+    
+ALTER TABLE incentive_zips 
+  DROP FOREIGN KEY fk__incentive_zips__us_zipcode;
+  
+ALTER TABLE incentive_zips
+  ADD CONSTRAINT fk__incentive_zips__us_zipcode FOREIGN KEY( zip )
+	REFERENCES us_zipcode( zip )
+	  ON UPDATE CASCADE
+	  ON DELETE CASCADE;
+	  
+-- change cascade deletions of other incentive dependent tables ...
+ALTER TABLE incentive_weblink 
+  DROP FOREIGN KEY fk__incentive_weblink__incentive;
+ALTER TABLE incentive_weblink
+  ADD CONSTRAINT fk__incentive_weblink__incentive FOREIGN KEY( incentive_id )
+	REFERENCES incentive( id )
+	  ON UPDATE CASCADE
+	  ON DELETE CASCADE;
+	  
+ALTER TABLE incentive_note 
+  DROP FOREIGN KEY fk__incentive_note__incentive;
+ALTER TABLE incentive_note
+  ADD CONSTRAINT fk__incentive_note__incentive FOREIGN KEY( incentive_id )
+    REFERENCES incentive( id )
+     ON UPDATE CASCADE
+     ON DELETE CASCADE;
+
+ALTER TABLE technology_incentives 
+  DROP FOREIGN KEY fk__technology_incentives__incentive;
+ALTER TABLE technology_incentives
+  ADD CONSTRAINT fk__technology_incentives__incentive FOREIGN KEY( incentive_id )
+    REFERENCES incentive( id )
+      ON UPDATE CASCADE
+      ON DELETE CASCADE;
+	 
+	  
+-- cascade deletions of technology_incentives to dependent tables ...
+ALTER TABLE incentive_tech_option 
+  DROP FOREIGN KEY fk__incentive_tech_option__technology_incentives;
+ALTER TABLE incentive_tech_option
+  ADD CONSTRAINT fk__incentive_tech_option__technology_incentives FOREIGN KEY( technology_incentive_id )
+	REFERENCES technology_incentives( id )
+	  ON UPDATE CASCADE
+	  ON DELETE CASCADE;
+	  
+-- remove orphans where rebate doesn't exist any more ...
+DELETE ite.* FROM incentive_tech_energy ite 
+	LEFT JOIN technology_incentives ti ON ite.technology_incentive_id = ti.id WHERE ti.id IS NULL;
+ALTER TABLE incentive_tech_energy 
+  DROP FOREIGN KEY fk__incentive_tech_energy__technology_incentives;
+ALTER TABLE incentive_tech_energy
+  ADD CONSTRAINT fk__incentive_tech_energy__technology_incentives FOREIGN KEY( technology_incentive_id )
+	REFERENCES technology_incentives( id )
+	  ON UPDATE CASCADE
+	  ON DELETE CASCADE;
+
+-- remove orphans where rebate doesn't exist any more ...
+DELETE itt.* FROM incentive_tech_term itt 
+	LEFT JOIN technology_incentives ti ON itt.technology_incentive_id = ti.id WHERE ti.id IS NULL;
+ALTER TABLE incentive_tech_term 
+  DROP FOREIGN KEY fk__incentive_tech_term__technology_incentives;
+ALTER TABLE incentive_tech_term
+  ADD CONSTRAINT fk__incentive_tech_term__technology_incentives FOREIGN KEY( technology_incentive_id )
+	REFERENCES technology_incentives( id )
+	  ON UPDATE CASCADE
+	  ON DELETE CASCADE;
+
+-- 
+-- New functionality
+--
+
 TRUNCATE TABLE glossary_terms;
 INSERT INTO glossary_terms( id, foreign_key, model, definition ) VALUES
 -- AC (no definition)

@@ -7,11 +7,22 @@
 
 # commit=$1
 dbpassword=$2
+today=`date "+%Y%m%d"`
 # project_name=bigbread
 # build_root=~/Development/.build
 
 # rm -rf $build_root/$project_name
 # git archive $commit --prefix=$project_name/ | tar -x -C $build_root
+
+# 
+# Copies the bigbread production database to dev and staging 
+# 
+echo "Backing up the production database"
+ssh bigbread "mysqldump -ubigbread -p'$dbpassword' --opt --no-create-db --complete-insert --databases bigbread_prd > www/mysqldump.sql"
+echo "...complete."
+echo "Backing up the production code base"
+ssh bigbread "tar jcf backups/bigbread.backup.$today.bz2 www/.htaccess www/app/ www/cake/ www/index.php www/mysqldump.sql www/plugins/ www/vendors/"
+echo "...complete."
 
 # NOTE: Can't use the delete flag in production since other webroots exist
 # in a subdomain of the main.
@@ -40,7 +51,9 @@ echo "...complete."
 # Execute the upgrade.sql file
 echo "Running upgrade.sql..."
 ssh bigbread 'cat www/app/config/sql/upgrade.sample.sql | sed -e s/@DB_NAME@/bigbread_prd/ > www/app/config/sql/upgrade.sql'
-ssh bigbread 'cat www/app/config/sql/upgrade.sql | mysql -ubigbread -p"cPd123011!!"'
+ssh bigbread "cat www/app/config/sql/upgrade.sql | mysql -ubigbread -p'$dbpassword'"
 echo "...complete."
 echo ""
 echo "That's it. Everything should be ready to go"
+
+exit 0
