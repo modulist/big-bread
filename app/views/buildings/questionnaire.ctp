@@ -16,13 +16,14 @@
   <div id="info">
     <?php if( $this->Session->read( 'Auth.User.show_questionnaire_instructions' ) ): ?>
       <div class="flash info long">
-        <p class="first">
-        Welcome to BigBread.net.  All we need to get started is to have you provide the client's (either the homeowner or buyer) name, address and zip code.
-        If the client is a home buyer, please enter the address information for the home you're contemplating buying so we can provide the applicable rebates for that house.
-        We'd love your comments, please use the feedback button so we can improve your experience.  Thank you for visiting us.
+        <p class="first"><?php __( '
+        Welcome! Give us your address and you can proceed to "Ways to Save" to see your rebates. You can enter as many homes as you like.
+        ') ?>
         </p>
         
-        <p>If you provide more information found on our questionnaire (<?php echo $this->Html->link( 'download the attached form', array( 'action' => 'download_questionnaire' ), array() ) ?> to take notes as you go through the house) and add that information to your online form, we can find even more savings for you.</p>
+        <p><?php __( 'The more info you give us about your home (make, model, serial number of major appliances) the more savings we can find for you. It\'s easy when you use our brief survey' ) ?> (<?php echo $this->Html->link( __( 'download', '' ), array( 'action' => 'download_questionnaire' ), array() ) ?>).</p>
+        
+        <p><?php __( 'Thanks you for visiting us and please let us know how we can improve your experience.' ) ?></p>
         
         <p class="last"><a href="#" class="dismiss" data-notice="questionnaire_instructions">Don't show this message again.</a></p>
       </div>
