@@ -30,8 +30,9 @@ Router::parseExtensions( 'json' );
  */
 	Router::connect('/', array('controller' => 'pages', 'action' => 'display', 'home'));
   
-  /** Aliases */
+ /** Aliases */
   Router::connect( '/register', array( 'controller' => 'users', 'action' => 'register' ) );
+  Router::connect( '/invite', array( 'controller' => 'users', 'action' => 'invite' ) );
   Router::connect( '/login', array( 'controller' => 'users', 'action' => 'login' ) );
   Router::connect( '/logout', array( 'controller' => 'users', 'action' => 'logout' ) );
   Router::connect( '/questionnaire', array( 'controller' => 'buildings', 'action' => 'questionnaire' ) );

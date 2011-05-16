@@ -23,16 +23,53 @@ class UsersController extends AppController {
     $this->Auth->allow( '*' );
     $this->Auth->deny( 'dismiss_notice' );
   }
+  
+  /**
+   * Accepts an invited user and forwards information to the register()
+   * method for shared functionality. Handling the invite is slightly
+   * specialized and we want to use register() for add/edit functionality.
+   *
+   * @param 	$invite_code
+   * @access	public
+   */
+  public function invite( $invite_code = null ) {
+    $user = $this->User->find(
+      'first',
+      array(
+        'contain'    => false,
+        'fields'     => array( 'User.id', 'User.password' ),
+        'conditions' => array( 'User.invite_code' => $invite_code ),
+      )
+    );
+    
+    if( empty( $user ) ) { # Unrecognized invite code
+      $this->Session->setFlash( 'That invite code was not recognized. You can still register as a new user.', null, null, 'warn' );
+    }
+    else { # Invited user found
+      if( !empty( $user['User']['password'] ) ) { # Invited user has already registered
+        $this->Session->setFlash( 'That invite code has already been used. Please login.', null, null, 'error' );
+        $this->redirect( array( 'action' => 'login' ), null, true );
+      }
+      else {
+        $this->redirect( array( 'action' => 'register', $user['User']['id'] ), null, true );
+      }
+    }
+    
+    $this->redirect( array( 'action' => 'register' ), null, true );
+  }
 
   /**
    * Allows a user to register.
    *
-   * @return  void
+   * @param   $user_id
+   * @param   $invite
    * @access  public
    */
-  public function register( $invite = null ) {
+  public function register( $user_id = null ) {
+    $this->User->id = $user_id;
+    
     # Handle a submitted registration
-    if( $this->RequestHandler->isPost() && !empty( $this->data ) ) {
+    if( !empty( $this->data ) ) {
       /**
        * The password value is hashed automagically. We need to hash the
        * confirmation value manually for validation.
@@ -50,34 +87,31 @@ class UsersController extends AppController {
       }
       else {
         $this->Session->setFlash( 'There\'s a problem with your registration. Please correct the errors below.', null, null, 'validation' );
+        
+        # If the save fails, set the user id so that the form is rendered
+        # for editing, if applicable
+        $this->data['User']['id'] = $user_id;
+        
+        # If the save fails, blank the password values
         $this->data['User']['password'] = '';
         $this->data['User']['confirm_password'] = '';
       }
     }
-    else if( !empty( $invite ) ) {
-      $user = $this->User->find(
+    else {
+      # I have no idea why this has to be done, but the user data is
+      # getting validated when first entering the app.
+      $this->User->validate = array();
+      
+      # Populate existing data, if any
+      $this->data = $this->User->find(
         'first',
         array(
           'contain'    => false,
-          'conditions' => array( 'User.invite_code' => $invite ),
+          'conditions' => array( 'User.id' => $user_id ),
         )
       );
-      
-      if( empty( $user ) ) { # Unrecognized invite code
-        $this->Session->setFlash( 'That invite code was not recognized. You can still register as a new user.', null, null, 'warn' );
-      }
-      else { # Invited user found
-        if( !empty( $user['User']['password'] ) ) { # Invited user has already registered
-          $this->Session->setFlash( 'That invite code has already been used. Please login.', null, null, 'error' );
-          $this->redirect( array( 'action' => 'login' ), null, true );
-        }
-        else { # This is the invited user. We have what we need
-          $this->data = $user;
-          $this->set( 'ignore_validation', true );
-        }
-      }
     }
-
+    
     // Populate the available user types
     $userTypes = $this->User->UserType->find(
       'list',
