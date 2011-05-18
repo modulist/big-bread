@@ -14,32 +14,34 @@
     <br />
     <ul>
       <li>
-        <b>Client</b> |
+        <b><?php echo h( $building['Client']['UserType']['name'] ) ?></b> |
         <?php echo h( $building['Client']['full_name'] ) ?> |
         <?php echo $this->Html->link( $building['Client']['email'], 'mailto:' . $building['Client']['email'] ) ?>
       </li>
       
-      <?php foreach( array( 'Realtor', 'Inspector' ) as $role ): ?>
-        <?php $user_type_id = $role == 'Realtor' ? User::TYPE_REALTOR : User::TYPE_INSPECTOR ?>
-        <?php $display = $role == 'Realtor' ? __( 'Realtor', true ) : __( 'Inspector', true ) ?>
-        <li>
-          <b><?php echo $display ?></b> |
-          <?php if( !empty( $building[$role]['email'] ) ): ?>
-            <?php echo h( $building[$role]['full_name'] ) ?> |
-            <?php echo $this->Html->link( $building[$role]['email'], 'mailto:' . $building[$role]['email'] ) ?>
-            <?php if( !empty( $editable ) && $this->Session->read( 'Auth.User.user_type_id' ) != $user_type_id ): ?>
-              <?php $link_text = $role == 'Realtor' ? __( 'Change Realtor', true ) : __( 'Change Inspector', true ) ?>
+      <?php if( $building['Client']['user_type_id'] != User::TYPE_HOMEOWNER ): # ignore this stuff for homeowners ?>
+        <?php foreach( array( 'Realtor', 'Inspector' ) as $role ): ?>
+          <?php $user_type_id = $role == 'Realtor' ? User::TYPE_REALTOR : User::TYPE_INSPECTOR ?>
+          <?php $display = $role == 'Realtor' ? __( 'Realtor', true ) : __( 'Inspector', true ) ?>
+          <li>
+            <b><?php echo $display ?></b> |
+            <?php if( !empty( $building[$role]['email'] ) ): ?>
+              <?php echo h( $building[$role]['full_name'] ) ?> |
+              <?php echo $this->Html->link( $building[$role]['email'], 'mailto:' . $building[$role]['email'] ) ?>
+              <?php if( !empty( $editable ) && $this->Session->read( 'Auth.User.user_type_id' ) != $user_type_id ): ?>
+                <?php $link_text = $role == 'Realtor' ? __( 'Change Realtor', true ) : __( 'Change Inspector', true ) ?>
+                | <?php echo $this->Html->link( $link_text, '#', array( 'class' => 'toggle-form', 'data-model' => $role ) ) ?>
+              <?php endif; ?>
+            <?php else: ?>
+              <?php $link_text = $role == 'Realtor' ? __( 'Add Realtor Info', true ) : __( 'Add Inspector Info', true ) ?>
+              <?php __( 'Not specified' ) ?>
+              <?php if( !empty( $editable ) ): ?>
               | <?php echo $this->Html->link( $link_text, '#', array( 'class' => 'toggle-form', 'data-model' => $role ) ) ?>
+              <?php endif; ?>
             <?php endif; ?>
-          <?php else: ?>
-            <?php $link_text = $role == 'Realtor' ? __( 'Add Realtor Info', true ) : __( 'Add Inspector Info', true ) ?>
-            <?php __( 'Not specified' ) ?>
-            <?php if( !empty( $editable ) ): ?>
-            | <?php echo $this->Html->link( $link_text, '#', array( 'class' => 'toggle-form', 'data-model' => $role ) ) ?>
-            <?php endif; ?>
-          <?php endif; ?>
-        </li>
-      <?php endforeach; ?>
+          </li>
+        <?php endforeach; ?>
+      <?php endif; ?>
     </ul>
   </div>
   <div class="clear"></div>

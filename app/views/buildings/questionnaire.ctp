@@ -16,7 +16,7 @@
   <div id="info">
     <?php if( $this->Session->read( 'Auth.User.show_questionnaire_instructions' ) ): ?>
       <div class="flash info long">
-        <?php if( in_array( $this->Session->read( 'Auth.User.user_type_id' ), array( User::TYPE_HOMEOWNER, User::TYPE_HOMEBUYER ) ) ): ?>
+        <?php if( $is_client ): ?>
           <p class="first"><?php printf( __(
             'Hello! If you\'re eager to see how you can save $100s to $1,000s just give us
             your address and go to "Ways to Save". You can enter as many homes as you
@@ -52,21 +52,30 @@
       <?php if( empty( $this->data['Building']['id'] ) ): ?>
         <div id="general" class="section<?php echo $anchor == 'general' ? ' active' : '' ?>">
           <h1 id="infohead"><?php __( 'General Information' ) ?></h1>
-          <?php echo $this->Form->input( 'Client.id' ) ?>
-          <?php echo $this->Form->input( 'Client.first_name', array( 'label' => __( 'Client First Name', true ) ) ) ?>
-          <?php echo $this->Form->input( 'Client.last_name', array( 'label' => __( 'Client Last Name', true ) ) ) ?>
-          <?php echo $this->Form->input( 'Client.email', array( 'label' => __( 'Client Email', true ) ) ) ?>
-          <?php echo $this->Form->input( 'Client.phone_number', array( 'label' => __( 'Client Phone Number', true ) ) ) ?>
-          <?php echo $this->Form->input( 'Client.user_type_id', array( 'type' => 'radio', 'legend' => false, 'default' => User::TYPE_HOMEOWNER ) ) ?>
           
-          <?php echo $this->Form->input( 'Address.id' ) ?>
-          <?php echo $this->Form->input( 'Address.address_1' ) ?>
-          <?php echo $this->Form->input( 'Address.address_2' ) ?>
-          <?php echo $this->Form->input( 'Address.zip_code' ) ?>
+          <fieldset<?php echo $this->data['Client']['user_type_id'] == User::TYPE_HOMEOWNER ? ' class="hidden"' : false ?>>
+            <?php echo $this->Form->input( 'Client.id' ) ?>
+            <?php echo $this->Form->input( 'Client.first_name', array( 'label' => __( 'Client First Name', true ) ) ) ?>
+            <?php echo $this->Form->input( 'Client.last_name', array( 'label' => __( 'Client Last Name', true ) ) ) ?>
+            <?php echo $this->Form->input( 'Client.email', array( 'label' => __( 'Client Email', true ) ) ) ?>
+            <?php echo $this->Form->input( 'Client.phone_number', array( 'label' => __( 'Client Phone Number', true ) ) ) ?>
+            <?php echo $this->Form->input( 'Client.user_type_id', array( 'type' => 'radio', 'legend' => false, 'default' => User::TYPE_HOMEOWNER ) ) ?>
+          </fieldset>
           
-          <?php echo $this->element( '../buildings/_realtor_inputs' ) ?>
+          <fieldset>
+            <?php echo $this->Form->input( 'Address.id' ) ?>
+            <?php echo $this->Form->input( 'Address.address_1' ) ?>
+            <?php echo $this->Form->input( 'Address.address_2' ) ?>
+            <?php echo $this->Form->input( 'Address.zip_code' ) ?>
+          </fieldset>
           
-          <?php echo $this->element( '../buildings/_inspector_inputs' ) ?>
+          <fieldset<?php echo $this->data['Client']['user_type_id'] == User::TYPE_HOMEOWNER ? ' class="hidden"' : false ?>>
+            <?php echo $this->element( '../buildings/_realtor_inputs' ) ?>
+          </fieldset>
+          
+          <fieldset<?php echo $this->data['Client']['user_type_id'] == User::TYPE_HOMEOWNER ? ' class="hidden"' : false ?>>
+            <?php echo $this->element( '../buildings/_inspector_inputs' ) ?>
+          </fieldset>
         </div> <!-- #general -->
       <?php else: ?>
         <div class="sliding-panel aside" id="realtor">

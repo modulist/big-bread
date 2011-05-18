@@ -54,6 +54,12 @@ class BuildingsController extends AppController {
       $anchor = 'demographics';
     }
     
+    # If the authenticated user can't see this building, throw them out
+    if( !empty( $building_id ) && !$this->Building->belongs_to( $building_id, $this->Auth->user( 'id' ) ) ) {
+      $this->Session->setFlash( 'You\'re not authorized to view that building\'s data.', null, null, 'warning' );
+      $this->redirect( array( 'action' => 'questionnaire' ), null, true );
+    }
+    
     # Pull the existing record to pre-populate data, if available
     $building = array();
     if( !empty( $building_id ) ) {
@@ -72,7 +78,10 @@ class BuildingsController extends AppController {
             'BuildingRoofSystem',
             'BuildingWallSystem',
             'BuildingWindowSystem',
-            'Client' => array( 'fields' => array( 'Client.id', 'Client.user_type_id', 'Client.first_name', 'Client.last_name', 'Client.full_name', 'Client.email', 'Client.phone_number' ) ),
+            'Client' => array(
+              'UserType',
+              'fields' => array( 'Client.id', 'Client.user_type_id', 'Client.first_name', 'Client.last_name', 'Client.full_name', 'Client.email', 'Client.phone_number' )
+            ),
             'Inspector' => array( 'fields' => array( 'Inspector.id', 'Inspector.user_type_id', 'Inspector.first_name', 'Inspector.last_name', 'Inspector.full_name', 'Inspector.email', 'Inspector.phone_number' ) ),
             'Occupant',
             'Realtor' => array( 'fields' => array( 'Realtor.id', 'Realtor.user_type_id', 'Realtor.first_name', 'Realtor.last_name', 'Realtor.full_name', 'Realtor.email', 'Realtor.phone_number' ) ),
@@ -166,21 +175,25 @@ class BuildingsController extends AppController {
     # All of the addresses associated with a given user (sidebar display)
     $addresses = $this->Building->Client->buildings( $this->Auth->user( 'id' ) );
     
-    if( in_array( $this->Session->read( 'Auth.UserType.name' ), array( 'Homeowner', 'Buyer' ) ) ) {
-      $this->data['Client'] = $this->Session->read( 'Auth.User' );
-    }
-    else {
-      $this->data[$this->Session->read( 'Auth.UserType.name' )] = $this->Session->read( 'Auth.User' );
+    # Pre-populate the current user data in the proper association
+    if( empty( $this->data ) ) {
+      if( in_array( $this->Session->read( 'Auth.UserType.name' ), array( 'Homeowner', 'Buyer' ) ) ) {
+        $this->data['Client'] = $this->Session->read( 'Auth.User' );
+      }
+      else {
+        $this->data[$this->Session->read( 'Auth.UserType.name' )] = $this->Session->read( 'Auth.User' );
+      }
     }
     
     # Set a default building_id as a place holder
     $building_id = empty( $building_id ) ? 'new' : $building_id;
     
     /** Prepare the view */
+    $is_client = $this->data['Client']['id'] == $this->Auth->user( 'id' );
     $middle_steps = array_slice( $steps, 1, count( $steps ) - 2 );
     $show_rebate_link = in_array( $anchor, $middle_steps );
     $this->populate_lookups();
-    $this->set( compact( 'addresses', 'anchor', 'building_id', 'show_rebate_link' ) );
+    $this->set( compact( 'addresses', 'anchor', 'building_id', 'is_client', 'show_rebate_link' ) );
   }
 
   /**
@@ -211,7 +224,7 @@ class BuildingsController extends AppController {
           'Address' => array(
             'ZipCode'
           ),
-          'Client',
+          'Client' => array( 'UserType' ),
           'Inspector',
           'Realtor',
         ),
