@@ -165,20 +165,21 @@ body.onecolumn #content {background: #FFFFFF; min-height:400px; padding: 50px 60
 	font-family: Arial, Helvetica, sans-serif; font-size: 22px; font-weight: normal;}
 #general_Info #info h2 {margin: 1em 0 0.25em 0;}
 
-#item {
+.item {
 	background: #eff2dd; width:692px; border-top: 7px solid #fff;font-weight:bold;font:11px/15px Arial, Helvetica, sans-serif; color:#333;
 	margin: 0 auto; padding: 10px 0;}
 #info img,
-#item img {float:left; margin: 0 7px;}
-#item div,
-#item h3 {font-size: 16px; font-weight:bold; margin: 0 0 0 50px; padding: 2px 0;}
-#item h3 { color: #dd7e34; }
+.item img {float:left; margin: 0 7px;}
+.item div,
+.item h3 { font-size: 16px; font-weight:bold; padding: 2px 0; }
+.item h3 { color: #dd7e34; margin: 0 0 0 50px !important;  }
+.item a.all-incentives { display: block; float: right; margin-right: 50px; }
 
 .itemprice ul, #sponser ul, #questionnaire_act ul, #terms ul{ list-style:none;}
 #terms li{ margin: 10px 10px 10px 25px;}
-#item ul{ list-style:none; margin:0 0 0 50px}
-#item li {float:left;  min-width:160px; padding: 10px 0;}
-#item p {margin-left: 50px;}
+.item ul{ list-style:none; margin:0 0 0 50px}
+.item li {float:left;  min-width:160px; padding: 10px 0;}
+.item p {margin-left: 50px;}
 #sponser {
 	background: #F9FAF4;
 	width:624px;
