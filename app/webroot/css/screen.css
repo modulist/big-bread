@@ -246,6 +246,7 @@ table.incentive-tnc td {
 	padding: 3px 0 0 0; margin:0;}
 .incentive table ul li {
 	padding:0; margin:0;}
+.incentive .get-quote { float: right; margin: 0; padding: 0; }
 
 table.incentive-details {width: 100%;}
 table.incentive-tnc {width: 100%;}
@@ -395,6 +396,8 @@ a.button {
 .intro a.button {font-size: 14px; margin-bottom: 10px; text-decoration: none;}
 .intro .link-action { clear: left; }
 input[type=text][disabled] { background: transparent; border: none; color: #eee }
+form .input.phonenumber .area-code, form .input.phonenumber .exchange { width: 3em; }
+form .input.phonenumber .number { width: 4em; }
 
 /* ============================= Join ======================= */
 #join {background-color: #C2D89A;}

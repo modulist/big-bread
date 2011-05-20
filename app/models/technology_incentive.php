@@ -38,14 +38,20 @@ class TechnologyIncentive extends AppModel {
   );
   
   /**
-   * Retrieves the relevant incentives for a given zip code.
+   * Retrieves all available incentives for a given building
    *
-   * @param 	$zip
+   * @param 	$zip          Rebates are available by zip code
+   * @param   $building_id  Used to pull products installed in the
+   *                        building, if included
+   * @param   $conditions      Array of options for further limiting the results
    * @return	array
    */
-  public function by_zip( $building_id, $zip ) {
-    # All kinds of non-standard db fields involved here.
-    # $this->Behaviors->attach( 'Containable', array( 'autoFields' => false ) );
+  public function incentives( $zip, $building_id = null, $conditions = array() ) {
+    $default_conditions = array(
+      'technology_group_id' => null,
+      'technology_id'       => null,
+    );
+    $conditions = array_merge( $default_conditions, $conditions );
     
     # Which state owns this zip code?
     $state = $this->Incentive->ZipCode->field( 'state', array( 'ZipCode.zip' => $zip ) );
@@ -61,35 +67,56 @@ class TechnologyIncentive extends AppModel {
     $zip_code_incentives = Set::extract( '/ZipCodeIncentive/incentive_id', $zip_code_incentives );
     
     #
-    # BEWARE: Crazy query follows. Lots of shit included.
+    # BEWARE: Crazy query follows. Lots of shit going on up in here.
     #
     
+    $contain = array(
+      'EnergySource',
+      'Incentive' => array(
+        'PublicNote',
+        'AdditionalIncentiveNote',
+      ),
+      'IncentiveAmountType',
+      'TechnologyOption' => array(
+        'GlossaryTerm',
+      ),
+      'TechnologyTerm' => array(
+        'GlossaryTerm',
+      ),
+      'Technology' => array(
+        'GlossaryTerm',
+      ),
+    );
+    
+    if( !empty( $building_id ) ) {
+      # Only return equipment installed in the building
+      $contain['Technology']['Product'] = array(
+        'BuildingProduct' => array(
+          'conditions' => array( 'BuildingProduct.building_id' => $building_id ),
+        )
+      );
+    }
+    
     # Pull the incentive details
+    $technology_group_conditions = array(
+      'Technology2.technology_group_id = TechnologyGroup.id' # the table join
+    );
+    $technology_conditions = array(
+      'TechnologyIncentive.technology_id = Technology2.id' # the table join
+    );
+    
+    # Limit by a particular technology or group, if applicable
+    if( !empty( $conditions['technology_group_id'] ) ) {
+      $technology_group_conditions['TechnologyGroup.id'] = $conditions['technology_group_id'];
+    }
+    if( !empty( $conditions['technology_id'] ) ) {
+      $technology_conditions['Technology2.id'] = $conditions['technology_id'];
+    }
+    
     $incentives = $this->find(
       'all',
       array(
-        'contain' => array(
-          'EnergySource',
-          'Incentive' => array(
-            'PublicNote',
-            'AdditionalIncentiveNote',
-          ),
-          'IncentiveAmountType',
-          'TechnologyOption' => array(
-            'GlossaryTerm',
-          ),
-          'TechnologyTerm' => array(
-            'GlossaryTerm',
-          ),
-          'Technology' => array(
-            'GlossaryTerm',
-            'Product' => array(
-              'BuildingProduct' => array(
-                'conditions' => array( 'BuildingProduct.building_id' => $building_id ),
-              ),
-            ),
-          ),
-        ),
+        'contain' => $contain,
         # Because we want the ordering to include a field that is 2
         # levels away (technology_groups.name), we have to join for
         # that table directly.
@@ -99,14 +126,14 @@ class TechnologyIncentive extends AppModel {
             'alias'      => 'Technology2',
             'type'       => 'inner', 
             'foreignKey' => false,
-            'conditions' => array( 'TechnologyIncentive.technology_id = Technology2.id' ),
+            'conditions' => $technology_conditions,
           ),
           array(
             'table'      => 'technology_groups', 
             'alias'      => 'TechnologyGroup', 
             'type'       => 'left', 
             'foreignKey' => false,
-            'conditions' => array( 'Technology2.technology_group_id = TechnologyGroup.id' ),
+            'conditions' => $technology_group_conditions,
           ),
         ),
         'fields' => array(
@@ -146,7 +173,7 @@ class TechnologyIncentive extends AppModel {
         ),
       )
     );
-  
+    
     return $incentives;
   }
 }

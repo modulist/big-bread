@@ -17,4 +17,13 @@ $(document).ready( function() {
     
     e.preventDefault();  
   });
+  
+  // Loads dialogs (fancybox)
+  $( '.dialog' ).fancybox({ /** OPTIONS TBD */ });
+  
+  // Closes fancybox dialog windows from a link
+  $( 'a.dialog-close' ).click( function( e ) {
+    parent.$.fancybox.close();
+    e.preventDefault();
+  });
 });

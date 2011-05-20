@@ -1,5 +1,3 @@
 $(document).ready( function() {
-  $( '#forgot-password' ).fancybox({
-    // OPTIONS TBD
-  });
+  $( '#forgot-password' ).fancybox({ /** OPTIONS TBD */ });
 });

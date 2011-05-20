@@ -32,7 +32,7 @@
                   class="help-available"
                   title="<?php echo $details['Technology']['GlossaryTerm']['definition'] ?>"
                 <?php endif; ?>
-          >My <?php echo h( $details['Technology']['name'] ) ?></h3>
+            >My <?php echo h( $details['Technology']['name'] ) ?></h3>
             
             <?php if( empty( $products ) ): ?>
               <p><?php echo sprintf( __( 'No %s information has been entered.', true ), strtolower( Inflector::singularize( h( $details['Technology']['name'] ) ) ) ) ?></p>
@@ -193,6 +193,9 @@
               <?php endforeach; ?>
             </ul>
           <?php endif; ?>
+          
+          <p class="get-quote"><?php echo $this->Html->link( $this->Html->image( 'ico_get_quote.png' ), array( 'controller' => 'proposals', 'action' => 'request', $building['Building']['id'], $details['TechnologyIncentive']['id'] ), array( 'class' => 'dialog iframe', 'escape' => false ) ) ?></p>
+          <div class="clear"></div>
         </div>
         <div class="clear"></div>
         

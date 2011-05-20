@@ -4,6 +4,10 @@ class User extends AppModel {
 	public $name = 'User';
   public $belongsTo = array( 'UserType' );
   public $hasMany   = array(
+    'Building' => array(
+      'className'  => 'Building',
+      'foreignKey' => 'inspector_id',
+    ),
     'Home' => array(
       'className'  => 'Building',
       'foreignKey' => 'realtor_id',
@@ -12,10 +16,7 @@ class User extends AppModel {
       'className'  => 'Building',
       'foreignKey' => 'realtor_id',
     ),
-    'Building' => array(
-      'className'  => 'Building',
-      'foreignKey' => 'inspector_id',
-    )
+    'Proposal',
   );
   
 	public $validate = array(
@@ -84,7 +85,7 @@ class User extends AppModel {
       ),
     ),
 		'phone_number' => array(
-			'phoneNumber' => array(
+			'usphone' => array(
 				'rule'       => array( 'phone', null, 'us' ),
 				'message'    => 'Phone number is invalid.',
 				'allowEmpty' => true,

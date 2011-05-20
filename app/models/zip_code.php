@@ -31,12 +31,12 @@ class ZipCode extends AppModel {
   /**
    * Retrieves the relevant incentives (rebates) for a given zip code.
    *
-   * @param   $building_id
    * @param 	$zip
+   * @param   $building_id
    * @return	array
    */
-  public function incentives( $building_id, $zip ) {
-    return $this->Incentive->TechnologyIncentive->by_zip( $building_id, $zip );
+  public function incentives( $zip ) {
+    return $this->Incentive->TechnologyIncentive->incentives( $zip );
   }
 }
 

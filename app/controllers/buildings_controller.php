@@ -246,61 +246,7 @@ class BuildingsController extends AppController {
     
     $this->set( compact( 'building', 'addresses', 'incentive_count', 'incentives', 'technology_group_slug' ) );
   }
-  
-  /**
-   * Creates a new user of a given type and updates the appropriate
-   * building association.
-   *
-   * @param   $building_id
-   * @param 	$role
-   * @access	public
-   */
-  public function change_user( $building_id, $role ) {
-    $foreign_key = strtolower( $role ) . '_id';
-    $user        = $this->save_user( $building_id, 'Inspector' );
-    
-    if( $user ) {
-      $this->Building->id = $building_id;
-      $this->Building->saveField( $foreign_key, $user );
-    }
-  }
-
-  /**
-   * Creates a new user identified as a client and associates the building
-   * with the new client.
-   *
-   * @param   $building_id
-   * @param 	$role
-   * @access	public
-   */
-  public function change_client( $building_id ) {
-    $this->change_user( $building_id, 'Client' );
-  }
-
-  /**
-   * Creates a new user identified as an inspector and associates the building
-   * with the new inspector.
-   *
-   * @param   $building_id
-   * @param 	$role
-   * @access	public
-   */
-  public function change_inspector( $building_id ) {
-    $this->change_user( $building_id, 'Inspector' );
-  }
-  
-  /**
-   * Creates a new user identified as a realtor and associates the building
-   * with the new inspector.
-   *
-   * @param   $building_id
-   * @param 	$role
-   * @access	public
-   */
-  public function change_realtor( $building_id ) {
-    $this->change_user( $building_id, 'Realtor' );
-  }
-  
+   
   /**
    * Downloads the questionnaire PDF.
    */

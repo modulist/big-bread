@@ -190,11 +190,32 @@ class Building extends AppModel {
    * Retrieves the relevant incentives (rebates) for a given building.
    *
    * @param 	$building_id
+   * @param   $conditions   Array of conditions to forward along
    * @return	array
    */
-  public function incentives( $building_id ) {
-    # Pull the incentives
-    return $this->Address->ZipCode->incentives( $building_id, $this->zipcode( $building_id ) );
+  public function incentives( $building_id, $conditions = array() ) {
+    return $this->Address->ZipCode->Incentive->TechnologyIncentive->incentives( $this->zipcode( $building_id ), $building_id, $conditions );
+  }
+  
+  /**
+   * Returns the address for a given building.
+   *
+   * @param 	$building_id
+   * @return	string
+   */
+  public function address( $building_id ) {
+    $address = $this->Address->find(
+      'first',
+      array(
+        'contain'    => array( 'Building', 'ZipCode' ),
+        'conditions' => array( 'Building.id' => $building_id ),
+      )
+    );
+    
+    # The building is only included for filtering
+    unset( $address['Building'] );
+    
+    return $address;
   }
   
   /**
