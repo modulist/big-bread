@@ -51,6 +51,8 @@ switch( $proposal['urgency'] ) {
 <p><?php printf( __( 'I intend to have this work completed %s', true ), $urgency_label ) ?></p>
 
 <?php if( !empty( $proposal['comments'] ) ): ?>
+  <strong><?php __( 'User Comments' ) ?>
+  <hr />
   <p><?php echo h( $proposal['comments'] ) ?></p>
 <?php endif; ?>
 
