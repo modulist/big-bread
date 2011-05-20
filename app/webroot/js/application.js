@@ -19,7 +19,11 @@ $(document).ready( function() {
   });
   
   // Loads dialogs (fancybox)
-  $( '.dialog' ).fancybox({ /** OPTIONS TBD */ });
+  $( '.dialog.iframe' ).fancybox({
+    'height': '50%',
+    'width': '50%'
+  });
+  // $( '.dialog' ).fancybox({ /** OPTIONS TBD */ });
   
   // Closes fancybox dialog windows from a link
   $( 'a.dialog-close' ).click( function( e ) {

@@ -16,9 +16,17 @@ class PhoneNumberComponent extends Object {
    * @todo Support custom regex in preg_split
    */
   public function explode( $digits ) {
-    $digits  = preg_replace( '/[^0-9]/', '', $digits ); # strip non-numerics
+    $digits   = preg_replace( '/[^0-9]/', '', $digits ); # strip non-numerics
+    $exploded = array();
     
-    return preg_split( '/^([0-9]{3})([0-9]{3})([0-9]{4})$/', $digits, null, PREG_SPLIT_DELIM_CAPTURE|PREG_SPLIT_NO_EMPTY );
+    if( strlen( $digits ) == 10 ) { # The "expected" case
+      $exploded = preg_split( '/^([0-9]{3})([0-9]{3})([0-9]{4})$/', $digits, null, PREG_SPLIT_DELIM_CAPTURE|PREG_SPLIT_NO_EMPTY );
+    }
+    else if( empty( $digits ) ) {
+      $exploded = array_fill( 0, 3, null );
+    }
+    
+    return $exploded;
   }
   
   /**

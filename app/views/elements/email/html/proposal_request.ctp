@@ -11,9 +11,13 @@ switch( $proposal['scope_of_work'] ) {
     break;
 }
 ?>
+
+<hr />
 <strong><?php __( 'Scope of Work' ) ?></strong>
+<hr />
 <p><?php echo $scope_label ?></p>
 
+<hr />
 <strong><?php __( 'Contact Information' ) ?></strong>
 <hr />
 <p>
@@ -27,37 +31,57 @@ switch( $proposal['scope_of_work'] ) {
   <div><?php echo $sender['User']['email'] ?></div>
 </p>
 
+<?php if( !empty( $existing_equipment ) ): ?>
+  <hr />
+  <strong><?php __( 'Existing Equipment' ) ?></strong>
+  <hr />
+  <?php foreach( $existing_equipment as $installed ): ?>
+    <p>
+      <div><strong><?php echo h( $installed['Product']['Technology']['name'] ) ?></strong></div>
+      <div>Make: <?php echo h( $installed['Product']['make'] ) ?></div>
+      <div>Model: <?php echo h( $installed['Product']['model'] ) ?></div>
+    </p>
+    <hr style="visibility: hidden;" />
+  <?php endforeach; ?>
+<?php endif; ?>
+
+<hr />
+<strong><?php __( 'Timeline' ) ?></strong>
+<hr />
+
 <strong><?php __( 'Timing' ) ?></strong>
 <?php $timing_label = $proposal['timing'] == 'ready' ? __( 'ready to hire', true ) : __( 'estimating and budgeting', true ) ?>
-<p><?php printf( __( 'I am %s', true ), $timing_label ) ?></p>
+<p><?php printf( __( 'I am %s.', true ), $timing_label ) ?></p>
 
 <strong><?php __( 'Urgency' ) ?></strong>
 <?php
 switch( $proposal['urgency'] ) {
   case 'flexible':
-    $urgency_label = 'in the future. Timing is flexible.';
+    $urgency_label = __( 'in the future. Timing is flexible', true );
     break;
   case 'over 3 weeks':
-    $urgency_label = 'no sooner than 3 weeks from now.';
+    $urgency_label = __( 'no sooner than 3 weeks from now.', true );
     break;
   case '1-2 weeks':
-    $urgency_label = 'within 1 to 2 weeks.';
+    $urgency_label = __( 'within 1 to 2 weeks.', true );
     break;
   default:
     $urgency_label = $proposal['urgency'];
     break;
 }
 ?>
-<p><?php printf( __( 'I intend to have this work completed %s', true ), $urgency_label ) ?></p>
+<p><?php printf( __( 'I intend to have this work completed %s.', true ), $urgency_label ) ?></p>
 
 <?php if( !empty( $proposal['comments'] ) ): ?>
-  <strong><?php __( 'User Comments' ) ?>
+  <hr />
+  <strong><?php __( 'User Comments' ) ?></strong>
   <hr />
   <p><?php echo h( $proposal['comments'] ) ?></p>
 <?php endif; ?>
 
 <p><?php __( 'I have identified the following rebates that are available to me in my area.  Please incorporate the applicable rebates into your pricing.' ) ?></p>
 
+<hr />
 <strong><?php __( 'Quoted Incentive' ) ?></strong>
 <hr />
 <p>
@@ -73,7 +97,7 @@ switch( $proposal['urgency'] ) {
     <?php endif; ?>
   </div>
   <div><?php echo $rebate['Incentive']['name'] . ' (' . $rebate['Incentive']['incentive_id'] . ')' ?></div>
-  <div><strong>Expires: <?php echo empty( $rebate['Incentive']['expiration_date'] ) ? __( 'When Funds Exhausted', true ) : date( 'm/d/Y', strtotime( $rebate['Incentive']['expiration_date'] ) ) ?></strong></div>
+  <div><strong>Expires:</strong> <?php echo empty( $rebate['Incentive']['expiration_date'] ) ? __( 'When Funds Exhausted', true ) : date( 'm/d/Y', strtotime( $rebate['Incentive']['expiration_date'] ) ) ?></div>
   <div>
     <div><strong><?php __( 'Energy Source' ) ?></strong></div>
     <?php if( !empty( $rebate['EnergySource'] ) ): ?>
@@ -115,6 +139,7 @@ switch( $proposal['urgency'] ) {
   <?php endif; ?>
 </p>
 
+<hr />
 <strong><?php __( 'Related Incentives' ) ?></strong>
 <hr />
 <?php foreach( $related_incentives as $i => $incentive ): ?>
@@ -135,7 +160,7 @@ switch( $proposal['urgency'] ) {
       <?php endif; ?>
     </div>
     <div><?php echo $incentive['Incentive']['name'] . ' (' . $incentive['Incentive']['incentive_id'] . ')' ?></div>
-    <div><strong>Expires: <?php echo empty( $rebate['Incentive']['expiration_date'] ) ? __( 'When Funds Exhausted', true ) : date( 'm/d/Y', strtotime( $rebate['Incentive']['expiration_date'] ) ) ?></strong></div>
+    <div><strong>Expires:</strong> <?php echo empty( $rebate['Incentive']['expiration_date'] ) ? __( 'When Funds Exhausted', true ) : date( 'm/d/Y', strtotime( $rebate['Incentive']['expiration_date'] ) ) ?></div>
     <div>
       <div><strong><?php __( 'Energy Source' ) ?></strong></div>
       <?php if( !empty( $incentive['EnergySource'] ) ): ?>
@@ -176,5 +201,5 @@ switch( $proposal['urgency'] ) {
       </div>
     <?php endif; ?>
   </p>
-  <hr style="width: 50%; text-align: center" />
+  <hr style="visibility: hidden" />
 <?php endforeach; ?>

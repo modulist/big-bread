@@ -236,4 +236,24 @@ class Building extends AppModel {
     
     return $address['Address']['zip_code'];
   }
+  
+  /**
+   * Returns all equipment installed in the building.
+   *
+   * @param 	$building_id
+   * @return	array
+   * @access	public
+   */
+  public function equipment( $building_id ) {
+    return $this->BuildingProduct->find(
+      'all',
+      array(
+        'contain' => array( 'Product' => array( 'Technology' ) ),
+        'conditions' => array(
+          'BuildingProduct.building_id' => $building_id,
+          'BuildingProduct.service_out' => null,
+        ),
+      )
+    );
+  }
 }

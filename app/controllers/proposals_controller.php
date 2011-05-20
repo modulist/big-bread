@@ -83,7 +83,8 @@ class ProposalsController extends AppController {
       $this->data['Building']['id'],
       array( 'technology_id' => $this->data['Proposal']['technology_id'], )
     );
-      
+    $existing_equipment = $this->Proposal->Requestor->Building->equipment( $this->data['Building']['id'] );
+    
     /** 
     $this->SwiftMailer->smtpType = 'tls'; 
     $this->SwiftMailer->smtpHost = 'smtp.gmail.com'; 
@@ -104,7 +105,7 @@ class ProposalsController extends AppController {
     $technology         = Inflector::singularize( $rebate['Technology']['name'] );
     $technology_id      = $rebate['TechnologyIncentive']['id'];
     
-    $this->set( compact( 'address', 'proposal', 'rebate', 'related_incentives', 'sender', 'technology', 'technology_id' ) );
+    $this->set( compact( 'address', 'existing_equipment', 'proposal', 'rebate', 'related_incentives', 'sender', 'technology', 'technology_id' ) );
      
     try {
       if( !$this->SwiftMailer->send( 'proposal_request', $this->Auth->user( 'full_name' ) . ' requests a proposal from a qualified contractor', 'native' ) ) {
