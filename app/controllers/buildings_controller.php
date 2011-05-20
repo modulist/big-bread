@@ -189,7 +189,7 @@ class BuildingsController extends AppController {
     $building_id = empty( $building_id ) ? 'new' : $building_id;
     
     /** Prepare the view */
-    $is_client = $this->data['Client']['id'] == $this->Auth->user( 'id' );
+    $is_client = isset( $this->data['Client'] ) && $this->data['Client']['id'] == $this->Auth->user( 'id' );
     $middle_steps = array_slice( $steps, 1, count( $steps ) - 2 );
     $show_rebate_link = in_array( $anchor, $middle_steps );
     $this->populate_lookups();
@@ -546,7 +546,7 @@ class BuildingsController extends AppController {
       $this->set( 'invite_code', $invitee['invite_code'] ); 
        
       try { 
-        if( !$this->SwiftMailer->send( 'invite', 'You\'ve been invited to save', 'native' ) ) {
+        if( !$this->SwiftMailer->send( 'invite', $this->Auth->user( 'full_name' ) . ' is inviting you to save', 'native' ) ) {
           foreach($this->SwiftMailer->postErrors as $failed_send_to) { 
             $this->log( 'Failed to send invitation email to ' . $failed_send_to . ' (' . $invitee['role'] . ')' ); 
           }
