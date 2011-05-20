@@ -224,7 +224,7 @@
         </div>
         
         <div class="button disabled">
-          <input type="submit" value="Save &amp; Return" id="btn-return" />
+          <input type="submit" value="Save &amp; Add Another" id="btn-return" />
         </div>
       
         <?php if( $show_rebate_link ): ?>
