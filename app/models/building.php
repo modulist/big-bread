@@ -244,15 +244,22 @@ class Building extends AppModel {
    * @return	array
    * @access	public
    */
-  public function equipment( $building_id ) {
+  public function equipment( $building_id, $technology_id = null ) {
+    $conditions = array(
+      'BuildingProduct.building_id' => $building_id,
+      'BuildingProduct.service_out' => null,
+    );
+    
+    # Optionally filter for a equipment of a specific technology
+    if( !empty( $technology_id ) ) {
+      $conditions['Product.technology_id'] = $technology_id;
+    }
+    
     return $this->BuildingProduct->find(
       'all',
       array(
-        'contain' => array( 'Product' => array( 'Technology' ) ),
-        'conditions' => array(
-          'BuildingProduct.building_id' => $building_id,
-          'BuildingProduct.service_out' => null,
-        ),
+        'contain'    => array( 'Product' => array( 'Technology' ) ),
+        'conditions' => $conditions,
       )
     );
   }

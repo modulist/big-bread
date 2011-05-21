@@ -31,18 +31,19 @@ switch( $proposal['scope_of_work'] ) {
   <div><?php echo $sender['User']['email'] ?></div>
 </p>
 
+<hr />
+<strong><?php __n( 'My Existing ' . Inflector::singularize( $technology ), 'My Existing ' . Inflector::pluralize( $technology ), count( $existing_equipment ) ) ?></strong>
+<hr />
 <?php if( !empty( $existing_equipment ) ): ?>
-  <hr />
-  <strong><?php __( 'Existing Equipment' ) ?></strong>
-  <hr />
   <?php foreach( $existing_equipment as $installed ): ?>
     <p>
-      <div><strong><?php echo h( $installed['Product']['Technology']['name'] ) ?></strong></div>
       <div>Make: <?php echo h( $installed['Product']['make'] ) ?></div>
       <div>Model: <?php echo h( $installed['Product']['model'] ) ?></div>
     </p>
     <hr style="visibility: hidden;" />
   <?php endforeach; ?>
+<?php else: ?>
+  <?php printf( __( 'No %s information is available for this building.', true ), strtolower( Inflector::singularize( $technology ) ) ) ?>
 <?php endif; ?>
 
 <hr />

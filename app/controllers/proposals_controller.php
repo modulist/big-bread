@@ -83,7 +83,7 @@ class ProposalsController extends AppController {
       $this->data['Building']['id'],
       array( 'technology_id' => $this->data['Proposal']['technology_id'], )
     );
-    $existing_equipment = $this->Proposal->Requestor->Building->equipment( $this->data['Building']['id'] );
+    $existing_equipment = $this->Proposal->Requestor->Building->equipment( $this->data['Building']['id'], $this->data['Proposal']['technology_id'] );
     
     /** 
     $this->SwiftMailer->smtpType = 'tls'; 
@@ -102,7 +102,7 @@ class ProposalsController extends AppController {
     $rebate             = array_shift( Set::extract( '/TechnologyIncentive[id=' . $this->data['TechnologyIncentive']['id'] . ']/..', $incentives ) );
     $related_incentives = $incentives;
     $proposal           = $this->data['Proposal'];
-    $technology         = Inflector::singularize( $rebate['Technology']['name'] );
+    $technology         = $rebate['Technology']['name'];
     $technology_id      = $rebate['TechnologyIncentive']['id'];
     
     $this->set( compact( 'address', 'existing_equipment', 'proposal', 'rebate', 'related_incentives', 'sender', 'technology', 'technology_id' ) );
