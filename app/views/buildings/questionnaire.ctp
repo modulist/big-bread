@@ -78,6 +78,8 @@
           </fieldset>
         </div> <!-- #general -->
       <?php else: ?>
+        <?php echo $this->Form->input( 'Address.zip_code', array( 'type' => 'hidden' ) ) # Make the zip code available for js ?>
+        
         <div class="sliding-panel aside" id="realtor">
           <h1><?php __( 'Change Realtor' ) ?></h1>
           <?php echo $this->element( '../buildings/_realtor_inputs' ) ?>
@@ -109,10 +111,7 @@
       <div id="demographics" class="section<?php echo $anchor == 'demographics' ? ' active' : '' ?>">
         <h1><?php __( 'Demographics' ) ?></h1>
         <?php echo $this->element( '../buildings/_demographic_inputs' ) ?>
-      </div> <!-- #demographics -->
         
-      <div id="equipment" class="section<?php echo $anchor == 'equipment' ? ' active' : '' ?>">
-        <!--
         <div id="utility-providers">
           <h3><?php __( 'Utility Providers' ) ?></h3>
           <?php echo $this->Form->input( 'Building.electricity_provider_name', array( 'type' => 'text' ) ) ?>
@@ -127,7 +126,9 @@
           <h4><?php __( 'Alternative Heating Source' ) ?></h4>
           <?php echo $this->Form->input( 'Building.other_heating_source', array( 'type' => 'radio', 'options' => array( 'PROPANE' => 'Propane', 'HEATING OIL' => 'Heating Oil', 'OTHER' => 'Other' ), 'legend' => false ) ) ?>
         </div>
-         -->
+      </div> <!-- #demographics -->
+        
+      <div id="equipment" class="section<?php echo $anchor == 'equipment' ? ' active' : '' ?>">
         <h1><?php __( 'Equipment Listing' ) ?></h1>
         
         <p>The equipment detail allows us to research product safety, recall, and warranty information on what you already own.</p>

@@ -82,13 +82,25 @@ class BuildingsController extends AppController {
               'UserType',
               'fields' => array( 'Client.id', 'Client.user_type_id', 'Client.first_name', 'Client.last_name', 'Client.full_name', 'Client.email', 'Client.phone_number' )
             ),
+            'ElectricityProvider',
+            'GasProvider',
             'Inspector' => array( 'fields' => array( 'Inspector.id', 'Inspector.user_type_id', 'Inspector.first_name', 'Inspector.last_name', 'Inspector.full_name', 'Inspector.email', 'Inspector.phone_number' ) ),
             'Occupant',
             'Realtor' => array( 'fields' => array( 'Realtor.id', 'Realtor.user_type_id', 'Realtor.first_name', 'Realtor.last_name', 'Realtor.full_name', 'Realtor.email', 'Realtor.phone_number' ) ),
+            'WaterProvider',
           ),
           'conditions' => array( 'Building.id' => $building_id ),
         )
       );
+      
+      # Use the utility provider data to populate key values and kill it.
+      foreach( array( 'Electricity', 'Gas', 'Water' ) as $utility_type ) {
+        if( !empty( $building['Building'][strtolower( $utility_type ) . '_provider_id'] ) ) {
+          $building['Building'][strtolower( $utility_type ) . '_provider_name'] = $building[$utility_type . 'Provider']['name'];
+        }
+        
+        unset( $building[$utility_type . 'Provider'] );
+      }
       
       # Whoops, no record of that building
       if( empty( $building ) ) {
@@ -113,6 +125,11 @@ class BuildingsController extends AppController {
       }
       
       $success = true;
+      
+      # Handle utility provider data
+      foreach( array( 'Electricity', 'Gas', 'Water' ) as $utility_type ) {
+        $success = $this->save_utility_provider( $building_id, $utility_type ) && $success;
+      }
       
       # Handle associated models that must be saved before the building
       # or that require some pre-processing
@@ -435,6 +452,75 @@ class BuildingsController extends AppController {
     
     return $user;
   }
+  
+  /**
+   * Saves a utility provider
+   *
+   * @param 	$building_id
+   * @param   $type         Electricity | Gas | Water
+   * @return	boolean
+   * @access	private
+   */
+  private function save_utility_provider( $building_id, $type ) {
+    $code = ZipCodeUtility::$type_code_reverse_lookup[$type];
+    $type = strtolower( $type );
+    $name = $this->data['Building'][$type . '_provider_name'];
+    
+    # Empty the utility id if the name is empty
+    $this->data['Building'][$type . '_provider_id'] = !empty( $name )
+      ? $this->data['Building'][$type . '_provider_id']
+      : null;
+    
+    $id = $this->data['Building'][$type . '_provider_id'];
+    
+    if( !empty( $name ) ) {
+      $provider = $this->Building->Address->ZipCode->ZipCodeUtility->Utility->known( $name, $id );
+      
+      if( !$provider ) { # The specified provider is not recognized
+        # Pull the state code for the building zip code
+        if( !isset( $state ) ) {
+          $state = $this->Building->Address->ZipCode->find(
+            'first',
+            array(
+              'contain'    => false,
+              'fields'     => array( 'ZipCode.state' ),
+              'conditions' => array( 'ZipCode.zip' => $this->data['Address']['zip_code'] ),
+            )
+          );
+        }
+        
+        # Build and save a Utility record and a ZipCodeUtility record
+        $this->data['Utility'] = array(
+          'name'     => $name,
+          'source'   => 'User',
+          'reviewed' => 0,
+        );
+        $this->data['ZipCodeUtility'] = array(
+          'zip'      => $this->data['Address']['zip_code'],
+          'state'    => $state['ZipCode']['state'],
+          'coverage' => 0,
+          'source'   => 'User',
+          'reviewed' => 0,
+          'type'     => $code
+        );
+       
+        if( $this->Building->Address->ZipCode->ZipCodeUtility->Utility->save( $this->data['Utility'] ) ) {
+          $this->data['ZipCodeUtility']['utility_id'] = $this->Building->Address->ZipCode->ZipCodeUtility->Utility->id;
+          
+          if( $this->Building->Address->ZipCode->ZipCodeUtility->save( $this->data['ZipCodeUtility'] ) ) {
+            # At this point, we should have a provider id for the new record.
+            $this->data['Building'][$type . '_provider_id'] = $this->Building->Address->ZipCode->ZipCodeUtility->Utility->id;
+          }
+        }
+      }
+      else {
+        # If the name is known, use the id from the database
+        $this->data['Building'][$type . '_provider_id'] = $provider;
+      }
+    }
+    
+    return true;
+  }
 
   /**
    * Saves a product record and the associated building-product record.
@@ -566,7 +652,7 @@ class BuildingsController extends AppController {
   private function prep_utility_data( $data ) {
     /** Handle utility providers if an unknown was specified */
     /** TODO: Can we move this down the stack somewhere? */
-    foreach( $this->Building->Address->ZipCode->ZipCodeUtility->type_codes as $code => $type ) {
+    foreach( ZipCode::$type_codes as $code => $type ) {
       $type = strtolower( $type );
       $name = $data['Building'][$type . '_provider_name'];
       

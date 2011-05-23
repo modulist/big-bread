@@ -114,12 +114,18 @@ $(document).ready( function() {
         .next( 'p' ).slideUp().remove().end()
         .after( '<p>' + data.ZipCode.city + ', ' + data.ZipCode.state + '</p>' ).slideDown();
     });
-    
+  });
+  
+  // Trigger the change event if the zip code is pre-populated
+  if( $('#AddressZipCode').length > 0 && $('#AddressZipCode').val().length > 0 ) {
     // Retrieve known utility providers for the given zip code
     var utility_types = [ 'Electricity', 'Gas', 'Water' ];
+    var zip           = $('#AddressZipCode').val();
     
     for( var i = 0; i < utility_types.length; i++ ) {
       var type = utility_types[i];
+      
+      $('#Building' + type + 'ProviderName').attr( 'placeholder', 'Loading provider data...' );
       
       $.getJSON( '/addresses/utilities/' + zip + '/' + type + '.json', null, function( data, status ) {
         var utility_type = data.Type.name;
@@ -133,13 +139,14 @@ $(document).ready( function() {
           return { label: util.Utility.name, value: util.Utility.id };
         });
         
-        if( data.Utilities.length == 1 ) {
-          /** If there's only one, just set that value as a default */
+        if( $provider_id.val().length == 0 && data.Utilities.length == 1 ) {
+          // If there's only one, just set that value as a default 
           $provider_name.val( data.Utilities[0].Utility.name );
           $provider_id.val( data.Utilities[0].Utility.id );
         }
         else {
-          /** If more than one, populate the provider autocomplete options */
+          // If more than one, populate the provider autocomplete options
+          $provider_name.attr( 'placeholder', utility_type + ' provider' );
           $provider_name.autocomplete({
             source: $friendly, // use the autocomplete-friendly data
             minLength: 0,
@@ -161,13 +168,6 @@ $(document).ready( function() {
         }
       });
     }
-      
-    $('#utility-providers').slideDown();
-  });
-  
-  // Trigger the change event if the zip code is pre-populated
-  if( $('#AddressZipCode').length > 0 && $('#AddressZipCode').val().length > 0 ) {
-    $('#AddressZipCode' ).change();
   }
   
   // Set energy source options based on the technology selected

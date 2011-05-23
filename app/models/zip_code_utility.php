@@ -46,17 +46,17 @@ class ZipCodeUtility extends AppModel {
     ),
   );
   
-  public $type_codes = array(
+  static public $type_codes = array(
     'ELE' => 'Electricity',
     'GAS' => 'Gas',
     'WTR' => 'Water',
   );
-  public $type_code_reverse_lookup = null;
+  static public $type_code_reverse_lookup = null;
   
   public function __construct() {
     parent::__construct();
     
     /** populate the reverse lookup */
-    $this->type_code_reverse_lookup = array_flip( $this->type_codes );
+    static::$type_code_reverse_lookup = array_flip( static::$type_codes );
   }
 }

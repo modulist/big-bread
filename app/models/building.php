@@ -8,11 +8,17 @@ class Building extends AppModel {
 		'BasementType',
     'BuildingShape',
 		'BuildingType',
-		'ExposureType',
 		'Client' => array(
 			'className' => 'User',
 			'foreignKey' => 'client_id'
 		),
+		'ExposureType',
+    'ElectricityProvider' => array(
+      'className' => 'Utility',
+    ),
+    'GasProvider' => array(
+      'className' => 'Utility',
+    ),
 		'Inspector' => array(
 			'className' => 'User',
 			'foreignKey' => 'inspector_id'
@@ -23,20 +29,14 @@ class Building extends AppModel {
 			'foreignKey' => 'realtor_id'
 		),
 		'ShadingType',
-	);
-  public $hasOne  = array(
-    'BuildingWallSystem', # Built for hasMany, but currently implemented as hasOne
-    'ElectricityProvider' => array(
-      'className' => 'Utility',
-    ),
-    'GasProvider' => array(
-      'className' => 'Utility',
-    ),
-		'Occupant',
-		'Questionnaire',
     'WaterProvider' => array(
       'className' => 'Utility',
     ),
+	);
+  public $hasOne  = array(
+    'BuildingWallSystem', # Built for hasMany, but currently implemented as hasOne
+		'Occupant',
+		'Questionnaire',
   );
 	public $hasMany = array(
     'BuildingProduct',
