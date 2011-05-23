@@ -30,4 +30,11 @@ CREATE TABLE proposals(
     ON DELETE NO ACTION
 ) ENGINE=InnoDB;
 
+ALTER TABLE incentive_weblink_verification
+  MODIFY incentive_id char(36) NOT NULL,
+  ADD CONSTRAINT fk__incentive_weblink_verification__incentive FOREIGN KEY( incentive_id )
+    REFERENCES incentive(id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE;
+
 SET foreign_key_checks = 1;
