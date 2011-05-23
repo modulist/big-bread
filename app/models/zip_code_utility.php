@@ -57,6 +57,6 @@ class ZipCodeUtility extends AppModel {
     parent::__construct();
     
     /** populate the reverse lookup */
-    static::$type_code_reverse_lookup = array_flip( static::$type_codes );
+    self::$type_code_reverse_lookup = array_flip( self::$type_codes );
   }
 }
