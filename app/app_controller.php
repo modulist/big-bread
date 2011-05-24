@@ -163,4 +163,25 @@ class AppController extends Controller {
     
     return false;
   }
+  
+  /**
+   * Writes authenticated user info to the config so that it can be
+   * easily accessed anywhere.
+   *
+   * @return boolean
+   */
+  protected function update_auth_session() {
+    if( $this->Auth->user() ) {
+      $user = $this->User->find(
+        'first',
+        array(
+          'recursive'  => 2, # TODO: Why is this needed? Without recursive = 2, the UserType isn't included.
+          'contain'    => array( 'UserType' ),
+          'conditions' => array( 'User.id' => $this->Auth->User( 'id' ) ),
+        )
+      );
+      
+      $this->Session->write( 'Auth', $user );
+    }
+  }
 }

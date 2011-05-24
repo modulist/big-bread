@@ -80,11 +80,10 @@ class UsersController extends AppController {
       if( $this->User->save( $this->data ) ) {
         $this->Session->setFlash( 'Welcome to BigBread. Thanks for registering.', null, null, 'success' );
         $this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
+        $this->Auth->login( $this->data ); # Authenticate the new user
         
         # Update the session info
         $this->update_auth_session();
-        
-        $this->Auth->login( $this->data );
         
         $this->redirect( $this->Auth->redirect(), null, true );
       }
@@ -103,7 +102,7 @@ class UsersController extends AppController {
     else {
       # I have no idea why this has to be done, but the user data is
       # getting validated when first entering the app.
-      $this->User->validate = array();
+      # $this->User->validate = array();
       
       # Populate existing data, if any
       $this->data = $this->User->find(
@@ -260,24 +259,4 @@ class UsersController extends AppController {
    * PRIVATE METHODS
    */
   
-  /**
-   * Writes authenticated user info to the config so that it can be
-   * easily accessed anywhere.
-   *
-   * @return boolean
-   */
-  protected function update_auth_session() {
-    if( $this->Auth->user() ) {
-      $user = $this->User->find(
-        'first',
-        array(
-          'recursive'  => 2, # TODO: Why is this needed? Without recursive = 2, the UserType isn't included.
-          'contain'    => array( 'UserType' ),
-          'conditions' => array( 'User.id' => $this->Auth->User( 'id' ) ),
-        )
-      );
-      
-      $this->Session->write( 'Auth', $user );
-    }
-  }
 }
