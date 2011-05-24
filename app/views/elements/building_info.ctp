@@ -19,7 +19,7 @@
         <?php echo $this->Html->link( $building['Client']['email'], 'mailto:' . $building['Client']['email'] ) ?>
       </li>
       
-      <?php if( $building['Client']['user_type_id'] != User::TYPE_HOMEOWNER ): # ignore this stuff for homeowners ?>
+      <?php if( !in_array( $this->Session->read( 'Auth.UserType.id' ), array( User::TYPE_HOMEOWNER, User::TYPE_HOMEBUYER ) ) ): # ignore this stuff for homeowners ?>
         <?php foreach( array( 'Realtor', 'Inspector' ) as $role ): ?>
           <?php $user_type_id = $role == 'Realtor' ? User::TYPE_REALTOR : User::TYPE_INSPECTOR ?>
           <?php $display = $role == 'Realtor' ? __( 'Realtor', true ) : __( 'Inspector', true ) ?>
