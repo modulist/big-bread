@@ -193,7 +193,7 @@ class BuildingsController extends AppController {
     $addresses = $this->Building->Client->buildings( $this->Auth->user( 'id' ) );
     
     # Pre-populate the current user data in the proper association
-    if( empty( $this->data ) ) {
+    if( empty( $this->data ) && !User::admin( $this->Auth->user( 'id' ) ) ) {
       if( in_array( $this->Session->read( 'Auth.UserType.name' ), array( 'Homeowner', 'Buyer' ) ) ) {
         $this->data['Client'] = $this->Session->read( 'Auth.User' );
       }
@@ -230,13 +230,15 @@ class BuildingsController extends AppController {
       $this->Session->setFlash( 'We can\'t help you save unless you fill out the questionnaire.', null, null, 'warning' );
       $this->redirect( array( 'action' => 'questionnaire' ), null, true );
     }
-    else if( !$this->Building->belongs_to( $building_id, $this->Auth->user( 'id' ) ) ) {
-      $this->Session->setFlash( 'You\'re not authorized to view that building\'s data. You\'ve been redirected to your most recently created property.', null, null, 'warning' );
-      $this->redirect( array( 'action' => 'incentives', $addresses[0]['Building']['id'], $technology_group_slug ), null, true );
-    }
     
     # If no building is specified, use the most recent for the user
     $building_id = !empty( $building_id ) ? $building_id : $addresses[0]['Building']['id'];
+    
+    # Verify that the user can access the requested building
+    if( !$this->Building->belongs_to( $building_id, $this->Auth->user( 'id' ) ) ) {
+      $this->Session->setFlash( 'You\'re not authorized to view that building\'s data. You\'ve been redirected to your most recently created property.', null, null, 'warning' );
+      $this->redirect( array( 'action' => 'incentives', $addresses[0]['Building']['id'], $technology_group_slug ), null, true );
+    }
     
     $building = $this->Building->find(
       'first',

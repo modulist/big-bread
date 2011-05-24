@@ -129,7 +129,6 @@ class User extends AppModel {
    *
    * @return	boolean
    * @access	public
-   * @todo    What the hell is getting validated?
    */
   public function beforeValidate() {
     /**
