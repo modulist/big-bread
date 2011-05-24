@@ -2,7 +2,7 @@
   <table id="address">
   <thead>
     <tr>
-      <th scope="col"><?php __( 'Address' ) ?></th>
+      <th scope="col"><?php __( 'Address' ) ?> (<?php echo count( $addresses ) ?>)</th>
       <th scope="col"><?php __( 'Date' ) ?></th>
     </tr>
   </thead>
