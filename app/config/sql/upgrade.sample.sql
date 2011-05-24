@@ -39,6 +39,8 @@ UPDATE users
 
 ALTER TABLE incentive_weblink_verification
   MODIFY incentive_id char(36) NOT NULL,
+  MODIFY source_id bigint NOT NULL,
+  ADD ekg varchar(255) NULL,
   ADD CONSTRAINT fk__incentive_weblink_verification__incentive FOREIGN KEY( incentive_id )
     REFERENCES incentive(id)
     ON UPDATE CASCADE
