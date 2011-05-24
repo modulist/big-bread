@@ -64,9 +64,9 @@
           
           <fieldset>
             <?php echo $this->Form->input( 'Address.id' ) ?>
-            <?php echo $this->Form->input( 'Address.address_1' ) ?>
-            <?php echo $this->Form->input( 'Address.address_2' ) ?>
-            <?php echo $this->Form->input( 'Address.zip_code' ) ?>
+            <?php echo $this->Form->input( 'Address.address_1', array( 'label' => 'Street Address 1', 'title' => 'e.g. 1234 Any Street', 'placeholder' => 'e.g. 1234 Any Street' ) ) ?>
+            <?php echo $this->Form->input( 'Address.address_2', array( 'label' => 'Street Address 2', 'title' => 'e.g. Suite 201', 'placeholder' => 'e.g. Suite 201' ) ) ?>
+            <?php echo $this->Form->input( 'Address.zip_code', array( 'title' => 'e.g. 20739', 'placeholder' => 'e.g. 20739', 'after' => sprintf( '<small>%s</small>', __( 'We\'ll find your city, state from the zip code.', true ) ) ) ) ?>
           </fieldset>
           
           <fieldset<?php echo isset( $this->data['Client'] ) && $this->data['Client']['user_type_id'] == User::TYPE_HOMEOWNER ? ' class="hidden"' : false ?>>

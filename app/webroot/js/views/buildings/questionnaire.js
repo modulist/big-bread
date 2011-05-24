@@ -108,12 +108,25 @@ $(document).ready( function() {
     var zip   = $this.val();
     
     /** Pull the zip code's locale (city, state) info */
-    $.getJSON( '/addresses/locale/' + zip + '.json', null, function( data ) {
-      /** Display the city, state identified by the zip code */
-      $this
-        .next( 'p' ).slideUp().remove().end()
-        .after( '<p>' + data.ZipCode.city + ', ' + data.ZipCode.state + '</p>' ).slideDown();
-    });
+    if( zip.length > 0 ) {
+      $this.next( 'small' ).text( 'Determining locale...' );
+      $.ajax({
+        url: '/addresses/locale/' + zip + '.json',
+        dataType: 'json',
+        success: function( data ) {
+          if( data ) {
+            /** Display the city, state identified by the zip code */
+            $this.next( 'small' ).text( data.ZipCode.city + ', ' + data.ZipCode.state );
+          }
+          else {
+            $this.next( 'small' ).text( 'Unrecognized zip code' );
+          }
+        }
+      });
+    }
+    else {
+      $this.next( 'small' ).text( 'We\'ll find your city, state from the zip code.' );
+    }
   });
   
   // Trigger the change event if the zip code is pre-populated
