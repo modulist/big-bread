@@ -54,6 +54,12 @@ class BuildingsController extends AppController {
       $anchor = 'demographics';
     }
     
+    # If the authenticated user can't see this building, throw them out
+    if( !empty( $building_id ) && !$this->Building->belongs_to( $building_id, $this->Auth->user( 'id' ) ) ) {
+      $this->Session->setFlash( 'You\'re not authorized to view that building\'s data.', null, null, 'warning' );
+      $this->redirect( array( 'action' => 'questionnaire' ), null, true );
+    }
+    
     # Pull the existing record to pre-populate data, if available
     $building = array();
     if( !empty( $building_id ) ) {
@@ -72,14 +78,29 @@ class BuildingsController extends AppController {
             'BuildingRoofSystem',
             'BuildingWallSystem',
             'BuildingWindowSystem',
-            'Client' => array( 'fields' => array( 'Client.id', 'Client.user_type_id', 'Client.first_name', 'Client.last_name', 'Client.full_name', 'Client.email', 'Client.phone_number' ) ),
+            'Client' => array(
+              'UserType',
+              'fields' => array( 'Client.id', 'Client.user_type_id', 'Client.first_name', 'Client.last_name', 'Client.full_name', 'Client.email', 'Client.phone_number' )
+            ),
+            'ElectricityProvider',
+            'GasProvider',
             'Inspector' => array( 'fields' => array( 'Inspector.id', 'Inspector.user_type_id', 'Inspector.first_name', 'Inspector.last_name', 'Inspector.full_name', 'Inspector.email', 'Inspector.phone_number' ) ),
             'Occupant',
             'Realtor' => array( 'fields' => array( 'Realtor.id', 'Realtor.user_type_id', 'Realtor.first_name', 'Realtor.last_name', 'Realtor.full_name', 'Realtor.email', 'Realtor.phone_number' ) ),
+            'WaterProvider',
           ),
           'conditions' => array( 'Building.id' => $building_id ),
         )
       );
+      
+      # Use the utility provider data to populate key values and kill it.
+      foreach( array( 'Electricity', 'Gas', 'Water' ) as $utility_type ) {
+        if( !empty( $building['Building'][strtolower( $utility_type ) . '_provider_id'] ) ) {
+          $building['Building'][strtolower( $utility_type ) . '_provider_name'] = $building[$utility_type . 'Provider']['name'];
+        }
+        
+        unset( $building[$utility_type . 'Provider'] );
+      }
       
       # Whoops, no record of that building
       if( empty( $building ) ) {
@@ -104,6 +125,11 @@ class BuildingsController extends AppController {
       }
       
       $success = true;
+      
+      # Handle utility provider data
+      foreach( array( 'Electricity', 'Gas', 'Water' ) as $utility_type ) {
+        $success = $this->save_utility_provider( $building_id, $utility_type ) && $success;
+      }
       
       # Handle associated models that must be saved before the building
       # or that require some pre-processing
@@ -166,21 +192,25 @@ class BuildingsController extends AppController {
     # All of the addresses associated with a given user (sidebar display)
     $addresses = $this->Building->Client->buildings( $this->Auth->user( 'id' ) );
     
-    if( in_array( $this->Session->read( 'Auth.UserType.name' ), array( 'Homeowner', 'Buyer' ) ) ) {
-      $this->data['Client'] = $this->Session->read( 'Auth.User' );
-    }
-    else {
-      $this->data[$this->Session->read( 'Auth.UserType.name' )] = $this->Session->read( 'Auth.User' );
+    # Pre-populate the current user data in the proper association
+    if( empty( $this->data ) && !User::admin( $this->Auth->user( 'id' ) ) ) {
+      if( in_array( $this->Session->read( 'Auth.UserType.name' ), array( 'Homeowner', 'Buyer' ) ) ) {
+        $this->data['Client'] = $this->Session->read( 'Auth.User' );
+      }
+      else {
+        $this->data[$this->Session->read( 'Auth.UserType.name' )] = $this->Session->read( 'Auth.User' );
+      }
     }
     
     # Set a default building_id as a place holder
     $building_id = empty( $building_id ) ? 'new' : $building_id;
     
     /** Prepare the view */
+    $is_client = isset( $this->data['Client'] ) && $this->data['Client']['id'] == $this->Auth->user( 'id' );
     $middle_steps = array_slice( $steps, 1, count( $steps ) - 2 );
     $show_rebate_link = in_array( $anchor, $middle_steps );
     $this->populate_lookups();
-    $this->set( compact( 'addresses', 'anchor', 'building_id', 'show_rebate_link' ) );
+    $this->set( compact( 'addresses', 'anchor', 'building_id', 'is_client', 'show_rebate_link' ) );
   }
 
   /**
@@ -198,11 +228,17 @@ class BuildingsController extends AppController {
     # This user is not associated with any buildings
     if( empty( $addresses ) ) {
       $this->Session->setFlash( 'We can\'t help you save unless you fill out the questionnaire.', null, null, 'warning' );
-      $this->redirect( Router::url( '/questionnaire' ), null, true );
+      $this->redirect( array( 'action' => 'questionnaire' ), null, true );
     }
     
     # If no building is specified, use the most recent for the user
     $building_id = !empty( $building_id ) ? $building_id : $addresses[0]['Building']['id'];
+    
+    # Verify that the user can access the requested building
+    if( !$this->Building->belongs_to( $building_id, $this->Auth->user( 'id' ) ) ) {
+      $this->Session->setFlash( 'You\'re not authorized to view that building\'s data. You\'ve been redirected to your most recently created property.', null, null, 'warning' );
+      $this->redirect( array( 'action' => 'incentives', $addresses[0]['Building']['id'], $technology_group_slug ), null, true );
+    }
     
     $building = $this->Building->find(
       'first',
@@ -211,7 +247,7 @@ class BuildingsController extends AppController {
           'Address' => array(
             'ZipCode'
           ),
-          'Client',
+          'Client' => array( 'UserType' ),
           'Inspector',
           'Realtor',
         ),
@@ -233,61 +269,7 @@ class BuildingsController extends AppController {
     
     $this->set( compact( 'building', 'addresses', 'incentive_count', 'incentives', 'technology_group_slug' ) );
   }
-  
-  /**
-   * Creates a new user of a given type and updates the appropriate
-   * building association.
-   *
-   * @param   $building_id
-   * @param 	$role
-   * @access	public
-   */
-  public function change_user( $building_id, $role ) {
-    $foreign_key = strtolower( $role ) . '_id';
-    $user        = $this->save_user( $building_id, 'Inspector' );
-    
-    if( $user ) {
-      $this->Building->id = $building_id;
-      $this->Building->saveField( $foreign_key, $user );
-    }
-  }
-
-  /**
-   * Creates a new user identified as a client and associates the building
-   * with the new client.
-   *
-   * @param   $building_id
-   * @param 	$role
-   * @access	public
-   */
-  public function change_client( $building_id ) {
-    $this->change_user( $building_id, 'Client' );
-  }
-
-  /**
-   * Creates a new user identified as an inspector and associates the building
-   * with the new inspector.
-   *
-   * @param   $building_id
-   * @param 	$role
-   * @access	public
-   */
-  public function change_inspector( $building_id ) {
-    $this->change_user( $building_id, 'Inspector' );
-  }
-  
-  /**
-   * Creates a new user identified as a realtor and associates the building
-   * with the new inspector.
-   *
-   * @param   $building_id
-   * @param 	$role
-   * @access	public
-   */
-  public function change_realtor( $building_id ) {
-    $this->change_user( $building_id, 'Realtor' );
-  }
-  
+   
   /**
    * Downloads the questionnaire PDF.
    */
@@ -476,6 +458,75 @@ class BuildingsController extends AppController {
     
     return $user;
   }
+  
+  /**
+   * Saves a utility provider
+   *
+   * @param 	$building_id
+   * @param   $type         Electricity | Gas | Water
+   * @return	boolean
+   * @access	private
+   */
+  private function save_utility_provider( $building_id, $type ) {
+    $code = ZipCodeUtility::$type_code_reverse_lookup[$type];
+    $type = strtolower( $type );
+    $name = $this->data['Building'][$type . '_provider_name'];
+    
+    # Empty the utility id if the name is empty
+    $this->data['Building'][$type . '_provider_id'] = !empty( $name )
+      ? $this->data['Building'][$type . '_provider_id']
+      : null;
+    
+    $id = $this->data['Building'][$type . '_provider_id'];
+    
+    if( !empty( $name ) ) {
+      $provider = $this->Building->Address->ZipCode->ZipCodeUtility->Utility->known( $name, $id );
+      
+      if( !$provider ) { # The specified provider is not recognized
+        # Pull the state code for the building zip code
+        if( !isset( $state ) ) {
+          $state = $this->Building->Address->ZipCode->find(
+            'first',
+            array(
+              'contain'    => false,
+              'fields'     => array( 'ZipCode.state' ),
+              'conditions' => array( 'ZipCode.zip' => $this->data['Address']['zip_code'] ),
+            )
+          );
+        }
+        
+        # Build and save a Utility record and a ZipCodeUtility record
+        $this->data['Utility'] = array(
+          'name'     => $name,
+          'source'   => 'User',
+          'reviewed' => 0,
+        );
+        $this->data['ZipCodeUtility'] = array(
+          'zip'      => $this->data['Address']['zip_code'],
+          'state'    => $state['ZipCode']['state'],
+          'coverage' => 0,
+          'source'   => 'User',
+          'reviewed' => 0,
+          'type'     => $code
+        );
+       
+        if( $this->Building->Address->ZipCode->ZipCodeUtility->Utility->save( $this->data['Utility'] ) ) {
+          $this->data['ZipCodeUtility']['utility_id'] = $this->Building->Address->ZipCode->ZipCodeUtility->Utility->id;
+          
+          if( $this->Building->Address->ZipCode->ZipCodeUtility->save( $this->data['ZipCodeUtility'] ) ) {
+            # At this point, we should have a provider id for the new record.
+            $this->data['Building'][$type . '_provider_id'] = $this->Building->Address->ZipCode->ZipCodeUtility->Utility->id;
+          }
+        }
+      }
+      else {
+        # If the name is known, use the id from the database
+        $this->data['Building'][$type . '_provider_id'] = $provider;
+      }
+    }
+    
+    return true;
+  }
 
   /**
    * Saves a product record and the associated building-product record.
@@ -587,7 +638,7 @@ class BuildingsController extends AppController {
       $this->set( 'invite_code', $invitee['invite_code'] ); 
        
       try { 
-        if( !$this->SwiftMailer->send( 'invite', 'You\'ve been invited to save', 'native' ) ) {
+        if( !$this->SwiftMailer->send( 'invite', $this->Auth->user( 'full_name' ) . ' is inviting you to save', 'native' ) ) {
           foreach($this->SwiftMailer->postErrors as $failed_send_to) { 
             $this->log( 'Failed to send invitation email to ' . $failed_send_to . ' (' . $invitee['role'] . ')' ); 
           }
@@ -607,7 +658,7 @@ class BuildingsController extends AppController {
   private function prep_utility_data( $data ) {
     /** Handle utility providers if an unknown was specified */
     /** TODO: Can we move this down the stack somewhere? */
-    foreach( $this->Building->Address->ZipCode->ZipCodeUtility->type_codes as $code => $type ) {
+    foreach( ZipCode::$type_codes as $code => $type ) {
       $type = strtolower( $type );
       $name = $data['Building'][$type . '_provider_name'];
       

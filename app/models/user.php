@@ -4,6 +4,10 @@ class User extends AppModel {
 	public $name = 'User';
   public $belongsTo = array( 'UserType' );
   public $hasMany   = array(
+    'Building' => array(
+      'className'  => 'Building',
+      'foreignKey' => 'inspector_id',
+    ),
     'Home' => array(
       'className'  => 'Building',
       'foreignKey' => 'realtor_id',
@@ -12,10 +16,7 @@ class User extends AppModel {
       'className'  => 'Building',
       'foreignKey' => 'realtor_id',
     ),
-    'Building' => array(
-      'className'  => 'Building',
-      'foreignKey' => 'inspector_id',
-    )
+    'Proposal',
   );
   
 	public $validate = array(
@@ -84,7 +85,7 @@ class User extends AppModel {
       ),
     ),
 		'phone_number' => array(
-			'phoneNumber' => array(
+			'usphone' => array(
 				'rule'       => array( 'phone', null, 'us' ),
 				'message'    => 'Phone number is invalid.',
 				'allowEmpty' => true,
@@ -128,7 +129,6 @@ class User extends AppModel {
    *
    * @return	boolean
    * @access	public
-   * @todo    What the hell is getting validated?
    */
   public function beforeValidate() {
     /**
@@ -169,6 +169,7 @@ class User extends AppModel {
         'email',
         'phone_number',
         'invite_code',
+        'admin',
         'show_questionnaire_instructions',
         'last_login',
         'deleted',
@@ -219,9 +220,23 @@ class User extends AppModel {
    * Retrieves the buildings associated with a given user.
    *
    * @param 	$user_id
+   * @param   $admin    Whether the user is an admin
    * @return	array
    */
   public function buildings( $user_id ) {
+    if( User::admin( $user_id ) ) {
+      $conditions = false;
+    }
+    else {
+      $conditions = array(
+        'OR' => array(
+          'Building.client_id'    => $user_id,
+          'Building.realtor_id'   => $user_id,
+          'Building.inspector_id' => $user_id,
+        )
+      );
+    }
+    
     /** TODO: include only fields we need */
     return $this->Building->find(
       'all',
@@ -231,13 +246,7 @@ class User extends AppModel {
             'ZipCode'
           ),
         ),
-        'conditions' => array(
-          'OR' => array(
-            'Building.client_id'    => $user_id,
-            'Building.realtor_id'   => $user_id,
-            'Building.inspector_id' => $user_id,
-          )
-        ),
+        'conditions' => $conditions,
         'order' => 'Building.created DESC'
       )
     );
@@ -311,5 +320,16 @@ class User extends AppModel {
     }
     
     return true; 
-  } 
+  }
+  
+  /**
+   * Determines whether a given user has admin privileges.
+   *
+   * @param 	$user_id
+   * @return	boolean
+   * @access	public
+   */
+  static public function admin( $user_id ) {
+    return ClassRegistry::init( 'User' )->field( 'User.admin', array( 'User.id' => $user_id ) );
+  }
 }

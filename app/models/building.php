@@ -8,11 +8,17 @@ class Building extends AppModel {
 		'BasementType',
     'BuildingShape',
 		'BuildingType',
-		'ExposureType',
 		'Client' => array(
 			'className' => 'User',
 			'foreignKey' => 'client_id'
 		),
+		'ExposureType',
+    'ElectricityProvider' => array(
+      'className' => 'Utility',
+    ),
+    'GasProvider' => array(
+      'className' => 'Utility',
+    ),
 		'Inspector' => array(
 			'className' => 'User',
 			'foreignKey' => 'inspector_id'
@@ -23,20 +29,14 @@ class Building extends AppModel {
 			'foreignKey' => 'realtor_id'
 		),
 		'ShadingType',
-	);
-  public $hasOne  = array(
-    'BuildingWallSystem', # Built for hasMany, but currently implemented as hasOne
-    'ElectricityProvider' => array(
-      'className' => 'Utility',
-    ),
-    'GasProvider' => array(
-      'className' => 'Utility',
-    ),
-		'Occupant',
-		'Questionnaire',
     'WaterProvider' => array(
       'className' => 'Utility',
     ),
+	);
+  public $hasOne  = array(
+    'BuildingWallSystem', # Built for hasMany, but currently implemented as hasOne
+		'Occupant',
+		'Questionnaire',
   );
 	public $hasMany = array(
     'BuildingProduct',
@@ -170,18 +170,21 @@ class Building extends AppModel {
    * @access	public
    */
   public function belongs_to( $building_id, $user_id ) {
+    $conditions = array( 'Building.id' => $building_id, );
+    
+    if( !User::admin( $user_id ) ) {
+      $conditions['OR'] = array(
+        'Building.client_id'    => $user_id,
+        'Building.realtor_id'   => $user_id,
+        'Building.inspector_id' => $user_id,
+      );
+    }
+    
     return $this->find(
       'count',
       array(
         'contain'    => false,
-        'conditions' => array(
-          'Building.id' => $building_id,
-          'OR' => array(
-            'Building.client_id'    => $user_id,
-            'Building.realtor_id'   => $user_id,
-            'Building.inspector_id' => $user_id,
-          )
-        ),
+        'conditions' => $conditions,
       )
     );
   }
@@ -190,11 +193,32 @@ class Building extends AppModel {
    * Retrieves the relevant incentives (rebates) for a given building.
    *
    * @param 	$building_id
+   * @param   $conditions   Array of conditions to forward along
    * @return	array
    */
-  public function incentives( $building_id ) {
-    # Pull the incentives
-    return $this->Address->ZipCode->incentives( $building_id, $this->zipcode( $building_id ) );
+  public function incentives( $building_id, $conditions = array() ) {
+    return $this->Address->ZipCode->Incentive->TechnologyIncentive->incentives( $this->zipcode( $building_id ), $building_id, $conditions );
+  }
+  
+  /**
+   * Returns the address for a given building.
+   *
+   * @param 	$building_id
+   * @return	string
+   */
+  public function address( $building_id ) {
+    $address = $this->Address->find(
+      'first',
+      array(
+        'contain'    => array( 'Building', 'ZipCode' ),
+        'conditions' => array( 'Building.id' => $building_id ),
+      )
+    );
+    
+    # The building is only included for filtering
+    unset( $address['Building'] );
+    
+    return $address;
   }
   
   /**
@@ -214,5 +238,32 @@ class Building extends AppModel {
     );
     
     return $address['Address']['zip_code'];
+  }
+  
+  /**
+   * Returns all equipment installed in the building.
+   *
+   * @param 	$building_id
+   * @return	array
+   * @access	public
+   */
+  public function equipment( $building_id, $technology_id = null ) {
+    $conditions = array(
+      'BuildingProduct.building_id' => $building_id,
+      'BuildingProduct.service_out' => null,
+    );
+    
+    # Optionally filter for a equipment of a specific technology
+    if( !empty( $technology_id ) ) {
+      $conditions['Product.technology_id'] = $technology_id;
+    }
+    
+    return $this->BuildingProduct->find(
+      'all',
+      array(
+        'contain'    => array( 'Product' => array( 'Technology' ) ),
+        'conditions' => $conditions,
+      )
+    );
   }
 }

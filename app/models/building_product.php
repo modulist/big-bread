@@ -1,5 +1,6 @@
 <?php
 
+# TODO: Change to Equipment
 class BuildingProduct extends AppModel {
 	public $name = 'BuildingProduct';
 	

@@ -4,7 +4,6 @@
 <?php echo $this->Html->script( 'application' ) ?>
 <?php echo $this->Html->script( array(
   'jquery/jquery.fancybox-1.3.4.pack.js',
-  'jquery/jquery.easing-1.3.pack.js',
 ) ) ?>
 
 <!-- Include any page-specific scripts -->

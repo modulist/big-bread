@@ -45,7 +45,7 @@ class AddressesController extends AppController {
       /** TODO: Return a 403 (?) error? */
     }
     
-    $type_code = $this->Address->ZipCode->ZipCodeUtility->type_code_reverse_lookup[$type];
+    $type_code = ZipCodeUtility::$type_code_reverse_lookup[$type];
     $utilities = $this->Address->ZipCode->ZipCodeUtility->find(
       'all',
       array(

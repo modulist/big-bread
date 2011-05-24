@@ -80,8 +80,11 @@ class UsersController extends AppController {
       if( $this->User->save( $this->data ) ) {
         $this->Session->setFlash( 'Welcome to BigBread. Thanks for registering.', null, null, 'success' );
         $this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
+        
+        # Update the session info
+        $this->update_auth_session();
+        
         $this->Auth->login( $this->data );
-        $this->set_user_type();
         
         $this->redirect( $this->Auth->redirect(), null, true );
       }
@@ -130,8 +133,10 @@ class UsersController extends AppController {
     /** Logging in and authenticated */
     if ( !empty( $this->data ) && $this->Auth->user() ) {
       $this->User->id = $this->Auth->user( 'id' );
-      $this->set_user_type();
 			$this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
+      
+      # Update the session value
+      $this->update_auth_session();
       
       if( $this->User->has_building( $this->Auth->User('id') ) ) {
         $this->redirect( array( 'controller' => 'buildings', 'action' => 'incentives' ), null, true );
@@ -236,7 +241,7 @@ class UsersController extends AppController {
     $this->User->id = $this->Auth->user( 'id' );
     if( $this->User->saveField( 'show_' . $notice, 0 ) ) {
       # Update the session value
-      $this->Session->write( 'Auth.User.show_questionnaire_instructions', 0 );
+      $this->update_auth_session();
     }
   }
   
@@ -256,22 +261,23 @@ class UsersController extends AppController {
    */
   
   /**
-   * Writes the authenticated user's primary role (UserType) to the
-   * authenticated session.
+   * Writes authenticated user info to the config so that it can be
+   * easily accessed anywhere.
    *
    * @return boolean
    */
-  private function set_user_type() {
+  protected function update_auth_session() {
     if( $this->Auth->user() ) {
-      $user_type = $this->User->UserType->find(
+      $user = $this->User->find(
         'first',
         array(
-          'contain'    => false,
-          'fields'     => array( 'id', 'name' ),
-          'conditions' => array( 'UserType.id' => $this->Auth->user( 'user_type_id' ) ),
+          'recursive'  => 2, # TODO: Why is this needed? Without recursive = 2, the UserType isn't included.
+          'contain'    => array( 'UserType' ),
+          'conditions' => array( 'User.id' => $this->Auth->User( 'id' ) ),
         )
       );
-      $this->Session->write( 'Auth.UserType', $user_type['UserType'] );
+      
+      $this->Session->write( 'Auth', $user );
     }
   }
 }

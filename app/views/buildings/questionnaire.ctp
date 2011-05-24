@@ -16,16 +16,35 @@
   <div id="info">
     <?php if( $this->Session->read( 'Auth.User.show_questionnaire_instructions' ) ): ?>
       <div class="flash info long">
-        <p class="first"><?php __( '
-        Welcome! Give us your address and you can proceed to "Ways to Save" to see your rebates. You can enter as many homes as you like.
-        ') ?>
-        </p>
+        <?php if( $is_client ): ?>
+          <p class="first"><?php printf( __(
+            'Hello! If you\'re eager to see how you can save $100s to $1,000s just give us
+            your address and go to "Ways to Save". You can enter as many homes as you
+            like. If you want even more in savings, let us know more about your home by
+            using our brief survey (%s).', true ),
+            $this->Html->link( __( 'download', true ), array( 'action' => 'download_questionnaire' ), array() ) ) ?>
+          </p>
+
+          <p><?php __( 'Thank you for visiting us and please let us know how we can improve your experience.' ) ?></p>
+        <?php else: ?>
+          <p class="first"><?php __(
+            'Welcome! All we need to get started is to have you provide your client\'s
+            name, address and zip code. If the client is a home buyer, please enter the
+            address information for the home they\'re contemplating buying so we can
+            provide the applicable rebates for that house.' ) ?>
+          </p>
+
+          <p><?php printf( __(
+            'If you provide more information found on our questionnaire (%s to take notes
+            as you go through the house) and add that information to your online form, we
+            can find even more savings for your client.', true ),
+            $this->Html->link( __( 'download the attached form', true ), array( 'action' => 'download_questionnaire' ), array() ) ) ?>
+          </p>
+
+          <p><?php __( 'We\'d love your comments, please use the feedback button so we can improve your experience. Thank you for visiting us.' ) ?></p>
+        <?php endif; ?>
         
-        <p><?php __( 'The more info you give us about your home (make, model, serial number of major appliances) the more savings we can find for you. It\'s easy when you use our brief survey' ) ?> (<?php echo $this->Html->link( __( 'download', '' ), array( 'action' => 'download_questionnaire' ), array() ) ?>).</p>
-        
-        <p><?php __( 'Thanks you for visiting us and please let us know how we can improve your experience.' ) ?></p>
-        
-        <p class="last"><a href="#" class="dismiss" data-notice="questionnaire_instructions">Don't show this message again.</a></p>
+        <p class="last"><?php echo $this->Html->link( __( 'Don\'t show this message again.', true ), '#', array( 'class' => 'dismiss', 'data-notice' => 'questionnaire_instructions' ) ) ?></p>
       </div>
     <?php endif; ?>
     
@@ -33,23 +52,34 @@
       <?php if( empty( $this->data['Building']['id'] ) ): ?>
         <div id="general" class="section<?php echo $anchor == 'general' ? ' active' : '' ?>">
           <h1 id="infohead"><?php __( 'General Information' ) ?></h1>
-          <?php echo $this->Form->input( 'Client.id' ) ?>
-          <?php echo $this->Form->input( 'Client.first_name', array( 'label' => __( 'Client First Name', true ) ) ) ?>
-          <?php echo $this->Form->input( 'Client.last_name', array( 'label' => __( 'Client Last Name', true ) ) ) ?>
-          <?php echo $this->Form->input( 'Client.email', array( 'label' => __( 'Client Email', true ) ) ) ?>
-          <?php echo $this->Form->input( 'Client.phone_number', array( 'label' => __( 'Client Phone Number', true ) ) ) ?>
-          <?php echo $this->Form->input( 'Client.user_type_id', array( 'type' => 'radio', 'legend' => false, 'default' => User::TYPE_HOMEOWNER ) ) ?>
           
-          <?php echo $this->Form->input( 'Address.id' ) ?>
-          <?php echo $this->Form->input( 'Address.address_1' ) ?>
-          <?php echo $this->Form->input( 'Address.address_2' ) ?>
-          <?php echo $this->Form->input( 'Address.zip_code' ) ?>
+          <fieldset<?php echo isset( $this->data['Client'] ) && $this->data['Client']['user_type_id'] == User::TYPE_HOMEOWNER ? ' class="hidden"' : false ?>>
+            <?php echo $this->Form->input( 'Client.id' ) ?>
+            <?php echo $this->Form->input( 'Client.first_name', array( 'label' => __( 'Client First Name', true ) ) ) ?>
+            <?php echo $this->Form->input( 'Client.last_name', array( 'label' => __( 'Client Last Name', true ) ) ) ?>
+            <?php echo $this->Form->input( 'Client.email', array( 'label' => __( 'Client Email', true ) ) ) ?>
+            <?php echo $this->Form->input( 'Client.phone_number', array( 'label' => __( 'Client Phone Number', true ) ) ) ?>
+            <?php echo $this->Form->input( 'Client.user_type_id', array( 'type' => 'radio', 'legend' => false, 'default' => User::TYPE_HOMEOWNER ) ) ?>
+          </fieldset>
           
-          <?php echo $this->element( '../buildings/_realtor_inputs' ) ?>
+          <fieldset>
+            <?php echo $this->Form->input( 'Address.id' ) ?>
+            <?php echo $this->Form->input( 'Address.address_1' ) ?>
+            <?php echo $this->Form->input( 'Address.address_2' ) ?>
+            <?php echo $this->Form->input( 'Address.zip_code' ) ?>
+          </fieldset>
           
-          <?php echo $this->element( '../buildings/_inspector_inputs' ) ?>
+          <fieldset<?php echo isset( $this->data['Client'] ) && $this->data['Client']['user_type_id'] == User::TYPE_HOMEOWNER ? ' class="hidden"' : false ?>>
+            <?php echo $this->element( '../buildings/_realtor_inputs' ) ?>
+          </fieldset>
+          
+          <fieldset<?php echo isset( $this->data['Client'] ) && $this->data['Client']['user_type_id'] == User::TYPE_HOMEOWNER ? ' class="hidden"' : false ?>>
+            <?php echo $this->element( '../buildings/_inspector_inputs' ) ?>
+          </fieldset>
         </div> <!-- #general -->
       <?php else: ?>
+        <?php echo $this->Form->input( 'Address.zip_code', array( 'type' => 'hidden' ) ) # Make the zip code available for js ?>
+        
         <div class="sliding-panel aside" id="realtor">
           <h1><?php __( 'Change Realtor' ) ?></h1>
           <?php echo $this->element( '../buildings/_realtor_inputs' ) ?>
@@ -81,10 +111,7 @@
       <div id="demographics" class="section<?php echo $anchor == 'demographics' ? ' active' : '' ?>">
         <h1><?php __( 'Demographics' ) ?></h1>
         <?php echo $this->element( '../buildings/_demographic_inputs' ) ?>
-      </div> <!-- #demographics -->
         
-      <div id="equipment" class="section<?php echo $anchor == 'equipment' ? ' active' : '' ?>">
-        <!--
         <div id="utility-providers">
           <h3><?php __( 'Utility Providers' ) ?></h3>
           <?php echo $this->Form->input( 'Building.electricity_provider_name', array( 'type' => 'text' ) ) ?>
@@ -99,7 +126,9 @@
           <h4><?php __( 'Alternative Heating Source' ) ?></h4>
           <?php echo $this->Form->input( 'Building.other_heating_source', array( 'type' => 'radio', 'options' => array( 'PROPANE' => 'Propane', 'HEATING OIL' => 'Heating Oil', 'OTHER' => 'Other' ), 'legend' => false ) ) ?>
         </div>
-         -->
+      </div> <!-- #demographics -->
+        
+      <div id="equipment" class="section<?php echo $anchor == 'equipment' ? ' active' : '' ?>">
         <h1><?php __( 'Equipment Listing' ) ?></h1>
         
         <p>The equipment detail allows us to research product safety, recall, and warranty information on what you already own.</p>
@@ -196,7 +225,7 @@
         </div>
         
         <div class="button disabled">
-          <input type="submit" value="Save &amp; Return" id="btn-return" />
+          <input type="submit" value="Save &amp; Add Another" id="btn-return" />
         </div>
       
         <?php if( $show_rebate_link ): ?>
