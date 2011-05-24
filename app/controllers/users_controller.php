@@ -271,6 +271,7 @@ class UsersController extends AppController {
       $user = $this->User->find(
         'first',
         array(
+          'recursive'  => 2, # TODO: Why is this needed? Without recursive = 2, the UserType isn't included.
           'contain'    => array( 'UserType' ),
           'conditions' => array( 'User.id' => $this->Auth->User( 'id' ) ),
         )
