@@ -228,7 +228,11 @@ class BuildingsController extends AppController {
     # This user is not associated with any buildings
     if( empty( $addresses ) ) {
       $this->Session->setFlash( 'We can\'t help you save unless you fill out the questionnaire.', null, null, 'warning' );
-      $this->redirect( Router::url( '/questionnaire' ), null, true );
+      $this->redirect( array( 'action' => 'questionnaire' ), null, true );
+    }
+    else if( !$this->Building->belongs_to( $building_id, $this->Auth->user( 'id' ) ) ) {
+      $this->Session->setFlash( 'You\'re not authorized to view that building\'s data. You\'ve been redirected to your most recently created property.', null, null, 'warning' );
+      $this->redirect( array( 'action' => 'incentives', $addresses[0]['Building']['id'], $technology_group_slug ), null, true );
     }
     
     # If no building is specified, use the most recent for the user

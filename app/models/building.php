@@ -170,18 +170,21 @@ class Building extends AppModel {
    * @access	public
    */
   public function belongs_to( $building_id, $user_id ) {
+    $conditions = array( 'Building.id' => $building_id, );
+    
+    if( !User::admin( $user_id ) ) {
+      $conditions['OR'] = array(
+        'Building.client_id'    => $user_id,
+        'Building.realtor_id'   => $user_id,
+        'Building.inspector_id' => $user_id,
+      );
+    }
+    
     return $this->find(
       'count',
       array(
         'contain'    => false,
-        'conditions' => array(
-          'Building.id' => $building_id,
-          'OR' => array(
-            'Building.client_id'    => $user_id,
-            'Building.realtor_id'   => $user_id,
-            'Building.inspector_id' => $user_id,
-          )
-        ),
+        'conditions' => $conditions,
       )
     );
   }

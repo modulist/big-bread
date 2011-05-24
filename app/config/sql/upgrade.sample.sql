@@ -30,6 +30,13 @@ CREATE TABLE proposals(
     ON DELETE NO ACTION
 ) ENGINE=InnoDB;
 
+ALTER TABLE users
+  ADD admin boolean NOT NULL DEFAULT 0 AFTER password;
+  
+UPDATE users
+   SET admin = 1
+ WHERE email = 'wamaull@mac.com';
+
 ALTER TABLE incentive_weblink_verification
   MODIFY incentive_id char(36) NOT NULL,
   ADD CONSTRAINT fk__incentive_weblink_verification__incentive FOREIGN KEY( incentive_id )
