@@ -73,12 +73,6 @@ class User extends AppModel {
       ),
     ),
 		'confirm_password' => array(
-			'notempty' => array(
-				'rule'       => 'notEmpty',
-				'message'    => 'Password cannot be empty.',
-				'allowEmpty' => false,
-				'required'   => false,
-			),
       'identical' => array(
         'rule'    => array( 'identical', 'password' ), 
         'message' => 'Passwords do not match.' 
@@ -311,7 +305,7 @@ class User extends AppModel {
     foreach( $field as $key => $value ) {
       $compare = $this->data[$this->alias][$confirm_field];
       
-      if( !empty( $compare ) && $value !== $compare ) {
+      if( $value !== $compare ) {
         return false; 
       }
       else { 
