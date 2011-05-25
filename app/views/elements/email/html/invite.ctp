@@ -4,4 +4,4 @@
 
 <p><?php echo $this->Html->link( __( 'Register now and start saving.', true ), $this->Html->url( array( 'controller' => 'users', 'action' => 'invite', $invite_code ), true ) ) ?></p>
 
-<p><?php echo $this->Html->image( 'logo-email.png', array( 'url' => 'http://bigbread.net' ) ) ?></p>
+<p><?php echo $this->Html->image( 'http://' . env( 'HTTP_HOST' ) . '/img/logo-email.png', array( 'url' => 'http://www.bigbread.net' ) ) ?></p>
