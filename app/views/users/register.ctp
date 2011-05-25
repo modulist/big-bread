@@ -3,7 +3,7 @@
 
 <div id="signupheader">
   <h1>Join BigBread.net</h1>
-  <h3>Choose your user type</h3>
+  <label>Choose your primary role*</label>
   
   <ul id="user_type">
     <?php echo $this->Form->hidden( 'User.user_type_id', array( 'id' => 'UserUserTypeId_', 'value' => '' ) ) ?>
@@ -15,6 +15,9 @@
     <?php endforeach; ?>
   </ul>
   <div class="clear"></div>
+  <?php if( $this->Form->error( 'User.user_type_id' ) ): ?>
+      <?php echo $this->Form->error( 'User.user_type_id' ) ?>
+  <?php endif; ?>
 </div>
 
 <div id="signupbody">
