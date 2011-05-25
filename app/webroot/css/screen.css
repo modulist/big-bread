@@ -399,6 +399,9 @@ a.button {
 input[type=text][disabled] { background: transparent; border: none; color: #eee }
 form .input.phonenumber .area-code, form .input.phonenumber .exchange { width: 3em; }
 form .input.phonenumber .number { width: 4em; }
+form small {
+  display: block;
+}
 
 /* ============================= Join ======================= */
 #join {background-color: #C2D89A;}
