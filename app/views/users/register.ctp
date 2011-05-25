@@ -20,9 +20,9 @@
 <div id="signupbody">
   <p>Required fields are noted by <span>*</span></p>
   
-  <?php echo $this->Form->input( 'User.first_name' ) ?>
-  <?php echo $this->Form->input( 'User.last_name' ) ?>
-  <?php echo $this->Form->input( 'User.email' ) ?>
+  <?php echo $this->Form->input( 'User.first_name', array( 'div' => 'input text required' ) ) ?>
+  <?php echo $this->Form->input( 'User.last_name', array( 'div' => 'input text required' ) ) ?>
+  <?php echo $this->Form->input( 'User.email', array( 'div' => 'input text required' ) ) ?>
   <?php echo $this->Form->input( 'User.phone_number' ) ?>
   <?php echo $this->Form->input( 'User.password' ) ?>
   <?php echo $this->Form->input( 'User.confirm_password', array( 'type' => 'password' ) ) ?>

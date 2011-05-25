@@ -102,7 +102,7 @@ class UsersController extends AppController {
     else {
       # I have no idea why this has to be done, but the user data is
       # getting validated when first entering the app.
-      # $this->User->validate = array();
+      $this->User->validate = array();
       
       # Populate existing data, if any
       $this->data = $this->User->find(
