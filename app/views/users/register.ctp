@@ -24,8 +24,8 @@
   <?php echo $this->Form->input( 'User.last_name', array( 'div' => 'input text required' ) ) ?>
   <?php echo $this->Form->input( 'User.email', array( 'div' => 'input text required' ) ) ?>
   <?php echo $this->Form->input( 'User.phone_number' ) ?>
-  <?php echo $this->Form->input( 'User.password' ) ?>
-  <?php echo $this->Form->input( 'User.confirm_password', array( 'type' => 'password' ) ) ?>
+  <?php echo $this->Form->input( 'User.password', array( 'div' => 'input password required' ) ) ?>
+  <?php echo $this->Form->input( 'User.confirm_password', array( 'type' => 'password', 'div' => 'input password required' ) ) ?>
   
   <div class="buttons">
     <div class="button">
