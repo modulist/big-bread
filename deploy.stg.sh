@@ -24,6 +24,7 @@ rsync -vcrlDtOzi --progress \
       --exclude ".komodotools" \
       --exclude ".git" \
       --exclude ".gitignore" \
+      --exclude "_meta" \
       --exclude "app/config/bootstrap.*.php" \
       --exclude "app/config/database.php" \
       --exclude "app/config/database.*.php" \
