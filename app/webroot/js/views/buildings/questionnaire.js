@@ -117,7 +117,12 @@ $(document).ready( function() {
         dataType: 'json',
         success: function( data ) {
           if( data ) {
-            /** Display the city, state identified by the zip code */
+            // Remove any error display
+            $this
+              .removeClass( 'form-error' )
+              .closest( '.input' ).find( '.error-message' ).hide();
+            
+            // Display the city, state identified by the zip code
             $this.next( 'small' )
               .removeClass( 'error' )
               .text( data.ZipCode.city + ', ' + data.ZipCode.state );
@@ -139,6 +144,9 @@ $(document).ready( function() {
   
   // Trigger the change event if the zip code is pre-populated
   if( $('#AddressZipCode').length > 0 && $('#AddressZipCode').val().length > 0 ) {
+    // Set the locale data if zip code has been entered (and there's no validation error).
+    $('#AddressZipCode').trigger( 'change' );
+    
     // Retrieve known utility providers for the given zip code
     var utility_types = [ 'Electricity', 'Gas', 'Water' ];
     var zip           = $('#AddressZipCode').val();
