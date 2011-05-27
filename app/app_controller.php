@@ -41,6 +41,7 @@ class AppController extends Controller {
 	 */
 	
 	public function beforeFilter() {
+    # By default, deny access to everything
 		$this->Auth->deny( '*' );
 		
 		$this->Auth->userModel = 'User';
@@ -59,6 +60,22 @@ class AppController extends Controller {
     
     $this->Auth->authError  = __( 'Authentication required. Please login.', true );
 		$this->Auth->loginError = __( 'Invalid authentication credentials. Please try again.', true );
+
+    /**
+     * API Authentication is a little different
+     */
+    new PHPDump( $this->params, 'AppController::beforeFilter' );
+    if( $this->params['controller'] == 'api' ) {
+      new PHPDump( getallheaders(), 'Request Headers' ); exit;
+      //Authenticate a user using api key
+      if( isset( $this->params['url']['apikey']) && $this->auth_api( $this->params['url']['apikey'] ) ) {
+        $this->Auth->allow( $this->action );
+      }
+      else {
+        # TODO: Handle API auth error
+        # $this->cakeError('apiRejection');
+      }
+    }
 
 		/**
 		 * If data is being submitted, then attach the user data to it
@@ -132,39 +149,6 @@ class AppController extends Controller {
   }
   
   /**
-   * Provides a very loose authentication mechanism for selected
-   * controllers. And by loose, we really just mean a request that:
-   *  - The referrer is a recognized partner TLD
-   *  - A (syntactically) valid contractor email address was passed
-   *
-   * @return  boolean
-   * @public  protected
-   */
-  protected function accessible() {
-    $accessible    = false;
-    $this->Partner = ClassRegistry::init( 'Partner' );
-    
-    /** Ensure that the referrer is a partner domain */
-    $referrer         = parse_url( $this->referer() );
-    $referring_domain = $referrer['host'];
-    $tld              = preg_replace( '/^.*\.([^.]+\.[^.]+)$/', "$1", $referring_domain );
-    
-    $partner = $this->Partner->find(
-      'first',
-      array(
-        'contain' => array( "PartnerDomain.top_level_domain LIKE '%" . $tld . "'" )
-      )
-    );
-    
-    if( !empty( $partner ) && !empty( $partner['PartnerDomain'] ) && !empty( $this->params['url']['contractor'] ) ) {
-      /** The site is a match, ensure that a value contractor email was passed */
-      return Validation::email( base64_decode( $this->params['url']['contractor'] ) );
-    }
-    
-    return false;
-  }
-  
-  /**
    * Writes authenticated user info to the config so that it can be
    * easily accessed anywhere.
    *
@@ -183,5 +167,31 @@ class AppController extends Controller {
       
       $this->Session->write( 'Auth', $user );
     }
+  }
+  
+  /**
+   * PRIVATE METHODS
+   */
+  
+  /**
+   * Authenticates API access via an API key.
+   *
+   * @param   $key
+   * @return  booleawn
+   */
+  private function auth_api( $key = null) {
+    
+    return true;
+  
+    if( $key == null ) {
+      return false;
+    }
+   
+    $user = $this->ApiUser->find( 'first', array(
+      'contain'    => array( 'User' ),
+      'conditions' => array( 'ApiUser.api_key' => $key ),
+    ));
+    
+    return $this->Auth->login( $user['User']['id'] );
   }
 }

@@ -21,6 +21,8 @@
  * @since         CakePHP(tm) v 0.2.9
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
+App::import( 'Lib', 'routes/ApiRoute' );
+
 Router::parseExtensions( 'json' );
 
 /**
@@ -30,6 +32,9 @@ Router::parseExtensions( 'json' );
  */
 	Router::connect('/', array('controller' => 'pages', 'action' => 'display', 'home'));
   
+ /** API Routing */
+  Router::connect( '/:version/:controller/:action/*', array( 'controller' => 'api', 'action' => 'dispatch' ), array( 'routeClass' => 'ApiRoute', 'version' => 'v\d+' ) );
+ 
  /** Aliases */
   Router::connect( '/register', array( 'controller' => 'users', 'action' => 'register' ) );
   Router::connect( '/invite', array( 'controller' => 'users', 'action' => 'invite' ) );
