@@ -46,7 +46,7 @@ rsync -vcrlDtOzi --progress \
 echo "Uploading environment-specific config files..."
 scp app/config/bootstrap.prd.php bigbread:www/app/config/bootstrap.local.php
 scp app/config/database.prd.php bigbread:www/app/config/database.php
-scp app/webroot/robots.prd.txt bigbread:www/__subdomains/dev.bigbread.net/app/webroot/robots.txt
+scp app/webroot/robots.prd.txt bigbread:www/app/webroot/robots.txt
 echo "...complete."
 
 # Execute the upgrade.sql file
