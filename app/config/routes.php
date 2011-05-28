@@ -32,8 +32,10 @@ Router::parseExtensions( 'json' );
  */
 	Router::connect('/', array('controller' => 'pages', 'action' => 'display', 'home'));
   
- /** API Routing */
-  Router::connect( '/:version/:controller/:action/*', array( 'controller' => 'api', 'action' => 'dispatch' ), array( 'routeClass' => 'ApiRoute', 'version' => 'v\d+' ) );
+ /**
+  * API Routing
+  */
+  Router::connect( '/api/:version/:controller/:action/*', array( 'controller' => 'api', 'action' => 'dispatch' ), array( 'routeClass' => 'ApiRoute', 'version' => 'v\d+' ) );
  
  /** Aliases */
   Router::connect( '/register', array( 'controller' => 'users', 'action' => 'register' ) );

@@ -64,16 +64,11 @@ class AppController extends Controller {
     /**
      * API Authentication is a little different
      */
-    new PHPDump( $this->params, 'AppController::beforeFilter' );
     if( $this->params['controller'] == 'api' ) {
-      new PHPDump( getallheaders(), 'Request Headers' ); exit;
-      //Authenticate a user using api key
-      if( isset( $this->params['url']['apikey']) && $this->auth_api( $this->params['url']['apikey'] ) ) {
-        $this->Auth->allow( $this->action );
-      }
-      else {
-        # TODO: Handle API auth error
-        # $this->cakeError('apiRejection');
+      # Authenticate a user using api key (Authorization header)
+      if( !$this->auth_api() ) {
+        header( 'Not Authorized', true, 401 );
+        exit( 'Unable to authenticate.' );
       }
     }
 
@@ -179,18 +174,28 @@ class AppController extends Controller {
    * @param   $key
    * @return  booleawn
    */
-  private function auth_api( $key = null) {
-    
-    return true;
-  
-    if( $key == null ) {
+  private function auth_api() {
+    $headers = getallheaders();
+
+    if( !array_key_exists( 'Authorization', $headers ) || empty( $headers['Authorization'] ) ) {
       return false;
     }
    
-    $user = $this->ApiUser->find( 'first', array(
-      'contain'    => array( 'User' ),
-      'conditions' => array( 'ApiUser.api_key' => $key ),
+    $this->User = ClassRegistry::init( 'User' );
+    $user = $this->User->find( 'first', array(
+      'contain'    => array( 'ApiUser' ),
+      'conditions' => array( 'ApiUser.api_key' => $headers['Authorization'] ),
     ));
+    
+    # Allow for a test authorization key and login as my user (Rob Wilkerson)
+    if( empty( $user ) && $headers['Authorization'] == '1001001SOS' ) {
+      $user = $this->User->find(
+        'first',
+        array(
+          'conditions' => array( 'User.id' => '4db6ac92-1ee0-402e-b7dc-2fb84293f4e1' ),
+        )
+      );
+    }
     
     return $this->Auth->login( $user['User']['id'] );
   }

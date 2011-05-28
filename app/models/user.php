@@ -3,6 +3,7 @@
 class User extends AppModel {
 	public $name = 'User';
   public $belongsTo = array( 'UserType' );
+  public $hasOne = array( 'ApiUser' );
   public $hasMany   = array(
     'Building' => array(
       'className'  => 'Building',
@@ -96,6 +97,7 @@ class User extends AppModel {
 		),
 	);
   
+  # TODO: Replace use of these with UserType constants
   const TYPE_HOMEOWNER = '4d71115d-0f74-43c5-93e9-2f8a3b196446';
   const TYPE_HOMEBUYER = '4d6d9699-a7a4-42a1-855e-4f606e891b5e';
   const TYPE_INSPECTOR = '4d6d9699-5088-48db-9f56-47ea6e891b5e';
