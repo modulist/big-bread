@@ -15,13 +15,12 @@
 <div id="general_Info">
   <div id="info">
     <?php if( $this->Session->read( 'Auth.User.show_questionnaire_instructions' ) ): ?>
-      <div class="flash info long">
+      <div class="flash welcome">
         <?php if( $is_client ): ?>
           <p class="first"><?php printf( __(
-            'Hello! If you\'re eager to see how you can save $100s to $1,000s just give us
-            your address and go to "Ways to Save". You can enter as many homes as you
-            like. If you want even more in savings, let us know more about your home by
-            using our brief survey (%s).', true ),
+            'To see how you can save $100s or even $1,000s just add your address and go
+            to "Ways to Save". If you want even more in savings, let us know more about
+            your home by using our brief survey (%s).', true ),
             $this->Html->link( __( 'download', true ), array( 'action' => 'download_questionnaire' ), array() ) ) ?>
           </p>
 

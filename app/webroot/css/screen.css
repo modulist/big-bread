@@ -451,6 +451,15 @@ form small {
   background-image: url( '../img/validation.png' );
 }
 
+/* Custom flash style on questionnaire */
+.flash.welcome {
+  background-color: rgb( 228,141,63 );
+  background-color: rgba( 228,141,63,0.7 );
+  border: 1px solid #e48d3f;
+  margin-top: 0;
+  padding: 20px;
+}
+
 .flash.long {
   background-position: 10px 10px;
 }
@@ -463,6 +472,13 @@ form small {
 }
 .flash p.last {
   margin-bottom: 0;
+}
+.flash.welcome * {
+  color: #666;
+  font-size: 14px;
+}
+.flash.welcome a {
+  color: #518205;
 }
 
 /* hide print specific styles */
