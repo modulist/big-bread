@@ -107,8 +107,9 @@ $(document).ready( function() {
     var $this = $(this);
     var zip   = $this.val();
     
-    /** Pull the zip code's locale (city, state) info */
-    if( zip.length > 0 ) {
+    // Pull the zip code's locale (city, state) info
+    // Only do this if it's not faux placeholder text
+    if( zip.length > 0 && ( !Modernizr.input.placeholder && zip.search( /^e.g. / ) == -1 ) ) {
       $this.next( 'small' )
         .removeClass( 'error' )
         .text( 'Determining locale...' );

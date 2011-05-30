@@ -67,7 +67,7 @@ $.fn.placeholder = function() {
     var $this = $(this);
     
     var clear = function() {
-      if( $this.val() === $this.attr( 'title' ) ) {
+      if( $this.val() === $this.attr( 'placeholder' ) ) {
         $this
           .removeClass( 'placeholder' )
           .val( '' );
