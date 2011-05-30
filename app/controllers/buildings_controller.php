@@ -152,7 +152,10 @@ class BuildingsController extends AppController {
       
       # Save anything that's left. This updates the building record in
       # the process, but we can live with that.
-      if( $success && $this->Building->saveAll( $this->data ) ) {
+      # Note that we're validating first to ensure that we don't end up
+      # with unexpected data.
+      if( $this->Building->saveAll( $this->data, array( 'validate' => 'only' ) ) && $success ) {
+        $this->Building->saveAll( $this->data, array( 'validate' => false ) );
         $building_id = $this->Building->id;
         
         if( empty( $anchor ) ) { # Assume we just finished the first step

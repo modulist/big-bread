@@ -4,7 +4,7 @@
   <?php echo $this->element( 'layout/head_content' ) ?>
 </head>
 
-<body>
+<body class="no-js">
   
 <div id="wrapper">
   <div id="header">

@@ -3,9 +3,7 @@
 
 <?php echo $this->Html->meta( 'icon' ) . "\n" ?>
 
-<!--[if lt IE 9]>
-<?php echo $this->Html->script( 'http://html5shiv.googlecode.com/svn/trunk/html5.js' ) . "\n" ?>
-<![endif]-->
+<?php echo $this->Html->script( 'lib/modernizr-1.7.min.js' ) . "\n" ?>
 
 <?php echo $this->Html->css( 'screen', 'stylesheet', array( 'media' => 'screen' ) ) ?>
 <?php echo $this->Html->css( 'print', 'stylesheet', array( 'media' => 'print' ) ) ?>

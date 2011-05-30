@@ -1,4 +1,10 @@
 $(document).ready( function() {
+  /** MODERNIZR */
+  if( !Modernizr.input.placeholder ) {
+    $('input[type=text][placeholder]').placeholder();
+  }
+  
+  /** GENERAL APPLICATION STUFF */
   // Handle disabled links
   $( 'a.disabled' ).click( function( e ) {
     e.preventDefault();
@@ -49,7 +55,38 @@ $(document).ready( function() {
       if( $.inArray( keycode, control_keys ) < 0 ) {
         $(this).val().length == $(this).attr( 'maxlength' ) ? $(this).next( 'input' ).select() : null;
       }
-      
     });
     
 });
+
+/**
+ * Emulates the HTML5 placeholder input attribute
+ */
+$.fn.placeholder = function() {
+  return this.each( function() {
+    var $this = $(this);
+    
+    var clear = function() {
+      if( $this.val() === $this.attr( 'title' ) ) {
+        $this
+          .removeClass( 'placeholder' )
+          .val( '' );
+      }
+      return true;
+    };
+
+    var placeholder = function() {
+      if( $this.val() === '' ) {
+        $this
+          .addClass( 'placeholder' )
+          .val( $this.attr('placeholder') );
+      }
+    };
+    $this
+      .focus( clear )
+      .blur( placeholder )
+      .closest('form').submit( clear );
+    
+    placeholder();
+  });
+};
