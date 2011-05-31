@@ -196,7 +196,7 @@
               </ul>
             <?php endif; ?>
             
-            <p class="get-quote"><?php echo $this->Html->link( $this->Html->image( 'ico_get_quote.png' ), array( 'controller' => 'proposals', 'action' => 'request', $building['Building']['id'], $details['TechnologyIncentive']['id'] ), array( 'class' => 'dialog iframe', 'escape' => false ) ) ?></p>
+            <p class="get-quote"><?php echo $this->Html->link( $this->Html->image( 'ico_get_quote.png' ), array( 'controller' => 'proposals', 'action' => 'request', $building['Building']['id'], $details['TechnologyIncentive']['id'] ), array( 'class' => 'dialog iframe', 'title' => 'We\'ll get you proposals from contractors who are eligible to provide manufacturer and utility rebates that maximize your savings.', 'escape' => false ) ) ?></p>
             <div class="clear"></div>
           </div><!-- .incentive -->
           <div class="clear"></div>
