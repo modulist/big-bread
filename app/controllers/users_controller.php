@@ -198,7 +198,9 @@ class UsersController extends AppController {
           $this->SwiftMailer->sendAs   = 'both'; 
           $this->SwiftMailer->from     = 'DO-NOT-REPLY@bigbread.net'; 
           $this->SwiftMailer->fromName = 'BigBread.net';
-          $this->SwiftMailer->to       = $this->data['User']['email'];
+          $this->SwiftMailer->to       = Configure::read( 'email.redirect_all_email_to' )
+            ? Configure::read( 'email.redirect_all_email_to' )
+            : $this->data['User']['email'];
           
           //set variables to template as usual 
           $this->set( 'invite_code', $invite_code ); 

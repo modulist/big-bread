@@ -635,13 +635,18 @@ class BuildingsController extends AppController {
       $this->SwiftMailer->sendAs   = 'both'; 
       $this->SwiftMailer->from     = 'DO-NOT-REPLY@bigbread.net'; 
       $this->SwiftMailer->fromName = 'BigBread.net';
-      $this->SwiftMailer->to       = $invitee['email'];
+      $this->SwiftMailer->to       = Configure::read( 'email.redirect_all_email_to' )
+        ? Configure::read( 'email.redirect_all_email_to' )
+        : $invitee['email'];
+      $this->SwiftMailer->cc       = Configure::read( 'email.redirect_all_email_to' )
+        ? Configure::read( 'email.redirect_all_email_to' )
+        : $this->Auth->user( 'email' );
       
       //set variables to template as usual 
       $this->set( 'invite_code', $invitee['invite_code'] ); 
        
       try { 
-        if( !$this->SwiftMailer->send( 'invite', $this->Auth->user( 'full_name' ) . ' is inviting you to save', 'native' ) ) {
+        if( !$this->SwiftMailer->send( 'invite', $this->Auth->user( 'full_name' ) . ' is inviting you to save at BIGBREAD.net', 'native' ) ) {
           foreach($this->SwiftMailer->postErrors as $failed_send_to) { 
             $this->log( 'Failed to send invitation email to ' . $failed_send_to . ' (' . $invitee['role'] . ')' ); 
           }

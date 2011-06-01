@@ -34,8 +34,9 @@ class ContactsController extends AppController {
         $this->SwiftMailer->sendAs   = 'text'; 
         $this->SwiftMailer->from     = $this->data['Contact']['email']; 
         $this->SwiftMailer->fromName = $this->data['Contact']['name'];
-        # TODO: Change this? Maybe once we get bigbread.net email up.
-        $this->SwiftMailer->to       = 'wamaull@federatedpower.com';
+        $this->SwiftMailer->to       = Configure::read( 'email.redirect_all_email_to' )
+        ? Configure::read( 'email.redirect_all_email_to' )
+        : Configure::read( 'email.feedback_recipient' );
         
         $this->set( 'name', $this->data['Contact']['name'] );
         $this->set( 'company', $this->data['Contact']['company'] );

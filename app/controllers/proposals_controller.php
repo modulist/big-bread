@@ -95,7 +95,12 @@ class ProposalsController extends AppController {
     $this->SwiftMailer->sendAs   = 'html'; # TODO: send to 'both'?
     $this->SwiftMailer->from     = $this->Auth->user( 'email' ); 
     $this->SwiftMailer->fromName = $this->Auth->user( 'full_name' );
-    $this->SwiftMailer->to       = 'wamaull@federatedpower.com';
+    $this->SwiftMailer->to       = Configure::read( 'email.redirect_all_email_to' )
+        ? Configure::read( 'email.redirect_all_email_to' )
+        : Configure::read( 'email.proposal_recipient' );
+    $this->SwiftMailer->cc       = Configure::read( 'email.redirect_all_email_to' )
+        ? Configure::read( 'email.redirect_all_email_to' )
+        : $this->Auth->user( 'email' );
     
     # set variables to template as usual
     $sender             = $this->Auth->user();
