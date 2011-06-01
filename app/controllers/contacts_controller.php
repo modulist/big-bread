@@ -52,13 +52,18 @@ class ContactsController extends AppController {
           }
           else {
             $this->Session->setFlash( 'Your feedback has been sent. Thank you for taking the time to let us know what you think.', null, null, 'success' );
-            unset( $this->data['Contact'] );
           }
         } 
         catch( Exception $e ) {
           $this->Session->setFlash( 'An error occurred when attempting to send your feeback. Please try again later.', null, null, 'error' );
           $this->log( 'Failed to send email: ' . $e->getMessage() ); 
         }
+
+        $this->redirect( '/feedback' );
+      }
+      else {
+        $this->Contact->id = null;
+        unset( $this->data['Contact']['id'] );
       }
     }
     else {

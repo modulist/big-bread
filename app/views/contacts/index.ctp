@@ -1,5 +1,5 @@
 <?php $this->set( 'title_for_layout', __( 'Feedback', true ) ) ?>
-<?php echo $this->Form->create( 'Contact' ) ?>
+<?php echo $this->Form->create( 'Contact', array( 'url' => '/feedback' ) ) ?>
   <?php echo $this->Form->input( 'Contact.full_name' ) ?>
   <?php echo $this->Form->input( 'Contact.email' ) ?>
   <?php echo $this->Form->input( 'Contact.company' ) ?>
