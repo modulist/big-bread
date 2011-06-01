@@ -446,7 +446,8 @@ class BuildingsController extends AppController {
         $this->Building->{$role}->saveField( 'invite_code', $this->data[$role]['invite_code'] );
         
         # Temporary property used in this::send_invite()
-        $this->data[$role]['role'] = $role; 
+        $this->data[$role]['role']      = $role;
+        $this->data[$role]['full_name'] = $this->data[$role]['first_name'] . ' ' . $this->data[$role]['last_name'];
         
         # Set the building's foreign key
         $this->data['Building'][$foreign_key] = $user;
@@ -625,6 +626,15 @@ class BuildingsController extends AppController {
   private function send_invite( $to ) {
     foreach( $to as $invitee ) {
       $this->log( '{BuildingsController::create} Sending invite to ' . $invitee['email'] . '. Code: ' . $invitee['invite_code'], LOG_DEBUG );
+      
+      # Use redirected email addresses, if warranted
+      $to_email = Configure::read( 'email.redirect_all_email_to' )
+        ? Configure::read( 'email.redirect_all_email_to' )
+        : $invitee['email'];
+      $cc_email = Configure::read( 'email.redirect_all_email_to' )
+        ? Configure::read( 'email.redirect_all_email_to' )
+        : $this->Auth->user( 'email' );
+        
       /** 
       $this->SwiftMailer->smtpType = 'tls'; 
       $this->SwiftMailer->smtpHost = 'smtp.gmail.com'; 
@@ -635,12 +645,8 @@ class BuildingsController extends AppController {
       $this->SwiftMailer->sendAs   = 'both'; 
       $this->SwiftMailer->from     = 'DO-NOT-REPLY@bigbread.net'; 
       $this->SwiftMailer->fromName = 'BigBread.net';
-      $this->SwiftMailer->to       = Configure::read( 'email.redirect_all_email_to' )
-        ? Configure::read( 'email.redirect_all_email_to' )
-        : $invitee['email'];
-      $this->SwiftMailer->cc       = Configure::read( 'email.redirect_all_email_to' )
-        ? Configure::read( 'email.redirect_all_email_to' )
-        : $this->Auth->user( 'email' );
+      $this->SwiftMailer->to       = array( $to_email => $invitee['full_name'] );
+      $this->SwiftMailer->cc       = array( $cc_email => $this->Auth->user( 'full_name' ) );
       
       //set variables to template as usual 
       $this->set( 'invite_code', $invitee['invite_code'] ); 

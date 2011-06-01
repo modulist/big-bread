@@ -35,8 +35,8 @@ class ContactsController extends AppController {
         $this->SwiftMailer->from     = $this->data['Contact']['email']; 
         $this->SwiftMailer->fromName = $this->data['Contact']['name'];
         $this->SwiftMailer->to       = Configure::read( 'email.redirect_all_email_to' )
-        ? Configure::read( 'email.redirect_all_email_to' )
-        : Configure::read( 'email.feedback_recipient' );
+          ? Configure::read( 'email.redirect_all_email_to' )
+          : Configure::read( 'email.feedback_recipient' );
         
         $this->set( 'name', $this->data['Contact']['name'] );
         $this->set( 'company', $this->data['Contact']['company'] );

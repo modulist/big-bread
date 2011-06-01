@@ -84,7 +84,12 @@ class ProposalsController extends AppController {
       array( 'technology_id' => $this->data['Proposal']['technology_id'], )
     );
     $existing_equipment = $this->Proposal->Requestor->Building->equipment( $this->data['Building']['id'], $this->data['Proposal']['technology_id'] );
-    
+
+    # Use redirected email addresses, if warranted
+    $cc_email = Configure::read( 'email.redirect_all_email_to' )
+      ? Configure::read( 'email.redirect_all_email_to' )
+      : $this->Auth->user( 'email' );
+        
     /** 
     $this->SwiftMailer->smtpType = 'tls'; 
     $this->SwiftMailer->smtpHost = 'smtp.gmail.com'; 
@@ -95,12 +100,10 @@ class ProposalsController extends AppController {
     $this->SwiftMailer->sendAs   = 'html'; # TODO: send to 'both'?
     $this->SwiftMailer->from     = $this->Auth->user( 'email' ); 
     $this->SwiftMailer->fromName = $this->Auth->user( 'full_name' );
-    $this->SwiftMailer->to       = Configure::read( 'email.redirect_all_email_to' )
+    $this->SwiftMailer->to       = Configure::read( 'email.redirect_all_mail_to' )
         ? Configure::read( 'email.redirect_all_email_to' )
         : Configure::read( 'email.proposal_recipient' );
-    $this->SwiftMailer->cc       = Configure::read( 'email.redirect_all_email_to' )
-        ? Configure::read( 'email.redirect_all_email_to' )
-        : $this->Auth->user( 'email' );
+    $this->SwiftMailer->cc       = array( $cc_email => $this->Auth->user( 'full_name' ) );
     
     # set variables to template as usual
     $sender             = $this->Auth->user();
