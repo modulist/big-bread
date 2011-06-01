@@ -49,6 +49,10 @@
  *
  */
 
+# TODO: Change this to a bigbread.net address?
+Configure::write( 'email.feedback_recipient', 'wamaull@federatedpower.com' );
+Configure::write( 'email.proposal_recipient', 'wamaull@federatedpower.com' );
+
 if( file_exists( dirname( __FILE__ ) . DS . 'bootstrap.local.php' ) ) {
   include_once( 'bootstrap.local.php' );
 }

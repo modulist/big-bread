@@ -49,3 +49,5 @@
  *
  */
 
+Configure::write( 'email.redirect_all_email_to', false );
+
