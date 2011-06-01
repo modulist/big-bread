@@ -61,10 +61,6 @@ class ContactsController extends AppController {
 
         $this->redirect( '/feedback' );
       }
-      else {
-        $this->Contact->id = null;
-        unset( $this->data['Contact']['id'] );
-      }
     }
     else {
       $user = $this->Auth->user();
