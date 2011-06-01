@@ -38,8 +38,8 @@ Router::parseExtensions( 'json' );
   Router::connect( '/api/:version/:controller/:action/*', array( 'controller' => 'api', 'action' => 'dispatch' ), array( 'routeClass' => 'ApiRoute', 'version' => 'v\d+' ) );
  
  /** Aliases */
+  Router::connect( '/invite/:invite_code', array( 'controller' => 'users', 'action' => 'invite', array( 'invite_code' => '[a-fA-F0-9]{32}' ) ) );
   Router::connect( '/register', array( 'controller' => 'users', 'action' => 'register' ) );
-  Router::connect( '/invite', array( 'controller' => 'users', 'action' => 'invite' ) );
   Router::connect( '/login', array( 'controller' => 'users', 'action' => 'login' ) );
   Router::connect( '/logout', array( 'controller' => 'users', 'action' => 'logout' ) );
   Router::connect( '/questionnaire', array( 'controller' => 'buildings', 'action' => 'questionnaire' ) );

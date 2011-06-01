@@ -3,24 +3,31 @@ USE @DB_NAME@;
 SET foreign_key_checks = 0;
 
 -- Changes to support API usage
+ALTER TABLE user_types
+  ADD selectable boolean NOT NULL DEFAULT 0 AFTER name;
+  
 INSERT INTO user_types( id, code, name, deleted )
 VALUES( UUID(), 'API', 'API Consumer', 0 );
 
 -- Create codes for other user types
 UPDATE user_types
-   SET code = 'OWNER'
+   SET code = 'OWNER',
+       selectable = 1
  WHERE name = 'Homeowner';
 
 UPDATE user_types
-   SET code = 'BUYER'
+   SET code = 'BUYER',
+       selectable = 1
  WHERE name = 'Buyer';
 
 UPDATE user_types
-   SET code = 'REALTR'
+   SET code = 'REALTR',
+       selectable = 1
  WHERE name = 'Realtor';
 
 UPDATE user_types
-   SET code = 'INSPCT'
+   SET code = 'INSPCT',
+       selectable = 1
  WHERE name = 'Inspector';
  
 -- Manage API users separately, but link to users via POC

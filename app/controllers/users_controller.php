@@ -29,10 +29,11 @@ class UsersController extends AppController {
    * method for shared functionality. Handling the invite is slightly
    * specialized and we want to use register() for add/edit functionality.
    *
-   * @param 	$invite_code
    * @access	public
    */
-  public function invite( $invite_code = null ) {
+  public function invite() {
+    $invite_code = $this->params['invite_code'];
+    
     $user = $this->User->find(
       'first',
       array(
@@ -117,7 +118,11 @@ class UsersController extends AppController {
     // Populate the available user types
     $userTypes = $this->User->UserType->find(
       'list',
-      array( 'conditions' => array( 'deleted' => 0 ), 'order' => 'name' )
+      array(
+        'contain'    => false,
+        'conditions' => array( 'selectable' => 1, 'deleted' => 0 ),
+        'order' => 'name'
+      )
     );
     $this->set( compact( 'userTypes' ) );
   }
