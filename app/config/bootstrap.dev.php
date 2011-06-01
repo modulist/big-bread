@@ -49,4 +49,8 @@
  *
  */
 
+# Core overrides
+Configure::write( 'debug', 2 );
+Configure::write( 'Cache.disable', true );
+
 Configure::write( 'email.redirect_all_email_to', 'rob@robwilkerson.org' );

@@ -43,7 +43,7 @@ Router::parseExtensions( 'json' );
   Router::connect( '/login', array( 'controller' => 'users', 'action' => 'login' ) );
   Router::connect( '/logout', array( 'controller' => 'users', 'action' => 'logout' ) );
   Router::connect( '/questionnaire', array( 'controller' => 'buildings', 'action' => 'questionnaire' ) );
-  Router::connect( '/contact', array( 'controller' => 'contacts', 'action' => 'index' ) );
+  Router::connect( '/feedback', array( 'controller' => 'contacts', 'action' => 'index' ) );
   
 /**
  * ...and connect the rest of 'Pages' controller's urls.

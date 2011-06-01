@@ -20,7 +20,7 @@ class ContactsController extends AppController {
    * Displays a contact form and sends the resulting email.
    */
   public function index() {
-    if( $this->RequestHandler->isPost() ) {
+    if( !empty( $this->data ) ) {
       $this->Contact->set( $this->data );
       
       if( $this->Contact->validates() ) {
@@ -33,12 +33,12 @@ class ContactsController extends AppController {
         */
         $this->SwiftMailer->sendAs   = 'text'; 
         $this->SwiftMailer->from     = $this->data['Contact']['email']; 
-        $this->SwiftMailer->fromName = $this->data['Contact']['name'];
+        $this->SwiftMailer->fromName = $this->data['Contact']['full_name'];
         $this->SwiftMailer->to       = Configure::read( 'email.redirect_all_email_to' )
           ? Configure::read( 'email.redirect_all_email_to' )
           : Configure::read( 'email.feedback_recipient' );
         
-        $this->set( 'name', $this->data['Contact']['name'] );
+        $this->set( 'name', $this->data['Contact']['full_name'] );
         $this->set( 'company', $this->data['Contact']['company'] );
         $this->set( 'phone_number', $this->data['Contact']['phone_number'] );
         $this->set( 'zip_code', $this->data['Contact']['zip_code'] );
@@ -46,9 +46,9 @@ class ContactsController extends AppController {
         $this->set( 'message', $this->data['Contact']['message'] );
         
         try { 
-          if( !$this->SwiftMailer->send( 'contact', 'Feedback from from BigBread.net', 'native' ) ) {
+          if( !$this->SwiftMailer->send( 'contact', 'Feedback from from BIGBREAD.net', 'native' ) ) {
             $this->Session->setFlash( 'An error occurred when attempting to send your feeback. Please try again later.', null, null, 'warning' );
-            $this->log( 'Error sending email' );
+            $this->log( 'Error sending email', LOG_ERR );
           }
           else {
             $this->Session->setFlash( 'Your feedback has been sent. Thank you for taking the time to let us know what you think.', null, null, 'success' );
@@ -61,10 +61,16 @@ class ContactsController extends AppController {
         }
       }
     }
+    else {
+      $user = $this->Auth->user();
+      $this->data['Contact'] = $user['User'];
+    }
+    
     $userTypes = $this->UserType->find(
       'list',
       array(
         'fields' => array( 'UserType.name', 'UserType.name' ),
+        'conditions' => array( 'selectable' => 1, 'deleted' => 0 ),
         'order'  => 'UserType.name',
       )
     );

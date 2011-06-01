@@ -3,7 +3,7 @@
 class Contact extends AppModel {
   public $useTable = false;
   public $_schema  = array(
-    'name'         => array( 'type' => 'string', 'length' => 255 ), 
+    'full_name'    => array( 'type' => 'string', 'length' => 255 ), 
     'email'        => array( 'type' => 'string', 'length' => 255 ), 
     'company'      => array( 'type' => 'string', 'length' => 255 ), 
     'phone_number' => array( 'type' => 'string', 'length' => 255 ), 
@@ -13,7 +13,7 @@ class Contact extends AppModel {
   );
   
 	public $validate = array(
-		'name' => array(
+		'full_name' => array(
 			'notempty' => array(
 				'rule'       => 'notEmpty',
 				'message'    => 'Name cannot be empty.',

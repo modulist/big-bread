@@ -31,7 +31,7 @@
       <?php $state = $this->name == 'Buildings' && in_array( $this->action, array( 'questionnaire', 'edit' ) ) ? 'on' : 'off' ?>
       <?php echo $this->Html->image( 'menubtn2_' . $state . '.png', array( 'url' => Router::url( '/questionnaire' ), 'alt' => 'My House', 'title' => 'My House' ) ) ?>
       <?php $state = $this->name == 'Contacts' && $this->action == 'index' ? 'on' : 'off' ?>
-      <?php echo $this->Html->image( 'menubtn3_' . $state . '.png', array( 'url' => Router::url( '/contact' ), 'alt' => 'Feedback', 'title' => 'Feedback' ) ) ?>
+      <?php echo $this->Html->image( 'menubtn3_' . $state . '.png', array( 'url' => Router::url( '/feedback' ), 'alt' => 'Feedback', 'title' => 'Feedback' ) ) ?>
     </div>
   <?php endif; ?>
 </div>

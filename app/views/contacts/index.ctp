@@ -1,6 +1,6 @@
 <?php $this->set( 'title_for_layout', __( 'Feedback', true ) ) ?>
 <?php echo $this->Form->create( 'Contact' ) ?>
-  <?php echo $this->Form->input( 'Contact.name' ) ?>
+  <?php echo $this->Form->input( 'Contact.full_name' ) ?>
   <?php echo $this->Form->input( 'Contact.email' ) ?>
   <?php echo $this->Form->input( 'Contact.company' ) ?>
   <?php echo $this->Form->input( 'Contact.phone_number' ) ?>
