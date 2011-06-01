@@ -34,7 +34,7 @@
  */
 class AppController extends Controller {
 	public $helpers    = array ( 'Html', 'Number', 'Session', 'Text', 'Time' );
-	public $components = array ( 'Auth', 'RequestHandler'/** , 'Security' */, 'Session' );
+	public $components = array ( 'Auth', 'RequestHandler', 'Session', 'DebugKit.Toolbar' );
   
 	/**
 	 * CALLBACKS
