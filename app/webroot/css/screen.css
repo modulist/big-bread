@@ -178,7 +178,8 @@ body.onecolumn #content {background: #FFFFFF; min-height:400px; padding: 50px 60
 .itemprice ul, #sponser ul, #questionnaire_act ul, #terms ul{ list-style:none;}
 #terms li{ margin: 10px 10px 10px 25px;}
 .item ul{ list-style:none; margin:0 0 0 50px}
-.item li {float:left;  min-width:160px; padding: 10px 0;}
+.item li {float:left;  min-width:160px; padding: 10px 0; margin-right: 15px; }
+.item li.last { margin-right: 0; }
 .item p {margin-left: 50px;}
 #sponser {
 	background: #F9FAF4;

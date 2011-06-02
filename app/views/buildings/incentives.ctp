@@ -41,14 +41,11 @@
               <?php } else { ?>
                 <?php foreach( $details['Technology']['Product'] as $product ) { ?>
                   <?php # Display the product if it's associated with a building ?>
-                  <?php if( !empty( $product['BuildingProduct'] ) ) { ?>
+                  <?php foreach( $product['BuildingProduct'] as $existing_equipment ) { ?>
                     <ul>
                       <li><?php __( 'Make' ) ?><br /><div><?php echo h( $product['make'] ) ?></div></li>
                       <li><?php __( 'Model' ) ?><br /><div><?php echo h( $product['model'] ) ?></div></li>
-                      <li><?php __( 'Serial Number' ) ?><br />
-                        <?php foreach( $product['BuildingProduct'] as $building_product ) { ?>
-                          <div><?php echo h( $building_product['serial_number'] ) ?></div>
-                        <?php } ?>
+                      <li><?php __( 'Serial Number' ) ?><br /><div><?php echo h( $existing_equipment['serial_number'] ) ?></div>
                       </li>
                     </ul>
                     <div class="clear"></div>
