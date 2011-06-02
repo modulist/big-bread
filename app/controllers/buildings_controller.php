@@ -33,9 +33,20 @@ class BuildingsController extends AppController {
    * @param   $section
    * @return	type		description
    */
-  public function questionnaire( $building_id = 'new', $anchor = null ) {
+  public function questionnaire( $building_id = null, $anchor = null ) {
     $this->helpers[] = 'Form';
     $this->layout    = 'sidebar';
+
+    # All of the addresses associated with a given user (sidebar display)
+    $addresses = $this->Building->Client->buildings( $this->Auth->user( 'id' ) );
+    
+    # Show homeowners the building the were most recently associated
+    # with by default. Other user types get a blank questionnaire.
+    if( $this->Auth->user( 'user_type_id' ) == UserType::OWNER && empty( $building_id ) ) {
+      if( !empty( $addresses ) ) {
+        $building_id = $addresses[0]['Building']['id'];
+      }
+    }
     
     # Empty the default building_id placeholder so that later processing
     # doesn't think it's a real value.
@@ -191,9 +202,6 @@ class BuildingsController extends AppController {
       # can be pre-populated.
       $this->data = $building;
     }
-    
-    # All of the addresses associated with a given user (sidebar display)
-    $addresses = $this->Building->Client->buildings( $this->Auth->user( 'id' ) );
     
     # Pre-populate the current user data in the proper association
     if( empty( $this->data ) && !User::admin( $this->Auth->user( 'id' ) ) ) {
