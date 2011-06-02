@@ -26,6 +26,21 @@ class ProposalsController extends AppController {
     $technology_incentive_id = empty( $this->data['TechnologyIncentive']['id'] )
       ? $technology_incentive_id
       : $this->data['TechnologyIncentive']['id'];
+    $requestor = $this->Auth->user();
+    
+    # If the auth user is an admin, the requestor is really the
+    # building's "client".
+    if( User::admin( $this->Auth->user( 'id' ) ) ) {
+      $client = $this->Proposal->Requestor->Building->find(
+        'first',
+        array(
+          'contain'    => array( 'Client' ),
+          'conditions' => array( 'Building.id' => $building_id )
+        )
+      );
+      
+      $requestor['User'] = $client['Client'];
+    }
     
     $tech_incentive = $this->Proposal->Requestor->Building->Address->ZipCode->Incentive->TechnologyIncentive->find(
       'first',
@@ -41,17 +56,19 @@ class ProposalsController extends AppController {
       
       # Set data points
       $this->data['Requestor']['phone_number'] = $this->Format->phone_number( $this->data['Requestor']['phone_number'] );
-      $this->data['Proposal']['user_id']       = $this->Auth->user( 'id' );
+      $this->data['Proposal']['user_id']       = $requestor['User']['id'];
       $this->data['Proposal']['technology_id'] = $tech_incentive['Technology']['id'];
       $this->data['Proposal']['incentive_id']  = $tech_incentive['Incentive']['id'];
       
-      $this->Proposal->Requestor->id = $this->Auth->user( 'id' );
+      $this->Proposal->Requestor->id = $requestor['User']['id'];
       if( $this->Proposal->Requestor->saveField( 'phone_number', $this->data['Requestor']['phone_number'] /** , true */ ) ) {  # Validating creates display issues
-        # Update the auth user info
-        $this->Session->write( 'Auth.User.phone_number', $this->data['Requestor']['phone_number'] );
+        # Update the auth user info (if auth user is requestor)
+        if( $requestor['User']['id'] == $this->Auth->user( 'id' ) ) {
+          $this->update_auth_session( $this->Proposal->Requestor );
+        }
         
         if( $this->Proposal->save( $this->data ) ) {
-          return $this->setAction( 'send_request' );
+          return $this->setAction( 'send_request', $requestor );
         }
       }
       else {
@@ -61,7 +78,7 @@ class ProposalsController extends AppController {
     }
     else {
       # Set the phone number based on auth data if nothing was passed
-      $this->data['Requestor']['phone_number'] = $this->Format->phone_number( $this->Auth->user( 'phone_number' ) );
+      $this->data['Requestor']['phone_number'] = $this->Format->phone_number( $requestor['User']['phone_number'] );
     }
     
     $this->data['Building']['id']            = $building_id;
@@ -73,12 +90,14 @@ class ProposalsController extends AppController {
   /**
    * Sends a proposal request
    *
+   * @param   $requestor  Requesting user data array
    * @access	public
    */
-  public function send_request() {
+  public function send_request( $requestor = null ) {
     $this->helpers[] = 'FormatMask.Format';
     
-    $address = $this->Proposal->Requestor->Building->address( $this->data['Building']['id'] );
+    $requestor   = empty( $requestor ) ? $this->Auth->user() : $requestor;
+    $address    = $this->Proposal->Requestor->Building->address( $this->data['Building']['id'] );
     $incentives = $this->Proposal->Requestor->Building->incentives(
       $this->data['Building']['id'],
       array( 'technology_id' => $this->data['Proposal']['technology_id'], )
@@ -88,7 +107,7 @@ class ProposalsController extends AppController {
     # Use redirected email addresses, if warranted
     $cc_email = Configure::read( 'email.redirect_all_email_to' )
       ? Configure::read( 'email.redirect_all_email_to' )
-      : $this->Auth->user( 'email' );
+      : $requestor['User']['email'];
         
     /** 
     $this->SwiftMailer->smtpType = 'tls'; 
@@ -98,15 +117,15 @@ class ProposalsController extends AppController {
     $this->SwiftMailer->smtpPassword = 'hard_to_guess'; 
     */
     $this->SwiftMailer->sendAs   = 'html'; # TODO: send to 'both'?
-    $this->SwiftMailer->from     = $this->Auth->user( 'email' ); 
-    $this->SwiftMailer->fromName = $this->Auth->user( 'full_name' );
+    $this->SwiftMailer->from     = $requestor['User']['email']; 
+    $this->SwiftMailer->fromName = $requestor['User']['full_name'];
     $this->SwiftMailer->to       = Configure::read( 'email.redirect_all_mail_to' )
         ? Configure::read( 'email.redirect_all_email_to' )
         : Configure::read( 'email.proposal_recipient' );
-    $this->SwiftMailer->cc       = array( $cc_email => $this->Auth->user( 'full_name' ) );
+    $this->SwiftMailer->cc       = array( $cc_email => $requestor['User']['full_name'] );
     
     # set variables to template as usual
-    $sender             = $this->Auth->user();
+    $sender             = $requestor;
     $rebate             = array_shift( Set::extract( '/TechnologyIncentive[id=' . $this->data['TechnologyIncentive']['id'] . ']/..', $incentives ) );
     $related_incentives = $incentives;
     $proposal           = $this->data['Proposal'];
@@ -116,7 +135,7 @@ class ProposalsController extends AppController {
     $this->set( compact( 'address', 'existing_equipment', 'proposal', 'rebate', 'related_incentives', 'sender', 'technology', 'technology_id' ) );
      
     try {
-      if( !$this->SwiftMailer->send( 'proposal_request', $this->Auth->user( 'full_name' ) . ' requests a proposal from a qualified contractor', 'native' ) ) {
+      if( !$this->SwiftMailer->send( 'proposal_request', $requestor['User']['full_name'] . ' requests a proposal from a qualified contractor', 'native' ) ) {
         foreach($this->SwiftMailer->postErrors as $failed_send_to) { 
           $this->log( 'Failed to send request for proposal to ' . $failed_send_to ); 
         }

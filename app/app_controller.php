@@ -147,16 +147,19 @@ class AppController extends Controller {
    * Writes authenticated user info to the config so that it can be
    * easily accessed anywhere.
    *
+   * @param  $user_model   User model object. Defaults to $this->User.
    * @return boolean
    */
-  protected function update_auth_session() {
+  protected function update_auth_session( $user_model = null ) {
+    $model = empty( $user_model ) ? $this->User : $user_model;
+    
     if( $this->Auth->user() ) {
-      $user = $this->User->find(
+      $user = $model->find(
         'first',
         array(
           'recursive'  => 2, # TODO: Why is this needed? Without recursive = 2, the UserType isn't included.
           'contain'    => array( 'UserType' ),
-          'conditions' => array( 'User.id' => $this->Auth->User( 'id' ) ),
+          'conditions' => array( $model->alias . '.id' => $this->Auth->User( 'id' ) ),
         )
       );
       
