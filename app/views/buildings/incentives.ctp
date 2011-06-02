@@ -45,8 +45,7 @@
                     <ul>
                       <li><?php __( 'Make' ) ?><br /><div><?php echo h( $product['make'] ) ?></div></li>
                       <li><?php __( 'Model' ) ?><br /><div><?php echo h( $product['model'] ) ?></div></li>
-                      <li><?php __( 'Serial Number' ) ?><br /><div><?php echo h( $existing_equipment['serial_number'] ) ?></div>
-                      </li>
+                      <li class="last"><?php __( 'Serial Number' ) ?><br /><div><?php echo h( $existing_equipment['serial_number'] ) ?></div></li>
                     </ul>
                     <div class="clear"></div>
                     <p>Product recall, safety &amp; warranty information coming soon.</p>

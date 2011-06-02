@@ -144,7 +144,8 @@
         </thead>
         <tbody>
           <?php if( !empty( $this->data['BuildingProduct'] ) ): ?>
-            <?php foreach( $this->data['BuildingProduct'] as $building_product ): ?>
+            <?php $equipment = Set::sort( $this->data['BuildingProduct'], '{n}.Product.Technology.name', 'asc' ) ?>
+            <?php foreach( $equipment as $building_product ): ?>
               <tr>
                 <td><?php echo h( $building_product['Product']['Technology']['name'] ) ?></td>
                 <td><?php echo h( $building_product['Product']['make'] ) ?></td>
