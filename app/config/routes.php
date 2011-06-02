@@ -49,3 +49,9 @@ Router::parseExtensions( 'json' );
  * ...and connect the rest of 'Pages' controller's urls.
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
+
+/**
+ * Variants that should never get used...but might.
+ */
+  Router::connect( '/users/invite/:invite_code', array( 'controller' => 'users', 'action' => 'invite', array( 'invite_code' => '[a-fA-F0-9]{32}' ) ) );
+  

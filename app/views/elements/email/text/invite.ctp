@@ -4,4 +4,4 @@
 
 <?php __( 'We\'re looking forward to your visit.' ) ?>
 
-<?php echo $this->Html->url( array( 'controller' => 'users', 'action' => 'invite', $invite_code ), true ) ?>
+<?php echo $this->Html->url( '/invite/' . $invite_code, true ) ?>
