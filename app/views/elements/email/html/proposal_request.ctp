@@ -161,7 +161,7 @@ switch( $proposal['urgency'] ) {
       <?php endif; ?>
     </div>
     <div><?php echo $incentive['Incentive']['name'] . ' (' . $incentive['Incentive']['incentive_id'] . ')' ?></div>
-    <div><strong>Expires:</strong> <?php echo empty( $rebate['Incentive']['expiration_date'] ) ? __( 'When Funds Exhausted', true ) : date( 'm/d/Y', strtotime( $rebate['Incentive']['expiration_date'] ) ) ?></div>
+    <div><strong>Expires:</strong> <?php echo empty( $incentive['Incentive']['expiration_date'] ) ? __( 'When Funds Exhausted', true ) : date( 'm/d/Y', strtotime( $incentive['Incentive']['expiration_date'] ) ) ?></div>
     <div>
       <div><strong><?php __( 'Energy Source' ) ?></strong></div>
       <?php if( !empty( $incentive['EnergySource'] ) ): ?>
