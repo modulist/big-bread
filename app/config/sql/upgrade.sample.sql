@@ -2,55 +2,85 @@ USE @DB_NAME@;
 
 SET foreign_key_checks = 0;
 
--- Changes to support API usage
-ALTER TABLE user_types
-  ADD selectable boolean NOT NULL DEFAULT 0 AFTER name;
-  
-INSERT INTO user_types( id, code, name, deleted )
-VALUES( UUID(), 'API', 'API Consumer', 0 );
-
--- Create codes for other user types
-UPDATE user_types
-   SET code = 'OWNER',
-       selectable = 1
- WHERE name = 'Homeowner';
-
-UPDATE user_types
-   SET code = 'BUYER',
-       selectable = 1
- WHERE name = 'Buyer';
-
-UPDATE user_types
-   SET code = 'REALTR',
-       selectable = 1
- WHERE name = 'Realtor';
-
-UPDATE user_types
-   SET code = 'INSPCT',
-       selectable = 1
- WHERE name = 'Inspector';
- 
--- Manage API users separately, but link to users via POC
-DROP TABLE IF EXISTS api_users;
-CREATE TABLE api_users(
+-- Store equipment manufacturers with technology links.
+DROP TABLE IF EXISTS equipment_manufacturers;
+CREATE TABLE equipment_manufacturers(
   id            char(36)      NOT NULL,
-  user_id       char(36)      NOT NULL, -- point of contact (poc)
   name          varchar(255)  NOT NULL, -- a pretty, non-personal display name
   description   text          NULL,     -- free form field for additional info (probably admin)
-  api_key       char(32)      NOT NULL,
   created       datetime      NOT NULL,
   modified      datetime      NOT NULL,
   
-  PRIMARY KEY( id ),
-  CONSTRAINT  fk__api_users__users FOREIGN KEY( user_id )
-    REFERENCES users( id )
-    ON UPDATE CASCADE
-    ON DELETE CASCADE
+  PRIMARY KEY( id )
 ) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS equipment_manufacturers_technologies;
+CREATE TABLE equipment_manufacturers(
+  equipment_manufacturer_id   char(36)  NOT NULL,
+  technology_id               char(36)  NOT NULL,
+  created                     datetime      NOT NULL,
+  modified                    datetime      NOT NULL,
   
--- Original tables no longer necessary
-DROP TABLE partner_domains;
-DROP TABLE partners;
+  CONSTRAINT uix__equipment_manufacturer_id__technology_id
+    UNIQUE INDEX( equipment_manufacturer_id, technology_id ),
+  CONSTRAINT fk__equipment_manufacturers_technologies__equipment_manufacturers FOREIGN KEY( equipment_manufacturer_id )
+    REFERENCES equipment_manufacturers( id )
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,  
+  CONSTRAINT fk__equipment_manufacturers_technologies__technologies FOREIGN KEY( technology_id )
+    REFERENCES technologies( id )
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+) ENGINE=InnoDB;
+
+SET @ac = 'c48c6d7a-6f7f-11e0-be41-80593d270cc9';
+SET @hp = 'c48c7874-6f7f-11e0-be41-80593d270cc9';
+SET @wh = 'c48c9944-6f7f-11e0-be41-80593d270cc9';
+
+SET @uuid = UUID();
+INSERT INTO equipment_manufacturers( id, name, created, modified )
+VALUES ( @uuid, 'AAON, INC.', NOW(), NOW() );
+
+INSERT INTO equipment_manufacturers_technologies
+VALUES
+  ( @uuid, @ac, NOW(), NOW() )
+  ( @uuid, @hp, NOW(), NOW() );
+--
+SET @uuid = UUID();
+INSERT INTO equipment_manufacturers( id, name, created, modified )
+VALUES ( @uuid, 'AEROSYS, INC.', NOW(), NOW() );
+
+INSERT INTO equipment_manufacturers_technologies
+VALUES
+  ( @uuid, @ac, NOW(), NOW() );
+-- 
+SET @uuid = UUID();
+INSERT INTO equipment_manufacturers( id, name, created, modified )
+VALUES ( @uuid, 'AIR-CON INTERNATIONAL, INC.', NOW(), NOW() );
+
+INSERT INTO equipment_manufacturers_technologies
+VALUES
+  ( @uuid, @ac, NOW(), NOW() )
+  ( @uuid, @hp, NOW(), NOW() );
+-- 
+SET @uuid = UUID();
+INSERT INTO equipment_manufacturers( id, name, created, modified )
+VALUES ( @uuid, 'AIRE-FLO', NOW(), NOW() );
+
+INSERT INTO equipment_manufacturers_technologies
+VALUES
+  ( @uuid, @ac, NOW(), NOW() )
+  ( @uuid, @hp, NOW(), NOW() );
+-- 
+SET @uuid = UUID();
+INSERT INTO equipment_manufacturers( id, name, created, modified )
+VALUES ( @uuid, 'AIREASE', NOW(), NOW() );
+
+INSERT INTO equipment_manufacturers_technologies
+VALUES
+  ( @uuid, @ac, NOW(), NOW() )
+  ( @uuid, @hp, NOW(), NOW() );
+
 
 -- New equipment data
 ALTER TABLE building_products
