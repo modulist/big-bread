@@ -404,6 +404,7 @@ form .input.phonenumber .number { width: 4em; }
 form small {
   display: block;
 }
+.hasDatepicker { width: 225px; }
 
 /* ============================= Join ======================= */
 #join {background-color: #C2D89A;}

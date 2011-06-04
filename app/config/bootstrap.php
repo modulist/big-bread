@@ -49,6 +49,19 @@
  *
  */
 
+# DATE/TIME FORMATTING CONSTANTS
+define( 'DATE_FORMAT_SHORT', 'm/d/Y' );
+define( 'DATE_FORMAT_LONG', 'F j, Y' );
+define( 'DATE_FORMAT_MYSQL', 'Y-m-d' );
+
+define( 'TIME_FORMAT', 'g:i a' );
+define( 'TIME_FORMAT_MYSQL', 'H:i:s' );
+
+define( 'DATETIME_FORMAT_SHORT', DATE_FORMAT_SHORT . ' ' . TIME_FORMAT );
+define( 'DATETIME_FORMAT_LONG', DATE_FORMAT_LONG . ' ' . TIME_FORMAT );
+define( 'DATETIME_FORMAT_MYSQL', DATE_FORMAT_MYSQL . ' ' . TIME_FORMAT_MYSQL );
+
+
 # TODO: Change this to a bigbread.net address?
 Configure::write( 'email.feedback_recipient', 'wamaull@federatedpower.com' );
 Configure::write( 'email.proposal_recipient', 'wamaull@federatedpower.com' );

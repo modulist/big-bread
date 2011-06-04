@@ -582,6 +582,11 @@ class BuildingsController extends AppController {
         $this->data['BuildingProduct'][$i]['product_id']  = $product_id;
         
         if( !empty( $building_id ) ) {
+          # Try to clean up the purchase price value, if it exists
+          if( !empty( $this->data['BuildingProduct'][$i]['purchase_price'] ) ) {
+            $price = $this->data['BuildingProduct'][$i]['purchase_price'];
+            $this->data['BuildingProduct'][$i]['purchase_price'] = money_format( '%.2i', $price );
+          }
           $this->data['BuildingProduct'][$i]['building_id']  = $building_id;
         } 
       }

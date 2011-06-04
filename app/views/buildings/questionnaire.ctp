@@ -181,7 +181,14 @@
               <?php echo $this->Form->input( 'Product.' . $i . '.make', array( 'default' => $building_product['Product']['make'] ) ) # TODO: Make this an autocomplete field ?>
               <?php echo $this->Form->input( 'Product.' . $i . '.model', array( 'default' => $building_product['Product']['model'] ) ) # TODO: Make this an autocomplete field ?>
               <?php echo $this->Form->input( 'Product.' . $i . '.energy_source_id', array( 'div' => 'input select', 'options' => $energy_source_options, 'selected' => $building_product['Product']['energy_source_id'] ) ) ?>
-              <?php echo $this->Form->input( 'BuildingProduct.' . $i . '.serial_number', array( 'default' => $building_product['serial_number'] ) ) ?>
+              <?php echo $this->Form->input( 'BuildingProduct.' . $i . '.serial_number', array( 'value' => $building_product['serial_number'] ) ) ?>
+              <?php echo $this->Form->input( 'BuildingProduct.' . $i . '.purchase_price', array( 'label' => 'Purchase Price ($)', 'value' => $building_product['purchase_price'], 'placeholder' => '1200.00', 'after' => '<small>Provide the purchase price net of manufacturer and contractor discounts.  Do not deduct utility rebates and tax credits from the total.</small>' ) ) ?>
+              <div class="input datetime">
+                <?php echo $this->Form->input(
+                  'BuildingProduct.' . $i . '.service_in.date'
+                  , array( 'type' => 'text', 'label' => 'Install Date', 'value' => !empty( $building_product['service_in'] ) ? date( DATE_FORMAT_LONG, strtotime( $building_product['service_in'] ) ) : '', 'div' => false, 'class' => 'date', 'placeholder' => date( DATE_FORMAT_LONG ) )
+                ) ?>
+              </div>
               <?php echo $this->Form->input( 'BuildingProduct.' . $i . '.notes', array( 'default' => $building_product['notes'] ) ) ?>
             </div>
           <?php endforeach; ?>
@@ -196,6 +203,13 @@
           <?php echo $this->Form->input( 'Product.' . $i . '.model' ) # TODO: Make this an autocomplete field ?>
           <?php echo $this->Form->input( 'Product.' . $i . '.energy_source_id', array( 'empty' => 'Select equipment type', 'options' => array(), 'div' => 'input select energy-source', 'disabled' => 'disabled' ) ) ?>
           <?php echo $this->Form->input( 'BuildingProduct.' . $i . '.serial_number' ) ?>
+          <?php echo $this->Form->input( 'BuildingProduct.' . $i . '.purchase_price', array( 'label' => 'Purchase Price ($)', 'placeholder' => '1200.00', 'after' => '<small>Provide the purchase price net of manufacturer and contractor discounts.  Do not deduct utility rebates and tax credits from the total.</small>' ) ) ?>
+          <div class="input datetime">
+            <?php echo $this->Form->input(
+              'BuildingProduct.' . $i . '.service_in.date'
+              , array( 'type' => 'text', 'label' => 'Install Date', 'div' => false, 'class' => 'date', 'placeholder' => date( DATE_FORMAT_LONG ) )
+            ) ?>
+          </div>
           <?php echo $this->Form->input( 'BuildingProduct.' . $i . '.notes' ) ?>
         </div>
          

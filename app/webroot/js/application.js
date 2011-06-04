@@ -56,7 +56,13 @@ $(document).ready( function() {
         $(this).val().length == $(this).attr( 'maxlength' ) ? $(this).next( 'input' ).select() : null;
       }
     });
-    
+  
+  /**
+   * Set the datepicker date format, where applicable.
+   */
+  if( $( '.date' ).length ) {
+    $( '.date' ).datepicker({ dateFormat: 'MM d, yy' });
+  }
 });
 
 /**

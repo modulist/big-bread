@@ -24,5 +24,29 @@ class BuildingProduct extends AppModel {
         'last'       => true,
 			),
 		),
+    'purchase_price' => array(
+      'cost' => array(
+        'rule' => array( 'decimal', 2 ),
+				'message'    => 'Invalid amount.',
+        'allowEmpty' => true,
+        'required'   => false,
+      ),
+    ),
+    'service_in' => array(
+			'datetime'     => array(
+				'rule'       => 'datetime',
+				'message'    => 'This is not a valid date.',
+        'allowEmpty' => true,
+        'required'   => false,
+      ),
+    ),
+    'service_out' => array(
+			'datetime'     => array(
+				'rule'       => 'datetime',
+				'message'    => 'This is not a valid date.',
+        'allowEmpty' => true,
+        'required'   => false,
+      ),
+    ),
   );
 }

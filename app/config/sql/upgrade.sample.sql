@@ -52,4 +52,10 @@ CREATE TABLE api_users(
 DROP TABLE partner_domains;
 DROP TABLE partners;
 
+-- New equipment data
+ALTER TABLE building_products
+  ADD purchase_price float(10,2) NULL AFTER serial_number,
+  ADD created datetime NULL,
+  ADD modified datetime NULL;
+
 SET foreign_key_checks = 1;
