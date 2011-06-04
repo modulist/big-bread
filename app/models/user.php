@@ -97,12 +97,6 @@ class User extends AppModel {
 		),
 	);
   
-  # TODO: Replace use of these with UserType constants
-  const TYPE_HOMEOWNER = '4d71115d-0f74-43c5-93e9-2f8a3b196446';
-  const TYPE_HOMEBUYER = '4d6d9699-a7a4-42a1-855e-4f606e891b5e';
-  const TYPE_INSPECTOR = '4d6d9699-5088-48db-9f56-47ea6e891b5e';
-  const TYPE_REALTOR   = '4d6d9699-f19c-41e3-a723-45ae6e891b5e';
-  
   /**
    * Constructor.
    *
@@ -327,5 +321,18 @@ class User extends AppModel {
    */
   static public function admin( $user_id ) {
     return ClassRegistry::init( 'User' )->field( 'User.admin', array( 'User.id' => $user_id ) );
+  }
+  
+  /**
+   * Determines whether a given user holds a "client" role.
+   *
+   * @param 	$user_id
+   * @return	boolean
+   * @access	public
+   */
+  static public function client( $user_id ) {
+    $user_type_id = ClassRegistry::init( 'User' )->field( 'User.user_type_id', array( 'User.id' => $user_id ) );
+    
+    return in_array( $user_type_id, array( UserType::OWNER, UserType::BUYER ) );
   }
 }

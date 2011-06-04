@@ -16,7 +16,7 @@
   <div id="info">
     <?php if( $this->Session->read( 'Auth.User.show_questionnaire_instructions' ) ): ?>
       <div class="flash welcome">
-        <?php if( $is_client ): ?>
+        <?php if( User::client( $this->Session->read( 'Auth.User.id' ) ) ): ?>
           <p class="first"><?php printf( __(
             'To see how you can save $100s or even $1,000s just add your address and go
             to "Ways to Save". If you want even more in savings, let us know more about
@@ -52,13 +52,13 @@
         <div id="general" class="section<?php echo $anchor == 'general' ? ' active' : '' ?>">
           <h1 id="infohead"><?php __( 'General Information' ) ?></h1>
           
-          <fieldset<?php echo !User::admin( $this->Session->read( 'Auth.User.id' ) ) && $this->Session->read( 'Auth.UserType.id' ) == User::TYPE_HOMEOWNER ? ' class="hidden"' : false ?>>
+          <fieldset<?php echo !User::admin( $this->Session->read( 'Auth.User.id' ) ) && $this->Session->read( 'Auth.UserType.id' ) == UserType::OWNER ? ' class="hidden"' : false ?>>
             <?php echo $this->Form->input( 'Client.id' ) ?>
             <?php echo $this->Form->input( 'Client.first_name', array( 'label' => __( 'Client First Name', true ) ) ) ?>
             <?php echo $this->Form->input( 'Client.last_name', array( 'label' => __( 'Client Last Name', true ) ) ) ?>
             <?php echo $this->Form->input( 'Client.email', array( 'label' => __( 'Client Email', true ) ) ) ?>
             <?php echo $this->Form->input( 'Client.phone_number', array( 'label' => __( 'Client Phone Number', true ) ) ) ?>
-            <?php echo $this->Form->input( 'Client.user_type_id', array( 'type' => 'radio', 'legend' => false, 'default' => User::TYPE_HOMEOWNER ) ) ?>
+            <?php echo $this->Form->input( 'Client.user_type_id', array( 'type' => 'radio', 'legend' => false, 'default' => UserType::OWNER ) ) ?>
           </fieldset>
           
           <fieldset>
@@ -68,11 +68,11 @@
             <?php echo $this->Form->input( 'Address.zip_code', array( 'placeholder' => 'e.g. 20739', 'after' => sprintf( '<small>%s</small>', __( 'We\'ll find your city, state from the zip code.', true ) ) ) ) ?>
           </fieldset>
           
-          <fieldset<?php echo !User::admin( $this->Session->read( 'Auth.User.id' ) ) && $this->Session->read( 'Auth.UserType.id' ) == User::TYPE_HOMEOWNER ? ' class="hidden"' : false ?>>
+          <fieldset<?php echo !User::admin( $this->Session->read( 'Auth.User.id' ) ) && $this->Session->read( 'Auth.UserType.id' ) == UserType::OWNER ? ' class="hidden"' : false ?>>
             <?php echo $this->element( '../buildings/_realtor_inputs' ) ?>
           </fieldset>
           
-          <fieldset<?php echo !User::admin( $this->Session->read( 'Auth.User.id' ) ) && $this->Session->read( 'Auth.UserType.id' ) == User::TYPE_HOMEOWNER ? ' class="hidden"' : false ?>>
+          <fieldset<?php echo !User::admin( $this->Session->read( 'Auth.User.id' ) ) && $this->Session->read( 'Auth.UserType.id' ) == UserType::OWNER ? ' class="hidden"' : false ?>>
             <?php echo $this->element( '../buildings/_inspector_inputs' ) ?>
           </fieldset>
         </div> <!-- #general -->

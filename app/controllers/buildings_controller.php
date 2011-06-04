@@ -217,7 +217,6 @@ class BuildingsController extends AppController {
     $building_id = empty( $building_id ) ? 'new' : $building_id;
     
     /** Prepare the view */
-    $is_client = isset( $this->data['Client'] ) && $this->data['Client']['id'] == $this->Auth->user( 'id' );
     $middle_steps = array_slice( $steps, 1, count( $steps ) - 2 );
     $show_rebate_link = in_array( $anchor, $middle_steps );
     $this->populate_lookups();
