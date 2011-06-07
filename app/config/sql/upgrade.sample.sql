@@ -2,6 +2,38 @@ USE @DB_NAME@;
 
 SET foreign_key_checks = 0;
 
+-- Changes to support API usage
+ALTER TABLE user_types
+  ADD selectable boolean NOT NULL DEFAULT 0 AFTER name;
+  
+INSERT INTO user_types( id, code, name, deleted )
+VALUES( UUID(), 'API', 'API Consumer', 0 );
+
+-- Create codes for other user types
+UPDATE user_types
+   SET code = 'OWNER',
+       selectable = 1
+ WHERE name = 'Homeowner';
+
+UPDATE user_types
+   SET code = 'BUYER',
+       selectable = 1
+ WHERE name = 'Buyer';
+
+UPDATE user_types
+   SET code = 'REALTR',
+       selectable = 1
+ WHERE name = 'Realtor';
+
+UPDATE user_types
+   SET code = 'INSPCT',
+       selectable = 1
+ WHERE name = 'Inspector';
+
+-- Original tables no longer necessary
+DROP TABLE partner_domains;
+DROP TABLE partners;
+
 -- New equipment data
 ALTER TABLE building_products
   ADD purchase_price float(10,2) NULL AFTER serial_number,
