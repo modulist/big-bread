@@ -24,15 +24,15 @@ DROP TABLE IF EXISTS equipment_manufacturers_technologies;
 CREATE TABLE equipment_manufacturers_technologies(
   equipment_manufacturer_id   char(36)  NOT NULL,
   technology_id               char(36)  NOT NULL,
-  created                     datetime      NOT NULL,
-  modified                    datetime      NOT NULL,
+  created                     datetime  NOT NULL,
+  modified                    datetime  NOT NULL,
   
   CONSTRAINT uix__equipment_manufacturer_id__technology_id
     UNIQUE INDEX( equipment_manufacturer_id, technology_id ),
   CONSTRAINT fk__equip_manuf_tech__equipment_manufacturers FOREIGN KEY( equipment_manufacturer_id )
     REFERENCES equipment_manufacturers( id )
     ON UPDATE CASCADE
-    ON DELETE CASCADE,  
+    ON DELETE CASCADE,
   CONSTRAINT fk__equip_manuf_tech__technologies FOREIGN KEY( technology_id )
     REFERENCES technologies( id )
     ON UPDATE CASCADE
@@ -1063,5 +1063,10 @@ INSERT INTO equipment_manufacturers( id, name, created, modified )
 VALUES( 'f6fd96f0-bf06-4e9b-9c2d-784423cd3367','XCL ENERGY SAVER',NOW(),NOW() );
 INSERT INTO equipment_manufacturers_technologies( equipment_manufacturer_id, technology_id, created, modified ) 
 VALUES( 'f6fd96f0-bf06-4e9b-9c2d-784423cd3367', 'c48c9944-6f7f-11e0-be41-80593d270cc9', NOW(), NOW() );
+
+-- Changed my mind (and didn't want to change all the insert statements)
+ALTER TABLE equipment_manufacturers_technologies
+  DROP created,
+  DROP modified;
 
 SET foreign_key_checks = 1;
