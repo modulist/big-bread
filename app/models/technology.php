@@ -28,4 +28,13 @@ class Technology extends AppModel {
       'className'  => 'TechnologyGroup',
     ),
   );
+	public $hasAndBelongsToMany = array(
+		'EquipmentManufacturer' => array(
+			'className' => 'EquipmentManufacturer',
+			'joinTable' => 'equipment_manufacturers_technologies',
+			'foreignKey' => 'technology_id',
+			'associationForeignKey' => 'equipment_manufacturer_id',
+			'unique' => true,
+		),
+	);
 }

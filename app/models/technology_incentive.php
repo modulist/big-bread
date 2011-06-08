@@ -73,8 +73,9 @@ class TechnologyIncentive extends AppModel {
     $contain = array(
       'EnergySource',
       'Incentive' => array(
-        'PublicNote',
         'AdditionalIncentiveNote',
+        'IncentiveType',
+        'PublicNote',
       ),
       'IncentiveAmountType',
       'TechnologyOption' => array(
@@ -173,6 +174,8 @@ class TechnologyIncentive extends AppModel {
         ),
       )
     );
+    
+    new PHPDump( $incentives ); exit;
     
     return $incentives;
   }

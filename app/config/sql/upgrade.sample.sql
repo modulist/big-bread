@@ -34,6 +34,14 @@ UPDATE user_types
 DROP TABLE partner_domains;
 DROP TABLE partners;
 
+-- Identify which manufacturer is offering a manufacturer rebate
+ALTER TABLE incentive
+  ADD equipment_manufacturer_id char(36) NULL AFTER incentive_type_id,
+  ADD CONSTRAINT fk__incentive__equipment_manufacturers FOREIGN KEY( equipment_manufacturer_id )
+    REFERENCES equipment_manufacturers( id )
+    ON UPDATE CASCADE
+    ON DELETE SET NULL;
+
 -- New equipment data
 ALTER TABLE building_products
   ADD purchase_price float(10,2) NULL AFTER serial_number,

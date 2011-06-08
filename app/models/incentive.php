@@ -4,6 +4,10 @@ class Incentive extends AppModel {
 	public $name       = 'Incentive';
 	public $useTable   = 'incentive';
   
+  public $belongsTo = array(
+    'IncentiveType',
+    'EquipmentManufacturer',
+  );
   public $hasMany = array(
     'IncentiveNote' => array(
       'className'  => 'IncentiveNote',
@@ -26,7 +30,6 @@ class Incentive extends AppModel {
 			'foreignKey' => 'incentive_id',
 		)
   );
-  
   public $hasAndBelongsToMany = array(
     'ZipCode' => array(
       'className' => 'ZipCode',
