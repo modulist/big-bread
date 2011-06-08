@@ -38,18 +38,63 @@ class TechnologyIncentive extends AppModel {
   );
   
   /**
+   * Retrieves a specific technology incentive by its identifier along
+   * with all of its relevant, associated data
+   *
+   * @param 	$id
+   * @return	array
+   * @access	public
+   */
+  public function get( $id ) {
+    return $this->find(
+      'first',
+      array(
+        'contain' => array(
+          'EnergySource',
+          'Incentive' => array(
+            'AdditionalIncentiveNote',
+            'IncentiveType',
+            'PublicNote',
+          ),
+          'IncentiveAmountType',
+          'TechnologyOption' => array(
+            'GlossaryTerm',
+          ),
+          'TechnologyTerm' => array(
+            'GlossaryTerm',
+          ),
+          'Technology' => array(
+            'GlossaryTerm',
+          ),
+        ),
+        'conditions' => array(
+          'TechnologyIncentive.id' => $id,
+          'Incentive.excluded' => 0,
+          'TechnologyIncentive.is_active' => 1,
+        ),
+      )
+    );
+  }
+  
+  /**
    * Retrieves all available incentives for a given building
    *
    * @param 	$zip          Rebates are available by zip code
    * @param   $building_id  Used to pull products installed in the
    *                        building, if included
    * @param   $conditions      Array of options for further limiting the results
+   *          - technology_group_id         Filter by a specifiec tech group
+   *          - technology_id               Filter by a specific technology
+   *          - equipment_manufacturer_id   Filter by a specific manufacturer id
+   *          - not                         An array of technology_incentive_ids to ignore
    * @return	array
    */
   public function incentives( $zip, $building_id = null, $conditions = array() ) {
     $default_conditions = array(
-      'technology_group_id' => null,
-      'technology_id'       => null,
+      'technology_group_id'       => null,
+      'technology_id'             => null,
+      'equipment_manufacturer_id' => null,
+      'not'                       => null,
     );
     $conditions = array_merge( $default_conditions, $conditions );
     
@@ -98,20 +143,46 @@ class TechnologyIncentive extends AppModel {
       );
     }
     
-    # Pull the incentive details
+    # Table join conditions
     $technology_group_conditions = array(
       'Technology2.technology_group_id = TechnologyGroup.id' # the table join
     );
     $technology_conditions = array(
       'TechnologyIncentive.technology_id = Technology2.id' # the table join
     );
+    $incentive_type_conditions = array(
+      'TechnologyIncentive.incentive_id = Incentive2.id',
+    );
     
-    # Limit by a particular technology or group, if applicable
+    # Limit by a particular technology, group or manufacturer, if applicable
     if( !empty( $conditions['technology_group_id'] ) ) {
       $technology_group_conditions['TechnologyGroup.id'] = $conditions['technology_group_id'];
     }
     if( !empty( $conditions['technology_id'] ) ) {
       $technology_conditions['Technology2.id'] = $conditions['technology_id'];
+    }
+    if( !empty( $conditions['equipment_manufacturer_id'] ) ) {
+      # Only pull incentives that are not manufacturer specific or ones
+      # that are specific to the specified manufacturer.
+      $incentive_type_conditions = array(
+        'OR' => array(
+          'Incentive2.incentive_type_id <> ' => 'MANU',
+          array(
+            'Incentive2.incentive_type_id'         => 'MANU',
+            'Incentive2.equipment_manufacturer_id' => $conditions['equipment_manufacturer_id']
+          )
+        )
+      );
+    }
+    
+    # Ignore specific technology incentives
+    $ignore_list = array();
+    if( !empty( $conditions['not'] ) ) {
+      if( !is_array( $conditions['not'] ) ) {
+        $conditions['not'] = array( $conditions['not'] );
+      }
+      
+      $ignore_list = $conditions['not'];
     }
     
     $incentives = $this->find(
@@ -122,6 +193,13 @@ class TechnologyIncentive extends AppModel {
         # levels away (technology_groups.name), we have to join for
         # that table directly.
         'joins' => array(
+          array(
+            'table'      => 'incentive',
+            'alias'      => 'Incentive2',
+            'type'       => 'inner', 
+            'foreignKey' => false,
+            'conditions' => $incentive_type_conditions,
+          ),
           array(
             'table'      => 'technologies',
             'alias'      => 'Technology2',
@@ -151,6 +229,7 @@ class TechnologyIncentive extends AppModel {
           'TechnologyGroup.title',
         ),
         'conditions' => array(
+          'NOT' => array( 'TechnologyIncentive.id' => $ignore_list ),
           'Incentive.excluded' => 0,
           'TechnologyIncentive.is_active' => 1,
           'OR' => array(
@@ -174,8 +253,6 @@ class TechnologyIncentive extends AppModel {
         ),
       )
     );
-    
-    new PHPDump( $incentives ); exit;
     
     return $incentives;
   }

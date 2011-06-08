@@ -96,12 +96,27 @@ class ProposalsController extends AppController {
   public function send_request( $requestor = null ) {
     $this->helpers[] = 'FormatMask.Format';
     
-    $requestor   = empty( $requestor ) ? $this->Auth->user() : $requestor;
-    $address    = $this->Proposal->Requestor->Building->address( $this->data['Building']['id'] );
-    $incentives = $this->Proposal->Requestor->Building->incentives(
+    # The incentive that was specifically selected for the proposal request.
+    $quoted_incentive   = $this->Proposal->Requestor->Building->Address->ZipCode->Incentive->TechnologyIncentive->get( $this->data['TechnologyIncentive']['id'] );
+    
+    # If the quoted incentive is manufacturer-specific, we need to ignore
+    # incentives for other manufacturers.
+    $manufacturer       = null;
+    if( $quoted_incentive['Incentive']['incentive_type_id'] === 'MANU' && !empty( $quoted_incentive['Incentive']['equipment_manufacturer_id'] ) ) {
+      $manufacturer = $quoted_incentive['Incentive']['equipment_manufacturer_id'];
+    }
+    
+    # Related incentives (ignoring the quoted incentive)
+    $related_incentives = $this->Proposal->Requestor->Building->incentives(
       $this->data['Building']['id'],
-      array( 'technology_id' => $this->data['Proposal']['technology_id'], )
+      array(
+        'technology_id' => $this->data['Proposal']['technology_id'],
+        'equipment_manufacturer_id' => $manufacturer,
+        'not' => array( $quoted_incentive['TechnologyIncentive']['id'] ),
+      )
     );
+    $requestor = empty( $requestor ) ? $this->Auth->user() : $requestor;
+    $address   = $this->Proposal->Requestor->Building->address( $this->data['Building']['id'] );
     $existing_equipment = $this->Proposal->Requestor->Building->equipment( $this->data['Building']['id'], $this->data['Proposal']['technology_id'] );
 
     # Use redirected email addresses, if warranted
@@ -124,15 +139,12 @@ class ProposalsController extends AppController {
         : Configure::read( 'email.proposal_recipient' );
     $this->SwiftMailer->cc       = array( $cc_email => $requestor['User']['full_name'] );
     
-    # set variables to template as usual
-    $sender             = $requestor;
-    $rebate             = array_shift( Set::extract( '/TechnologyIncentive[id=' . $this->data['TechnologyIncentive']['id'] . ']/..', $incentives ) );
-    $related_incentives = $incentives;
-    $proposal           = $this->data['Proposal'];
-    $technology         = $rebate['Technology']['name'];
-    $technology_id      = $rebate['TechnologyIncentive']['id'];
+    $proposal      = $this->data['Proposal'];
+    $technology    = $quoted_incentive['Technology']['name'];
+    $technology_id = $quoted_incentive['TechnologyIncentive']['id'];
     
-    $this->set( compact( 'address', 'existing_equipment', 'proposal', 'rebate', 'related_incentives', 'sender', 'technology', 'technology_id' ) );
+    # set variables to template as usual
+    $this->set( compact( 'address', 'existing_equipment', 'proposal', 'quoted_incentive', 'related_incentives', 'requestor', 'technology', 'technology_id' ) );
      
     try {
       if( !$this->SwiftMailer->send( 'proposal_request', $requestor['User']['full_name'] . ' requests a proposal from a qualified contractor', 'native' ) ) {

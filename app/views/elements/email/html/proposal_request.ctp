@@ -21,14 +21,14 @@ switch( $proposal['scope_of_work'] ) {
 <strong><?php __( 'Contact Information' ) ?></strong>
 <hr />
 <p>
-  <div><?php echo $sender['User']['full_name'] ?></div>
+  <div><?php echo $requestor['User']['full_name'] ?></div>
   <div><?php echo $address['Address']['address_1'] ?></div>
   <?php if( !empty( $address['Address']['address_2'] ) ): ?>
     <div><?php echo $address['Address']['address_2'] ?></div>
   <?php endif; ?>
   <div><?php echo $address['ZipCode']['city'] . ', ' . $address['ZipCode']['state'] . ' ' . $address['Address']['zip_code'] ?></div>
-  <div><?php echo $this->Format->phone_number( $sender['User']['phone_number'] ) ?></div>
-  <div><?php echo $sender['User']['email'] ?></div>
+  <div><?php echo $this->Format->phone_number( $requestor['User']['phone_number'] ) ?></div>
+  <div><?php echo $requestor['User']['email'] ?></div>
 </p>
 
 <hr />
@@ -87,22 +87,22 @@ switch( $proposal['urgency'] ) {
 <hr />
 <p>
   <div>
-    <?php if( $rebate['IncentiveAmountType']['incentive_amount_type_id'] == 'PERC' ): ?>
-      <?php echo h( $rebate['TechnologyIncentive']['amount'] ) . h( $rebate['IncentiveAmountType']['name'] ) ?>
+    <?php if( $quoted_incentive['IncentiveAmountType']['incentive_amount_type_id'] == 'PERC' ): ?>
+      <?php echo h( $quoted_incentive['TechnologyIncentive']['amount'] ) . h( $quoted_incentive['IncentiveAmountType']['name'] ) ?>
     <?php else: ?>
-      <?php echo '$' . h( $rebate['TechnologyIncentive']['amount'] ) ?>
+      <?php echo '$' . h( $quoted_incentive['TechnologyIncentive']['amount'] ) ?>
     <?php endif; ?>
     
-    <?php if( !in_array( $rebate['IncentiveAmountType']['incentive_amount_type_id'], array( 'USD', 'PERC' ) ) ): ?>
-      (<?php echo h( $rebate['IncentiveAmountType']['name'] ) ?>)
+    <?php if( !in_array( $quoted_incentive['IncentiveAmountType']['incentive_amount_type_id'], array( 'USD', 'PERC' ) ) ): ?>
+      (<?php echo h( $quoted_incentive['IncentiveAmountType']['name'] ) ?>)
     <?php endif; ?>
   </div>
-  <div><?php echo $rebate['Incentive']['name'] . ' (' . $rebate['Incentive']['incentive_id'] . ')' ?></div>
-  <div><strong>Expires:</strong> <?php echo empty( $rebate['Incentive']['expiration_date'] ) ? __( 'When Funds Exhausted', true ) : date( 'm/d/Y', strtotime( $rebate['Incentive']['expiration_date'] ) ) ?></div>
+  <div><?php echo $quoted_incentive['Incentive']['name'] . ' (' . $quoted_incentive['Incentive']['incentive_id'] . ')' ?></div>
+  <div><strong>Expires:</strong> <?php echo empty( $quoted_incentive['Incentive']['expiration_date'] ) ? __( 'When Funds Exhausted', true ) : date( 'm/d/Y', strtotime( $quoted_incentive['Incentive']['expiration_date'] ) ) ?></div>
   <div>
     <div><strong><?php __( 'Energy Source' ) ?></strong></div>
-    <?php if( !empty( $rebate['EnergySource'] ) ): ?>
-      <?php foreach( $rebate['EnergySource'] as $esource ): ?>
+    <?php if( !empty( $quoted_incentive['EnergySource'] ) ): ?>
+      <?php foreach( $quoted_incentive['EnergySource'] as $esource ): ?>
         <div>- <?php echo h( $esource['name'] ) ?><div>
       <?php endforeach; ?>
     <?php else: ?>
@@ -111,8 +111,8 @@ switch( $proposal['urgency'] ) {
   </div>
   <div>
     <div><strong><?php __( 'Options' ) ?></strong></div>
-    <?php if( !empty( $rebate['TechnologyOption'] ) ): ?>
-      <?php foreach( $rebate['TechnologyOption'] as $option ): ?>
+    <?php if( !empty( $quoted_incentive['TechnologyOption'] ) ): ?>
+      <?php foreach( $quoted_incentive['TechnologyOption'] as $option ): ?>
         <div>- <?php echo h( $option['name'] ) ?></div>
       <?php endforeach; ?>
     <?php else: ?>
@@ -120,10 +120,10 @@ switch( $proposal['urgency'] ) {
     <?php endif; ?>
   </div>
   
-  <?php if( !empty( $rebate['TechnologyTerm'] ) ): ?>
+  <?php if( !empty( $quoted_incentive['TechnologyTerm'] ) ): ?>
     <div>
       <div><strong><?php __( 'Terms and Conditions' ) ?></strong></div>
-      <?php foreach( $rebate['TechnologyTerm'] as $term ): ?>
+      <?php foreach( $quoted_incentive['TechnologyTerm'] as $term ): ?>
         <div><?php echo h( $term['name'] ) ?></div>
         
         <?php foreach( array( 'field1', 'field2', 'field3' ) as $i => $field ): ?>
@@ -144,10 +144,6 @@ switch( $proposal['urgency'] ) {
 <strong><?php __( 'Related Incentives' ) ?></strong>
 <hr />
 <?php foreach( $related_incentives as $i => $incentive ): ?>
-  <?php if( $incentive['TechnologyIncentive']['id'] == $rebate['TechnologyIncentive']['id'] ): ?>
-    <?php continue; ?>
-  <?php endif; ?>
-  
   <p>
     <div>
       <?php if( $incentive['IncentiveAmountType']['incentive_amount_type_id'] == 'PERC' ): ?>
