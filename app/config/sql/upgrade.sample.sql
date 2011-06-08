@@ -1,4 +1,5 @@
 USE @DB_NAME@;
+<<<<<<< HEAD
 
 SET NAMES utf8;
 SET foreign_key_checks = 0;
@@ -7,6 +8,13 @@ SET foreign_key_checks = 0;
 INSERT INTO user_types( id, code, name, selectable, deleted ) VALUES
   ( '6573bca8-945a-11e0-adec-3aadb68782f6', 'CNTRCT', 'Contractor', 1, 0 )
 ;
+=======
+-- delete orphaned utiltiy zips where zip code doesn't exist any more
+DELETE uz.*
+  FROM utility_zip uz LEFT JOIN us_zipcode z
+       ON uz.zip = z.zip
+ WHERE z.zip IS NULL;
+>>>>>>> SQL updates for/from Georg.
 
 DROP TABLE IF EXISTS contractors;
 CREATE TABLE contractors(
