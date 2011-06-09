@@ -3,6 +3,27 @@
 class ProposalsController extends AppController {
 	public $name       = 'Proposals';
   public $components = array( 'SwiftMailer', 'FormatMask.Format' );
+  public $helpers    = array( 'Form', 'FormatMask.Format' );
+
+  /**
+   * CALLBACKS
+   */
+  
+  public function beforeFilter() {
+    parent::beforeFilter();
+    
+    # Squash the phone number if it exists in a data array to prep for save
+    if( !empty( $this->data['Requestor']['phone_number'] ) && is_array( $this->data['Requestor']['phone_number'] ) ) {
+      $this->data['Requestor']['phone_number'] = $this->Format->phone_number( $this->data['Requestor']['phone_number'] );
+    }
+  }
+  
+  public function beforeRender() {
+    parent::beforeRender();
+    
+    # Explode the phone number if it exists in a data array to prep for form display
+    $this->data['Requestor']['phone_number'] = $this->Format->phone_number( $this->data['Requestor']['phone_number'] );
+  }
 
   /**
    * PUBLIC METHODS
@@ -16,8 +37,6 @@ class ProposalsController extends AppController {
    * @access	public
    */
   public function request( $building_id = null, $technology_incentive_id = null ) {
-    $this->helpers[] = 'Form';
-    $this->helpers[] = 'FormatMask.Format';
     $this->layout    = 'blank';
     
     $building_id = empty( $this->data['Building']['id'] )
@@ -55,7 +74,6 @@ class ProposalsController extends AppController {
       $phone_number_input = $this->data['Requestor']['phone_number'];
       
       # Set data points
-      $this->data['Requestor']['phone_number'] = $this->Format->phone_number( $this->data['Requestor']['phone_number'] );
       $this->data['Proposal']['user_id']       = $requestor['User']['id'];
       $this->data['Proposal']['technology_id'] = $tech_incentive['Technology']['id'];
       $this->data['Proposal']['incentive_id']  = $tech_incentive['Incentive']['id'];
@@ -71,14 +89,9 @@ class ProposalsController extends AppController {
           return $this->setAction( 'send_request', $requestor );
         }
       }
-      else {
-        # Probably an invalid phone number. Restore what was passed
-        $this->data['Requestor']['phone_number'] = $phone_number_input;
-      }
     }
     else {
-      # Set the phone number based on auth data if nothing was passed
-      $this->data['Requestor']['phone_number'] = $this->Format->phone_number( $requestor['User']['phone_number'] );
+      $this->data['Requestor']['phone_number'] = $requestor['User']['phone_number'];
     }
     
     $this->data['Building']['id']            = $building_id;
@@ -94,8 +107,6 @@ class ProposalsController extends AppController {
    * @access	public
    */
   public function send_request( $requestor = null ) {
-    $this->helpers[] = 'FormatMask.Format';
-    
     # The incentive that was specifically selected for the proposal request.
     $quoted_incentive   = $this->Proposal->Requestor->Building->Address->ZipCode->Incentive->TechnologyIncentive->get( $this->data['TechnologyIncentive']['id'] );
     

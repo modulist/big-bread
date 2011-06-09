@@ -26,7 +26,8 @@
   <?php echo $this->Form->input( 'User.first_name', array( 'div' => 'input text required', 'placeholder' => 'Your first name' ) ) ?>
   <?php echo $this->Form->input( 'User.last_name', array( 'div' => 'input text required', 'placeholder' => 'Your last name' ) ) ?>
   <?php echo $this->Form->input( 'User.email', array( 'div' => 'input text required', 'placeholder' => 'e.g. user@example.com' ) ) ?>
-  <?php echo $this->Form->input( 'User.phone_number', array( 'placeholder' => 'e.g. 410-555-2930' ) ) ?>
+  <?php echo $this->element( 'phone_number', array( 'plugin' => 'FormatMask', 'model' => 'User', 'field' => 'phone_number', 'required' => true ) ) ?>
+  <?php # echo $this->Form->input( 'User.phone_number', array( 'placeholder' => 'e.g. 410-555-2930' ) ) ?>
   <?php echo $this->Form->input( 'User.password', array( 'div' => 'input password required' ) ) ?>
   <?php echo $this->Form->input( 'User.confirm_password', array( 'type' => 'password', 'div' => 'input password required' ) ) ?>
   

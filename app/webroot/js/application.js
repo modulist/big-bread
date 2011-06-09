@@ -39,23 +39,15 @@ $(document).ready( function() {
   
   /** FORMS */
   
+  // Depends on the jQuery autotab plugin
+  // http://www.mathachew.com/sandbox/jquery-autotab/
+  $( '.phonenumber input' ).autotab_magic().autotab_filter( 'number' );
+  
   /**
    * Control key codes:
    * - null, backspace, horizontal tab, return, shift, control, alt, escape, meta
    */
   var control_keys = [0,8,9,13,16,17,18,27,91];
-  
-  /**
-   * Auto-skip phone number components
-   */
-  $('.phonenumber input[maxlength]')
-    .keyup( function( e ) {
-      var keycode = e.charCode || e.keyCode || 0;
-      
-      if( $.inArray( keycode, control_keys ) < 0 ) {
-        $(this).val().length == $(this).attr( 'maxlength' ) ? $(this).next( 'input' ).select() : null;
-      }
-    });
   
   /**
    * Set the datepicker date format, where applicable.

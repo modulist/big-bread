@@ -2,8 +2,8 @@
 
 class UsersController extends AppController {
   public $name    = 'Users';
-  public $helpers = array( 'Form' );
-  public $components = array( 'SwiftMailer' );
+  public $helpers = array( 'Form', 'FormatMask.Format' );
+  public $components = array( 'SwiftMailer', 'FormatMask.Format' );
   
   /**
    * CALLBACKS
@@ -22,6 +22,20 @@ class UsersController extends AppController {
 		);
     $this->Auth->allow( '*' );
     $this->Auth->deny( 'dismiss_notice' );
+    
+    # Squash the phone number if it exists in a data array to prep for save
+    if( !empty( $this->data[$this->User->alias]['phone_number'] ) && is_array( $this->data[$this->User->alias]['phone_number'] ) ) {
+      $this->data[$this->User->alias]['phone_number'] = $this->Format->phone_number( $this->data[$this->User->alias]['phone_number'] );
+    }
+  }
+  
+  public function beforeRender() {
+    parent::beforeRender();
+    
+    # Explode the phone number if it exists in a data array to prep for form display
+    if( !empty( $this->data[$this->User->alias]['phone_number'] ) && is_string( $this->data[$this->User->alias]['phone_number'] ) ) {
+      $this->data[$this->User->alias]['phone_number'] = $this->Format->phone_number( $this->data[$this->User->alias]['phone_number'] );
+    }
   }
   
   /**
