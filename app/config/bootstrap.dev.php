@@ -52,5 +52,9 @@
 # Core overrides
 Configure::write( 'debug', 2 );
 Configure::write( 'Cache.disable', true );
+   
+Configure::write( 'Env.name', 'Development' );
+Configure::write( 'Env.code', 'DEV' );
+Configure::write( 'Env.domain', 'dev.bigbread.net' );
 
 Configure::write( 'email.redirect_all_email_to', 'rob@robwilkerson.org' );

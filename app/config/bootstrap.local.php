@@ -49,10 +49,17 @@
  *
  */
 
-include_once( 'org/robwilkerson/io/phpdump.php' );
+# Ignore PHPDump if running from the console
+if( !defined( 'STDIN' ) ) {
+  include_once( 'org/robwilkerson/io/phpdump.php' );
+}
 
 # Core overrides
 Configure::write( 'debug', 2 );
 Configure::write( 'Cache.disable', true );
+     
+Configure::write( 'Env.name', 'Localhost' );
+Configure::write( 'Env.code', 'LCL' );
+Configure::write( 'Env.domain', 'bigbread (local)' );
 
 Configure::write( 'email.redirect_all_email_to', 'rob@robwilkerson.org' );

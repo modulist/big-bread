@@ -49,5 +49,9 @@
  *
  */
 
+Configure::write( 'Env.name', 'Production' );
+Configure::write( 'Env.code', 'PRD' );
+Configure::write( 'Env.domain', 'www.bigbread.net' );
+      
 Configure::write( 'email.redirect_all_email_to', false );
 
