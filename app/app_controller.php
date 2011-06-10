@@ -41,6 +41,19 @@ class AppController extends Controller {
 	 */
 	
 	public function beforeFilter() {
+    $ssl_actions = array(
+      'login',
+      'register',
+    );
+    
+    # Force expected actions to https, others away from it.
+    if( in_array( $this->action, $ssl_actions ) && !$this->RequestHandler->isSSL() ) {
+      $this->forceSSL();
+    }
+    else if( !in_array( $this->action, $ssl_actions ) && $this->RequestHandler->isSSL() ) {
+      $this->unforceSSL();
+    }
+
     # By default, deny access to everything
 		$this->Auth->deny( '*' );
 		
@@ -202,4 +215,18 @@ class AppController extends Controller {
     
     return $this->Auth->login( $user['User']['id'] );
   }
+  
+  /**
+   * Force traffic to a given action through SSL.
+   */
+	private function forceSSL() {
+		$this->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $this->here, null, true );
+	}
+  
+  /**
+   * Force traffic to a given action away from SSL.
+   */
+	private function unforceSSL() {
+		$this->redirect( 'http://' . $_SERVER['HTTP_HOST'] . $this->here, null, true );
+	}
 }
