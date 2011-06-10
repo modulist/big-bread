@@ -33,7 +33,7 @@ class UsersController extends AppController {
     parent::beforeRender();
     
     # Explode the phone number if it exists in a data array to prep for form display
-    if( !empty( $this->data[$this->User->alias]['phone_number'] ) && is_string( $this->data[$this->User->alias]['phone_number'] ) ) {
+    if( isset( $this->data[$this->User->alias]['phone_number'] ) && is_string( $this->data[$this->User->alias]['phone_number'] ) ) {
       $this->data[$this->User->alias]['phone_number'] = $this->Format->phone_number( $this->data[$this->User->alias]['phone_number'] );
     }
   }
