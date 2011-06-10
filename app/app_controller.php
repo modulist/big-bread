@@ -33,46 +33,49 @@
  * @link http://book.cakephp.org/view/957/The-App-Controller
  */
 class AppController extends Controller {
-	public $helpers    = array ( 'Html', 'Number', 'Session', 'Text', 'Time' );
-	public $components = array ( 'Auth', 'RequestHandler', 'Session', 'DebugKit.Toolbar' );
+  public $helpers    = array ( 'Html', 'Number', 'Session', 'Text', 'Time' );
+  public $components = array ( 'Auth', 'RequestHandler', 'Session', 'DebugKit.Toolbar' );
   
-	/**
-	 * CALLBACKS
-	 */
-	
-	public function beforeFilter() {
-    $ssl_actions = array(
-      'login',
-      'register',
-    );
-    
-    # Force expected actions to https, others away from it.
-    if( in_array( $this->action, $ssl_actions ) && !$this->RequestHandler->isSSL() ) {
-      $this->forceSSL();
-    }
-    else if( !in_array( $this->action, $ssl_actions ) && $this->RequestHandler->isSSL() ) {
-      $this->unforceSSL();
+  /**
+   * CALLBACKS
+   */
+  
+  public function beforeFilter() {
+    # Engage SSL in production only (damn Bluehost)
+    if( Configure::read( 'Env.code' ) == 'PRD' ) {
+      $ssl_actions = array(
+        'login',
+        'register',
+      );
+      
+      # Force expected actions to https, others away from it.
+      if( in_array( $this->action, $ssl_actions ) && !$this->RequestHandler->isSSL() ) {
+        $this->forceSSL();
+      }
+      else if( !in_array( $this->action, $ssl_actions ) && $this->RequestHandler->isSSL() ) {
+        $this->unforceSSL();
+      }
     }
 
     # By default, deny access to everything
-		$this->Auth->deny( '*' );
-		
-		$this->Auth->userModel = 'User';
-		$this->Auth->userScope = array( 'User.deleted' => 0 );
-		$this->Auth->loginAction = array(
-			'controller' => 'users',
-			'action'     => 'login',
-			'admin'      => false
-		);
-		$this->Auth->autoRedirect = false;
-		$this->Auth->loginRedirect = array(
-			'controller' => 'buildings',
-			'action'     => 'questionnaire',
-		);
-		$this->Auth->logoutRedirect = Router::url( '/' );
+    $this->Auth->deny( '*' );
+    
+    $this->Auth->userModel = 'User';
+    $this->Auth->userScope = array( 'User.deleted' => 0 );
+    $this->Auth->loginAction = array(
+      'controller' => 'users',
+      'action'     => 'login',
+      'admin'      => false
+    );
+    $this->Auth->autoRedirect = false;
+    $this->Auth->loginRedirect = array(
+      'controller' => 'buildings',
+      'action'     => 'questionnaire',
+    );
+    $this->Auth->logoutRedirect = Router::url( '/' );
     
     $this->Auth->authError  = __( 'Authentication required. Please login.', true );
-		$this->Auth->loginError = __( 'Invalid authentication credentials. Please try again.', true );
+    $this->Auth->loginError = __( 'Invalid authentication credentials. Please try again.', true );
 
     /**
      * API Authentication is a little different
@@ -85,45 +88,45 @@ class AppController extends Controller {
       }
     }
 
-		/**
-		 * If data is being submitted, then attach the user data to it
-		 * so it can potentially be used by the Auditable behavior.
-		 */
+    /**
+     * If data is being submitted, then attach the user data to it
+     * so it can potentially be used by the Auditable behavior.
+     */
     if( !empty( $this->data ) && empty( $this->data['User'] ) ) {
       $this->data['User'] = $this->current_user();
     }
     
-		/**
-		 * Turn off debug output for ajax requests and don't attempt
-		 * to automatically render a view.
-		 */
-		if( $this->RequestHandler->isAjax() ) {
-			Configure::write( 'debug', 0 );
-		}
-	}
+    /**
+     * Turn off debug output for ajax requests and don't attempt
+     * to automatically render a view.
+     */
+    if( $this->RequestHandler->isAjax() ) {
+      Configure::write( 'debug', 0 );
+    }
+  }
 
-	public function beforeRender() {
-		/**
-		 * TODO: Move this to a component for clarity?
-		 * 
-		 * Updates the associated model's data array with unified datetime
-		 * values.
-		 * 
-		 * This unborks the datetime component array created when submitting a form
-		 * that contains date, time or datetime fields. Calling this after an
-		 * invalid save attempt allows the form to receive datetime in a
-		 * predictable format.
-		 */
-		if( !empty( $this->data[$this->modelClass] ) && $this->{$this->modelClass}->invalidFields() ) {
-			$schema = $this->{$this->modelClass}->schema();
-			
-			foreach( $schema as $field => $meta ) {
-				if( isset( $this->data[$this->modelClass][$field] ) && $meta['type'] == 'datetime' ) {
-					$this->data[$this->modelClass][$field] = $this->{$this->modelClass}->deconstruct( $field, $this->data[$this->modelClass][$field] );
-				}
-			}
-		}
-	}
+  public function beforeRender() {
+    /**
+     * TODO: Move this to a component for clarity?
+     * 
+     * Updates the associated model's data array with unified datetime
+     * values.
+     * 
+     * This unborks the datetime component array created when submitting a form
+     * that contains date, time or datetime fields. Calling this after an
+     * invalid save attempt allows the form to receive datetime in a
+     * predictable format.
+     */
+    if( !empty( $this->data[$this->modelClass] ) && $this->{$this->modelClass}->invalidFields() ) {
+      $schema = $this->{$this->modelClass}->schema();
+      
+      foreach( $schema as $field => $meta ) {
+        if( isset( $this->data[$this->modelClass][$field] ) && $meta['type'] == 'datetime' ) {
+          $this->data[$this->modelClass][$field] = $this->{$this->modelClass}->deconstruct( $field, $this->data[$this->modelClass][$field] );
+        }
+      }
+    }
+  }
   
   /**
    * PUBLIC FUNCTIONS
@@ -219,14 +222,14 @@ class AppController extends Controller {
   /**
    * Force traffic to a given action through SSL.
    */
-	private function forceSSL() {
-		$this->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $this->here, null, true );
-	}
+  private function forceSSL() {
+    $this->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $this->here, null, true );
+  }
   
   /**
    * Force traffic to a given action away from SSL.
    */
-	private function unforceSSL() {
-		$this->redirect( 'http://' . $_SERVER['HTTP_HOST'] . $this->here, null, true );
-	}
+  private function unforceSSL() {
+    $this->redirect( 'http://' . $_SERVER['HTTP_HOST'] . $this->here, null, true );
+  }
 }
