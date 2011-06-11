@@ -148,7 +148,10 @@ class ProposalsController extends AppController {
     $this->SwiftMailer->to       = Configure::read( 'email.redirect_all_email_to' )
         ? Configure::read( 'email.redirect_all_email_to' )
         : Configure::read( 'email.proposal_recipient' );
-    $this->SwiftMailer->cc       = array( $cc_email => $requestor['User']['full_name'] );
+    
+    if( !Configure::read( 'email.redirect_all_email_to' ) ) {
+      $this->SwiftMailer->cc = array( $cc_email => $requestor['User']['full_name'] );
+    }
     
     $proposal      = $this->data['Proposal'];
     $technology    = $quoted_incentive['Technology']['name'];
