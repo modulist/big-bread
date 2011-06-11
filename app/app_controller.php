@@ -42,7 +42,7 @@ class AppController extends Controller {
   
   public function beforeFilter() {
     # Engage SSL in production only (damn Bluehost)
-    if( Configure::read( 'Env.code' ) == 'PRD' ) {
+    if( in_array( Configure::read( 'Env.code' ), array( 'LCL', 'PRD' ) ) ) {
       $ssl_actions = array(
         'login',
         'register',
