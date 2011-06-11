@@ -3,7 +3,7 @@
 class User extends AppModel {
 	public $name = 'User';
   public $belongsTo = array( 'UserType' );
-  public $hasOne = array( 'ApiUser' );
+  public $hasOne = array( 'ApiUser', 'Contractor' );
   public $hasMany   = array(
     'Building' => array(
       'className'  => 'Building',
