@@ -147,8 +147,8 @@ body.onecolumn #content {background: #FFFFFF; min-height:400px; padding: 50px 60
 #user_type input {border: none;padding: 0;margin: 5px 0;}
 
 #bodyheader{height:128px;}
-#signupheader ul {float:left;  list-style:none;}
-#signupheader ul li {float: left; height:128px;width:166px; text-align:center;}
+#signupheader ul {list-style:none; margin: 15px 0; overflow: hidden;}
+#signupheader ul li {display: block; float: left; width:20%; text-align:center;}
 
 
 #signupheader {margin: auto; background: #fff;border:solid 1px #aaa; padding: 10px; font:16px Arial, Helvetica, sans-serif; font-weight:bold; width: 666px;}
