@@ -18,8 +18,6 @@ class ContractorsController extends AppController {
    * @access	public
    */
   public function add( $user_id ) {
-    exit( 'Adding user ' . $user_id . ' as a contractor' );
-    
     if( !empty( $this->data ) ) {
       exit( 'do stuff' );
     }
