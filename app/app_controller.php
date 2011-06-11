@@ -126,6 +126,9 @@ class AppController extends Controller {
         }
       }
     }
+    
+    # Let the view be aware of whether this is an SSL request
+    $this->set( 'is_ssl', $this->RequestHandler->isSSL() );
   }
   
   /**
