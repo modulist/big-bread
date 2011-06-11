@@ -201,7 +201,7 @@ class UsersController extends AppController {
           }
           
           $this->User->saveField( 'password', null );
-          
+   
           /** 
           $this->SwiftMailer->smtpType = 'tls'; 
           $this->SwiftMailer->smtpHost = 'smtp.gmail.com'; 
@@ -210,25 +210,25 @@ class UsersController extends AppController {
           $this->SwiftMailer->smtpPassword = 'hard_to_guess'; 
           */
           $this->SwiftMailer->sendAs   = 'both'; 
-          $this->SwiftMailer->from     = 'DO-NOT-REPLY@bigbread.net'; 
+          $this->SwiftMailer->from     = Configure::read( 'email.do_not_reply_address' ); 
           $this->SwiftMailer->fromName = 'BigBread.net';
           $this->SwiftMailer->to       = Configure::read( 'email.redirect_all_email_to' )
             ? Configure::read( 'email.redirect_all_email_to' )
             : $this->data['User']['email'];
           
+          
           //set variables to template as usual 
           $this->set( 'invite_code', $invite_code ); 
            
-          try { 
-            if( !$this->SwiftMailer->send( 'forgot_password', 'Your BigBread.net Password Has Been Reset', 'native' ) ) {
+          try {
+            if( !$this->SwiftMailer->send( 'forgot_password', 'Your BigBread.net password has been reset', 'native' ) ) {
               foreach($this->SwiftMailer->postErrors as $failed_send_to) { 
                 $this->log( 'Failed to send forgot password email to ' . $failed_send_to ); 
               }
             }
-            
             $this->Session->setFlash( 'Your password has been reset. Please check your email for instructions.', null, null, 'success' );
           } 
-          catch( Exception $e ) { 
+          catch( Exception $e ) {
             $this->log( 'Failed to send email: ' . $e->getMessage() ); 
           }
         }

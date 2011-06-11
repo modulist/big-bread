@@ -655,7 +655,7 @@ class BuildingsController extends AppController {
       $this->SwiftMailer->smtpPassword = 'hard_to_guess'; 
       */
       $this->SwiftMailer->sendAs   = 'both'; 
-      $this->SwiftMailer->from     = 'DO-NOT-REPLY@bigbread.net'; 
+      $this->SwiftMailer->from     = Configure::read( 'email.do_not_reply_address' ); 
       $this->SwiftMailer->fromName = 'BigBread.net';
       $this->SwiftMailer->to       = array( $to_email => $invitee['full_name'] );
       $this->SwiftMailer->cc       = array( $cc_email => $this->Auth->user( 'full_name' ) );
