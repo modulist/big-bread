@@ -12,10 +12,8 @@ class UsersController extends AppController {
   public function beforeFilter() {
     parent::beforeFilter();
     
-    /**
-     * The password is auto hashed only if the username reset is located
-     * in this controller Not in AppController. I don't know why.
-     */
+    # The password is auto hashed only if the username reset is located
+    # in this controller Not in AppController. I don't know why.
 		$this->Auth->fields = array(
 			'username' => 'email',
 			'password' => 'password'
@@ -85,11 +83,9 @@ class UsersController extends AppController {
     
     # Handle a submitted registration
     if( !empty( $this->data ) ) {
-      /**
-       * The password value is hashed automagically. We need to hash the
-       * confirmation value manually for validation.
-       * @see User::identical()
-       */
+      # The password value is hashed automagically. We need to hash the
+      # confirmation value manually for validation.
+      # @see User::identical()
       $this->data['User']['confirm_password'] = $this->Auth->password( $this->data['User']['confirm_password'] );
       
       if( $this->User->save( $this->data ) ) {
@@ -99,6 +95,11 @@ class UsersController extends AppController {
         
         # Update the session info
         $this->refresh_auth();
+        
+        if( $this->data['User']['user_type_id'] === UserType::CONTRACTOR ) {
+          $this->Session->setFlash( 'Because you\'re registering as a contractor, we need some additional information from you.', null, null, 'info' );
+          $this->redirect( array( 'controller' => 'contractors', 'action' => 'add', $this->User->id ), null, true );
+        }
         
         $this->redirect( $this->Auth->redirect(), null, true );
       }
@@ -129,7 +130,7 @@ class UsersController extends AppController {
       );
     }
     
-    // Populate the available user types
+    # Populate the available user types
     $userTypes = $this->User->UserType->find(
       'list',
       array(
@@ -148,7 +149,7 @@ class UsersController extends AppController {
    * @access  public
    */
 	public function login() {
-    /** Logging in and authenticated */
+    # Logging in and authenticated
     if ( !empty( $this->data ) && $this->Auth->user() ) {
       $this->User->id = $this->Auth->user( 'id' );
 			$this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
@@ -163,9 +164,9 @@ class UsersController extends AppController {
         $this->redirect( $this->Auth->redirect(), null, true );
       }
 		}
-    /** Probably an error logging in */
+    # Probably an error logging in
     else if( !empty( $this->data ) ) {
-      /** Clear the password fields we we don't display encrypted values */
+      # Clear the password fields we we don't display encrypted values
       $this->data['User']['password'] = null;
     }
     
@@ -217,7 +218,7 @@ class UsersController extends AppController {
             : $this->data['User']['email'];
           
           
-          //set variables to template as usual 
+          # set variables to template as usual 
           $this->set( 'invite_code', $invite_code ); 
            
           try {
