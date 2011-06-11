@@ -29,6 +29,7 @@ rsync -vcrlDtOzi --progress \
       --exclude "app/config/database.php" \
       --exclude "app/config/database.*.php" \
       --exclude "app/config/sql/bigbread.empty.sql" \
+      --exclude "app/webroot/.htaccess*" \
       --exclude "app/webroot/robots.*.txt" \
       --exclude "deploy.*.sh" \
       --links \
@@ -38,6 +39,7 @@ rsync -vcrlDtOzi --progress \
 echo "Uploading environment-specific files..."
 scp app/config/bootstrap.dev.php bigbread:www/__subdomains/dev.bigbread.net/app/config/bootstrap.local.php
 scp app/config/database.dev.php bigbread:www/__subdomains/dev.bigbread.net/app/config/database.php
+scp app/webroot/.htaccess.dev bigbread:www/__subdomains/dev.bigbread.net/app/webroot/.htaccess
 scp app/webroot/robots.dev.txt bigbread:www/__subdomains/dev.bigbread.net/app/webroot/robots.txt
 echo "...complete."
 

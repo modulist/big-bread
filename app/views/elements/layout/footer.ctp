@@ -11,7 +11,7 @@
     | <?php echo $this->Html->link( 'Terms of Use', array( 'controller' => 'pages', 'action' => 'terms' ) ) ?>
   </p>
   
-  <p>© 2009-<?php echo date( 'Y', time() ) ?> Federated Power, Inc. | Beta 1.0</p>
+  <p>&copy; 2009-<?php echo date( 'Y', time() ) ?> Federated Power, Inc.<?php echo Configure::read( 'Env.code' ) !== 'PRD' ? ' | ' . strtoupper( Configure::read( 'Env.name' ) ) : false ?></p>
 </div>
 
 <div class="printable">www.BigBread.net</div>
