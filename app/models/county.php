@@ -14,7 +14,7 @@ class County extends AppModel {
 
 	public $hasAndBelongsToMany = array(
 		'ZipCode' => array(
-			'className' => 'UsZipcode',
+			'className' => 'ZipCode',
 			'joinTable' => 'us_county__us_zipcode',
 			'foreignKey' => 'us_county_id',
 			'associationForeignKey' => 'us_zipcode_zip',
