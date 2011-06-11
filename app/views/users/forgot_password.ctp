@@ -7,6 +7,6 @@
   </p>
   
   <?php echo $this->Form->create( 'User', array ( 'inputDefaults' => array( 'error' => false ) ) ) ?>
-    <?php echo $this->Form->input( 'User.email' ) ?>
+    <?php echo $this->Form->input( 'User.email', array( 'autofocus' => 'true' ) ) ?>
   <?php echo $this->Form->end( 'Reset Password' ) ?>
 <?php endif; ?>

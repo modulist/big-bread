@@ -91,7 +91,7 @@
  * Turn off all caching application-wide.
  *
  */
-// Configure::write('Cache.disable', true);
+Configure::write('Cache.disable', false);
 
 /**
  * Enable cache checking.
@@ -102,13 +102,13 @@
  * or in each action using $this->cacheAction = true.
  *
  */
-	//Configure::write('Cache.check', true);
+Configure::write('Cache.check', true);
 
 /**
  * Defines the default error type when using the log() function. Used for
  * differentiating error logging and debugging. Currently PHP supports LOG_DEBUG.
  */
-	define('LOG_ERROR', 2);
+define('LOG_ERROR', 2);
 
 /**
  * The preferred session handling method. Valid values:
@@ -124,7 +124,7 @@
  * the cake shell command: cake schema create Sessions
  *
  */
-	Configure::write('Session.save', 'database');
+Configure::write('Session.save', 'database');
 
 /**
  * The model name to be used for the session model.
@@ -300,4 +300,4 @@ Configure::write('Session.model', 'Session');
  *	));
  *
  */
-	Cache::config('default', array('engine' => 'File'));
+Cache::config( 'default', array( 'engine' => 'File' ) );

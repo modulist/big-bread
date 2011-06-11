@@ -65,12 +65,50 @@ define( 'DATETIME_FORMAT_MYSQL', DATE_FORMAT_MYSQL . ' ' . TIME_FORMAT_MYSQL );
 Configure::write( 'Env.name', 'Production' );
 Configure::write( 'Env.code', 'PRD' );
 Configure::write( 'Env.domain', 'www.bigbread.net' );
-      
+
 # TODO: Change this to a bigbread.net address?
 Configure::write( 'email.default_recipient', 'wamaull@federatedpower.com' );
 Configure::write( 'email.feedback_recipient', Configure::read( 'email.default_recipient' ) );
 Configure::write( 'email.proposal_recipient', Configure::read( 'email.default_recipient' ) );
 Configure::write( 'email.do_not_reply_address','DO-NOT-REPLY@bigbread.net' );
+
+# Cache configuration
+Cache::config(
+  'brief',
+  array(
+    'engine' => 'File',
+    'duration'=> '+15 minutes',
+    'probability'=> 100,
+    'path' => CACHE . 'brief' . DS,
+  )
+);
+Cache::config(
+  'hour',
+  array(
+    'engine' => 'File',
+    'duration'=> '+1 hour',
+    'probability'=> 100,
+    'path' => CACHE . 'hour' . DS,
+  )
+);
+Cache::config(
+  'day',
+  array(
+    'engine' => 'File',
+    'duration'=> '+1 day',
+    'probability'=> 100,
+    'path' => CACHE . 'day' . DS,
+  )
+);
+Cache::config(
+  'week',
+  array(
+    'engine' => 'File',
+    'duration'=> '+1 week',
+    'probability'=> 100,
+    'path' => CACHE . 'week' . DS,
+  )
+);
 
 if( file_exists( dirname( __FILE__ ) . DS . 'bootstrap.local.php' ) ) {
   include_once( 'bootstrap.local.php' );

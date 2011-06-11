@@ -4,7 +4,12 @@ $(document).ready( function() {
     $('input[type=text][placeholder]').placeholder();
   }
   
+  if( !Modernizr.input.autofocus ) {
+    $( 'input[autofocus]' ).focus();
+  }
+  
   /** GENERAL APPLICATION STUFF */
+  
   // Handle disabled links
   $( 'a.disabled' ).click( function( e ) {
     e.preventDefault();
@@ -80,6 +85,7 @@ $.fn.placeholder = function() {
           .val( $this.attr('placeholder') );
       }
     };
+    
     $this
       .focus( clear )
       .blur( placeholder )
