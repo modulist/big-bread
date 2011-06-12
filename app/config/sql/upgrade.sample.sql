@@ -65,21 +65,21 @@ CREATE TABLE contractors_technologies(
 -- Defines the manufacturers whose equipment a contractor services
 -- and whether the contractor is certified for the manufacture's
 -- incentive programs.
-DROP TABLE IF EXISTS manufacturer_incentive_certifications;
-CREATE TABLE manufacturer_incentive_certifications(
+DROP TABLE IF EXISTS manufacturer_dealers;
+CREATE TABLE manufacturer_dealers(
   id                        char(36)  NOT NULL,
   contractor_id             char(36)  NOT NULL,
   equipment_manufacturer_id char(36)  NOT NULL,
-  -- certification_number?
+  incentive_participant     boolean   NOT NULL DEFAULT 0,
   
   PRIMARY KEY( id ),
   CONSTRAINT uix__contractor_id__equipment_manufacturer_id
     UNIQUE INDEX( contractor_id, equipment_manufacturer_id ),
-  CONSTRAINT fk__manufacturer_incentive_certifications__contractors FOREIGN KEY( contractor_id )
+  CONSTRAINT fk__manufacturer_dealers__contractors FOREIGN KEY( contractor_id )
     REFERENCES contractors( id )
     ON UPDATE CASCADE
     ON DELETE CASCADE,
-  CONSTRAINT fk__manufacturer_incentive_certifications__equip_manuf FOREIGN KEY( equipment_manufacturer_id )
+  CONSTRAINT fk__manufacturer_dealers__equip_manuf FOREIGN KEY( equipment_manufacturer_id )
     REFERENCES equipment_manufacturers( id )
     ON UPDATE CASCADE
     ON DELETE CASCADE
@@ -88,20 +88,18 @@ CREATE TABLE manufacturer_incentive_certifications(
 -- Defines the relationship between a contractor and utilities in the
 -- areas s/he services. If a relationship exists, it's because the
 -- contractor is incentive certified by that utility.
-DROP TABLE IF EXISTS utility_incentive_certifications;
-CREATE TABLE utility_incentive_certifications(
-  id                  char(36)  NOT NULL,
+DROP TABLE IF EXISTS utility_incentive_participants;
+CREATE TABLE utility_incentive_participants(
   contractor_id       char(36)  NOT NULL,
   utility_id          char(36)  NOT NULL,
   
-  PRIMARY KEY( id ),
   CONSTRAINT uix__contractor_id__utility_id
     UNIQUE INDEX( contractor_id, utility_id ),
-  CONSTRAINT fk__utility_incentive_certifications__contractors FOREIGN KEY( contractor_id )
+  CONSTRAINT fk__utility_incentive_participants__contractors FOREIGN KEY( contractor_id )
     REFERENCES contractors( id )
     ON UPDATE CASCADE
     ON DELETE CASCADE,
-  CONSTRAINT fk__utility_incentive_certifications__utility FOREIGN KEY( utility_id )
+  CONSTRAINT fk__utility_incentive_participants__utility FOREIGN KEY( utility_id )
     REFERENCES utility( id )
     ON UPDATE CASCADE
     ON DELETE CASCADE
