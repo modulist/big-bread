@@ -72,17 +72,17 @@ class ProposalsController extends AppController {
     
     if( !empty( $this->data ) ) {
       $phone_number_input = $this->data['Requestor']['phone_number'];
-      
+
       # Set data points
       $this->data['Proposal']['user_id']       = $requestor['User']['id'];
       $this->data['Proposal']['technology_id'] = $tech_incentive['Technology']['id'];
       $this->data['Proposal']['incentive_id']  = $tech_incentive['Incentive']['id'];
       
       $this->Proposal->Requestor->id = $requestor['User']['id'];
-      if( $this->Proposal->Requestor->saveField( 'phone_number', $this->data['Requestor']['phone_number'] /** , true */ ) ) {  # Validating creates display issues
+      if( $this->Proposal->Requestor->saveField( 'phone_number', $this->data['Requestor']['phone_number'] ) ) {
         # Update the auth user info (if auth user is requestor)
-        if( $requestor['User']['id'] == $this->Auth->user( 'id' ) ) {
-          $this->update_auth_session( $this->Proposal->Requestor );
+        if( $requestor['User']['id'] === $this->Auth->user( 'id' ) ) {
+          $this->refresh_auth( 'phone_number', $this->data['Requestor']['phone_number'] );
         }
         
         if( $this->Proposal->save( $this->data ) ) {
@@ -134,14 +134,14 @@ class ProposalsController extends AppController {
     $cc_email = Configure::read( 'email.redirect_all_email_to' )
       ? Configure::read( 'email.redirect_all_email_to' )
       : $requestor['User']['email'];
-        
+    
     /** 
     $this->SwiftMailer->smtpType = 'tls'; 
     $this->SwiftMailer->smtpHost = 'smtp.gmail.com'; 
     $this->SwiftMailer->smtpPort = 465; 
     $this->SwiftMailer->smtpUsername = 'my_email@gmail.com'; 
     $this->SwiftMailer->smtpPassword = 'hard_to_guess'; 
-    */
+    */ 
     $this->SwiftMailer->sendAs   = 'html'; # TODO: send to 'both'?
     $this->SwiftMailer->from     = $requestor['User']['email']; 
     $this->SwiftMailer->fromName = $requestor['User']['full_name'];
@@ -159,7 +159,7 @@ class ProposalsController extends AppController {
     
     # set variables to template as usual
     $this->set( compact( 'address', 'existing_equipment', 'proposal', 'quoted_incentive', 'related_incentives', 'requestor', 'technology', 'technology_id' ) );
-     
+
     try {
       if( !$this->SwiftMailer->send( 'proposal_request', $requestor['User']['full_name'] . ' requests a proposal from a qualified contractor', 'native' ) ) {
         foreach($this->SwiftMailer->postErrors as $failed_send_to) { 
@@ -171,7 +171,7 @@ class ProposalsController extends AppController {
       }
     } 
     catch( Exception $e ) { 
-      $this->log( 'Failed to send email: ' . $e->getMessage() ); 
+      $this->log( 'Failed to send proposal email: ' . $e->getMessage() ); 
         
       $this->Session->setFlash( 'There was a problem sending your request.', null, null, 'error' );
       $this->redirect( array( 'action' => 'request' ) );

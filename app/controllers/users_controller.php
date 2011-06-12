@@ -98,7 +98,7 @@ class UsersController extends AppController {
         $this->Auth->login( $this->data ); # Authenticate the new user
         
         # Update the session info
-        $this->update_auth_session();
+        $this->refresh_auth();
         
         $this->redirect( $this->Auth->redirect(), null, true );
       }
@@ -154,7 +154,7 @@ class UsersController extends AppController {
 			$this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
       
       # Update the session value
-      $this->update_auth_session();
+      $this->refresh_auth( 'last_login', date( 'Y-m-d H:i:s' ) );
       
       if( $this->User->has_building( $this->Auth->User('id') ) ) {
         $this->redirect( array( 'controller' => 'buildings', 'action' => 'incentives' ), null, true );
@@ -261,7 +261,7 @@ class UsersController extends AppController {
     $this->User->id = $this->Auth->user( 'id' );
     if( $this->User->saveField( 'show_' . $notice, 0 ) ) {
       # Update the session value
-      $this->update_auth_session();
+      $this->refresh_auth();
     }
   }
   

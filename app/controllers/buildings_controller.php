@@ -205,11 +205,11 @@ class BuildingsController extends AppController {
     
     # Pre-populate the current user data in the proper association
     if( empty( $this->data ) && !User::admin( $this->Auth->user( 'id' ) ) ) {
-      if( in_array( $this->Session->read( 'Auth.UserType.name' ), array( 'Homeowner', 'Buyer' ) ) ) {
+      if( User::client( $this->Auth->user( 'id' ) ) ) {
         $this->data['Client'] = $this->Session->read( 'Auth.User' );
       }
       else {
-        $this->data[$this->Session->read( 'Auth.UserType.name' )] = $this->Session->read( 'Auth.User' );
+        $this->data[UserType::name( $this->Auth->user( 'user_type_id' ) )] = $this->Session->read( 'Auth.User' );
       }
     }
     

@@ -163,26 +163,29 @@ class AppController extends Controller {
   }
   
   /**
-   * Writes authenticated user info to the config so that it can be
-   * easily accessed anywhere.
+   * Refreshes the authenticated user session partially or en masse.
    *
-   * @param  $user_model   User model object. Defaults to $this->User.
+   * @param  $field
+   * @param  $value
    * @return boolean
+   * @see 
    */
-  protected function update_auth_session( $user_model = null ) {
-    $model = empty( $user_model ) ? $this->User : $user_model;
-    
+  protected function refresh_auth( $field = null, $value = null ) {
     if( $this->Auth->user() ) {
-      $user = $model->find(
-        'first',
-        array(
-          'recursive'  => 2, # TODO: Why is this needed? Without recursive = 2, the UserType isn't included.
-          'contain'    => array( 'UserType' ),
-          'conditions' => array( $model->alias . '.id' => $this->Auth->User( 'id' ) ),
-        )
-      );
-      
-      $this->Session->write( 'Auth', $user );
+      if( !empty( $field ) && !empty( $value ) ) { # Refresh a single key
+        $this->Session->write( $this->Auth->sessionKey . '.' . $field, $value );
+      }
+      else { # Refresh the entire session
+        $user = ClassRegistry::init('User')->find(
+          'first',
+          array(
+            'contain'    => false,
+            'conditions' => array( 'User.id' => $this->Auth->User( 'id' ) ),
+          )
+        );
+        
+        $this->Auth->login( $user );
+      }
     }
   }
   

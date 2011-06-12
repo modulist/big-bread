@@ -19,7 +19,7 @@
         <?php echo $this->Html->link( $building['Client']['email'], 'mailto:' . $building['Client']['email'] ) ?>
       </li>
       
-      <?php if( User::client( $this->Session->read( 'Auth.UserType.id' ) ) ): # ignore this stuff for clients ?>
+      <?php if( !User::client( $this->Session->read( 'Auth.User.id' ) ) ): # ignore this stuff for clients ?>
         <?php foreach( array( 'Realtor', 'Inspector' ) as $role ): ?>
           <?php $user_type_id = $role == 'Realtor' ? UserType::REALTOR : UserType::INSPECTOR ?>
           <?php $display = $role == 'Realtor' ? __( 'Realtor', true ) : __( 'Inspector', true ) ?>

@@ -52,7 +52,7 @@
         <div id="general" class="section<?php echo $anchor == 'general' ? ' active' : '' ?>">
           <h1 id="infohead"><?php __( 'General Information' ) ?></h1>
           
-          <fieldset<?php echo !User::admin( $this->Session->read( 'Auth.User.id' ) ) && $this->Session->read( 'Auth.UserType.id' ) == UserType::OWNER ? ' class="hidden"' : false ?>>
+          <fieldset<?php echo !User::admin( $this->Session->read( 'Auth.User.id' ) ) && $this->Session->read( 'Auth.User.user_type_id' ) == UserType::OWNER ? ' class="hidden"' : false ?>>
             <?php echo $this->Form->input( 'Client.id' ) ?>
             <?php echo $this->Form->input( 'Client.first_name', array( 'label' => __( 'Client First Name', true ) ) ) ?>
             <?php echo $this->Form->input( 'Client.last_name', array( 'label' => __( 'Client Last Name', true ) ) ) ?>
@@ -68,11 +68,11 @@
             <?php echo $this->Form->input( 'Address.zip_code', array( 'placeholder' => 'e.g. 20739', 'after' => sprintf( '<small>%s</small>', __( 'We\'ll find your city, state from the zip code.', true ) ) ) ) ?>
           </fieldset>
           
-          <fieldset<?php echo !User::admin( $this->Session->read( 'Auth.User.id' ) ) && $this->Session->read( 'Auth.UserType.id' ) == UserType::OWNER ? ' class="hidden"' : false ?>>
+          <fieldset<?php echo !User::admin( $this->Session->read( 'Auth.User.id' ) ) && $this->Session->read( 'Auth.User.user_type_id' ) == UserType::OWNER ? ' class="hidden"' : false ?>>
             <?php echo $this->element( '../buildings/_realtor_inputs' ) ?>
           </fieldset>
           
-          <fieldset<?php echo !User::admin( $this->Session->read( 'Auth.User.id' ) ) && $this->Session->read( 'Auth.UserType.id' ) == UserType::OWNER ? ' class="hidden"' : false ?>>
+          <fieldset<?php echo !User::admin( $this->Session->read( 'Auth.User.id' ) ) && $this->Session->read( 'Auth.User.user_type_id' ) == UserType::OWNER ? ' class="hidden"' : false ?>>
             <?php echo $this->element( '../buildings/_inspector_inputs' ) ?>
           </fieldset>
         </div> <!-- #general -->
