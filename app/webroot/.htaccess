@@ -1,9 +1,12 @@
 AddDefaultCharset UTF-8
 
 <IfModule mod_rewrite.c>
-    RewriteEngine On
+  RewriteEngine On
 	
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+  RewriteCond %{HTTP_HOST} !^bigbread\.local [NC]
+  RewriteRule ^(.*)$ http://bigbread.local/$1 [R=301,L]
+	
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
 </IfModule>
