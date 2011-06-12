@@ -45,7 +45,7 @@ class ContactsController extends AppController {
         
         try { 
           if( !$this->SwiftMailer->send( 'contact', 'Feedback from from BIGBREAD.net', 'native' ) ) {
-            $this->Session->setFlash( 'An error occurred when attempting to send your feeback. Please try again later.', null, null, 'warning' );
+            $this->Session->setFlash( 'Something prevented us from delivering your feeback. Please try again later.', null, null, 'warning' );
             $this->log( 'Error sending email', LOG_ERR );
           }
           else {
