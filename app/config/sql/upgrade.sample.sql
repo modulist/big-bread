@@ -2,6 +2,11 @@ USE @DB_NAME@;
 
 SET foreign_key_checks = 0;
 
+-- Changes to support Contractor users
+INSERT INTO user_types( id, code, name, selectable, deleted ) VALUES
+  ( '6573bca8-945a-11e0-adec-3aadb68782f6', 'CNTRCT', 'Contractor', 1, 0 )
+;
+
 DROP TABLE IF EXISTS contractors;
 CREATE TABLE contractors(
   id                  char(36)  NOT NULL,
