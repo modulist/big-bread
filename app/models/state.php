@@ -12,13 +12,19 @@ class State extends AppModel {
     ),
   );
   
+  public $hasMany = array(
+    'County' => array(
+      'foreignKey' => 'state',
+    ),
+  );
+  
   /**
    * Retrieves US states.
    *
    * @return	array
    * @access	public
    */
-  public function states( $county_id ) {
+  public function states() {
     $cache_config = 'week';
     $cache_key    = 'states';
     

@@ -15,10 +15,14 @@ class Contractor extends AppModel {
 	);
 	
 	public $belongsTo = array(
+		'BillingAddress' => array(
+			'className'  => 'Address',
+			'foreignKey' => 'billing_address_id',
+		),
 		'User' => array(
 			'className'  => 'User',
 			'foreignKey' => 'user_id',
-		)
+		),
 	);
 
 	public $hasMany = array(
