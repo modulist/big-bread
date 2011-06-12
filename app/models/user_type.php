@@ -18,6 +18,6 @@ class UserType extends AppModel {
    * @access	public
    */
   static public function name( $user_type_id ) {
-    return $this->field( 'name', array( 'UserType.id' => $user_type_id ) );
+    return ClassRegistry::init( 'UserType' )->field( 'name', array( 'UserType.id' => $user_type_id ) );
   }
 }
