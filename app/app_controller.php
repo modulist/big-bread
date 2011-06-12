@@ -165,10 +165,10 @@ class AppController extends Controller {
   /**
    * Refreshes the authenticated user session partially or en masse.
    *
-   * @param  $field
-   * @param  $value
-   * @return boolean
-   * @see 
+   * @param   $field
+   * @param   $value
+   * @return  boolean
+   * @see     http://milesj.me/blog/read/31/Refreshing-The-Auths-Session
    */
   protected function refresh_auth( $field = null, $value = null ) {
     if( $this->Auth->user() ) {
