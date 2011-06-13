@@ -26,16 +26,16 @@ class Contractor extends AppModel {
 	);
 
 	public $hasMany = array(
-		'ManufacturerIncentiveCertification' => array(
-			'className'  => 'ManufacturerIncentiveCertification',
+		'ManufacturerDealer' => array(
+			'className'  => 'ManufacturerDealer',
 			'foreignKey' => 'contractor_id',
 			'dependent'  => true,
 		),
-		'UtilityIncentiveCertification' => array(
-			'className'  => 'UtilityIncentiveCertification',
+		'UtilityIncentiveParticipant' => array(
+			'className'  => 'UtilityIncentiveParticipant',
 			'foreignKey' => 'contractor_id',
 			'dependent'  => true,
-		)
+		),
 	);
 
 
@@ -53,7 +53,7 @@ class Contractor extends AppModel {
 			'foreignKey' => 'contractor_id',
 			'associationForeignKey' => 'technology_id',
 			'unique' => true,
-		)
+		),
 	);
   
   # TODO: function service_area_counties
