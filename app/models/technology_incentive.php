@@ -138,7 +138,10 @@ class TechnologyIncentive extends AppModel {
       # Only return equipment installed in the building
       $contain['Technology']['Product'] = array(
         'BuildingProduct' => array(
-          'conditions' => array( 'BuildingProduct.building_id' => $building_id ),
+          'conditions' => array(
+            'BuildingProduct.building_id' => $building_id,
+            'BuildingProduct.service_out' => null
+          ),
         )
       );
     }
