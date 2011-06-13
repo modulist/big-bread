@@ -406,6 +406,21 @@ form small {
 }
 .hasDatepicker { width: 225px; }
 
+/* Contractor service area form */
+#county_list, #county_list ol {
+  list-style: none;
+  overflow: hidden;
+}
+#county_list li {
+  float: left;
+  margin-right: 20px;
+  white-space: nowrap;
+}
+#county_list ol li {
+  float: none;
+  margin-right: 0;
+}
+
 /* ============================= Join ======================= */
 #join {background-color: #C2D89A;}
 #join #content {float:none; margin: 20px auto;}

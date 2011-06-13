@@ -9,7 +9,7 @@ class Contractor extends AppModel {
 				'rule' => array( 'notempty' ),
 				'message'    => 'Please tell us the name of your company',
 				'allowEmpty' => false,
-				'required'   => true,
+				'required'   => false,
 			),
 		),
 	);

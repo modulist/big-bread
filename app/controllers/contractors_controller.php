@@ -36,10 +36,20 @@ class ContractorsController extends AppController {
    * @access	public
    */
   public function service_area( $contractor_id ) {
-    $this->Contractor->id = $contractor_id;
-    
     if( !empty( $this->data ) ) {
-      exit( 'do stuff' );
+      $this->Contractor->id = $contractor_id;
+      $this->data['Contractor']['id'] = $contractor_id;
+      
+      if( $this->Contractor->saveAll( $this->data ) ) {
+        $this->redirect( array( 'action' => 'scope', $contractor_id ) );
+      }
+      else {
+        $this->Session->setFlash( 'Oh noz. Something bad happened.', null, null, 'error' );
+        new PHPDump( $this->Contractor->invalidFields() ); exit;
+      }
+    }
+    else {
+      $this->data['Contractor']['id'] = $contractor_id;
     }
     
     $states = $this->Contractor->County->State->states();
@@ -47,6 +57,24 @@ class ContractorsController extends AppController {
     $states = Set::combine( $states, '{n}.State.code', '{n}.State.state' );
     
     $this->set( compact( 'states', 'user_id' ) );
+  }
+  
+  /**
+   * Displays a form allowing contractors to identify the technologies
+   * they service, manufacturers they are certified by and incentive
+   * programs they belong to.
+   *
+   * @param 	$contractor_id
+   * @access	public
+   */
+  public function scope( $contractor_id ) {
+    exit( 'entering scope' );
+    if( !empty( $this->data ) ) {
+      
+    }
+    else {
+      $this->data['Contractor']['id'] = $contractor_id;
+    }
   }
     
   /**
