@@ -6,7 +6,7 @@
 
 <?php echo $this->Form->create( 'Contractor' ) ?>
   <?php echo $this->Form->select( 'service_area_state', $states, null, array( 'empty' => 'Select a state...' ) ) ?>
-  <?php # echo $this->Form->input( 'State', array( 'multiple' => 'checkbox' ) ) ?>
+  
   <ol id="county_list">
     <!-- populated via javascript. @see /js/views/contractors/service_area.js -->
   </ol>

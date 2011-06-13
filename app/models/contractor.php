@@ -38,7 +38,6 @@ class Contractor extends AppModel {
 		),
 	);
 
-
 	public $hasAndBelongsToMany = array(
 		'County' => array(
 			'className' => 'County',

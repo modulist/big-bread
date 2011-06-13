@@ -406,17 +406,25 @@ form small {
 }
 .hasDatepicker { width: 225px; }
 
-/* Contractor service area form */
-#county_list, #county_list ol {
+.input.select.horizontal {
+  float: left;
+  margin-right: 20px;
+}
+
+/* Contractor registration bits */
+#county_list, #county_list ol,
+#manufacturer_lists, #manufacturer_lists ol {
   list-style: none;
   overflow: hidden;
 }
-#county_list li {
+#county_list li,
+#manufacturer_lists li {
   float: left;
   margin-right: 20px;
   white-space: nowrap;
 }
-#county_list ol li {
+#county_list ol li,
+#manufacturer_lists ol li {
   float: none;
   margin-right: 0;
 }

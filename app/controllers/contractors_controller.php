@@ -44,8 +44,7 @@ class ContractorsController extends AppController {
         $this->redirect( array( 'action' => 'scope', $contractor_id ) );
       }
       else {
-        $this->Session->setFlash( 'Oh noz. Something bad happened.', null, null, 'error' );
-        new PHPDump( $this->Contractor->invalidFields() ); exit;
+        $this->Session->setFlash( 'We were unable to save your service area details.', null, null, 'error' );
       }
     }
     else {
@@ -68,13 +67,32 @@ class ContractorsController extends AppController {
    * @access	public
    */
   public function scope( $contractor_id ) {
-    exit( 'entering scope' );
     if( !empty( $this->data ) ) {
+      $this->Contractor->id = $contractor_id;
+      $this->data['Contractor']['id'] = $contractor_id;
       
+      if( $this->Contractor->saveAll( $this->data ) ) {
+        $this->redirect( array( 'controller' => 'contacts', 'action' => 'index' ) );
+      }
+      else {
+        $this->Session->setFlash( 'We were unable to save your service area details.', null, null, 'error' );
+      }
     }
     else {
       $this->data['Contractor']['id'] = $contractor_id;
     }
+    
+    $technologies = $this->Contractor->Technology->find(
+      'list',
+      array(
+        'contain'    => false,
+        'conditions' => array( 'Technology.display' => 1 ),
+        'order'      => 'Technology.name',
+      )
+    );
+    $technologies = array_chunk( $technologies, ceil( count( $technologies ) / 4 ), true );
+    
+    $this->set( compact( 'technologies' ) );
   }
     
   /**
