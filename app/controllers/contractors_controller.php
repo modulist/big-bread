@@ -43,6 +43,8 @@ class ContractorsController extends AppController {
     }
     
     $states = $this->Contractor->County->State->states();
+    # Massage to list format (e.g. MD => Maryland )
+    $states = Set::combine( $states, '{n}.State.code', '{n}.State.state' );
     
     $this->set( compact( 'states', 'user_id' ) );
   }

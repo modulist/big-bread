@@ -31,6 +31,19 @@ class AddressesController extends AppController {
     
     $this->set( compact( 'locale' ) );
   }
+  
+  /**
+   * Retrieves the list of counties in a given state.
+   *
+   * @param 	$state_id   e.g. AL, OH, CA, etc.
+   * @return	array
+   * @access	public
+   */
+  public function counties( $state_id ) {
+    $counties = $this->Address->ZipCode->State->counties( $state_id );
+    
+    $this->set( compact( 'counties' ) );
+  }
 
   /**
    * Retrieves the known utility providers for a given zip code.
