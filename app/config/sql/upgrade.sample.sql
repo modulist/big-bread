@@ -93,18 +93,18 @@ CREATE TABLE manufacturer_dealers(
 -- Defines the relationship between a contractor and utilities in the
 -- areas s/he services. If a relationship exists, it's because the
 -- contractor is incentive certified by that utility.
-DROP TABLE IF EXISTS utility_incentive_participants;
-CREATE TABLE utility_incentive_participants(
+DROP TABLE IF EXISTS contractors_utilities;
+CREATE TABLE contractors_utilities(
   contractor_id       char(36)  NOT NULL,
   utility_id          char(36)  NOT NULL,
   
   CONSTRAINT uix__contractor_id__utility_id
     UNIQUE INDEX( contractor_id, utility_id ),
-  CONSTRAINT fk__utility_incentive_participants__contractors FOREIGN KEY( contractor_id )
+  CONSTRAINT fk__contractors_utilities__contractors FOREIGN KEY( contractor_id )
     REFERENCES contractors( id )
     ON UPDATE CASCADE
     ON DELETE CASCADE,
-  CONSTRAINT fk__utility_incentive_participants__utility FOREIGN KEY( utility_id )
+  CONSTRAINT fk__contractors_utilities__utility FOREIGN KEY( utility_id )
     REFERENCES utility( id )
     ON UPDATE CASCADE
     ON DELETE CASCADE

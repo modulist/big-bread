@@ -36,8 +36,8 @@ $( document ).ready( function() {
               var $item    = $( document.createElement( 'li' ) );
               var input_id = 'ContractorManufacturerDealer' + data[i].EquipmentManufacturer.id;
               
-              $item.html( '<input type="checkbox" class="manufacturer" name="data[ManufacturerDealer][][equipment_manufacturer_id]" id="' + input_id + '" value="' + data[i].EquipmentManufacturer.id + '" /> <label for="' + input_id + '">' + data[i].EquipmentManufacturer.name + '</label>' );
-              $item.append( '<div style="display: none; padding-left: 10px;"><input type="checkbox" name="data[ManufacturerDealer][][incentive_participant]" id="IncentiveParticipant' + data[i].EquipmentManufacturer.id + '" value="1" /> <label for="IncentiveParticipant' + data[i].EquipmentManufacturer.id + '">I am incentive certified</label></div>' );
+              $item.html( '<input type="checkbox" class="manufacturer" name="data[ManufacturerDealer][' + i + '][equipment_manufacturer_id]" id="' + input_id + '" value="' + data[i].EquipmentManufacturer.id + '" /> <label for="' + input_id + '">' + data[i].EquipmentManufacturer.name + '</label>' );
+              $item.append( '<div style="display: none; padding-left: 10px;"><input type="checkbox" name="data[ManufacturerDealer][' + i + '][incentive_participant]" id="IncentiveParticipant' + data[i].EquipmentManufacturer.id + '" value="1" /> <label for="IncentiveParticipant' + data[i].EquipmentManufacturer.id + '">I am incentive certified</label></div>' );
               $manufacturer_list.append( $item );
             }
           }

@@ -17,6 +17,9 @@ class Utility extends AppModel {
     ),
   );
   public $hasAndBelongsToMany = array(
+    'Contractor' => array(
+      'joinTable' => 'contractors_utilities', 
+    ),
     'Incentive' => array(
       'className'             => 'Incentive',
       'joinTable'             => 'incentive_utility',
@@ -40,6 +43,48 @@ class Utility extends AppModel {
   /**
    * PUBLIC METHODS
    */
+  
+  /**
+   * Retrieves the utilities operating in a given zip code or set of zip
+   * codes.
+   *
+   * @param 	$zip_codes  Mixed. A single zip code or an indexed array
+   *                      of zip codes.
+   * @return	array
+   * @access	public
+   */
+  public function by_zip_code( $zip_codes ) {
+    if( !is_array( $zip_codes ) ) {
+      $zip_codes = array( $zip_codes );
+    }
+    
+    $utilities = $this->ZipCodeUtility->find(
+      'all',
+      array(
+        'contain'    => array( 'Utility' ),
+        'conditions' => array(
+          'ZipCodeUtility.zip' => $zip_codes
+        ),
+        'order'      => 'Utility.name',
+      )
+    );
+    
+    # Utility companies operate across zip codes, so this result set
+    # needs to be deduped...
+    $deduped = array();
+    foreach( $utilities as $i => $utility ) {
+      if( in_array( $utility['Utility']['id'], $deduped ) ) {
+        unset( $utilities[$i] );
+      }
+      else {
+        array_push( $deduped, $utility['Utility']['id'] );
+      }
+    }
+    
+    $utilities = array_values( $utilities ); # Reindex the final array
+    
+    return $utilities;
+  }
   
   /**
    * Determines whether a utility already exists (is known) based on name

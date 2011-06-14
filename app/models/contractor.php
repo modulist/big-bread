@@ -31,13 +31,10 @@ class Contractor extends AppModel {
 			'foreignKey' => 'contractor_id',
 			'dependent'  => true,
 		),
-		'UtilityIncentiveParticipant' => array(
-			'className'  => 'UtilityIncentiveParticipant',
-			'foreignKey' => 'contractor_id',
-			'dependent'  => true,
-		),
 	);
 
+  # The deep definition exists because at least one of the models has
+  # a non-standard table name.
 	public $hasAndBelongsToMany = array(
 		'County' => array(
 			'className' => 'County',
@@ -53,8 +50,51 @@ class Contractor extends AppModel {
 			'associationForeignKey' => 'technology_id',
 			'unique' => true,
 		),
+		'Utility' => array(
+			'className' => 'Utility',
+			'joinTable' => 'contractors_utilities',
+			'foreignKey' => 'contractor_id',
+			'associationForeignKey' => 'utility_id',
+			'unique' => true,
+    ),
 	);
   
-  # TODO: function service_area_counties
-  # TODO: function service_area_zip_codes
+  /**
+   * Returns the list of counties that defines a given contractor's
+   * service area.
+   *
+   * @param 	$contractor_id
+   * @return	array
+   * @access	public
+   */
+  public function service_area_by_county( $contractor_id ) {
+    $counties = $this->find(
+      'first',
+      array(
+        'contain'    => array( 'County' => array( 'ZipCode' ) ),
+        'conditions' => array( 'Contractor.id' => $contractor_id ),
+      )
+    );
+    
+    return $counties['County'];
+  }
+  
+  /**
+   * Returns a list of zip codes in a given contractor's service area.
+   * The service area itself is stored by county.
+   *
+   * @param 	$contractor_id
+   * @param   $all  Whether to return all zip code data or just the zip
+   *                code value itself.
+   * @return	array
+   * @access	public
+   */
+  public function service_area_by_zip_code( $contractor_id, $all = true ) {
+    $counties  = $this->service_area_by_county( $contractor_id );
+    $zip_codes = $all
+      ? Set::extract( '/ZipCode', $counties )
+      : Set::extract( '/ZipCode/zip', $counties );
+    
+    return $zip_codes;
+  }
 }

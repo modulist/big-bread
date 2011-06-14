@@ -98,7 +98,7 @@ class UsersController extends AppController {
         
         if( $this->data['User']['user_type_id'] === UserType::CONTRACTOR ) {
           $this->Session->setFlash( 'Because you\'re registering as a contractor, we need some additional information from you.', null, null, 'info' );
-          $this->redirect( array( 'controller' => 'contractors', 'action' => 'add', $this->User->id ), null, true );
+          $this->redirect( array( 'controller' => 'contractors', 'action' => 'contact_info', $this->User->id ), null, true );
         }
         
         $this->redirect( $this->Auth->redirect(), null, true );
