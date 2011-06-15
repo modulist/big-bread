@@ -14,30 +14,26 @@ $( document ).ready( function() {
       var c_columns = $manufacturer_lists.children( 'li' ).length;
       var col_width = 100 / ( c_columns + 1 );
       
-      $column.addClass( 'column' );
-      $column.attr( 'id', 'manufacturer_' + tech_id )
-      $column.append( '<h3>' + tech_name + '</h3>' );
-      $manufacturer_lists.append( $column );
-      $manufacturer_lists.find( 'li' ).css( 'max-width', col_width + '%' );
-      
       $.getJSON(
         '/technologies/manufacturers/' + tech_id + '.json',
         function( data, status, jqXHR ) {
-          var $manufacturer_list = $( document.createElement( 'ol' ) );
-          
-          if( data.length === 0 ) {
-            var $item    = $( document.createElement( 'li' ) );
+          // If at least one manufacturer is assigned to this technology
+          // build a list so contractors can identify relationships.
+          if( data.EquipmentManufacturer.length > 0 ) {
+            $column.addClass( 'column' );
+            $column.attr( 'id', 'manufacturer_' + tech_id )
+            $column.append( '<h3>' + tech_name + '</h3>' );
+            $manufacturer_lists.append( $column );
+            $manufacturer_lists.find( 'li' ).css( 'max-width', col_width + '%' );
             
-            $item.html( '<strong>No manufacturers to display</strong>' );
-            $manufacturer_list.append( $item );
-          }
-          else {
-            for( var i = 0; i < data.length; i++ ) {
+            var $manufacturer_list = $( document.createElement( 'ol' ) );
+            
+            for( var i = 0; i < data.EquipmentManufacturer.length; i++ ) {
               var $item    = $( document.createElement( 'li' ) );
-              var input_id = 'ContractorManufacturerDealer' + data[i].EquipmentManufacturer.id;
+              var input_id = 'ContractorManufacturerDealer' + data.EquipmentManufacturer[i].id;
               
-              $item.html( '<input type="checkbox" class="manufacturer" name="data[ManufacturerDealer][' + i + '][equipment_manufacturer_id]" id="' + input_id + '" value="' + data[i].EquipmentManufacturer.id + '" /> <label for="' + input_id + '">' + data[i].EquipmentManufacturer.name + '</label>' );
-              $item.append( '<div style="display: none; padding-left: 10px;"><input type="checkbox" name="data[ManufacturerDealer][' + i + '][incentive_participant]" id="IncentiveParticipant' + data[i].EquipmentManufacturer.id + '" value="1" /> <label for="IncentiveParticipant' + data[i].EquipmentManufacturer.id + '">I am incentive certified</label></div>' );
+              $item.html( '<input type="checkbox" class="manufacturer" name="data[ManufacturerDealer][' + i + '][equipment_manufacturer_id]" id="' + input_id + '" value="' + data.EquipmentManufacturer[i].id + '" /> <label for="' + input_id + '">' + data.EquipmentManufacturer[i].name + '</label>' );
+              $item.append( '<div style="display: none; padding-left: 10px;"><input type="checkbox" name="data[ManufacturerDealer][' + i + '][incentive_participant]" id="IncentiveParticipant' + data.EquipmentManufacturer[i].id + '" value="1" /> <label for="IncentiveParticipant' + data.EquipmentManufacturer[i].id + '">I am incentive certified</label></div>' );
               $manufacturer_list.append( $item );
             }
           }

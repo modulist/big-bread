@@ -11,7 +11,7 @@
     <div class="input select horizontal">
       <?php foreach( $technology_chunk as $id => $name ): ?>
         <div class="checkbox">
-          <input type="checkbox" name="data[Technology][]" id="<?php echo 'TechnologyTechnology' . $id ?>" value="<?php echo $id ?>" />
+          <input type="checkbox" name="data[Technology][]" id="<?php echo 'TechnologyTechnology' . $id ?>" value="<?php echo $id ?>"<?php echo in_array( $id, $technology_scope ) ? ' checked="checked"' : false ?> />
           <label for="TechnologyTechnology<?php echo $id ?>"><?php echo $name ?></label>
         </div>
       <?php endforeach; ?>
@@ -23,7 +23,29 @@
   
   <p><?php __( 'Select an equipment type above and let us know which manufacturers consider you a factory dealer.' ) ?></p>
   <ol id="manufacturer_lists">
-    <!-- populated via javascript. @see /js/views/contractors/scope.js -->
+    <?php if( !empty( $tech_manufacturers ) ): ?>
+      <?php foreach( $tech_manufacturers as $tech ): ?>
+        <?php if( !empty( $tech['EquipmentManufacturer'] ) ): ?>
+          <li id="manufacturer_<?php echo $tech['Technology']['id'] ?>" class="column">
+            <h3><?php echo $tech['Technology']['name'] ?></h3>
+            <ol>
+              <?php foreach( $tech['EquipmentManufacturer'] as $i => $manufacturer ): ?>
+                <?php $input_id = 'Manufacturer' + $manufacturer['id'] ?>
+                <li>
+                  <input type="checkbox" class="manufacturer" name="data[ManufacturerDealer][<?php echo $i ?>][equipment_manufacturer_id]" id="<?php echo $input_id ?>" value="<?php echo $manufacturer['id'] ?>"<?php echo array_key_exists( $manufacturer['id'], $manufacturer_dealer ) ? ' checked="checked"' : false ?> />
+                  <label for="<?php echo $input_id ?>"><?php echo $manufacturer['name'] ?></label>
+                  
+                  <div style="display: <?php echo array_key_exists( $manufacturer['id'], $manufacturer_dealer ) ? 'block' : 'none' ?>; padding-left: 10px;">
+                    <input type="checkbox" name="data[ManufacturerDealer][<?php echo $i ?>][incentive_participant]" id="IncentiveParticipant<?php echo $manufacturer['id'] ?>" value="1"<?php echo array_key_exists( $manufacturer['id'], $manufacturer_dealer ) && $manufacturer_dealer[$manufacturer['id']] ? ' checked="checked"' : false ?> />
+                    <label for="IncentiveParticipant<?php echo $manufacturer['id'] ?>">I am incentive certified</label>
+                  </div>
+                </li>
+              <?php endforeach; ?>
+            </ol>
+          </li>
+        <?php endif; ?>
+      <?php endforeach; ?>
+    <?php endif; ?>
   </ol>
   <div class="clear"></div>
 <?php echo $this->Form->end( __( 'Next', true ) ) ?>

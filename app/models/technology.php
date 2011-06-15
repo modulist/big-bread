@@ -37,4 +37,49 @@ class Technology extends AppModel {
 			'unique' => true,
 		),
 	);
+  
+  /**
+   * PUBLIC METHODS
+   */
+  
+  /**
+   * Retrieves a list of manufacturers for a given technology.
+   *
+   * @param 	$technology_ids
+   * @param   $scope          Find type. first|all. If null, the
+   *                          method attempts to be intelligent.
+   * @return  array
+   * @access	public
+   */
+  public function manufacturers( $technology_ids, $scope = null ) {
+    if( !is_array( $technology_ids ) ) {
+      $technology_ids = array( $technology_ids );
+    }
+    
+    $cache_config = 'day';
+    $cache_key    = 'Technology_manufacturers_' . join( '_', $technology_ids );
+    
+    $manufacturers = Cache::read( $cache_key, $cache_config );
+    
+    if( $manufacturers === false ) {
+      if( empty( $scope ) ) {
+        $scope = count( $technology_ids === 1 ) ? 'first' : 'all';
+      }
+      
+      $manufacturers = $this->find(
+        $scope,
+        array(
+          'contain' => array(
+            'EquipmentManufacturer' => array( 'order' => 'EquipmentManufacturer.name')
+          ),
+          'conditions' => array( 'Technology.id' => $technology_ids ),
+          'order'      => array( 'Technology.name' ),
+        )
+      );
+      
+      Cache::write( $cache_key, $manufacturers, $cache_config );
+    }
+    
+    return $manufacturers;
+  }
 }

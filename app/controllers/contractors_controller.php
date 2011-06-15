@@ -110,6 +110,19 @@ class ContractorsController extends AppController {
    * @access	public
    */
   public function scope( $contractor_id ) {
+    $contractor = $this->Contractor->find(
+      'first',
+      array(
+        'contain' => array(
+          'Technology',
+          'ManufacturerDealer'
+        ),
+        'conditions' => array(
+          'Contractor.id' => $contractor_id,
+        )
+      )
+    );
+    
     if( !empty( $this->data ) ) {
       $this->Contractor->id = $contractor_id;
       $this->data['Contractor']['id'] = $contractor_id;
@@ -118,19 +131,11 @@ class ContractorsController extends AppController {
         $this->redirect( array( 'action' => 'utility_rebates', $contractor_id ) );
       }
       else {
-        $this->Session->setFlash( 'We were unable to save your service area details.', null, null, 'error' );
+        $this->Session->setFlash( 'We were unable to save your work details.', null, null, 'error' );
       }
     }
     else {
-      $this->data = $this->Contractor->find(
-        'first',
-        array(
-          'contain' => false,
-          'conditions' => array(
-            'Contractor.id' => $contractor_id,
-          )
-        )
-      );
+      $this->data = $contractor;
     }
     
     $technologies = $this->Contractor->Technology->find(
@@ -143,9 +148,16 @@ class ContractorsController extends AppController {
     );
     $technologies = array_chunk( $technologies, ceil( count( $technologies ) / 4 ), true );
     
+    # Technologies the contractor has said s/he services
+    $technology_scope    = Set::extract( '/Technology/id', $contractor );
+    # Manufacturers for the technologies in the contractor scope
+    $tech_manufacturers  = $this->Contractor->Technology->manufacturers( $technology_scope, 'all' );
+    # Manufacturers the contractor is a dealer for and incentive participation
+    $manufacturer_dealer = Set::combine( $contractor, 'ManufacturerDealer.{n}.equipment_manufacturer_id', 'ManufacturerDealer.{n}.incentive_participant' );
+    
     $previous_url = array( 'action' => 'service_area', $this->data['Contractor']['id'] );
     
-    $this->set( compact( 'previous_url', 'technologies' ) );
+    $this->set( compact( 'manufacturer_dealer', 'previous_url', 'technologies', 'tech_manufacturers', 'technology_scope' ) );
   }
   
   /**
@@ -177,7 +189,9 @@ class ContractorsController extends AppController {
     # Chunk the utility list for column display
     $utilities = array_chunk( $utilities, ceil( count( $utilities ) / 3 ), true );
     
-    $this->set( compact( 'utilities' ) );
+    $previous_url = array( 'action' => 'scope', $this->data['Contractor']['id'] );
+    
+    $this->set( compact( 'previous_url', 'utilities' ) );
   }
   
   /**
