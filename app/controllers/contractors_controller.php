@@ -201,7 +201,7 @@ class ContractorsController extends AppController {
       $this->data['Contractor']['id'] = $contractor_id;
     }
     
-    $zip_codes = $this->Contractor->service_area_by_zip_code( $contractor_id, false );
+    $zip_codes = $this->Contractor->zip_codes_serviced( $contractor_id, false );
     
     # All utilities operating in the contractor's service area
     $utilities = $this->Contractor->Utility->by_zip_code( $zip_codes );

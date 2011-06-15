@@ -67,7 +67,7 @@ class Contractor extends AppModel {
    * @return	array
    * @access	public
    */
-  public function service_area_by_county( $contractor_id ) {
+  public function counties_serviced( $contractor_id ) {
     $counties = $this->find(
       'first',
       array(
@@ -89,8 +89,8 @@ class Contractor extends AppModel {
    * @return	array
    * @access	public
    */
-  public function service_area_by_zip_code( $contractor_id, $all = true ) {
-    $counties  = $this->service_area_by_county( $contractor_id );
+  public function zip_codes_serviced( $contractor_id, $all = true ) {
+    $counties  = $this->counties_serviced( $contractor_id );
     $zip_codes = $all
       ? Set::extract( '/ZipCode', $counties )
       : Set::extract( '/ZipCode/zip', $counties );
