@@ -40,20 +40,20 @@ $( document ).ready( function() {
           $column.append( $manufacturer_list );
         }
       );
-      
-      $( 'input[type="checkbox"].manufacturer' ).live( 'change', function( e ) {
-        var $this = $( this );
-        
-        if( $this.is( ':checked' ) ) {
-          $this.nextAll( 'div' ).slideDown();
-        }
-        else {
-          $this.nextAll( 'div' ).find( 'input[type="checkbox"]' ).removeAttr( 'checked' );
-          $this.nextAll( 'div' ).slideUp();
-        }
-      });
     }
     
     e.preventDefault();
+  });
+  
+  $( 'input[type="checkbox"].manufacturer' ).live( 'change', function( e ) {
+    var $this = $( this );
+    
+    if( $this.is( ':checked' ) ) {
+      $this.nextAll( 'div' ).slideDown();
+    }
+    else {
+      $this.nextAll( 'div' ).find( 'input[type="checkbox"]' ).removeAttr( 'checked' );
+      $this.nextAll( 'div' ).slideUp();
+    }
   });
 });

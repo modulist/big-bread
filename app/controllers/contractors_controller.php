@@ -153,7 +153,7 @@ class ContractorsController extends AppController {
     # Manufacturers for the technologies in the contractor scope
     $tech_manufacturers  = $this->Contractor->Technology->manufacturers( $technology_scope, 'all' );
     # Manufacturers the contractor is a dealer for and incentive participation
-    $manufacturer_dealer = Set::combine( $contractor, 'ManufacturerDealer.{n}.equipment_manufacturer_id', 'ManufacturerDealer.{n}.incentive_participant' );
+    $manufacturer_dealer = Set::combine( $contractor, 'ManufacturerDealer.{n}.equipment_manufacturer_id', 'ManufacturerDealer.{n}' );
     
     $previous_url = array( 'action' => 'service_area', $this->data['Contractor']['id'] );
     

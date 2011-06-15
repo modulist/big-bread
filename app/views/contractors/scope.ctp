@@ -30,8 +30,11 @@
             <h3><?php echo $tech['Technology']['name'] ?></h3>
             <ol>
               <?php foreach( $tech['EquipmentManufacturer'] as $i => $manufacturer ): ?>
-                <?php $input_id = 'Manufacturer' + $manufacturer['id'] ?>
+                <?php $input_id = 'Manufacturer' . $manufacturer['id'] ?>
                 <li>
+                  <?php if( array_key_exists( $manufacturer['id'], $manufacturer_dealer ) ): ?>
+                    <input type="hidden" name="data[ManufacturerDealer][<?php echo $i ?>][id]" value="<?php echo $manufacturer['id'] ?>" />
+                  <?php endif; ?>
                   <input type="checkbox" class="manufacturer" name="data[ManufacturerDealer][<?php echo $i ?>][equipment_manufacturer_id]" id="<?php echo $input_id ?>" value="<?php echo $manufacturer['id'] ?>"<?php echo array_key_exists( $manufacturer['id'], $manufacturer_dealer ) ? ' checked="checked"' : false ?> />
                   <label for="<?php echo $input_id ?>"><?php echo $manufacturer['name'] ?></label>
                   
