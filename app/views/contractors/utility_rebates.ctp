@@ -7,7 +7,7 @@
     <div class="input select horizontal">
       <?php foreach( $utility_chunk as $utility ): ?>
         <div class="checkbox">
-          <input type="checkbox" name="data[Utility][]" id="UtilityIncentiveParticipant<?php echo $utility['Utility']['id'] ?>" value="<?php echo $utility['Utility']['id'] ?>" />
+          <input type="checkbox" name="data[Utility][]" id="UtilityIncentiveParticipant<?php echo $utility['Utility']['id'] ?>" value="<?php echo $utility['Utility']['id'] ?>"<?php echo isset( $utility_relationships[$utility['Utility']['id']] ) ? ' checked="checked"' : false ?> />
           <label for="UtilityIncentiveParticipant<?php echo $utility['Utility']['id'] ?>"><?php echo $utility['Utility']['name'] ?></label>
         </div>
       <?php endforeach; ?>
@@ -15,3 +15,4 @@
   <?php endforeach; ?>
   <div class="clear"></div>
 <?php echo $this->Form->end( __( 'Finish', true ) ) ?>
+<?php echo $this->Html->link( __( 'Back', true ), $previous_url, array( 'class' => 'button' ) ) ?>

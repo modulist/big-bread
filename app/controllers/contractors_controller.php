@@ -127,6 +127,22 @@ class ContractorsController extends AppController {
       $this->Contractor->id = $contractor_id;
       $this->data['Contractor']['id'] = $contractor_id;
       
+      # If we have multiple of the same manufacturer and neither has an
+      # id, we need to merge them so we don't get duplicate key warnings.
+      $checked = array();
+      foreach( $this->data['ManufacturerDealer'] as $i => $manufacturer ) {
+        $manufacturer_id = $manufacturer['equipment_manufacturer_id'];
+        $dealer_id       = isset( $manufacturer['id'] ) ? $manufacturer['id'] : null;
+        
+        if( !array_key_exists( $manufacturer_id, $checked ) ) {
+          $checked[$manufacturer_id] = $dealer_id;
+        }
+        else {
+          # Unset the duplicate
+          unset( $this->data['ManufacturerDealer'][$i] );
+        }
+      }
+      
       if( $this->Contractor->saveAll( $this->data ) ) {
         $this->redirect( array( 'action' => 'utility_rebates', $contractor_id ) );
       }
@@ -138,6 +154,7 @@ class ContractorsController extends AppController {
       $this->data = $contractor;
     }
     
+    # All available technologies for checkbox display, organized into columns
     $technologies = $this->Contractor->Technology->find(
       'list',
       array(
@@ -173,6 +190,7 @@ class ContractorsController extends AppController {
       $this->data['Contractor']['id'] = $contractor_id;
       
       if( $this->Contractor->saveAll( $this->data ) ) {
+        new PHPDump( $this->data, 'Saved' ); exit;
         $this->redirect( array( 'action' => 'payment', $contractor_id ) );
       }
       else {
@@ -184,14 +202,18 @@ class ContractorsController extends AppController {
     }
     
     $zip_codes = $this->Contractor->service_area_by_zip_code( $contractor_id, false );
-    $utilities = $this->Contractor->County->ZipCode->ZipCodeUtility->Utility->by_zip_code( $zip_codes );
     
-    # Chunk the utility list for column display
+    # All utilities operating in the contractor's service area
+    $utilities = $this->Contractor->Utility->by_zip_code( $zip_codes );
     $utilities = array_chunk( $utilities, ceil( count( $utilities ) / 3 ), true );
+    
+    # Utilities the contractor has already defined a relationship with
+    $utility_relationships = $this->Contractor->utilities( $contractor_id );
+    $utility_relationships = Set::combine( $utility_relationships, '{n}.id', '{n}' );
     
     $previous_url = array( 'action' => 'scope', $this->data['Contractor']['id'] );
     
-    $this->set( compact( 'previous_url', 'utilities' ) );
+    $this->set( compact( 'previous_url', 'utilities', 'utility_relationships' ) );
   }
   
   /**

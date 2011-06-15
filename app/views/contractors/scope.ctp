@@ -31,15 +31,15 @@
             <ol>
               <?php foreach( $tech['EquipmentManufacturer'] as $i => $manufacturer ): ?>
                 <?php $input_id = 'Manufacturer' . $manufacturer['id'] ?>
-                <li>
+                <li data-manufacturer-id="<?php echo $manufacturer['id'] ?>">
                   <?php if( array_key_exists( $manufacturer['id'], $manufacturer_dealer ) ): ?>
-                    <input type="hidden" name="data[ManufacturerDealer][<?php echo $i ?>][id]" value="<?php echo $manufacturer['id'] ?>" />
+                    <input type="hidden" name="data[ManufacturerDealer][<?php echo $i ?>][id]" value="<?php echo $manufacturer_dealer[$manufacturer['id']]['id'] ?>" />
                   <?php endif; ?>
-                  <input type="checkbox" class="manufacturer" name="data[ManufacturerDealer][<?php echo $i ?>][equipment_manufacturer_id]" id="<?php echo $input_id ?>" value="<?php echo $manufacturer['id'] ?>"<?php echo array_key_exists( $manufacturer['id'], $manufacturer_dealer ) ? ' checked="checked"' : false ?> />
+                  <input type="checkbox" data-for="equipment_manufacturer_id" class="manufacturer" name="data[ManufacturerDealer][<?php echo $i ?>][equipment_manufacturer_id]" id="<?php echo $input_id ?>" value="<?php echo $manufacturer['id'] ?>"<?php echo array_key_exists( $manufacturer['id'], $manufacturer_dealer ) ? ' checked="checked"' : false ?> />
                   <label for="<?php echo $input_id ?>"><?php echo $manufacturer['name'] ?></label>
                   
                   <div style="display: <?php echo array_key_exists( $manufacturer['id'], $manufacturer_dealer ) ? 'block' : 'none' ?>; padding-left: 10px;">
-                    <input type="checkbox" name="data[ManufacturerDealer][<?php echo $i ?>][incentive_participant]" id="IncentiveParticipant<?php echo $manufacturer['id'] ?>" value="1"<?php echo array_key_exists( $manufacturer['id'], $manufacturer_dealer ) && $manufacturer_dealer[$manufacturer['id']] ? ' checked="checked"' : false ?> />
+                    <input type="checkbox" data-for="incentive_participant" name="data[ManufacturerDealer][<?php echo $i ?>][incentive_participant]" id="IncentiveParticipant<?php echo $manufacturer['id'] ?>" value="1"<?php echo array_key_exists( $manufacturer['id'], $manufacturer_dealer ) && $manufacturer_dealer[$manufacturer['id']]['incentive_participant'] ? ' checked="checked"' : false ?> />
                     <label for="IncentiveParticipant<?php echo $manufacturer['id'] ?>">I am incentive certified</label>
                   </div>
                 </li>

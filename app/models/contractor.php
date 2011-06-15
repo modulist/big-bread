@@ -97,4 +97,24 @@ class Contractor extends AppModel {
     
     return $zip_codes;
   }
+  
+  /**
+   * Retrieves the utilities a contractor has indicated an incentive
+   * relationship with.
+   *
+   * @param 	$contractor_id
+   * @return	array
+   * @access	public
+   */
+  public function utilities( $contractor_id ) {
+    $utilities = $this->find(
+      'first',
+      array(
+        'contain'    => array( 'Utility' ),
+        'conditions' => array( 'Contractor.id' => $contractor_id ),
+      )
+    );
+    
+    return $utilities['Utility'];
+  }
 }
