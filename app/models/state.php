@@ -21,18 +21,19 @@ class State extends AppModel {
   /**
    * Retrieves US states.
    *
+   * @param   $type   Find type (all|list)
    * @return	array
    * @access	public
    */
-  public function states() {
+  public function states( $type = 'all' ) {
     $cache_config = 'week';
-    $cache_key    = 'states';
+    $cache_key    = 'State_states_' . $type;
     
     $states = Cache::read( $cache_key, $cache_config );
     
     if( $states === false ) {
       $states = $this->find(
-        'all',
+        $type,
         array( 'contain' => false )
       );
       Cache::write( $cache_key, $states, $cache_config );
@@ -44,13 +45,17 @@ class State extends AppModel {
   /**
    * Retrieves a list of counties in a given state.
    *
-   * @param 	$state_id   e.g. AL, OH, CA, etc.
+   * @param 	$state_ids   e.g. AL, OH, CA, etc.
    * @return	array
    * @access	public
    */
-  public function counties( $state_id ) {
+  public function counties( $state_ids ) {
+    if( !is_array( $state_ids ) ) {
+      $state_ids = array( $state_ids );
+    }
+    
     $cache_config = 'week';
-    $cache_key    = 'counties_' . strtolower( $state_id );
+    $cache_key    = 'State_counties_' . join( '_', $state_ids );
     
     $counties = Cache::read( $cache_key, $cache_config );
     
@@ -58,9 +63,9 @@ class State extends AppModel {
       $counties = $this->County->find(
         'all',
         array(
-          'contain'    => false,
-          'conditions' => array( 'County.state' => $state_id ),
-          'order'      => 'County.county',
+          'contain'    => array( 'State' ),
+          'conditions' => array( 'County.state' => $state_ids ),
+          'order'      => array( 'State.state', 'County.county' ),
         )
       );
       

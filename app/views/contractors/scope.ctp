@@ -27,3 +27,4 @@
   </ol>
   <div class="clear"></div>
 <?php echo $this->Form->end( __( 'Next', true ) ) ?>
+<?php echo $this->Html->link( __( 'Back', true ), $previous_url, array( 'class' => 'button' ) ) ?>

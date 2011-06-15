@@ -60,6 +60,18 @@ class ContractorsController extends AppController {
    * @access	public
    */
   public function service_area( $contractor_id ) {
+    $contractor = $this->Contractor->find(
+      'first',
+      array(
+        'contain' => array(
+          'County' => array( 'State' ),
+        ),
+        'conditions' => array(
+          'Contractor.id' => $contractor_id,
+        )
+      )
+    );
+    
     if( !empty( $this->data ) ) {
       $this->Contractor->id = $contractor_id;
       $this->data['Contractor']['id'] = $contractor_id;
@@ -75,11 +87,18 @@ class ContractorsController extends AppController {
       $this->data['Contractor']['id'] = $contractor_id;
     }
     
-    $states = $this->Contractor->County->State->states();
-    # Massage to list format (e.g. MD => Maryland )
-    $states = Set::combine( $states, '{n}.State.code', '{n}.State.state' );
+    # Get states in list format
+    $states = $this->Contractor->County->State->states( 'list' );
+    # Counties in the serviced states
+    $serviced_state_counties = $this->Contractor->County->State->counties( array_unique( Set::extract( '/County/State/code', $contractor ) ) );
+    # County data grouped by state
+    $serviced_state_counties = Set::combine( $serviced_state_counties, '{n}.County.county', '{n}', '{n}.State.state' );
+    # The county ids actually serviced by this contractor
+    $serviced_counties = Set::extract( '/County/id', $contractor );
     
-    $this->set( compact( 'states', 'user_id' ) );
+    $previous_url = array( 'action' => 'contact_info', $contractor['Contractor']['user_id'] );
+    
+    $this->set( compact( 'previous_url', 'serviced_counties', 'serviced_state_counties', 'states' ) );
   }
   
   /**
@@ -124,7 +143,9 @@ class ContractorsController extends AppController {
     );
     $technologies = array_chunk( $technologies, ceil( count( $technologies ) / 4 ), true );
     
-    $this->set( compact( 'technologies' ) );
+    $previous_url = array( 'action' => 'service_area', $this->data['Contractor']['id'] );
+    
+    $this->set( compact( 'previous_url', 'technologies' ) );
   }
   
   /**
