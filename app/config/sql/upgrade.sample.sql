@@ -1,5 +1,6 @@
 USE @DB_NAME@;
 
+SET NAMES utf8;
 SET foreign_key_checks = 0;
 
 -- Changes to support Contractor users
@@ -29,7 +30,7 @@ CREATE TABLE contractors(
     REFERENCES addresses( id )
     ON UPDATE CASCADE
     ON DELETE NO ACTION
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Defines the territory in which a given contractor operates.
 DROP TABLE IF EXISTS contractors_counties;
@@ -47,7 +48,7 @@ CREATE TABLE contractors_counties(
     REFERENCES us_county( id )
     ON UPDATE CASCADE
     ON DELETE CASCADE
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Defines the technologies that a contractor services
 DROP TABLE IF EXISTS contractors_technologies;
@@ -65,7 +66,7 @@ CREATE TABLE contractors_technologies(
     REFERENCES technologies( id )
     ON UPDATE CASCADE
     ON DELETE CASCADE
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Defines the manufacturers whose equipment a contractor services
 -- and whether the contractor is certified for the manufacture's
@@ -88,7 +89,7 @@ CREATE TABLE manufacturer_dealers(
     REFERENCES equipment_manufacturers( id )
     ON UPDATE CASCADE
     ON DELETE CASCADE
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Defines the relationship between a contractor and utilities in the
 -- areas s/he services. If a relationship exists, it's because the
@@ -108,6 +109,6 @@ CREATE TABLE contractors_utilities(
     REFERENCES utility( id )
     ON UPDATE CASCADE
     ON DELETE CASCADE
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 SET foreign_key_checks = 1;
