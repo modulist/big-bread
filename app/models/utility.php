@@ -40,6 +40,16 @@ class Utility extends AppModel {
     ),
   );
   
+  public $actsAs = array(
+    'NamedScope.NamedScope' => array(
+      'active' => array(
+        'conditions' => array(
+          'Utility.reviewed' => 1,
+        )
+      )
+    )
+  );
+  
   /**
    * PUBLIC METHODS
    */
@@ -63,6 +73,7 @@ class Utility extends AppModel {
       array(
         'contain'    => array( 'Utility' ),
         'conditions' => array(
+          'Utility.reviewed'   => 1,
           'ZipCodeUtility.zip' => $zip_codes
         ),
         'order'      => 'Utility.name',
@@ -70,10 +81,10 @@ class Utility extends AppModel {
     );
     
     # Utility companies operate across zip codes, so this result set
-    # needs to be deduped...
+    # needs to be deduped. Also strip unreviewed, user-entered utilities.
     $deduped = array();
     foreach( $utilities as $i => $utility ) {
-      if( in_array( $utility['Utility']['id'], $deduped ) ) {
+      if( in_array( $utility['Utility']['id'], $deduped ) || !$utility['Utility']['reviewed'] ) {
         unset( $utilities[$i] );
       }
       else {

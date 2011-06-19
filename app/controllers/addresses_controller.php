@@ -63,7 +63,11 @@ class AddressesController extends AppController {
       'all',
       array(
         'fields'     => array( 'Utility.id', 'Utility.name' ),
-        'conditions' => array( 'ZipCodeUtility.zip' => $zip_code, 'ZipCodeUtility.type' => $type_code ),
+        'conditions' => array(
+          'Utility.reviewed'    => 1,
+          'ZipCodeUtility.zip'  => $zip_code,
+          'ZipCodeUtility.type' => $type_code
+        ),
         'recursive'  => 0,
       )
     );

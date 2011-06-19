@@ -15,7 +15,7 @@
           <label for="TechnologyTechnology<?php echo $id ?>"><?php echo $name ?></label>
         </div>
       <?php endforeach; ?>
-    </div>
+    </div>    
   <?php endforeach; ?>
   
   <div class="clear"></div>

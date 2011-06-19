@@ -1,7 +1,7 @@
 <?php
 
 class ContractorsController extends AppController {
-	public $name = 'Contractors';
+  public $name = 'Contractors';
 
   /**
    * CALLBACKS
@@ -14,8 +14,8 @@ class ContractorsController extends AppController {
   /**
    * Displays a form allowing contractors to identify their service area.
    *
-   * @param 	$user_id
-   * @access	public
+   * @param   $user_id
+   * @access  public
    */
   public function contact_info( $user_id ) {
     # Is this an existing contractor?
