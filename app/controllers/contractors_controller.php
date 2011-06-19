@@ -127,12 +127,16 @@ class ContractorsController extends AppController {
       $this->Contractor->id = $contractor_id;
       $this->data['Contractor']['id'] = $contractor_id;
       
-      # If we have multiple of the same manufacturer and neither has an
-      # id, we need to merge them so we don't get duplicate key warnings.
+      # For our purposes, we can treat ManufacturerDealer records as HABTM
+      # even though it's technically not. We have to recreate the "magic", though,
+      # by deleting all association records first.
+      $this->Contractor->ManufacturerDealer->deleteAll( array( 'ManufacturerDealer.contractor_id' => $contractor_id ), true, true );
+      
+      # Some manufacturers exist across multiple technologies, so we need to
+      # dedup the contractor-selected list before we save.
       $checked = array();
       foreach( $this->data['ManufacturerDealer'] as $i => $manufacturer ) {
         $manufacturer_id = $manufacturer['equipment_manufacturer_id'];
-        $dealer_id       = isset( $manufacturer['id'] ) ? $manufacturer['id'] : null;
         
         if( !array_key_exists( $manufacturer_id, $checked ) ) {
           $checked[$manufacturer_id] = $dealer_id;

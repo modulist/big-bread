@@ -32,9 +32,6 @@
               <?php foreach( $tech['EquipmentManufacturer'] as $i => $manufacturer ): ?>
                 <?php $input_id = 'Manufacturer' . $manufacturer['id'] ?>
                 <li data-manufacturer-id="<?php echo $manufacturer['id'] ?>">
-                  <?php if( array_key_exists( $manufacturer['id'], $manufacturer_dealer ) ): ?>
-                    <input type="hidden" name="data[ManufacturerDealer][<?php echo $i ?>][id]" value="<?php echo $manufacturer_dealer[$manufacturer['id']]['id'] ?>" />
-                  <?php endif; ?>
                   <input type="checkbox" data-for="equipment_manufacturer_id" class="manufacturer" name="data[ManufacturerDealer][<?php echo $i ?>][equipment_manufacturer_id]" id="<?php echo $input_id ?>" value="<?php echo $manufacturer['id'] ?>"<?php echo array_key_exists( $manufacturer['id'], $manufacturer_dealer ) ? ' checked="checked"' : false ?> />
                   <label for="<?php echo $input_id ?>"><?php echo $manufacturer['name'] ?></label>
                   
