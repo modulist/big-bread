@@ -114,8 +114,10 @@ class Utility extends AppModel {
         'contain' => false,
         'fields'  => array( $this->alias . '.' . $this->primaryKey ),
         'conditions' => array(
-          $this->alias . '.' . $this->primaryKey => trim( $id ),
-          $this->alias . '.name' => trim( $name ),
+          'OR' => array(
+            $this->alias . '.' . $this->primaryKey => trim( $id ),
+            $this->alias . '.name' => trim( $name ),
+          ),
         ),
       )
     );
