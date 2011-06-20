@@ -5,6 +5,7 @@
 <?php echo $this->Html->script( array(
   'jquery/jquery.fancybox-1.3.4.pack.js',
   'jquery/jquery.autotab-1.1b.js',
+  'jquery/jquery.tipsy.js',
 ) ) ?>
 
 <!-- Include any page-specific scripts -->

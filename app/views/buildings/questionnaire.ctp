@@ -62,6 +62,9 @@
           </fieldset>
           
           <fieldset>
+            <p><?php __( '
+              Wondering where to enter your city and state? You don\'t have to. We\'ll use your zip code to get that information so we can make it easier for you. ') ?>
+            </p>
             <?php echo $this->Form->input( 'Address.id' ) ?>
             <?php echo $this->Form->input( 'Address.address_1', array( 'label' => 'Street Address 1', 'placeholder' => 'e.g. 1234 Any Street' ) ) ?>
             <?php echo $this->Form->input( 'Address.address_2', array( 'label' => 'Street Address 2', 'placeholder' => 'e.g. Suite 201' ) ) ?>

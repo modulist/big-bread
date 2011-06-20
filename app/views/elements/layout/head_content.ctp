@@ -10,3 +10,5 @@
 
 <!-- Fancybox creates a nice looking modal -->
 <?php echo $this->Html->css( '/js/jquery/fancybox/jquery.fancybox-1.3.4.css' ) ?>
+<!-- Decent looking tooltips -->
+<?php echo $this->Html->css( '/js/jquery/tipsy/tipsy.css' ) ?>

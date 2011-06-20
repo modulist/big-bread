@@ -2,6 +2,9 @@ $(document).ready( function() {
   // Last resort. Clear the required flag manually.
   $('#RealtorFirstName,#RealtorLastName,#RealtorEmail').parent().removeClass( 'required' );
   $('#InspectorFirstName,#InspectorLastName,#InspectorEmail').parent().removeClass( 'required' );
+  
+  $( '#AddressAddress1,#AddressAddress2' ).tipsy({ title: function() { return 'Please do not include city or state information here' }, gravity: 'w', trigger: 'focus', fade: true })
+  $( '#AddressZipCode' ).tipsy({ title: function() { return 'We\'ll use your zip code to determine your city and state' }, gravity: 'w', trigger: 'focus', fade: true })
 
   // Which target are we initially activating?
   $( '.section' ).not( '.active' ).hide();
