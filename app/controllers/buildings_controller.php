@@ -268,14 +268,14 @@ class BuildingsController extends AppController {
     # Something bad happened.
     if( empty( $building ) ) {
       $this->Session->setFlash( 'We\'re sorry, but we couldn\'t find a structure to show incentives for.', null, null, 'warning' );
-      $this->redirect( Router::url( '/questionnaire' ), null, true );
+      $this->redirect( array( 'action' => 'questionnaire' ), null, true );
     }
     
-    $incentives      = $this->Building->incentives( $building_id );
+    $incentives = $this->Building->incentives( $building_id );
     # Count the incentives before grouping them
     $incentive_count = count( $incentives );
     # Group the incentives by technology group for display
-    $incentives      = Set::combine( $incentives, '{n}.TechnologyIncentive.id', '{n}', '{n}.TechnologyGroup.title' );
+    $incentives = Set::combine( $incentives, '{n}.TechnologyIncentive.id', '{n}', '{n}.TechnologyGroup.title' );
     
     $this->set( compact( 'building', 'addresses', 'incentive_count', 'incentives', 'technology_group_slug' ) );
   }
