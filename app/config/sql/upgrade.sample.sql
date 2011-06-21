@@ -111,4 +111,23 @@ CREATE TABLE contractors_utilities(
     ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+-- Creates the "helpful tips" data seen on the incentives page.
+ALTER TABLE tips
+  CHANGE tip text varchar(255) NOT NULL;
+  
+INSERT INTO tips( id, text, created, modified )
+VALUES
+  ( UUID(), 'As a minimum, combine the Federal Tax Credit with your state or utility rebate.', NOW(), NOW() ),
+  ( UUID(), 'Check the rebate detail for possible rebate combinations that increase your savings.', NOW(), NOW() ),
+  ( UUID(), 'You must be a customer of the utility in order to take advantage of the utility rebate.', NOW(), NOW() ),
+  ( UUID(), 'In some cases, the utility offers electricity and natural gas service and you might have to be a customer of one or both in order to take the rebate.', NOW(), NOW() ),
+  ( UUID(), 'Check with your contractor and see if they are certified by the utility to do the work.', NOW(), NOW() ),
+  ( UUID(), 'See if your contractor will deduct the amount of the rebate from your bill if there is an option for them to manage the payment process for you.', NOW(), NOW() ),
+  ( UUID(), 'The average homeowner spends $2,300 a year on the maintenance and repair of their home.', NOW(), NOW() ),
+  ( UUID(), 'Send us notes through "feedback" on how we can improve this service.', NOW(), NOW() ),
+  ( UUID(), 'We''ll let you know by email whether new rebates are introduced or current rebates are set to expire.', NOW(), NOW() ),
+  ( UUID(), 'The average useful life of a furnace or an air conditioning unit is 15 years.  The average cost of replacement is $6,000.', NOW(), NOW() ),
+  ( UUID(), 'The average life of a hot water heater is 12 years.  The average cost of replacement is $1,000 for a tank water heater.', NOW(), NOW() ),
+  ( UUID(), 'The average life of kitchen appliances is 10 years.', NOW(), NOW() );
+
 SET foreign_key_checks = 1;

@@ -277,7 +277,16 @@ class BuildingsController extends AppController {
     # Group the incentives by technology group for display
     $incentives = Set::combine( $incentives, '{n}.TechnologyIncentive.id', '{n}', '{n}.TechnologyGroup.title' );
     
-    $this->set( compact( 'building', 'addresses', 'incentive_count', 'incentives', 'technology_group_slug' ) );
+    # Pull a random helpful hint
+    $tip = ClassRegistry::init( 'Tip' )->active(
+      'first',
+      array(
+        'fields' => array( 'Tip.text' ),
+        'order'  => 'RAND()',
+      )
+    );
+    
+    $this->set( compact( 'building', 'addresses', 'incentive_count', 'incentives', 'technology_group_slug', 'tip' ) );
   }
    
   /**
