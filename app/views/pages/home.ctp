@@ -13,8 +13,9 @@
     </p>
     <?php if( !$this->Session->check( 'Auth.User' ) ): ?>
       <br />
-      <?php echo $this->Html->link( __( 'Register now for your rebates!', true ), Router::url( '/register' ), array( 'class' => 'button' ) ) ?>
-      <p class="link-action">If you are already registered, <?php echo $this->Html->link( 'Login', Router::url( '/login' ) ) ?>.</p>
+      <?php echo $this->Html->link( __( 'Register now for your rebates!', true ), array( 'controller' => 'users', 'action' => 'register' ), array( 'class' => 'button' ) ) ?>
+      <p class="link-action">If you are already registered, <?php echo $this->Html->link( 'Login', array( 'controller' => 'users', 'action' => 'login' ) ) ?>.</p>
+      <p class="link-action">If you are a contractor, <?php echo $this->Html->link( 'register here', array( 'controller' => 'contractors', 'action' => 'index' ) ) ?>.</p>
     <?php endif; ?>
 </div>
 

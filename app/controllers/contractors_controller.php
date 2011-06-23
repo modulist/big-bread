@@ -1,11 +1,33 @@
 <?php
 
 class ContractorsController extends AppController {
-  public $name = 'Contractors';
+  public $name       = 'Contractors';
+  public $helpers    = array( 'Form', 'FormatMask.Format' );
+  public $components = array( 'SwiftMailer', 'FormatMask.Format' );
 
   /**
    * CALLBACKS
    */
+
+  public function beforeFilter() {
+    parent::beforeFilter();
+    
+    $this->Auth->allow( 'index' );
+    
+    # Squash the phone number if it exists in a data array to prep for save
+    if( !empty( $this->data[$this->Contractor->User->alias]['phone_number'] ) && is_array( $this->data[$this->Contractor->User->alias]['phone_number'] ) ) {
+      $this->data[$this->Contractor->User->alias]['phone_number'] = $this->Format->phone_number( $this->data[$this->Contractor->User->alias]['phone_number'] );
+    }
+  }
+  
+  public function beforeRender() {
+    parent::beforeRender();
+    
+    # Explode the phone number if it exists in a data array to prep for form display
+    if( isset( $this->data[$this->Contractor->User->alias]['phone_number'] ) && is_string( $this->data[$this->Contractor->User->alias]['phone_number'] ) ) {
+      $this->data[$this->Contractor->User->alias]['phone_number'] = $this->Format->phone_number( $this->data[$this->Contractor->User->alias]['phone_number'] );
+    }
+  }
 
   /**
    * PUBLIC METHODS
@@ -17,47 +39,44 @@ class ContractorsController extends AppController {
    * @param   $user_id
    * @access  public
    */
-  public function contact_info( $user_id ) {
-    # Is this an existing contractor?
-    $contractor = $this->Contractor->find(
-      'first',
-      array(
-        'contain' => array( 'BillingAddress' ),
-        'conditions' => array(
-          'Contractor.user_id' => $user_id,
-        )
-      )
-    );
+  public function index( $contractor_id = null ) {
+    $this->Contractor->id = $contractor_id;
     
     if( !empty( $this->data ) ) {
-      # If the contractor exists, set the model id so that the existing
-      # record gets updated.
-      if( !empty( $contractor ) ) {
-        $this->Contractor->id = $contractor['Contractor']['id'];
-        $this->data['Contractor']['id'] = $this->Contractor->id;
-      }
+      $this->data['User']['user_type_id'] = UserType::CONTRACTOR;
       
-      $this->data['Contractor']['user_id'] = $user_id;
+      # Manually hash the passwords for saving and authenticating.
+      $user = $this->data['User'];
+      $this->data['User']['confirm_password'] = $this->Auth->password( $this->data['User']['confirm_password'] );
       
       if( $this->Contractor->saveAll( $this->data ) ) {
+        $this->Auth->login( $this->data['User'] );
+        $this->Contractor->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
         $this->redirect( array( 'action' => 'service_area', $this->Contractor->id ) );
       }
-      else {
+      else if( !empty( $this->Contractor->validationErrors ) ){
         $this->Session->setFlash( 'Please correct the errors below.', null, null, 'validation' );
+      }
+      else {
+        $this->Session->setFlash( 'An error occurred while attempting to save this data.', null, null, 'validation' );
       }
     }
     else {
-      $this->data = $contractor;
+      $this->data = $this->Contractor->find(
+        'first',
+        array(
+          'contain' => array( 'User', 'BillingAddress' ),
+          'conditions' => array( 'Contractor.id' => $contractor_id ),
+        )
+      );
     }
-    
-    $this->set( compact( 'user_id' ) );
   }
   
   /**
    * Displays a form allowing contractors to identify their service area.
    *
-   * @param 	$contractor_id
-   * @access	public
+   * @param   $contractor_id
+   * @access  public
    */
   public function service_area( $contractor_id ) {
     $contractor = $this->Contractor->find(
@@ -96,7 +115,7 @@ class ContractorsController extends AppController {
     # The county ids actually serviced by this contractor
     $serviced_counties = Set::extract( '/County/id', $contractor );
     
-    $previous_url = array( 'action' => 'contact_info', $contractor['Contractor']['user_id'] );
+    $previous_url = array( 'action' => 'index', $contractor['Contractor']['id'] );
     
     $this->set( compact( 'previous_url', 'serviced_counties', 'serviced_state_counties', 'states' ) );
   }
@@ -106,8 +125,8 @@ class ContractorsController extends AppController {
    * they service, manufacturers they are certified by and incentive
    * programs they belong to.
    *
-   * @param 	$contractor_id
-   * @access	public
+   * @param   $contractor_id
+   * @access  public
    */
   public function scope( $contractor_id ) {
     $contractor = $this->Contractor->find(
@@ -185,8 +204,8 @@ class ContractorsController extends AppController {
    * Displays the form that allows contractors to indicate the utilities
    * whose incentive programs they participate in.
    *
-   * @param 	$contractor_id
-   * @access	public
+   * @param   $contractor_id
+   * @access  public
    */
   public function utility_rebates( $contractor_id ) {
     if( !empty( $this->data ) ) {
@@ -223,8 +242,8 @@ class ContractorsController extends AppController {
   /**
    * Displays a form where contractors can enter their payment details.
    *
-   * @param 	$contractor_id
-   * @access	public
+   * @param   $contractor_id
+   * @access  public
    */
   public function payment( $contractor_id ) {
     exit( 'Payment details not yet implemented' );

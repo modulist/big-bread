@@ -1,6 +1,12 @@
-<h1><?php __( 'Contact Information' ) ?></h1>
+<h1><?php __( 'Contractor Registration' ) ?></h1>
 
-<?php echo $this->Form->create( 'Contractor', array( 'url' => array( 'action' => 'contact_info', $user_id ) ) ) ?>
+<?php echo $this->Form->create( 'Contractor' ) ?>
+  <h2><?php __( 'Your information' ) ?></h2>
+  
+  <?php echo $this->element( '../users/_form' ) ?>
+
+  <h2><?php __( 'Company Information' ) ?></h2>
+
   <?php echo $this->Form->input( 'Contractor.company_name', array( 'placeholder' => 'The name of your company' ) ) ?>
   <?php echo $this->Form->input( 'BillingAddress.address_1', array( 'label' => 'Street Address 1', 'placeholder' => '1234 Any Street' ) ) ?>
   <?php echo $this->Form->input( 'BillingAddress.address_2', array( 'label' => 'Street Address 2', 'placeholder' => 'Suite 201' ) ) ?>

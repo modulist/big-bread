@@ -148,7 +148,7 @@ body.onecolumn #content {background: #FFFFFF; min-height:400px; padding: 50px 60
 
 #bodyheader{height:128px;}
 #signupheader ul {list-style:none; margin: 15px 0; overflow: hidden;}
-#signupheader ul li {display: block; float: left; width:20%; text-align:center;}
+#signupheader ul li {display: block; float: left; width:25%; text-align:center;}
 
 
 #signupheader {margin: auto; background: #fff;border:solid 1px #aaa; padding: 10px; font:16px Arial, Helvetica, sans-serif; font-weight:bold; width: 666px;}

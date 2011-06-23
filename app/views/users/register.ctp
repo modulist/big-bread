@@ -14,6 +14,7 @@
       </li>
     <?php endforeach; ?>
   </ul>
+  <p><?php printf( __( 'Are you a contractor? Please use our %s.', true ), $this->Html->link( __( 'contractor registration', true ), array( 'controller' => 'contractors', 'action' => 'index' ) ) ) ?></p>
   <div class="clear"></div>
   <?php if( $this->Form->error( 'User.user_type_id' ) ): ?>
       <?php echo $this->Form->error( 'User.user_type_id' ) ?>
@@ -23,12 +24,7 @@
 <div id="signupbody">
   <p>Required fields are noted by <span>*</span></p>
   
-  <?php echo $this->Form->input( 'User.first_name', array( 'div' => 'input text required', 'placeholder' => 'Your first name' ) ) ?>
-  <?php echo $this->Form->input( 'User.last_name', array( 'div' => 'input text required', 'placeholder' => 'Your last name' ) ) ?>
-  <?php echo $this->Form->input( 'User.email', array( 'div' => 'input text required', 'placeholder' => 'e.g. user@example.com' ) ) ?>
-  <?php echo $this->element( 'phone_number', array( 'plugin' => 'FormatMask', 'model' => 'User', 'field' => 'phone_number', 'required' => false ) ) ?>
-  <?php echo $this->Form->input( 'User.password', array( 'div' => 'input password required' ) ) ?>
-  <?php echo $this->Form->input( 'User.confirm_password', array( 'type' => 'password', 'div' => 'input password required' ) ) ?>
+  <?php echo $this->element( '../users/_form' ) ?>
   
   <div class="buttons">
     <div class="button">

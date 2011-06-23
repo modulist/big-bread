@@ -61,6 +61,10 @@ class AppController extends Controller {
     $this->Auth->deny( '*' );
     
     $this->Auth->userModel = 'User';
+		$this->Auth->fields = array(
+			'username' => 'email',
+			'password' => 'password'
+		);
     $this->Auth->userScope = array( 'User.deleted' => 0 );
     $this->Auth->loginAction = array(
       'controller' => 'users',
@@ -124,6 +128,17 @@ class AppController extends Controller {
         if( isset( $this->data[$this->modelClass][$field] ) && $meta['type'] == 'datetime' ) {
           $this->data[$this->modelClass][$field] = $this->{$this->modelClass}->deconstruct( $field, $this->data[$this->modelClass][$field] );
         }
+      }
+    }
+    
+    # If password values are set in the data structure of a GET request,
+    # clear them. The encrypted values just create confusion.
+    if( $this->RequestHandler->isGet() ) {
+      if( isset( $this->data['User']['password'] ) ) {
+        $this->data['User']['password'] = '';
+      }
+      if( isset( $this->data['User']['confirm_password'] ) ) {
+        $this->data['User']['confirm_password'] = '';
       }
     }
     

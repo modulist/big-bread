@@ -12,15 +12,10 @@ class UsersController extends AppController {
   public function beforeFilter() {
     parent::beforeFilter();
     
-    # The password is auto hashed only if the username reset is located
-    # in this controller Not in AppController. I don't know why.
-		$this->Auth->fields = array(
-			'username' => 'email',
-			'password' => 'password'
-		);
     $this->Auth->allow( '*' );
     $this->Auth->deny( 'dismiss_notice' );
     
+    # TODO: Move this to a component callback?
     # Squash the phone number if it exists in a data array to prep for save
     if( !empty( $this->data[$this->User->alias]['phone_number'] ) && is_array( $this->data[$this->User->alias]['phone_number'] ) ) {
       $this->data[$this->User->alias]['phone_number'] = $this->Format->phone_number( $this->data[$this->User->alias]['phone_number'] );
