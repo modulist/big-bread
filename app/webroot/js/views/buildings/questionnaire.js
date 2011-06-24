@@ -151,7 +151,6 @@ $(document).ready( function() {
   
   // Trigger the change event if the zip code is pre-populated
   if( $('#AddressZipCode').length > 0 && $('#AddressZipCode').val().length > 0 ) {
-    alert( 'length' );
     // Set the locale data if zip code has been entered (and there's no validation error).
     $('#AddressZipCode').trigger( 'change' );
     
@@ -232,13 +231,21 @@ $(document).ready( function() {
     }
     
     /** get energy sources */
-    $.getJSON( '/products/energy_sources/' + technology_id + '.json', null, function( data, status ) {
-      $energy_select.children( 'option' ).remove();
-      
-      for( var i = 0; i < data.length; i++ ) {
-        $energy_select.append( '<option value="' + data[i].EnergySource.incentive_tech_energy_type_id + '">' + data[i].EnergySource.name + '</option>' );
+    $.ajax({
+      url: '/api/v1/technologies/energy_sources/' + technology_id + '.json',
+      type: 'GET',
+      dataType: 'json',
+      beforeSend: function( jqXHR, settings ) {
+        jqXHR.setRequestHeader( 'Authorization', '1001001SOS' );  
+      },
+      success: function( data, status ) {
+        $energy_select.children( 'option' ).remove();
+        
+        for( var i = 0; i < data.length; i++ ) {
+          $energy_select.append( '<option value="' + data[i].EnergySource.incentive_tech_energy_type_id + '">' + data[i].EnergySource.name + '</option>' );
+        }
+        $energy_select.removeAttr( 'disabled' );
       }
-      $energy_select.removeAttr( 'disabled' );
     });
   });
 });

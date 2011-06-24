@@ -3,6 +3,16 @@
 App::import( 'Lib', 'api/Api' );
 class ApiV1 extends Api {
   /**
+   * Retrieves the energy sources for a given technology.
+   *
+   * @param 	$technology_id
+   * @return	array
+   * @access	public
+   */
+  public function technologies_energy_sources( $technology_id ) {
+    return ClassRegistry::init( 'Technology' )->energy_sources( $technology_id );
+  }
+  /**
    * Retrieves all counties in a given state.
    *
    * @param 	$state  The two-letter state abbreviation
