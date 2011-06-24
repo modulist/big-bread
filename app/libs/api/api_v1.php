@@ -12,6 +12,17 @@ class ApiV1 extends Api {
   public function technologies_energy_sources( $technology_id ) {
     return ClassRegistry::init( 'Technology' )->energy_sources( $technology_id );
   }
+  
+  /**
+   * Retrieves manufacturers of a given technology.
+   *
+   * @param 	$technology_id
+   * @access	public
+   */
+  public function technologies_manufacturers( $technology_id ) {
+    return ClassRegistry::init( 'Technology' )->manufacturers( $technology_id );
+  }
+  
   /**
    * Retrieves all counties in a given state.
    *

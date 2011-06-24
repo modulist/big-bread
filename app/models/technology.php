@@ -53,10 +53,10 @@ class Technology extends AppModel {
     return $this->EnergySource->find(
       'all',
       array(
-        'contain' => false,
-        'fields'  => array( 'EnergySource.incentive_tech_energy_type_id', 'EnergySource.name' ),
+        'contain'    => false,
+        'fields'     => array( 'EnergySource.incentive_tech_energy_type_id', 'EnergySource.name' ),
         'conditions' => array( 'EnergySource.technology_id' => $technology_id ),
-        'order' => array( 'EnergySource.name' ),
+        'order'      => array( 'EnergySource.name' ),
       )
     );
   }

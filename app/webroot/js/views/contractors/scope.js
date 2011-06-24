@@ -14,9 +14,14 @@ $( document ).ready( function() {
       var c_columns = $manufacturer_lists.children( 'li' ).length;
       var col_width = 100 / ( c_columns + 1 );
       
-      $.getJSON(
-        '/technologies/manufacturers/' + tech_id + '.json',
-        function( data, status, jqXHR ) {
+      $.ajax({
+        url: '/api/v1/technologies/manufacturers/' + tech_id + '.json',
+        type: 'GET',
+        dataType: 'json',
+        beforeSend: function( jqXHR, settings ) {
+          jqXHR.setRequestHeader( 'Authorization', '1001001SOS' );  
+        },
+        success: function( data, status, jqXHR ) {
           // If at least one manufacturer is assigned to this technology
           // build a list so contractors can identify relationships.
           if( data.EquipmentManufacturer.length > 0 ) {
@@ -72,7 +77,7 @@ $( document ).ready( function() {
             $column.find( 'input[data-for="equipment_manufacturer_id"]:checked' ).first().trigger( 'change' );
           }
         }
-      );
+      });
     }
     
     e.preventDefault();
