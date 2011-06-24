@@ -2,7 +2,11 @@
 
 class Address extends AppModel {
 	public $name = 'Address';
-	
+  public $whitelist = array(
+    'address_1',
+    'address_2',
+    'zip_code',
+  );	
 	public $belongsTo = array(
     'ZipCode' => array( 'foreignKey' => 'zip_code' ),
   );

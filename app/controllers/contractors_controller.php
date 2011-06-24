@@ -45,8 +45,9 @@ class ContractorsController extends AppController {
     if( !empty( $this->data ) ) {
       $this->data['User']['user_type_id'] = UserType::CONTRACTOR;
       
-      # Manually hash the passwords for saving and authenticating.
-      $user = $this->data['User'];
+      # The password value is hashed automagically. We need to hash the
+      # confirmation value manually for validation.
+      # @see User::identical()
       $this->data['User']['confirm_password'] = $this->Auth->password( $this->data['User']['confirm_password'] );
       
       if( $this->Contractor->saveAll( $this->data ) ) {

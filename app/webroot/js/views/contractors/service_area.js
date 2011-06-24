@@ -19,9 +19,14 @@ $( document ).ready( function() {
       $county_lists.append( $column );
       $county_lists.find( 'li' ).css( 'max-width', col_width + '%' );
       
-      $.getJSON(
-        '/addresses/counties/' + state_abbrev + '.json',
-        function( data, status, jqXHR ) {
+      $.ajax({
+        url: '/api/v1/states/counties/' + state_abbrev + '.json',
+        type: 'GET',
+        dataType: 'json',
+        beforeSend: function( jqXHR, settings ) {
+          jqXHR.setRequestHeader( 'Authorization', '1001001SOS' );  
+        },
+        success: function( data, status, jqXHR ) {
           var $county_list = $( document.createElement( 'ol' ) );
           
           for( var i = 0; i < data.length; i++ ) {
@@ -39,7 +44,7 @@ $( document ).ready( function() {
           
           $column.append( $county_list );
         }
-      );
+      });
     }
     else {
       // If a column for the state exists, try to draw the user's

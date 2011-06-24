@@ -3,13 +3,50 @@
 App::import( 'Lib', 'api/Api' );
 class ApiV1 extends Api {
   /**
-   * Retrieves a list of US states. This is a method to test the API by
-   * pulling inocuous data.
+   * Retrieves all counties in a given state.
    *
-   * @return
+   * @param 	$state  The two-letter state abbreviation
+   * @return	array
    * @access	public
    */
-  public function states_get() {
+  public function states_counties( $state ) {
+    return ClassRegistry::init( 'State' )->counties( $state );
+  }
+  
+  /**
+   * Retrieves the locale (city, state ) for a given zip code.
+   *
+   * @param 	$zip
+   * @return	type
+   * @access	public
+   */
+  public function zip_codes_locale( $zip ) {
+    return ClassRegistry::init( 'ZipCode' )->locale( $zip );
+  }
+  
+  /**
+   * Returns the utilities operating in a given zip code
+   *
+   * @param 	$zip
+   * @param   $type
+   * @return	array
+   * @access	public
+   */
+  public function zip_codes_utilities( $zip, $type ) {
+    if( !in_array( $type, array( 'Electricity', 'Gas', 'Water' ) ) ) {
+      # TODO: 400 error
+    }
+    
+    return ClassRegistry::init( 'ZipCode' )->utilities( $zip, $type );
+  }
+  
+  /**
+   * Retrieves all US states.
+   *
+   * @return  array
+   * @access	public
+   */
+  public function states() {
     return ClassRegistry::init( 'State' )->find(
       'all',
       array(

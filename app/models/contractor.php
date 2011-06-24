@@ -1,8 +1,17 @@
 <?php
 
 class Contractor extends AppModel {
-	public $name = 'Contractor';
+	public $name         = 'Contractor';
 	public $displayField = 'company_name';
+  public $whitelist    = array(
+   'user_id',
+   'company_name',
+   'billing_address_id',
+   'certified_nate',
+   'certified_bpi',
+   'certified_resnet',
+   'certified_other',
+  );
 	public $validate = array(
 		'company_name' => array(
 			'notempty' => array(

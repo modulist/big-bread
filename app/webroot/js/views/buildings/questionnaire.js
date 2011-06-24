@@ -117,8 +117,11 @@ $(document).ready( function() {
         .removeClass( 'error' )
         .text( 'Determining locale...' );
       $.ajax({
-        url: '/addresses/locale/' + zip + '.json',
+        url: '/api/v1/zip_codes/locale/' + zip + '.json',
         dataType: 'json',
+        beforeSend: function( jqXHR, settings ) {
+          jqXHR.setRequestHeader( 'Authorization', '1001001SOS' );  
+        },
         success: function( data ) {
           if( data ) {
             // Remove any error display
@@ -148,6 +151,7 @@ $(document).ready( function() {
   
   // Trigger the change event if the zip code is pre-populated
   if( $('#AddressZipCode').length > 0 && $('#AddressZipCode').val().length > 0 ) {
+    alert( 'length' );
     // Set the locale data if zip code has been entered (and there's no validation error).
     $('#AddressZipCode').trigger( 'change' );
     
@@ -160,44 +164,52 @@ $(document).ready( function() {
       
       $('#Building' + type + 'ProviderName').attr( 'placeholder', 'Loading provider data...' );
       
-      $.getJSON( '/addresses/utilities/' + zip + '/' + type + '.json', null, function( data, status ) {
-        var utility_type = data.Type.name;
+      $.ajax({
+        url: '/api/v1/zip_codes/utilities/' + zip + '/' + type + '.json',
+        type: 'GET',
+        dataType: 'json',
+        beforeSend: function( jqXHR, settings ) {
+          jqXHR.setRequestHeader( 'Authorization', '1001001SOS' );  
+        },
+        success: function( data, status ) {
+          var utility_type = data.Type.name;
+          
+          var $provider_name = $('#Building' + utility_type + 'ProviderName');
+          var $provider_id   = $('#Building' + utility_type + 'ProviderId');
         
-        var $provider_name = $('#Building' + utility_type + 'ProviderName');
-        var $provider_id   = $('#Building' + utility_type + 'ProviderId');
-        
-        // Massage the Cake data into something autocomplete-friendly
-        // @see http://stackoverflow.com/questions/5708128/jqueryui-autocomplete-doesnt-really-autocomplete
-        var $friendly = $.map( data.Utilities, function( util ) {
-          return { label: util.Utility.name, value: util.Utility.id };
-        });
-        
-        if( $provider_id.val().length == 0 && data.Utilities.length == 1 ) {
-          // If there's only one, just set that value as a default 
-          $provider_name.val( data.Utilities[0].Utility.name );
-          $provider_id.val( data.Utilities[0].Utility.id );
-        }
-        else {
-          // If more than one, populate the provider autocomplete options
-          $provider_name.attr( 'placeholder', utility_type + ' provider' );
-          $provider_name.autocomplete({
-            source: $friendly, // use the autocomplete-friendly data
-            minLength: 0,
-            focus: function( event, ui ) {
-              $provider_name.val( ui.item.label );
-              return false;
-            },
-            select: function( event, ui ) {
-              $provider_name.val( ui.item.label );
-              $provider_id.val( ui.item.value );
-              return false;
-            }
-          }).data( 'autocomplete' )._renderItem = function( ul, item ) {
-            return $( "<li></li>" )
-              .data( "item.autocomplete", item )
-              .append( '<a>' + item.label + '</a>' )
-              .appendTo( ul );
-          };
+          // Massage the Cake data into something autocomplete-friendly
+          // @see http://stackoverflow.com/questions/5708128/jqueryui-autocomplete-doesnt-really-autocomplete
+          var $friendly = $.map( data.Utilities, function( util ) {
+            return { label: util.Utility.name, value: util.Utility.id };
+          });
+          
+          if( $provider_id.val().length == 0 && data.Utilities.length == 1 ) {
+            // If there's only one, just set that value as a default 
+            $provider_name.val( data.Utilities[0].Utility.name );
+            $provider_id.val( data.Utilities[0].Utility.id );
+          }
+          else {
+            // If more than one, populate the provider autocomplete options
+            $provider_name.attr( 'placeholder', utility_type + ' provider' );
+            $provider_name.autocomplete({
+              source: $friendly, // use the autocomplete-friendly data
+              minLength: 0,
+              focus: function( event, ui ) {
+                $provider_name.val( ui.item.label );
+                return false;
+              },
+              select: function( event, ui ) {
+                $provider_name.val( ui.item.label );
+                $provider_id.val( ui.item.value );
+                return false;
+              }
+            }).data( 'autocomplete' )._renderItem = function( ul, item ) {
+              return $( "<li></li>" )
+                .data( "item.autocomplete", item )
+                .append( '<a>' + item.label + '</a>' )
+                .appendTo( ul );
+            };
+          }
         }
       });
     }

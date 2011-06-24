@@ -2,7 +2,6 @@
 
 class Building extends AppModel {
 	public $name = 'Building';
-  
 	public $belongsTo = array(
 		'Address',
 		'BasementType',
@@ -161,6 +160,14 @@ class Building extends AppModel {
   /**
    * PUBLIC METHODS
    */
+  
+  public function __construct( $id = false, $table = null, $ds = null ) {
+    parent::__construct( $id, $table, $ds );
+    
+    # Since this is a big model with a lot of modifiable fields, generate the whitelist from
+    # a blacklist. In this case, everything is whitelisted except id, created & modified.
+    $this->whitelist = array_diff( array_keys( $this->schema() ), array( 'id', 'deleted', 'created', 'modified' ) );
+  }
   
   /**
    * Determines whether a given user is associated with a given building.
