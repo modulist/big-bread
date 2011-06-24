@@ -3,6 +3,29 @@ USE @DB_NAME@;
 SET NAMES utf8;
 SET foreign_key_checks = 0;
 
+-- New "system" user to support internal API calls
+INSERT INTO users( id, user_type_id, first_name, last_name, email, created, modified )
+VALUES(
+  '4e04e066-8098-4bea-9a26-11de6e891b5e',
+  'eff7d6ba-9528-11e0-9067-002590289478',
+  'Tony',
+  'Maull',
+  'api@bigbread.net',
+  NOW(),
+  NOW()
+);
+
+INSERT INTO api_users( id, user_id, name, description, api_key, created, modified )
+VALUES(
+  '4e04e066-a488-4bc0-b270-11de6e891b5e',
+  '4e04e066-8098-4bea-9a26-11de6e891b5e',
+  'BigBread System',
+  'User created for internal API calls.',
+  '1001001SOS',
+  NOW(),
+  NOW()
+);
+
 -- Changes to support Contractor users
 INSERT INTO user_types( id, code, name, selectable, deleted ) VALUES
   ( '6573bca8-945a-11e0-adec-3aadb68782f6', 'CNTRCT', 'Contractor', 0, 0 )

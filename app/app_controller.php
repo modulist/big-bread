@@ -215,6 +215,7 @@ class AppController extends Controller {
    * @return  booleawn
    */
   private function auth_api() {
+    $auth    = false;
     $headers = getallheaders();
 
     if( !array_key_exists( 'Authorization', $headers ) || empty( $headers['Authorization'] ) ) {
@@ -227,17 +228,14 @@ class AppController extends Controller {
       'conditions' => array( 'ApiUser.api_key' => $headers['Authorization'] ),
     ));
     
-    # Allow for a test authorization key and login as my user (Rob Wilkerson)
-    if( empty( $user ) && $headers['Authorization'] == '1001001SOS' ) {
-      $user = $this->User->find(
-        'first',
-        array(
-          'conditions' => array( 'User.id' => '4db6ac92-1ee0-402e-b7dc-2fb84293f4e1' ),
-        )
-      );
+    if( $this->Auth->login( $user['User']['id'] ) ) {
+      $this->User->id = $user['User']['id'];
+      $this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
+      
+      $auth = true;
     }
     
-    return $this->Auth->login( $user['User']['id'] );
+    return $auth;
   }
   
   /**
