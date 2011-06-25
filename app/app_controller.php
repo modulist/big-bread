@@ -41,20 +41,13 @@ class AppController extends Controller {
    */
   
   public function beforeFilter() {
-    # Engage SSL in production only (damn Bluehost)
-    if( in_array( Configure::read( 'Env.code' ), array( 'LCL', 'PRD' ) ) ) {
-      $ssl_actions = array(
-        'login',
-        'register',
-      );
-      
-      # Force expected actions to https, others away from it.
-      if( in_array( $this->action, $ssl_actions ) && !$this->RequestHandler->isSSL() ) {
-        $this->forceSSL();
-      }
-      else if( !in_array( $this->action, $ssl_actions ) && $this->RequestHandler->isSSL() ) {
-        $this->unforceSSL();
-      }
+    # Force expected actions to https, others away from it.
+    $force_ssl = Configure::read( 'Route.force_ssl' );
+    if( isset( $force_ssl[$this->name] ) && in_array( $this->action, $force_ssl[$this->name] ) ) {
+      $this->forceSSL();
+    }
+    else if( !isset( $force_ssl[$this->name] ) || !in_array( $this->action, $force_ssl[$this->name] ) ) {
+      $this->unforceSSL();
     }
 
     # By default, deny access to everything
@@ -242,13 +235,17 @@ class AppController extends Controller {
    * Force traffic to a given action through SSL.
    */
   private function forceSSL() {
-    $this->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $this->here, null, true );
+    if( !$this->RequestHandler->isSSL() ) {
+      $this->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $this->here, null, true );
+    }
   }
   
   /**
    * Force traffic to a given action away from SSL.
    */
   private function unforceSSL() {
-    $this->redirect( 'http://' . $_SERVER['HTTP_HOST'] . $this->here, null, true );
+    if( $this->RequestHandler->isSSL() ) {
+      $this->redirect( 'http://' . $_SERVER['HTTP_HOST'] . $this->here, null, true );
+    }
   }
 }

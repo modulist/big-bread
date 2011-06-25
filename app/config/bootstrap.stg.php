@@ -54,3 +54,8 @@ Configure::write( 'Env.code', 'STG' );
 Configure::write( 'Env.domain', 'stage.bigbread.net' );
       
 Configure::write( 'email.redirect_all_email_to', 'wamaull@federatedpower.com' );
+
+# Defines the controller => actions for which SSL should be forced.
+# Our SSL certificate won't work for subdomains, so we need to overwrite
+# The default values in bootstrap.php
+Configure::write( 'Route.force_ssl', array() );
