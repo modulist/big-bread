@@ -3,6 +3,14 @@ USE @DB_NAME@;
 SET NAMES utf8;
 SET foreign_key_checks = 0;
 
+-- Fix incorrect and missing wall system
+UPDATE wall_systems
+   SET name = 'Timber Framed'
+ WHERE code = 'TMBFRM';
+ 
+INSERT INTO wall_systems( id, code, name )
+VALUES( UUID(), 'MASNRY', 'Masonry' );
+
 -- New "system" user to support internal API calls
 INSERT INTO users( id, user_type_id, first_name, last_name, email, created, modified )
 VALUES(
