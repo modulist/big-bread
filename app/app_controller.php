@@ -78,6 +78,7 @@ class AppController extends Controller {
      * API Authentication is a little different
      */
     if( $this->params['controller'] == 'api' ) {
+      $this->log( 'Auth user: ' . json_encode( $this->Auth->user()), LOG_DEBUG );
       # Authenticate a user using api key (Authorization header)
       if( !$this->auth_api() ) {
         header( 'Not Authorized', true, 401 );
@@ -221,7 +222,11 @@ class AppController extends Controller {
       'conditions' => array( 'ApiUser.api_key' => $headers['Authorization'] ),
     ));
     
-    if( $this->Auth->login( $user['User']['id'] ) ) {
+    # If the API is being used from an authenticated session, ignore. Otherwise,
+    # authenticate as the API owner. Otherwise, the authenticated user for internal
+    # API calls gets switched to the system user. Bad.
+    $auth_user = $this->Auth->user();
+    if( empty( $auth_user ) && $this->Auth->login( $user['User']['id'] ) ) {
       $this->User->id = $user['User']['id'];
       $this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
       
