@@ -9,6 +9,7 @@ App::import( 'Component', 'SwiftMailer' );
  */
 class ValidateLinksShell extends Shell {
 	public $uses = array( 'TechnologyIncentive' );
+  public $tasks = array( 'Daemon' );
   
   # Support email functionality. @see this::send_report().
   public $Controller  = null;
@@ -25,6 +26,9 @@ class ValidateLinksShell extends Shell {
 
   public function startup() {
     parent::startup();
+    
+    echo "Beginning link validation at " . date( 'm/d/Y H:i:s' ) . "\n";
+    $this->Daemon->execute( 'validate_links' );
     
     $this->Controller  = new Controller();
     $this->SwiftMailer = new SwiftMailerComponent();
@@ -44,17 +48,17 @@ class ValidateLinksShell extends Shell {
     # Validate the links and update the 'Status' key
     echo "Validating links...\n";
     $links = $this->validate_links( $links );
-    echo "Complete.\n";
+    echo "Complete (" . date( 'm/d/Y H:i:s' ) . ")\n";
     
     # Write link data to a file that will be attached to an email
     echo "Creating CSV to send...\n";
     $this->create_email_attachment( $links );
-    echo "Complete.\n";
+    echo "Complete (" . date( 'm/d/Y H:i:s' ) . ").\n";
     
     # Send the link validation report
     echo "Sending the report...\n";
     $this->send_report();
-    echo "Complete.\n";
+    echo "Complete (" . date( 'm/d/Y H:i:s' ) . ").\n";
 	}
   
   /**
@@ -69,7 +73,8 @@ class ValidateLinksShell extends Shell {
     
     foreach( $links as $i => $link ) {
       echo "  --> Validating " . $link['Link'] . " (" . $link['Link Type'] . ")\n";
-      
+      echo "  --> " . ( round( ( $i / count( $links ) ) * 100 ) ) . "% complete (" . $i . " of " . count( $links ) . ")\n";
+      echo "  --> Current timestamp: " . date( 'm/d/Y H:i:s' ) . "\n";
       $request = array(
         'method' => 'HEAD',
         'uri' => $link['Link'],
@@ -124,7 +129,7 @@ class ValidateLinksShell extends Shell {
             'NOT' => array( 'TechnologyIncentive.contr_link' => null ),
           ) */
         ),
-        # 'limit' => 30, # for testing
+        # 'limit' => 500, # for testing
       )
     );
     
@@ -173,7 +178,7 @@ class ValidateLinksShell extends Shell {
     $this->csv->append( "\n" );
     
     foreach( $links as $link ) {
-      $this->csv->append( join( ', ', array_values( $link ) ) );
+      $this->csv->append( '"' . join( '","', array_values( $link ) ) . '"' );
       $this->csv->append( "\n" );
     }
   }
