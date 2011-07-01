@@ -212,25 +212,30 @@ class AppController extends Controller {
     $auth    = false;
     $headers = getallheaders();
 
-    if( !array_key_exists( 'Authorization', $headers ) || empty( $headers['Authorization'] ) ) {
-      return false;
-    }
-   
-    $this->User = ClassRegistry::init( 'User' );
-    $user = $this->User->find( 'first', array(
-      'contain'    => array( 'ApiUser' ),
-      'conditions' => array( 'ApiUser.api_key' => $headers['Authorization'] ),
-    ));
-    
-    # If the API is being used from an authenticated session, ignore. Otherwise,
-    # authenticate as the API owner. Otherwise, the authenticated user for internal
-    # API calls gets switched to the system user. Bad.
-    $auth_user = $this->Auth->user();
-    if( empty( $auth_user ) && $this->Auth->login( $user['User']['id'] ) ) {
-      $this->User->id = $user['User']['id'];
-      $this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
+    if( array_key_exists( 'Authorization', $headers ) || !empty( $headers['Authorization'] ) ) {
+      $this->User = ClassRegistry::init( 'User' );
+      $user = $this->User->find( 'first', array(
+        'contain'    => array( 'ApiUser' ),
+        'conditions' => array( 'ApiUser.api_key' => $headers['Authorization'] ),
+      ));
       
-      $auth = true;
+      if( !empty( $user ) ) { # There's a user with this API key
+        # If the API is being used from an authenticated session, ignore. Otherwise,
+        # authenticate as the API owner. Otherwise, the authenticated user for internal
+        # API calls gets switched to the system user. Bad.
+        $auth_user = $this->Auth->user();
+        if( empty( $auth_user ) ) {
+          if( $this->Auth->login( $user['User']['id'] ) ) { # No existing user, API user authenticates
+            $this->User->id = $user['User']['id'];
+            $this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
+            
+            $auth = true;
+          }
+        }
+        else { # We're already in a user session, so no change to the auth user
+          $auth = true;
+        }
+      }
     }
     
     return $auth;
