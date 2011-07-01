@@ -1,5 +1,9 @@
 <?php $this->set( 'title_for_layout', __( 'My House', true ) ) ?>
 
+<!-- Used by the address list in the sidebar -->
+<?php echo $this->Html->script( 'jquery/jquery.cycle.all.min.js', array( 'inline' => false ) ) ?>
+
+<!-- Used by the autocomplete inputs -->
 <?php echo $this->Html->css( 'jqueryui/themes/aristo/jquery-ui-1.8.7.custom.css', null, array( 'inline' => false ) ) ?>
 
 <?php if( !empty( $this->data['Building']['id'] ) ): ?>  

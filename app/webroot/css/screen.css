@@ -131,11 +131,16 @@ body.onecolumn #content {background: #FFFFFF; min-height:400px; padding: 50px 60
 #tip p{padding:10px}
 #tiptop{width: 233px;height:10px;background:url(../img/topWhiteBar.png) no-repeat 0 0;margin:0 auto;}
 #tipbtm{width: 233px;height:10px;background:url(../img/bottomWhiteBar.png) no-repeat 0 0;margin:0 auto;}
-#address {width:242px; margin:10px auto; padding:0; border-collapse:collapse;}
-#address th{text-align:left;text-transform: uppercase;background:#444;padding:5px;font:14px Arial, Helvetica, sans-serif;
+#address-panels { list-style: none; margin: auto; }
+#address-panel {width:242px; margin:10px auto; padding:0; border-collapse:collapse;}
+#address-panel th{text-align:left;text-transform: uppercase;background:#444;padding:5px;font:14px Arial, Helvetica, sans-serif;
 	color: #CCC;font-weight:bold;}
-#address td{text-align:left;background:#eee;padding:4px 0 2px 10px;font:13px Arial, Helvetica, sans-serif; color: #333; vertical-align:top;}
-#address td.adrs{width: 160px;border-right: 2px solid #444;}
+#address-panel td{text-align:left;background:#eee;padding:4px 0 2px 10px;font:13px Arial, Helvetica, sans-serif; color: #333; vertical-align:top;}
+#address-panel td.adrs{width: 160px;border-right: 2px solid #444;}
+#address-panel-nav { width: 242px; margin: auto; }
+#address-panel-nav a { color: #fff; }
+#address-panel-nav .previous { float: left; }
+#address-panel-nav .next { float: right; }
 /* ============================= content ===================== */
 #content {float: left;width: 692px; background: #f9faf4;}
 #contentheader {background: #fff;	border-bottom: 1px solid #aaa; padding: 10px 0 0 30px; font:14px/15px Arial, Helvetica, sans-serif; color:#666;width:662px;}

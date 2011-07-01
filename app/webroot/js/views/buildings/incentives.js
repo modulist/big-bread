@@ -1,4 +1,12 @@
 $(document).ready( function() {
+  // Make the address list scrollable
+  $( '#address-panels' ).cycle({
+    fx: 'scrollLeft',
+    timeout: 0,
+    next: '.next',
+    prev: '.previous'
+  });
+  
   $( '.incentive-note a' ).toggle(function() { 
       show_details( $(this) );
     }, 

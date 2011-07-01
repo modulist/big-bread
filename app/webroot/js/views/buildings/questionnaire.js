@@ -9,6 +9,14 @@ $(document).ready( function() {
   // Which target are we initially activating?
   $( '.section' ).not( '.active' ).hide();
 
+  // Make the address list scrollable
+  $( '#address-panels' ).cycle({
+    fx: 'scrollLeft',
+    timeout: 0,
+    next: '.next',
+    prev: '.previous'
+  });
+
   // Save and continue by default, but allow the user to save and return
   // to the current anchor.
   $( '#btn-return[type="submit"]').click( function( e ) {
