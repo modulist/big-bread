@@ -210,13 +210,17 @@ class AppController extends Controller {
    */
   private function auth_api() {
     $auth    = false;
-    $headers = getallheaders();
-
-    if( array_key_exists( 'Authorization', $headers ) || !empty( $headers['Authorization'] ) ) {
+    # TODO: If we ever move to a server with PHP running as an Apache module
+    #       Change this to:
+    #         $headers = getallheaders()
+    # @see app/webroot/.htaccess
+    $headers = $_SERVER;
+    
+    if( array_key_exists( 'HTTP_AUTHORIZATION', $headers ) || !empty( $headers['HTTP_AUTHORIZATION'] ) ) {
       $this->User = ClassRegistry::init( 'User' );
       $user = $this->User->find( 'first', array(
         'contain'    => array( 'ApiUser' ),
-        'conditions' => array( 'ApiUser.api_key' => $headers['Authorization'] ),
+        'conditions' => array( 'ApiUser.api_key' => $headers['HTTP_AUTHORIZATION'] ),
       ));
       
       if( !empty( $user ) ) { # There's a user with this API key
