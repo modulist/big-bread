@@ -39,26 +39,26 @@ class ValidateLinksShell extends Shell {
 
 	public function main() {
     $links = array();
-    echo "Retrieving technology incentive links...\n";
+    echo " --> Retrieving technology incentive links...\n";
     $links = $this->get_technology_incentive_links( $links );
-    echo "Complete. Retrieved " . count( $links ) . " links.\n";
+    echo " <-- Complete. Retrieved " . count( $links ) . " links.\n";
     
     $this->summary['link_count'] = count( $links );
     
     # Validate the links and update the 'Status' key
-    echo "Validating links...\n";
+    echo " --> Validating links...\n";
     $links = $this->validate_links( $links );
-    echo "Complete (" . date( 'm/d/Y H:i:s' ) . ")\n";
+    echo " <-- Complete (" . date( 'm/d/Y H:i:s' ) . ")\n";
     
     # Write link data to a file that will be attached to an email
-    echo "Creating CSV to send...\n";
+    echo " --> Creating CSV to send...\n";
     $this->create_email_attachment( $links );
-    echo "Complete (" . date( 'm/d/Y H:i:s' ) . ").\n";
+    echo " <-- Complete (" . date( 'm/d/Y H:i:s' ) . ").\n";
     
     # Send the link validation report
-    echo "Sending the report...\n";
+    echo " --> Sending the report...\n";
     $this->send_report();
-    echo "Complete (" . date( 'm/d/Y H:i:s' ) . ").\n";
+    echo " <-- Complete (" . date( 'm/d/Y H:i:s' ) . ").\n";
 	}
   
   /**
@@ -72,29 +72,43 @@ class ValidateLinksShell extends Shell {
     $this->HttpSocket = ClassRegistry::init( 'HttpSocket', 'Core' );
     
     foreach( $links as $i => $link ) {
-      echo "  --> Validating " . $link['Link'] . " (" . $link['Link Type'] . ")\n";
-      echo "  --> " . ( round( ( $i / count( $links ) ) * 100 ) ) . "% complete (" . $i . " of " . count( $links ) . ")\n";
-      echo "  --> Current timestamp: " . date( 'm/d/Y H:i:s' ) . "\n";
+      echo " ----> Validating " . $link['Link'] . " (" . $link['Link Type'] . ")\n";
       $request = array(
         'method' => 'HEAD',
         'uri' => $link['Link'],
         'version' => '1.1',
+        'timeout' => 60,
         'header' => array(
           'Connection' => 'close',
           'User-Agent' => 'CakePHP'
         ),
       );
       
-      $this->HttpSocket->request( $request );
-      $status_code = $this->HttpSocket->response['status']['code'];
-      $links[$i]['Status'] = $status_code;
+      if( $this->HttpSocket->request( $request ) !== false ) {
+        $status_code = $this->HttpSocket->response['status']['code'];
+        $links[$i]['Status'] = $status_code;
+        $links[$i]['Error']  = null;
       
-      if( !array_key_exists( $status_code, $this->summary['status_counts'] ) ) {
-        $this->summary['status_counts'][$status_code] = 0;
+        if( !array_key_exists( $status_code, $this->summary['status_counts'] ) ) {
+          $this->summary['status_counts'][$status_code] = 0;
+        }
+        else {
+          $this->summary['status_counts'][$status_code]++;
+        }
+        
+        echo " ------> Status: " . $status_code . "\n";
       }
       else {
-        $this->summary['status_counts'][$status_code]++;
+        $links[$i]['Status'] = 'ERR';
+        $links[$i]['Error']  = 'An error occurred when requesting this URL.';
+        
+        echo " ------> An error occurred when requesting this URL.\n";
       }
+      
+      echo " ------> " . ( round( ( $i / count( $links ) ) * 100 ) ) . "% complete (" . $i . " of " . count( $links ) . ")\n";
+      echo " ------> Current timestamp: " . date( 'm/d/Y H:i:s' ) . "\n";
+      
+      echo " <---- Complete.\n";
     }
     
     return $links;

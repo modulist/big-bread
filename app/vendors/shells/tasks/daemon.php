@@ -9,12 +9,12 @@ class DaemonTask extends Shell {
     if( !Cache::read( $pidstring ) ) {
       $pid = getmypid();
       
-      echo " --> Writing " . $pidstring . " => " . $pid . " to cache.\n";
+      echo "Writing " . $pidstring . " => " . $pid . " to cache.\n";
       
       Cache::write( $pidstring, $pid );     
     }
     else {
-      echo " --> $pidstring already exists in the cache.\n";
+      echo "$pidstring already exists in the cache.\n";
       
       $ps = shell_exec( 'ps -o pid -A' ); 
       $ps = explode( "\n", trim( $ps ) ); 
