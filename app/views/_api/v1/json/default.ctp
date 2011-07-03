@@ -1,1 +1,1 @@
-<?php echo json_encode( $response ) ?>
+<?php echo stripslashes( json_encode( $response ) ) ?>

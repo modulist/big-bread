@@ -1,1 +1,1 @@
-<?php echo $callback . '(' . json_encode( $response ) . ')' ?>
+<?php echo $callback . '(' . stripslashes( json_encode( $response ) ) . ')' ?>
