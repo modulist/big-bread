@@ -124,7 +124,7 @@ class ApiV1 extends Api {
     $this->User = ClassRegistry::init( 'User' );
     if( $this->User->save( $data ) ) {
       return array(
-        'invite_link' => 'http://bigbread.net/invite/' . $data['User']['invite_code'],
+        'invite_link' => 'http://' . $_SERVER['HTTP_HOST'] . '/invite/' . $data['User']['invite_code'],
       );
     }
     else {

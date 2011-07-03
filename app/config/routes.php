@@ -23,7 +23,7 @@
  */
 App::import( 'Lib', 'routes/ApiRoute' );
 
-Router::parseExtensions( 'json' );
+Router::parseExtensions( 'json', 'jsonp' );
 
 /**
  * Here, we are connecting '/' (base path) to controller called 'Pages',

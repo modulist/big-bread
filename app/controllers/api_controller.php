@@ -4,7 +4,9 @@ class ApiController extends AppController {
 	public $name = 'Api';
   public $uses = null; # no model for this controller
   
-  private $supported_formats = array( 'json' );
+  # Ensure that each supported format has a parsed extension.
+  # @see app/config/routes, Router::parseExtensions()
+  private $supported_formats = array( 'json', 'jsonp' );
 
   /**
    * beforeFilter callback
@@ -48,6 +50,21 @@ class ApiController extends AppController {
       # Evalutates to $api->$params['method']() with each argument passed.
       $result = call_user_func_array( array( $api, $params['method'] ), $params['pass'] );
       $this->set( 'response', $result );
+      
+      # For JSONP requests, we're going to expect a "callback" parameter in either
+      # the query string or form data (for GET and POST/PUT requests, respectively).
+      # We need to set the callback value so the view can handle it accordingly.
+      if( $params['url']['ext'] === 'jsonp' ) {
+        if( $this->RequestHandler->isGet() && array_key_exists( 'callback', $params['url'] ) ) {
+          $this->set( 'callback', $params['url']['callback'] );
+        }
+        else if( $this->RequestHandler->isPost() && array_key_exists( 'callback', $params['form'] ) ) {
+          $this->set( 'callback', $params['form']['callback'] );
+        }
+        else {
+          # TODO: Throw invalid format error of some sort. JSONP requests must have callback.
+        }
+      }
       
       # Use a method-specific view if it exists, the generic otherwise.
       $view_root = '_api/' . $params['version'] . '/' . $params['url']['ext'];
