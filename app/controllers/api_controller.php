@@ -55,6 +55,8 @@ class ApiController extends AppController {
       # the query string or form data (for GET and POST/PUT requests, respectively).
       # We need to set the callback value so the view can handle it accordingly.
       if( $params['url']['ext'] === 'jsonp' ) {
+        $this->RequestHandler->setContent( 'js' );
+        
         if( $this->RequestHandler->isGet() && array_key_exists( 'callback', $params['url'] ) ) {
           $this->set( 'callback', $params['url']['callback'] );
         }
@@ -65,6 +67,11 @@ class ApiController extends AppController {
           # TODO: Throw invalid format error of some sort. JSONP requests must have callback.
         }
       }
+      
+      # Set the layout path based on the extension
+      # TODO: I didn't think that setting this path explicitly was necessary.
+      # @see http://stackoverflow.com/questions/6565201/cakephp-extensions-and-layouts
+      $this->layoutPath = $params['url']['ext'];
       
       # Use a method-specific view if it exists, the generic otherwise.
       $view_root = '_api/' . $params['version'] . '/' . $params['url']['ext'];

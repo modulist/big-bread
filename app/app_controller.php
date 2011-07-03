@@ -78,7 +78,6 @@ class AppController extends Controller {
      * API Authentication is a little different
      */
     if( $this->params['controller'] == 'api' ) {
-      $this->log( 'Auth user: ' . json_encode( $this->Auth->user()), LOG_DEBUG );
       # Authenticate a user using api key (Authorization header)
       if( !$this->auth_api() ) {
         header( 'Not Authorized', true, 401 );
