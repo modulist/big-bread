@@ -39,7 +39,7 @@ p { margin:0; padding:0;}
 .menu li{ float:left; margin: 50px 0 0 -110px;}
 #nav-links{position: relative;z-index: 99;top: 10px; float:right;}
 #nav-links li{ float:left; list-style:none;  }
-#nav-links li a{ border-bottom:solid 1px #bbb; disply: block; padding:10px 20px 8px 20px; color:#717171; text-decoration:none; background:#ECECEC url(../img/navsep.png) right 10px no-repeat;}
+#nav-links li a{ border-bottom:solid 1px #bbb; display: block; padding:10px 20px 8px 20px; color:#717171; text-decoration:none; background:#ECECEC url(../img/navsep.png) right 10px no-repeat;}
 #nav-links li a:hover{ color:#222;}
 #nav-links .last a { background:#ECECEC url(../img/navback.png) right 10px no-repeat;}
 #nav-links .first a { background:#ECECEC url(../img/navfront.png) left 10px no-repeat;background:#ECECEC url(../img/navsep.png) right 10px no-repeat;}
@@ -234,7 +234,7 @@ body.onecolumn #content {background: #FFFFFF; min-height:400px; padding: 50px 60
 	padding:10px 0px 10px 10px;}
 .incentive-btn {float:right;}
 .incentive-note {width:200px; margin:0px auto;}
-.incentive-note a {margin:0 auto;padding:10px 50px;background: #3D7700;dispaly:block;color:#fff;}
+.incentive-note a {margin:0 auto;padding:10px 50px;background: #3D7700;display:block;color:#fff;}
 
 table.incentive-details,
 table.incentive-tnc {
