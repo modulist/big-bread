@@ -41,16 +41,17 @@ INSERT INTO user_types( id, code, name, selectable, deleted ) VALUES
 
 DROP TABLE IF EXISTS contractors;
 CREATE TABLE contractors(
-  id                  char(36)  NOT NULL,
-  user_id             char(36)  NOT NULL,
-  company_name        char(36)  NOT NULL,
-  billing_address_id  char(36)  NOT NULL,
-  certified_nate      boolean   NOT NULL DEFAULT 0,
-  certified_bpi       boolean   NOT NULL DEFAULT 0,
-  certified_resnet    boolean   NOT NULL DEFAULT 0,
-  certified_other     text      NULL,
-  created             datetime  NOT NULL,
-  modified            datetime  NOT NULL,
+  id                            char(36)  NOT NULL,
+  user_id                       char(36)  NOT NULL,
+  company_name                  char(36)  NOT NULL,
+  billing_address_id            char(36)  NOT NULL,
+  certified_nate                boolean   NOT NULL DEFAULT 0,
+  certified_bpi                 boolean   NOT NULL DEFAULT 0,
+  certified_resnet              boolean   NOT NULL DEFAULT 0,
+  certified_other               text      NULL,
+  better_business_bureau_listed boolean NOT NULL DEFAULT 0,
+  created                       datetime  NOT NULL,
+  modified                      datetime  NOT NULL,
   
   PRIMARY KEY( id ),
   CONSTRAINT fk__contractors__users FOREIGN KEY( user_id )

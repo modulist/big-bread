@@ -3,16 +3,8 @@
 class Contractor extends AppModel {
 	public $name         = 'Contractor';
 	public $displayField = 'company_name';
-  public $whitelist    = array(
-   'user_id',
-   'company_name',
-   'billing_address_id',
-   'certified_nate',
-   'certified_bpi',
-   'certified_resnet',
-   'certified_other',
-  );
-	public $validate = array(
+	
+  public $validate = array(
 		'company_name' => array(
 			'notempty' => array(
 				'rule' => array( 'notempty' ),
@@ -67,6 +59,14 @@ class Contractor extends AppModel {
 			'unique' => true,
     ),
 	);
+  
+  public function __construct( $id = false, $table = null, $ds = null ) {
+    parent::__construct( $id, $table, $ds );
+    
+    # Since this is a big model with a lot of modifiable fields, generate the whitelist from
+    # a blacklist. In this case, everything is whitelisted except id, created & modified.
+    $this->whitelist = array_diff( array_keys( $this->schema() ), array( 'id', 'created', 'modified' ) );
+  }
   
   /**
    * Returns the list of counties that defines a given contractor's

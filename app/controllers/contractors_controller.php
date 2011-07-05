@@ -61,6 +61,9 @@ class ContractorsController extends AppController {
       else {
         $this->Session->setFlash( 'An error occurred while attempting to save this data.', null, null, 'validation' );
       }
+      
+      unset( $this->data['User']['password'] );
+      unset( $this->data['User']['confirm_password'] );
     }
     else {
       $this->data = $this->Contractor->find(

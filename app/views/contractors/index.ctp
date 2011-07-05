@@ -11,6 +11,7 @@
   <?php echo $this->Form->input( 'BillingAddress.address_1', array( 'label' => 'Street Address 1', 'placeholder' => '1234 Any Street' ) ) ?>
   <?php echo $this->Form->input( 'BillingAddress.address_2', array( 'label' => 'Street Address 2', 'placeholder' => 'Suite 201' ) ) ?>
   <?php echo $this->Form->input( 'BillingAddress.zip_code', array( 'placeholder' => '20739', 'after' => sprintf( '<small>%s</small>', __( 'We\'ll identify your city and state from the zip code.', true ) ) ) ) ?>
+  <?php echo $this->Form->input( 'Contractor.better_business_bureau_listed', array( 'label' => __( 'Listed in the Better Business Bureau directory?', true ) ) ) ?>
 
   <fieldset>
     <legend><?php __( 'Certifications' ) ?></legend>
