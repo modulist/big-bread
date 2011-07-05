@@ -2,7 +2,7 @@
 
 <p><?php __( 'Let us know where you work so we can deliver leads in your area.' ) ?></p>
 
-<p><?php __( 'When you select a state, we\'ll ask you to select the counties you operate within.' ) ?></p>
+<p><?php __( 'When you select a state, we\'ll ask you to select the counties you operate within. To include additional states, simply select another from the dropdown list and a new column will be displayed.' ) ?></p>
 
 <?php echo $this->Form->create( 'Contractor' ) ?>
   <?php echo $this->Form->select( 'service_area_state', $states, null, array( 'empty' => 'Select a state...' ) ) ?>

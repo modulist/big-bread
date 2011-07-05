@@ -61,6 +61,8 @@ $( document ).ready( function() {
         .animate( { backgroundColor: 'transparent' }, 1000 );
     }
     
+    $this.val( $( 'option:first', $this ).val() );
+    
     e.preventDefault();
   });
   
