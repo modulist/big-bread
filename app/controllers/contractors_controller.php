@@ -162,7 +162,7 @@ class ContractorsController extends AppController {
         $manufacturer_id = $manufacturer['equipment_manufacturer_id'];
         
         if( !array_key_exists( $manufacturer_id, $checked ) ) {
-          $checked[$manufacturer_id] = $dealer_id;
+          $checked[$manufacturer_id] = $manufacturer_id;
         }
         else {
           # Unset the duplicate
