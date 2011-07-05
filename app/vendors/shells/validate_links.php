@@ -127,9 +127,11 @@ class ValidateLinksShell extends Shell {
     $tech_incentives = $this->TechnologyIncentive->find(
       'all',
       array(
-        'contain' => array( 'Incentive' ),
+        'contain' => array( 'Incentive', 'Technology' ),
         'fields'  => array(
           'Incentive.incentive_id',
+          'Technology.incentive_tech_id',
+          'Technology.name',
           'TechnologyIncentive.weblink',
           'TechnologyIncentive.rebate_link',
           'TechnologyIncentive.contr_link',
@@ -143,7 +145,7 @@ class ValidateLinksShell extends Shell {
             'NOT' => array( 'TechnologyIncentive.contr_link' => null ),
           ) */
         ),
-        # 'limit' => 500, # for testing
+        'limit' => 50, # for testing
       )
     );
     
@@ -156,7 +158,8 @@ class ValidateLinksShell extends Shell {
     );
     foreach( $tech_incentives as $incentive ) {
       $record = array(
-        'Incentive ID' => $incentive['Incentive']['incentive_id']
+        'Incentive ID' => $incentive['Incentive']['incentive_id'],
+        'Technology'   => $incentive['Technology']['incentive_tech_id'] . ' (' . $incentive['Technology']['name'] . ')'
       );
       
       foreach( $link_fields as $title => $field ) {
@@ -164,9 +167,9 @@ class ValidateLinksShell extends Shell {
           continue;
         }
         
-        $record['Link Type'] = $title;
-        $record['Link']      = $incentive['TechnologyIncentive'][$field];
-        $record['Status']    = null;
+        $record['Link Type']  = $title;
+        $record['Link']       = $incentive['TechnologyIncentive'][$field];
+        $record['Status']     = null;
         
         array_push( $results, $record );
       }
