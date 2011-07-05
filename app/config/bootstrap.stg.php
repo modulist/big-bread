@@ -49,6 +49,10 @@
  *
  */
 
+# Core overrides
+# Configure::write( 'debug', 2 );
+# Configure::write( 'Cache.disable', true );
+  
 Configure::write( 'Env.name', 'Staging' );
 Configure::write( 'Env.code', 'STG' );
 Configure::write( 'Env.domain', 'stage.bigbread.net' );
