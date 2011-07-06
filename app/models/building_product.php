@@ -6,6 +6,10 @@ class BuildingProduct extends AppModel {
 	
   public $belongsTo = array( 'Building', 'Product' );
   
+  public $actsAs = array(
+    'AuditLog.Auditable',
+  );
+  
 	public $validate = array(
 		'product_id' => array(
 			'notempty' => array(

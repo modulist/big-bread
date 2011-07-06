@@ -21,6 +21,12 @@ class User extends AppModel {
     'Proposal',
   );
   
+  public $actsAs = array(
+    'AuditLog.Auditable' => array(
+      'ignore' => array( 'last_login' ),
+    ),
+  );
+  
 	public $validate = array(
 		'first_name' => array(
 			'notempty' => array(

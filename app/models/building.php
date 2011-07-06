@@ -53,9 +53,7 @@ class Building extends AppModel {
   );
   
   public $actsAs = array(
-    'Auditable' => array(
-      'ignore'  => array( 'created', 'modified' ),
-    )
+    'AuditLog.Auditable',
   );
   
 	public $validate = array(

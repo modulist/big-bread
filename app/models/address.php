@@ -12,6 +12,10 @@ class Address extends AppModel {
   );
 	public $hasOne    = array( 'Building' );
   
+  public $actsAs = array(
+    'AuditLog.Auditable'
+  );
+  
 	public $validate  = array(
 		'address_1' => array(
 			'notempty' => array(
