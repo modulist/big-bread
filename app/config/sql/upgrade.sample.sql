@@ -3,6 +3,9 @@ USE @DB_NAME@;
 SET NAMES utf8;
 SET foreign_key_checks = 0;
 
+INSERT INTO building_types( id, code, name, deleted )
+VALUES( UUID(), 'CONDO', 'Condominium', 0 );
+
 -- Fix incorrect and missing wall system
 UPDATE wall_systems
    SET name = 'Timber Framed'
