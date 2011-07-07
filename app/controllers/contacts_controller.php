@@ -2,8 +2,8 @@
 
 class ContactsController extends AppController {
   public $name       = 'Contacts';
-	public $helpers    = array( 'Form' );
-  public $components = array( 'SwiftMailer' );
+	public $helpers    = array( 'Form', 'FormatMask.Format' );
+  public $components = array( 'SwiftMailer', 'FormatMask.Format' );
   public $uses       = array( 'UserType', 'Contact' );
   
   /**
@@ -12,6 +12,22 @@ class ContactsController extends AppController {
   
   public function beforeFilter() {
     parent::beforeFilter();
+    
+    # TODO: Move this to a component callback? How would we detect right model?
+    # Squash the phone number if it exists in a data array to prep for save
+    if( !empty( $this->data[$this->Contact->alias]['phone_number'] ) && is_array( $this->data[$this->Contact->alias]['phone_number'] ) ) {
+      $this->data[$this->Contact->alias]['phone_number'] = $this->Format->phone_number( $this->data[$this->Contact->alias]['phone_number'] );
+    }
+  }
+  
+  public function beforeRender() {
+    parent::beforeRender();
+    
+    # TODO: Move this to a component callback? How would we detect right model?
+    # Explode the phone number if it exists in a data array to prep for form display
+    if( isset( $this->data[$this->Contact->alias]['phone_number'] ) && is_string( $this->data[$this->Contact->alias]['phone_number'] ) ) {
+      $this->data[$this->Contact->alias]['phone_number'] = $this->Format->phone_number( $this->data[$this->Contact->alias]['phone_number'] );
+    }
   }
   
   /**
