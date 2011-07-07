@@ -14,5 +14,13 @@
     </div>
   <?php endforeach; ?>
   <div class="clear"></div>
-<?php echo $this->Form->end( __( 'Finish', true ) ) ?>
-<?php echo $this->Html->link( __( 'Back', true ), $previous_url, array( 'class' => 'button' ) ) ?>
+
+  <div class="buttons">
+    <div class="button">
+      <input type="submit" value="<?php __( 'Next' ) ?>" />
+    </div>
+    <div class="button">
+      <input type="reset" value="<?php __( 'Back' ) ?>" class="previous" data-previous="<?php echo Router::url( $previous_url ) ?>" />
+    </div>
+  </div>
+<?php echo $this->Form->end() ?>

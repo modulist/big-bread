@@ -1,5 +1,4 @@
 $( document ).ready( function() {
-  
   $( '#ContractorServiceAreaState' ).change( function( e ) {
     var $this         = $(this);
     var $county_lists = $( '#county_list' );
@@ -24,7 +23,8 @@ $( document ).ready( function() {
         type: 'GET',
         dataType: 'json',
         beforeSend: function( jqXHR, settings ) {
-          jqXHR.setRequestHeader( 'Authorization', '1001001SOS' );  
+          jqXHR.setRequestHeader( 'Authorization', '1001001SOS' );
+          $this.after( '<span class="loading"><img src="/img/spinner16.gif" class="spinner" alt="Retrieving counties" /> Retrieving counties in ' + state_name + '...</span>' );
         },
         success: function( data, status, jqXHR ) {
           var $county_list = $( document.createElement( 'ol' ) );
@@ -43,6 +43,9 @@ $( document ).ready( function() {
           }
           
           $column.append( $county_list );
+        },
+        complete: function() {
+          $( '.loading' ).remove();
         }
       });
     }
@@ -68,6 +71,16 @@ $( document ).ready( function() {
   
   $( '.remove.column' ).live( 'click', function( e ) {
     $( this ).closest( 'li' ).remove();
+    
+    e.preventDefault();
+  });
+  
+  /**
+   * Because the CSS sucks, we're using a reset input as a back button
+   * so we need to hijack the functionality.
+   */
+  $( 'input[type="reset"].previous' ).click( function( e ) {
+    location.href = $(this).attr( 'data-previous' );
     
     e.preventDefault();
   });

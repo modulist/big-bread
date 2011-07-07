@@ -28,6 +28,8 @@ p { margin:0; padding:0;}
 #content h3 {font-size: 14px; margin: 10px 0; padding: 0;}
 .help-available { cursor: help; }
 .hidden { display: none; }
+.loading { padding-left: 10px; }
+.loading .spinner { vertical-align: middle; }
 
 /* ============================= Top header ====================== */
 #header {}
