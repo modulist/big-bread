@@ -236,7 +236,6 @@ class ContractorsController extends AppController {
       $this->data['Contractor']['id'] = $contractor_id;
       
       if( $this->Contractor->saveAll( $this->data ) ) {
-        new PHPDump( $this->data, 'Saved' ); exit;
         $this->redirect( array( 'action' => 'payment', $contractor_id ) );
       }
       else {
@@ -269,7 +268,7 @@ class ContractorsController extends AppController {
    * @access  public
    */
   public function payment( $contractor_id ) {
-    exit( 'Payment details not yet implemented' );
+    exit( 'Payment details are not yet implemented' );
   }
     
   /**
