@@ -145,7 +145,7 @@ class ValidateLinksShell extends Shell {
             'NOT' => array( 'TechnologyIncentive.contr_link' => null ),
           ) */
         ),
-        'limit' => 50, # for testing
+        # 'limit' => 50, # for testing
       )
     );
     
