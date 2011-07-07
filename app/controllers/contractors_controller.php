@@ -46,7 +46,9 @@ class ContractorsController extends AppController {
       # When editing, we need to do a little data prep
       if( !empty( $contractor_id ) ) {
         # Make sure the data represents an edit action
-        $this->data['User']['id'] = $this->Contractor->field( 'Contractor.user_id', array( 'Contractor.id' => $contractor_id ) );
+        $this->data['Contractor']['id']     = $contractor_id;
+        $this->data['User']['id']           = $this->Contractor->field( 'Contractor.user_id', array( 'Contractor.id' => $contractor_id ) );
+        $this->data['BillingAddress']['id'] = $this->Contractor->field( 'Contractor.billing_address_id', array( 'Contractor.id' => $contractor_id ) );
         
         # If no password value is passed, assume no change should be made
         # and remove the empty data to avoid validation errors.

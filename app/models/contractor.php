@@ -15,6 +15,10 @@ class Contractor extends AppModel {
 		),
 	);
 	
+  public $actsAs = array(
+    'AuditLog.Auditable',
+  );
+  
 	public $belongsTo = array(
 		'BillingAddress' => array(
 			'className'  => 'Address',
