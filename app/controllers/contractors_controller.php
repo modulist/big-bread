@@ -268,7 +268,7 @@ class ContractorsController extends AppController {
    * @access  public
    */
   public function payment( $contractor_id ) {
-    exit( 'Payment details are not yet implemented' );
+    exit( 'Payment details are not yet implemented.' );
   }
     
   /**
