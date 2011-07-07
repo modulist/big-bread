@@ -1,8 +1,9 @@
 <?php
 
 class BuildingsController extends AppController {
-  public $name = 'Buildings';
-  public $components = array( 'SwiftMailer' );
+  public $name       = 'Buildings';
+  public $components = array( 'SwiftMailer', 'FormatMask.Format' );
+  public $helpers    = array( 'FormatMask.Format' );
   
   /**
    * CALLBACKS
@@ -11,7 +12,11 @@ class BuildingsController extends AppController {
   public function beforeFilter() {
     parent::beforeFilter();
     
-    # $this->Auth->allow( 'questionnaire', 'create', 'rebates' );
+    # TODO: Move this to a component callback?
+    # Squash the phone number if it exists in a data array to prep for save
+    if( !empty( $this->data[$this->Building->Client->alias]['phone_number'] ) && is_array( $this->data[$this->Building->Client->alias]['phone_number'] ) ) {
+      $this->data[$this->Building->Client->alias]['phone_number'] = $this->Format->phone_number( $this->data[$this->Building->Client->alias]['phone_number'] );
+    }
   }
 
   public function beforeRender() {
@@ -24,6 +29,11 @@ class BuildingsController extends AppController {
       )
     );
     $this->set( compact( 'technology_groups' ) );
+    
+    # Explode the phone number if it exists in a data array to prep for form display
+    if( isset( $this->data[$this->Building->Client->alias]['phone_number'] ) && is_string( $this->data[$this->Building->Client->alias]['phone_number'] ) ) {
+      $this->data[$this->Building->Client->alias]['phone_number'] = $this->Format->phone_number( $this->data[$this->Building->Client->alias]['phone_number'] );
+    }
   }
   
   /**

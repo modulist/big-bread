@@ -61,7 +61,9 @@
             <?php echo $this->Form->input( 'Client.first_name', array( 'label' => __( 'Client First Name', true ) ) ) ?>
             <?php echo $this->Form->input( 'Client.last_name', array( 'label' => __( 'Client Last Name', true ) ) ) ?>
             <?php echo $this->Form->input( 'Client.email', array( 'label' => __( 'Client Email', true ) ) ) ?>
-            <?php echo $this->Form->input( 'Client.phone_number', array( 'label' => __( 'Client Phone Number', true ) ) ) ?>
+            <?php echo $this->element( 'phone_number', array( 'plugin' => 'FormatMask', 'model' => 'Client', 'field' => 'phone_number', 'required' => false
+                                                             ) ) ?>
+            <?php # echo $this->Form->input( 'Client.phone_number', array( 'label' => __( 'Client Phone Number', true ) ) ) ?>
             <?php echo $this->Form->input( 'Client.user_type_id', array( 'type' => 'radio', 'legend' => false, 'default' => UserType::OWNER ) ) ?>
           </fieldset>
           
