@@ -32,7 +32,8 @@ class State extends AppModel {
     $states = Cache::read( $cache_key, $cache_config );
     
     if( $states === false ) {
-      if( Configure::read( 'debug' ) > 0 ) $this->log( '{State::states} Running query for states (' . $type . ')', LOG_DEBUG );
+      if( Configure::read( 'Env.code' ) != 'PRD' ) $this->log( '{State::states} Running query for states (cache key: ' . $cache_key . ')', LOG_DEBUG );
+      
       $states = $this->find(
         $type,
         array( 'contain' => false )
@@ -40,7 +41,7 @@ class State extends AppModel {
       Cache::write( $cache_key, $states, $cache_config );
     }
     else {
-      if( Configure::read( 'debug' ) > 0 ) $this->log( '{State::states} Pulled state data (' . $type . ') from cache.', LOG_DEBUG );
+      if( Configure::read( 'Env.code' ) != 'PRD' ) $this->log( '{State::states} Pulled state data from cache (cache key: ' . $cache_key . ')', LOG_DEBUG );
     }
     
     return $states;
@@ -68,7 +69,8 @@ class State extends AppModel {
     $counties = Cache::read( $cache_key, $cache_config );
     
     if( $counties === false ) {
-      if( Configure::read( 'debug' ) > 0 ) $this->log( '{State::counties} Running query for ' . join( ', ', $state_ids ), LOG_DEBUG );
+      if( Configure::read( 'Env.code' ) != 'PRD' ) $this->log( '{State::counties} Running query for state counties (cache key: ' . $cache_key . ')', LOG_DEBUG );
+      
       $counties = $this->County->find(
         'all',
         array(
@@ -81,7 +83,7 @@ class State extends AppModel {
       Cache::write( $cache_key, $counties, $cache_config );
     }
     else {
-      if( Configure::read( 'debug' ) > 0 ) $this->log( '{States::counties} Pulling counties (' . join( ', ', $state_ids ) . ') from cache.', LOG_DEBUG );
+      if( Configure::read( 'Env.code' ) != 'PRD' ) $this->log( '{States::counties} Pulling state counties from cache (cache key: ' . $cache_key . ')', LOG_DEBUG );
     }
     
     return $counties;

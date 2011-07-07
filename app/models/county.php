@@ -36,6 +36,8 @@ class County extends AppModel {
     $zip_codes = Cache::read( $cache_key, $cache_config );
     
     if( $zip_codes === false ) {
+      if( Configure::read( 'Env.code' ) != 'PRD' ) $this->log( '{County::zip_codes} Running query for zip codes (cache key: ' . $cache_key . ')', LOG_DEBUG );
+      
       $zip_codes = $this->find(
         'first',
         array(
@@ -44,6 +46,9 @@ class County extends AppModel {
         )
       );
       Cache::write( $cache_key, $zip_codes, $cache_config );
+    }
+    else {
+      if( Configure::read( 'Env.code' ) != 'PRD' ) $this->log( '{County::zip_codes} Pulling zip code data from cache (cache key: ' . $cache_key . ')', LOG_DEBUG );
     }
     
     return $zip_codes;

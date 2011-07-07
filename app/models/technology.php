@@ -75,15 +75,17 @@ class Technology extends AppModel {
       $technology_ids = array( $technology_ids );
     }
     
+    if( empty( $scope ) ) {
+      $scope = count( $technology_ids === 1 ) ? 'first' : 'all';
+    }
+    
     $cache_config = 'day';
     $cache_key    = strtolower( 'technology_manufacturers_' . $scope . '_' . join( '_', $technology_ids ) );
     
     $manufacturers = Cache::read( $cache_key, $cache_config );
     
     if( $manufacturers === false ) {
-      if( empty( $scope ) ) {
-        $scope = count( $technology_ids === 1 ) ? 'first' : 'all';
-      }
+      if( Configure::read( 'Env.code' ) != 'PRD' ) $this->log( '{Technology::manufacturers} Running query for manufacturers (cache key: ' . $cache_key .  ')', LOG_DEBUG );
       
       $manufacturers = $this->find(
         $scope,
@@ -97,6 +99,9 @@ class Technology extends AppModel {
       );
       
       Cache::write( $cache_key, $manufacturers, $cache_config );
+    }
+    else {
+      if( Configure::read( 'Env.code' ) != 'PRD' ) $this->log( '{Technology::manufacturers} Pulling manufacturer data from cache (cache key: ' . $cache_key .  ')', LOG_DEBUG );
     }
     
     return $manufacturers;
