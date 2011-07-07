@@ -43,12 +43,29 @@ class ContractorsController extends AppController {
     $this->Contractor->id = $contractor_id;
     
     if( !empty( $this->data ) ) {
-      $this->data['User']['user_type_id'] = UserType::CONTRACTOR;
+      # When editing, we need to do a little data prep
+      if( !empty( $contractor_id ) ) {
+        # Make sure the data represents an edit action
+        $this->data['User']['id'] = $this->Contractor->field( 'Contractor.user_id', array( 'Contractor.id' => $contractor_id ) );
+        
+        # If no password value is passed, assume no change should be made
+        # and remove the empty data to avoid validation errors.
+        if( empty( $this->data['User']['password'] ) ) {
+          unset( $this->data['User']['password'] );
+          unset( $this->data['User']['confirm_password'] );
+        }
+      }
       
       # The password value is hashed automagically. We need to hash the
       # confirmation value manually for validation.
-      # @see User::identical()
-      $this->data['User']['confirm_password'] = $this->Auth->password( $this->data['User']['confirm_password'] );
+      # @see User::identical()     
+      if( isset( $this->data['User']['password'] ) ) {
+        $this->data['User']['confirm_password'] = $this->Auth->password( $this->data['User']['confirm_password'] );        
+      }
+      
+      $this->data['User']['user_type_id'] = UserType::CONTRACTOR;
+      
+      # debug( $this->data ); exit;
       
       if( $this->Contractor->saveAll( $this->data ) ) {
         $this->Auth->login( $this->data['User'] );

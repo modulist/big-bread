@@ -128,19 +128,28 @@ class User extends AppModel {
    * @access	public
    */
   public function beforeValidate() {
-    /**
-     * When registering a user, an empty password value is salted and
-     * sent so that notempty rules do not validate properly. Detect that
-     * possibility and empty the value.
-     */
     if( !empty( $this->data ) ) {
+      /**
+       * An empty password value is never empty. The auth module hashes the
+       * empty value and that fools the validation rule. This is bad. We
+       * want to know an empty password when we see one and throw it out, so
+       * we have to make that adjustment manually.
+       */
       $empty_password = Security::hash( '', null, true );
       
       if( isset( $this->data[$this->alias]['password'] ) && $this->data[$this->alias]['password'] == $empty_password ) {
-        $this->data[$this->alias]['password'] = '';
-      }
-      if( isset( $this->data[$this->alias]['confirm_password'] ) && $this->data[$this->alias]['confirm_password'] == $empty_password ) {
-        $this->data[$this->alias]['confirm_password'] = '';
+        if( !empty( $this->id ) ) {
+          # When editing, just remove the data so no change is made.
+          # This allows users leave their password empty unless they
+          # actually want to change it.
+          unset( $this->data[$this->alias]['password'] );
+          unset( $this->data[$this->alias]['confirm_password'] );
+        }
+        else {
+          # When creating, empty the value so it will be caught by validation.
+          $this->data[$this->alias]['password'] = '';
+          $this->data[$this->alias]['confirm_password'] = '';
+        }
       }
     }
     
