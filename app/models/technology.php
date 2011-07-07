@@ -76,7 +76,7 @@ class Technology extends AppModel {
     }
     
     $cache_config = 'day';
-    $cache_key    = 'Technology_manufacturers_' . join( '_', $technology_ids );
+    $cache_key    = strtolower( 'technology_manufacturers_' . $scope . '_' . join( '_', $technology_ids ) );
     
     $manufacturers = Cache::read( $cache_key, $cache_config );
     

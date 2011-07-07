@@ -31,7 +31,7 @@ class County extends AppModel {
    */
   public function zip_codes( $county_id ) {
     $cache_config = 'week';
-    $cache_key    = 'county_zipcodes_' . $county_id;
+    $cache_key    = strtolower( 'county_zipcodes_' . $county_id );
     
     $zip_codes = Cache::read( $cache_key, $cache_config );
     
