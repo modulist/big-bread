@@ -73,6 +73,7 @@ class ValidateLinksShell extends Shell {
     
     foreach( $links as $i => $link ) {
       echo " ----> Validating " . $link['Link'] . " (" . $link['Link Type'] . ")\n";
+      echo " ----> Process: " . shell_exec( 'ps -ef | grep -e "validate_links$" | head -n 1 | sed "s/\s*$//"' );
       $request = array(
         'method' => 'HEAD',
         'uri' => $link['Link'],
