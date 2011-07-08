@@ -115,6 +115,7 @@ class User extends AppModel {
     parent::__construct( $id, $table, $ds );
     
     $this->virtualFields['full_name'] = sprintf( 'CONCAT(%s.first_name, " ", %s.last_name)', $this->alias, $this->alias );
+    $this->whitelist = array_diff( array_keys( $this->schema() ), array( 'id', 'admin', 'last_login', 'deleted', 'created', 'modified' ) );
   }
   
   /**
