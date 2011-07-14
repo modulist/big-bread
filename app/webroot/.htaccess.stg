@@ -2,7 +2,19 @@ AddDefaultCharset UTF-8
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
-	
+  
+  # Restrict access to known IPs
+  # 68.48.9.*       Rob Home
+  # 128.173.211.*   Georg Work
+  # TODO  Rob's Outlaws' Home
+  # TODO  Tony Work
+  # TODO  Tony Home
+  RewriteCond %{REMOTE_ADDR} !^68\.48\.9\.
+  RewriteCond %{REMOTE_ADDR} !^128\.173\.211\.
+  RewriteCond %{REMOTE_ADDR} !^76\.160\.175\.
+  RewriteCond %{REMOTE_ADDR} !^173\.71\.205\.
+  RewriteRule ^(.*)$ http://www.bigbread.net/$1 [R=301,L]
+  
   # TODO: Remove this if we run on a server with PHP as Apache module
   # Bluehost runs PHP as a CGI process, so this hack is necessary
   # @see AppController::auth_api()
