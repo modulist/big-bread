@@ -33,8 +33,26 @@
  * @link http://book.cakephp.org/view/957/The-App-Controller
  */
 class AppController extends Controller {
-  public $helpers    = array ( 'Html', 'Number', 'Session', 'Text', 'Time' );
-  public $components = array ( 'Auth', 'RequestHandler', 'Session', 'DebugKit.Toolbar' );
+  public $helpers    = array( 'Html', 'Number', 'Session', 'Text', 'Time' );
+  public $components = array( 'Auth', 'RequestHandler', 'Session' );
+  
+  /**
+   * OVERRIDES
+   */
+  
+  /**
+   * Override this method to ensure that some components get loaded
+   * conditionally.
+   *
+   * @access	public
+   */
+  public function constructClasses() {
+    if( Configure::read( 'debug' ) > 0 ) {
+      $this->components[] = 'DebugKit.Toolbar';
+    }
+    
+    parent::constructClasses();
+  }
   
   /**
    * CALLBACKS
