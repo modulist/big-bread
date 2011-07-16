@@ -9,7 +9,6 @@ App::import( 'Component', 'SwiftMailer' );
  */
 class ValidateLinksShell extends Shell {
 	public $uses = array( 'TechnologyIncentive' );
-  public $tasks = array( 'Daemon' );
   
   # Support email functionality. @see this::send_report().
   public $Controller  = null;
@@ -28,7 +27,6 @@ class ValidateLinksShell extends Shell {
     parent::startup();
     
     echo "Beginning link validation at " . date( 'm/d/Y H:i:s' ) . "\n";
-    $this->Daemon->execute( 'validate_links' );
     
     $this->Controller  = new Controller();
     $this->SwiftMailer = new SwiftMailerComponent();
@@ -73,19 +71,18 @@ class ValidateLinksShell extends Shell {
     
     foreach( $links as $i => $link ) {
       echo " ----> Validating " . $link['Link'] . " (" . $link['Link Type'] . ")\n";
-      echo " ----> Process: " . shell_exec( 'ps -ef | grep -e "validate_links$" | head -n 1 | sed "s/\s*$//"' );
       $request = array(
         'method' => 'HEAD',
         'uri' => $link['Link'],
         'version' => '1.1',
-        'timeout' => 60,
+        'timeout' => 30,
         'header' => array(
           'Connection' => 'close',
-          'User-Agent' => 'CakePHP'
+          'User-Agent' => 'CakePHP',
         ),
       );
       
-      if( $this->HttpSocket->request( $request ) !== false ) {
+      if( $this->HttpSocket->request( $request ) !== false && !empty( $this->HttpSocket->response ) ) {
         $status_code = $this->HttpSocket->response['status']['code'];
         $links[$i]['Status'] = $status_code;
         $links[$i]['Error']  = null;
@@ -101,9 +98,9 @@ class ValidateLinksShell extends Shell {
       }
       else {
         $links[$i]['Status'] = 'ERR';
-        $links[$i]['Error']  = 'An error occurred when requesting this URL.';
+        $links[$i]['Error'] = 'Error: ' . $this->HttpSocket->lastError();
         
-        echo " ------> An error occurred when requesting this URL.\n";
+        echo " ------> Error: " . $this->HttpSocket->lastError() . "\n";
       }
       
       echo " ------> " . ( round( ( $i / count( $links ) ) * 100 ) ) . "% complete (" . $i . " of " . count( $links ) . ")\n";
@@ -116,15 +113,6 @@ class ValidateLinksShell extends Shell {
   }
   
   private function get_technology_incentive_links( $results ) {
-    # Maps the file fields ($this->fields) to this result set
-    /*
-    $field_map = array(
-      'Incentive ID' => 'incentive_id',
-      'Link Type'    => ,
-      'Link'         => ,
-      'Status'       => ,
-    );
-    */
     $tech_incentives = $this->TechnologyIncentive->find(
       'all',
       array(
