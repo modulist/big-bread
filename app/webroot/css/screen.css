@@ -1,5 +1,3 @@
-/* CSS Document */
-
 * {
 	margin:0;
 	padding:0;
@@ -105,10 +103,7 @@ body.onecolumn #content {background: #FFFFFF; min-height:400px; padding: 50px 60
 /** Whole House */
 #eq_c44379126f7f11e0be4180593d270cc9 {background:url(../img/All_on.png) no-repeat 10px 0;}
 #eq_c44379126f7f11e0be4180593d270cc9_off {background:url(../img/All_off.png) no-repeat 10px 0;}
-/** Unused
-#eq2 {background:url(../img/DIY_on.png) no-repeat 10px 0;}
-#eq2_off {background:url(../img/DIY_off.png) no-repeat 10px 0;}
-*/
+
 #TermsCondition_on {background:url(../img/TermsCondition_on.png) no-repeat 0 0; width:151px; height:26px; float:left; margin-right:10px;}
 #TermsCondition_off {background:url(../img/TermsCondition_off.png) no-repeat 0 0; width:151px; height:26px; float:left; margin-right:10px;}
 #RebateForm_on {background:url(../img/RebateForm_on.png) no-repeat 0 0; width:105px; height:26px; float:left; margin-right:10px;}
@@ -129,8 +124,8 @@ body.onecolumn #content {background: #FFFFFF; min-height:400px; padding: 50px 60
 #questionnaire_nav li, #questionnaire_act li {float:left; }
 #getstart {background:#F9FAF4; padding: 20px;}
 #tips {min-height:162px; background:#518205;padding:10px 0;}
-#tip {width: 213px;background:#fff;margin:0 auto;min-height:122px;font:14px Arial, Helvetica, sans-serif; color:#619300;padding:10px}
-#tip p{padding:10px}
+#tip {width: 213px;background:#fff;margin:0 auto;min-height:122px;font:14px Arial, Helvetica, sans-serif; color:#619300;padding:10px`;}
+#tip p{padding:10px; }
 #tiptop{width: 233px;height:10px;background:url(../img/topWhiteBar.png) no-repeat 0 0;margin:0 auto;}
 #tipbtm{width: 233px;height:10px;background:url(../img/bottomWhiteBar.png) no-repeat 0 0;margin:0 auto;}
 #address-panels { list-style: none; margin: auto; }
@@ -160,7 +155,7 @@ body.onecolumn #content {background: #FFFFFF; min-height:400px; padding: 50px 60
 
 #signupheader {margin: auto; background: #fff;border:solid 1px #aaa; padding: 10px; font:16px Arial, Helvetica, sans-serif; font-weight:bold; width: 666px;}
 #signupbody {margin:0 auto; width: 666px; background: #F9FAF4; margin:0 auto; padding: 20px 0 20px 20px;}
-#house_img {float: left;width: 200px;padding:10px 0 30px 0px}
+#house_img {float: left;width: 200px;padding:10px 0 30px 0px;}
 #house_info {float: left;}
 #info {
 	background: #F9FAF4; border-top: 9px solid #C2D89A;
@@ -184,7 +179,7 @@ body.onecolumn #content {background: #FFFFFF; min-height:400px; padding: 50px 60
 
 .itemprice ul, #sponser ul, #questionnaire_act ul, #terms ul{ list-style:none;}
 #terms li{ margin: 10px 10px 10px 25px;}
-.item ul{ list-style:none; margin:0 0 0 50px}
+.item ul{ list-style:none; margin:0 0 0 50px;}
 .item li {float:left;  min-width:160px; padding: 10px 0; margin-right: 15px; }
 .item li.last { margin-right: 0; }
 .item p {margin-left: 50px;}
@@ -279,8 +274,8 @@ table.incentive-tnc td.conditions {}
 	padding:20px 0px 0 0;
 }
 #questionnaire_act{ padding:0 0 50px 0; text-align:center;}
-#reason {width: 630px; margin: 30px auto}
-#reason p{padding:5px 5px 5px 0}
+#reason {width: 630px; margin: 30px auto;}
+#reason p{padding:5px 5px 5px 0;}
 #reason th{color:#619300;text-align:center;}
 #reason td{vertical-align:top;}
 
@@ -360,7 +355,7 @@ div.input{margin: 20px 0;}
 div.checkbox {margin: 5px 0; padding:0;}
 div.checkbox input,
 input[type=checkbox] {margin-right: 7px; border: 0 none;}
-.required label:after { content: '*' }
+.required label:after { content: '*'; }
 .error, .error-message {color: #d63301;}
 input[type=text],
 textarea {width: 300px;background-color: #FFF;}
@@ -405,7 +400,7 @@ a.button {
 .intro button,
 .intro a.button {font-size: 14px; margin-bottom: 10px; text-decoration: none;}
 .intro .link-action { clear: left; }
-input[type=text][disabled] { background: transparent; border: none; color: #eee }
+input[type=text][disabled] { background: transparent; border: none; color: #eee; }
 form .input.phonenumber .area-code, form .input.phonenumber .exchange { width: 3em; }
 form .input.phonenumber .number { width: 4em; }
 form small {
@@ -452,7 +447,7 @@ form small {
   
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
-  border-radius: 10px
+  border-radius: 10px;
 }
 .flash.success {
   color: #4f8a10;
