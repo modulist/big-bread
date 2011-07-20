@@ -86,7 +86,7 @@ class ProposalsController extends AppController {
         }
         
         if( $this->Proposal->save( $this->data ) ) {
-          # return $this->setAction( 'send_request', $requestor );
+          return $this->setAction( 'send_request', $requestor );
         }
       }
     }
