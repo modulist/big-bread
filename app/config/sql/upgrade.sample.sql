@@ -164,5 +164,30 @@ VALUES
   ( UUID(), 'The average useful life of a furnace or an air conditioning unit is 15 years.  The average cost of replacement is $6,000.', NOW(), NOW() ),
   ( UUID(), 'The average life of a hot water heater is 12 years.  The average cost of replacement is $1,000 for a tank water heater.', NOW(), NOW() ),
   ( UUID(), 'The average life of kitchen appliances is 10 years.', NOW(), NOW() );
-
+  
+-- New equipment manufacturers
+INSERT INTO equipment_manufacturers( id, name, created, modified )
+VALUES
+  ( '4e27f213-b070-479a-aeb8-02a76e891b5e', 'SUB-ZERO', NOW(), NOW() ),
+  ( '4e27f213-ef54-4ea6-9e53-02a76e891b5e', 'WOLF', NOW(), NOW() ),
+  ( '4e27f213-1dd0-4a38-a478-02a76e891b5e', 'VIKING', NOW(), NOW() );
+  
+INSERT INTO equipment_manufacturers_technologies( equipment_manufacturer_id, technology_id )
+VALUES
+  -- Sub-Zero
+  ( '4e27f213-b070-479a-aeb8-02a76e891b5e', 'c48c6ff0-6f7f-11e0-be41-80593d270cc9' ), -- Range/Cooktop/Oven
+  ( '4e27f213-b070-479a-aeb8-02a76e891b5e', 'c48c7270-6f7f-11e0-be41-80593d270cc9' ), -- Dishwasher
+  ( '4e27f213-b070-479a-aeb8-02a76e891b5e', 'c48c9048-6f7f-11e0-be41-80593d270cc9' ), -- Refrigerator
+  ( '4e27f213-b070-479a-aeb8-02a76e891b5e', 'c48c7716-6f7f-11e0-be41-80593d270cc9' ), -- Freezer
+  -- Wolf
+  ( '4e27f213-ef54-4ea6-9e53-02a76e891b5e', 'c48c6ff0-6f7f-11e0-be41-80593d270cc9' ),
+  ( '4e27f213-ef54-4ea6-9e53-02a76e891b5e', 'c48c7270-6f7f-11e0-be41-80593d270cc9' ),
+  ( '4e27f213-ef54-4ea6-9e53-02a76e891b5e', 'c48c9048-6f7f-11e0-be41-80593d270cc9' ),
+  ( '4e27f213-ef54-4ea6-9e53-02a76e891b5e', 'c48c7716-6f7f-11e0-be41-80593d270cc9' ),
+  -- Viking
+  ( '4e27f213-1dd0-4a38-a478-02a76e891b5e', 'c48c6ff0-6f7f-11e0-be41-80593d270cc9' ),
+  ( '4e27f213-1dd0-4a38-a478-02a76e891b5e', 'c48c7270-6f7f-11e0-be41-80593d270cc9' ),
+  ( '4e27f213-1dd0-4a38-a478-02a76e891b5e', 'c48c9048-6f7f-11e0-be41-80593d270cc9' ),
+  ( '4e27f213-1dd0-4a38-a478-02a76e891b5e', 'c48c7716-6f7f-11e0-be41-80593d270cc9' );
+  
 SET foreign_key_checks = 1;
