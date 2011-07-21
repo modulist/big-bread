@@ -12,6 +12,10 @@ class ContractorsController extends AppController {
   public function beforeFilter() {
     parent::beforeFilter();
     
+    if( !Configure::read( 'Feature.contractor_registration.enabled' ) ) {
+      $this->cakeError( 'error404' );
+    }
+    
     $this->Auth->allow( 'index' );
     
     # Squash the phone number if it exists in a data array to prep for save

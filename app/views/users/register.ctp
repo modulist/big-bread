@@ -14,7 +14,11 @@
       </li>
     <?php endforeach; ?>
   </ul>
-  <p><?php printf( __( 'Are you a contractor? Please use our %s.', true ), $this->Html->link( __( 'contractor registration', true ), array( 'controller' => 'contractors', 'action' => 'index' ) ) ) ?></p>
+  
+  <?php if( Configure::read( 'Feature.contractor_registration.enabled' ) ): ?>
+    <p><?php printf( __( 'Are you a contractor? Please use our %s.', true ), $this->Html->link( __( 'contractor registration', true ), array( 'controller' => 'contractors', 'action' => 'index' ) ) ) ?></p>
+  <?php endif; ?>
+  
   <div class="clear"></div>
   <?php if( $this->Form->error( 'User.user_type_id' ) ): ?>
       <?php echo $this->Form->error( 'User.user_type_id' ) ?>

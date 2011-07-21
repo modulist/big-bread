@@ -81,6 +81,8 @@ Configure::write(
   )
 );
 
+Configure::write( 'Feature.contractor_registration.enabled', false );
+
 # TODO: Change this to a bigbread.net address?
 Configure::write( 'email.default_recipient', 'wamaull@federatedpower.com' );
 Configure::write( 'email.feedback_recipient', Configure::read( 'email.default_recipient' ) );
