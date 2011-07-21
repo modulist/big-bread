@@ -3,8 +3,6 @@
 
 <?php echo $this->Html->meta( 'icon' ) . "\n" ?>
 
-<?php echo $this->Html->script( 'lib/modernizr-1.7.min.js' ) . "\n" ?>
-
 <?php echo $this->Html->css( 'screen', 'stylesheet', array( 'media' => 'screen' ) ) ?>
 <?php echo $this->Html->css( 'print', 'stylesheet', array( 'media' => 'print' ) ) ?>
 
@@ -12,3 +10,5 @@
 <?php echo $this->Html->css( '/js/jquery/fancybox/jquery.fancybox-1.3.4.css' ) ?>
 <!-- Decent looking tooltips -->
 <?php echo $this->Html->css( '/js/jquery/tipsy/tipsy.css' ) ?>
+
+<?php echo $this->Html->script( 'lib/modernizr-1.7.min.js' ) . "\n" ?>

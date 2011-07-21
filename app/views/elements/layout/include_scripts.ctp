@@ -1,6 +1,6 @@
 <!-- Include universal scripts -->
-<?php echo $this->Html->script( 'http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js' ) . "\n" ?>
-<?php echo $this->Html->script( 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/jquery-ui.min.js' ) . "\n" ?>
+<?php echo $this->Html->script( 'http' . ( env( 'HTTPS' ) ? 's' : null ) . '://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js' ) . "\n" ?>
+<?php echo $this->Html->script( 'http' . ( env( 'HTTPS' ) ? 's' : null ) . '://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/jquery-ui.min.js' ) . "\n" ?>
 <?php echo $this->Html->script( 'application' ) ?>
 <?php echo $this->Html->script( array(
   'jquery/jquery.fancybox-1.3.4.pack.js',
@@ -13,7 +13,7 @@
   <?php echo $this->Html->script( 'views/' . Inflector::underscore( $this->name ) . '/' . Inflector::underscore( $this->action ) ) ?>
 <?php endif; ?>
 
-<?php if( preg_match( '/^(www\.)?bigbread.net$/', env( 'HTTP_HOST' ) ) ): ?>
+<?php if( Configure::read( 'Env.code' ) === 'PRD' ): ?>
   <!-- Google Analytics -->
   <script type="text/javascript">
     var _gaq = _gaq || [];
