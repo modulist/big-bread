@@ -32,14 +32,32 @@ class Building extends AppModel {
     ),
 	);
   public $hasOne  = array(
-    'BuildingWallSystem', # Built for hasMany, but currently implemented as hasOne
-		'Occupant',
-		'Questionnaire',
+    'Address' => array(
+      'className'  => 'Address',
+      'foreignKey' => 'foreign_key',
+      'conditions' => array( 'Address.model' => 'Building' ),
+      'dependent'  => true,
+    ),
+    'BuildingWallSystem' => array( # Built for hasMany, but currently implemented as hasOne
+      'dependent' => true,
+    ), 
+		'Occupant' => array(
+      'dependent' => true,
+    ),
+		'Questionnaire' => array(
+      'dependent' => true,
+    ),
   );
 	public $hasMany = array(
-    'BuildingProduct',
-		'BuildingRoofSystem',
-		'BuildingWindowSystem',
+    'BuildingProduct' => array(
+      'dependent' => true,
+    ),
+		'BuildingRoofSystem' => array(
+      'dependent' => true,
+    ),
+		'BuildingWindowSystem' => array(
+      'dependent' => true,
+    ),
 	);
   
   public $hasAndBelongsToMany = array(
@@ -153,6 +171,11 @@ class Building extends AppModel {
       )
     ),
   );
+  
+  /**
+   * CALLBACKS
+   */
+  
   
   /**
    * PUBLIC METHODS

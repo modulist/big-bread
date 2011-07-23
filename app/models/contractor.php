@@ -7,7 +7,7 @@ class Contractor extends AppModel {
   public $validate = array(
 		'company_name' => array(
 			'notempty' => array(
-				'rule' => array( 'notempty' ),
+				'rule'       => array( 'notempty' ),
 				'message'    => 'Please tell us the name of your company',
 				'allowEmpty' => false,
 				'required'   => false,

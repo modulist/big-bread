@@ -4,21 +4,33 @@ class User extends AppModel {
 	public $name = 'User';
   
   public $belongsTo = array( 'UserType' );
-  public $hasOne = array( 'ApiUser', 'Contractor' );
+  public $hasOne = array(
+    'ApiUser' => array(
+      'dependent' => true,
+    ),
+    'Contractor' => array(
+      'dependent' => true,
+    )
+  );
   public $hasMany   = array(
     'Building' => array(
       'className'  => 'Building',
       'foreignKey' => 'inspector_id',
+      'dependent'  => true,
     ),
     'Home' => array(
       'className'  => 'Building',
-      'foreignKey' => 'realtor_id',
+      'foreignKey' => 'client_id',
+      'dependent'  => true,
     ),
     'Property' => array(
       'className'  => 'Building',
       'foreignKey' => 'realtor_id',
+      'dependent'  => true,
     ),
-    'Proposal',
+    'Proposal' => array(
+      'dependent' => true,
+    ),
   );
   
   public $actsAs = array(
