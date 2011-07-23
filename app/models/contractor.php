@@ -40,9 +40,6 @@ class Contractor extends AppModel {
 			'dependent'  => true,
 		),
 	);
-
-  # The deep definition exists because at least one of the models has
-  # a non-standard table name.
 	public $hasAndBelongsToMany = array(
 		'County' => array(
 			'className' => 'County',
@@ -66,6 +63,10 @@ class Contractor extends AppModel {
 			'unique' => true,
     ),
 	);
+  
+  /**
+   * PUBLIC METHODS
+   */
   
   public function __construct( $id = false, $table = null, $ds = null ) {
     parent::__construct( $id, $table, $ds );
