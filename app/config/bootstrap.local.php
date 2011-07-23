@@ -49,6 +49,8 @@
  *
  */
 
+ini_set( 'memory_limit', '64M' );
+
 # Ignore PHPDump if running from the console
 if( !defined( 'STDIN' ) && function_exists( 'ini_set' ) ) {
   ini_set( 'include_path', DS . 'var' . DS . 'www' . DS . '__phplib' . DS . PATH_SEPARATOR . ini_get('include_path') );
