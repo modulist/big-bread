@@ -14,18 +14,17 @@ class DeleteBuildingShell extends Shell {
   }
 
 	public function main() {
-		if( !isset( $this->args[0] ) ) {
-			$this->out( 'A building id must be specified.' );
-			exit();
+		if( isset( $this->args[0] ) && strlen( $this->args[0] ) === 36 ) {
+      # Assume a UUID was passed
+      $building_id = $this->args[0];
 		}
-    
-    $building_id = $this->args[0];
-
-    # TODO: Remove in the wild. This test code.
-    $building_id = $this->create_dummy_building( $building_id );
-    $this->out( 'Created a dummy building with id ' . $building_id );
-    $this->out( 'Pausing for 30 seconds to verify that the dummy building was created.' );
-    sleep( 30 );
+    else {
+      # Assume we're testing and create a building before deleting.
+      $building_id = $this->create_dummy_building( $building_id );
+      $this->out( 'Created a dummy building with id ' . $building_id );
+      $this->out( 'Pausing for 30 seconds to verify that the dummy building was created.' );
+      sleep( 30 );
+    }
     
     $this->out( 'Deleting building ' . $building_id );
     $this->Building->delete( $building_id );

@@ -14,20 +14,27 @@ class DeleteUserShell extends Shell {
   }
 
 	public function main() {
-		if( !isset( $this->args[0] ) ) {
-			$this->out( 'An email address must be specified in order to identify a unique user.' );
-			exit();
+		if( isset( $this->args[0] ) && Validation::email( $this->args[0] ) ) {
+      $email = $this->args[0];
 		}
-    
-    $email = $this->args[0];
-
-    # TODO: Remove in the wild. This test code.
-    # $this->create_dummy_user( $email );
-    # $this->out( 'Pausing for 30 seconds to verify that the dummy user was created.' );
-    # sleep( 30 );
+    else {
+      # Assume we're trying to test the script and create a user to delete
+      $this->create_dummy_user( 'dummy.' . md5( String::uuid() ) . '@user.com' );
+      $this->out( 'Pausing for 30 seconds to verify that the dummy user was created.' );
+      sleep( 30 );
+    }
     
     $user_id = $this->User->field( 'id', array( 'User.email' => $email ) );
-    $this->User->delete( $user_id );
+    
+    if( !empty( $user_id ) ) {
+      # TODO: Find buildings associated with only this user
+      $this->User->delete( $user_id );
+      # TODO: Delete buildings associated with only this user
+      #       Can we call DeleteBuildingShell, maybe?
+    }
+    else {
+      $this->out( 'No user with an email address of ' . $email . ' was found. No user was deleted.' );
+    }
   }
   
   public function create_dummy_user( $email ) {
