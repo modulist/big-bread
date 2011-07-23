@@ -3,16 +3,25 @@ AddDefaultCharset UTF-8
 <IfModule mod_rewrite.c>
   RewriteEngine On
   
-  # Restrict access to known IPs
-  # 68.48.9.*       Rob Home
-  # 128.173.211.*   Georg Work
-  # TODO  Rob's Outlaws' Home
-  # TODO  Tony Work
-  # TODO  Tony Home
+  # 
+  # Restrict access to known IPs as identified by the comment above
+  # each RewriteCond.
+  # 
+  # Rob Home
   RewriteCond %{REMOTE_ADDR} !^68\.48\.9\.
+  # Rob's Outlaws' Home
+  RewriteCond %{REMOTE_ADDR} !^173\.71\.205\.
+  # Georg Work
   RewriteCond %{REMOTE_ADDR} !^128\.173\.211\.
   RewriteCond %{REMOTE_ADDR} !^76\.160\.175\.
-  RewriteCond %{REMOTE_ADDR} !^173\.71\.205\.
+  # Tony Home
+  RewriteCond %{REMOTE_ADDR} !^173\.66\.250\.
+  # Cyril
+  RewriteCond %{REMOTE_ADDR} !^209\.6\.166\.
+  # Claudio
+  RewriteCond %{REMOTE_ADDR} !^98\.203\.35\.
+  # Peter Home
+  RewriteCond %{REMOTE_ADDR} !^96\.241\.49\.
   RewriteRule ^(.*)$ http://www.bigbread.net/$1 [R=301,L]
   
   # TODO: Remove this if we run on a server with PHP as Apache module
