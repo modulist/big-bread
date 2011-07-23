@@ -3,5 +3,5 @@
 class BuildingRoofSystem extends AppModel {
 	public $name = 'BuildingRoofSystem';
   
-	public $belongsTo = array( 'Building', 'RoofSystem', 'InsulationLevel' );
+	public $belongsTo = array( 'Building', 'RoofSystem' );
 }
