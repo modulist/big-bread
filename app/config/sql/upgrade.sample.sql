@@ -190,4 +190,31 @@ VALUES
   ( '4e27f213-1dd0-4a38-a478-02a76e891b5e', 'c48c9048-6f7f-11e0-be41-80593d270cc9' ),
   ( '4e27f213-1dd0-4a38-a478-02a76e891b5e', 'c48c7716-6f7f-11e0-be41-80593d270cc9' );
   
+-- Making addresses polymorphic so that it's not the key table in relationships
+ALTER TABLE addresses
+	ADD model varchar(255) NULL AFTER id,
+	ADD foreign_key char(36) NULL AFTER id;
+
+UPDATE addresses, buildings
+   SET addresses.model = 'Building',
+       addresses.foreign_key = buildings.id
+ WHERE addresses.id = buildings.address_id;
+ 
+UPDATE addresses, contractors
+   SET addresses.model = 'Contractor',
+       addresses.foreign_key = contractors.id
+ WHERE addresses.id = contractors.billing_address_id;
+ 
+ALTER TABLE buildings
+  DROP FOREIGN KEY fk__buildings__addresses,
+  DROP address_id;
+  
+ALTER TABLE contractors
+  DROP FOREIGN KEY fk__contractors__addresses,
+  DROP billing_address_id;
+  
+ALTER TABLE addresses
+  MODIFY model varchar(255) NOT NULL,
+  MODIFY foreign_key char(36) NOT NULL;
+  
 SET foreign_key_checks = 1;

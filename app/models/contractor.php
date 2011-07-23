@@ -20,16 +20,19 @@ class Contractor extends AppModel {
   );
   
 	public $belongsTo = array(
-		'BillingAddress' => array(
-			'className'  => 'Address',
-			'foreignKey' => 'billing_address_id',
-		),
 		'User' => array(
 			'className'  => 'User',
 			'foreignKey' => 'user_id',
 		),
 	);
-
+  public $hasOne = array(
+    'BillingAddress' => array(
+      'className'  => 'Address',
+      'foreignKey' => 'foreign_key',
+      'conditions' => array( 'BillingAddress.model' => 'Contractor' ),
+      'dependent'  => true,
+    )
+  );
 	public $hasMany = array(
 		'ManufacturerDealer' => array(
 			'className'  => 'ManufacturerDealer',

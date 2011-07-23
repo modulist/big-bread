@@ -3,7 +3,6 @@
 class Building extends AppModel {
 	public $name = 'Building';
 	public $belongsTo = array(
-		'Address',
 		'BasementType',
     'BuildingShape',
 		'BuildingType',

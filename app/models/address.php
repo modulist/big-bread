@@ -3,14 +3,17 @@
 class Address extends AppModel {
 	public $name = 'Address';
   public $whitelist = array(
+    'model',
+    'foreign_key',
     'address_1',
     'address_2',
     'zip_code',
   );	
 	public $belongsTo = array(
-    'ZipCode' => array( 'foreignKey' => 'zip_code' ),
+    'Building'   => array( 'foreignKey' => 'foreign_key' ),
+    'Contractor' => array( 'foreignKey' => 'foreign_key' ),
+    'ZipCode'    => array( 'foreignKey' => 'zip_code' ),
   );
-	public $hasOne    = array( 'Building' );
   
   public $actsAs = array(
     'AuditLog.Auditable'
@@ -47,6 +50,7 @@ class Address extends AppModel {
    *
    * @param   $field
    * @access  public
+   * @todo    This should be moved to ZipCode
    */
   public function known( $field ) {
     $zip = array_shift( $field );
