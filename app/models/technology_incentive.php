@@ -57,15 +57,9 @@ class TechnologyIncentive extends AppModel {
             'PublicNote',
           ),
           'IncentiveAmountType',
-          'TechnologyOption' => array(
-            'GlossaryTerm',
-          ),
-          'TechnologyTerm' => array(
-            'GlossaryTerm',
-          ),
-          'Technology' => array(
-            'GlossaryTerm',
-          ),
+          'TechnologyOption',
+          'TechnologyTerm',
+          'Technology',
         ),
         'conditions' => array(
           'TechnologyIncentive.id' => $id,
@@ -74,6 +68,119 @@ class TechnologyIncentive extends AppModel {
         ),
       )
     );
+  }
+  
+  /**
+   * Retrieves a list of incentives that are related to a given incentive.
+   * "Related" means that the incentive is offered on the same technology
+   * and, in the case of a manufacturer incentive, is not offered by a
+   * competing manufacturer. For example, incentives related to a Trane
+   * incentive will not include any offered by Carrier.
+   *
+   * Results are scoped by zip code.
+   *
+   * @param 	$technology_incentive mixed An id or a complete object
+   * @param   $zip_code
+   * @param   $manufacturer_id
+   * @return	array
+   * @access	public
+   */
+  public function related( $technology_incentive, $zip_code, $manufacturer_id = null ) {
+    if( !is_array( $technology_incentive ) && strlen( $technology_incentive === 36 ) ) {
+      exit( 'pulling the quoted incentive' );
+      # It looks like a UUID value was passed, so we need to pull
+      # source incentive.
+      $technology_incentive = $this->get( $technology_incentive );
+    }
+    
+    $incentive_join_conditions = array(
+      'TechnologyIncentive.incentive_id = Incentive.id',
+    );
+    if( !empty( $manufacturer_id ) ) {
+      # Only pull incentives that are not manufacturer specific or ones
+      # that are specific to the specified manufacturer.
+      $incentive_join_conditions['OR'] = array(
+        'Incentive.incentive_type_id <> ' => 'MANU',
+        array(
+          'Incentive.incentive_type_id'         => 'MANU',
+          'Incentive.equipment_manufacturer_id' => $manufacturer_id
+        )
+      );
+    }
+    
+    $technology_join_conditions = array(
+      'TechnologyIncentive.technology_id = Technology.id',
+      'TechnologyIncentive.technology_id' => $technology_incentive['Technology']['id'],
+    );
+     
+    $related = $this->find(
+      'all',
+      array(
+        'contain' => array(
+          'EnergySource' => array(
+            'fields' => array( 'EnergySource.name' ), 
+          ),
+          'TechnologyOption' => array(
+            'fields' => array( 'TechnologyOption.name' ),
+          ),
+          'TechnologyTerm',
+        ),
+        'joins' => array(
+          array(
+            'table'      => 'incentive',
+            'alias'      => 'Incentive',
+            'type'       => 'inner', 
+            'foreignKey' => false,
+            'conditions' => $incentive_join_conditions,
+          ),
+          array(
+            'table'      => 'technologies',
+            'alias'      => 'Technology',
+            'type'       => 'inner', 
+            'foreignKey' => false,
+            'conditions' => $technology_join_conditions,
+          ),
+          array(
+            'table'      => 'incentive_amount_types',
+            'alias'      => 'IncentiveAmountType',
+            'type'       => 'inner',
+            'foreignKey' => false,
+            'conditions' => array(
+              'TechnologyIncentive.incentive_amount_type_id = IncentiveAmountType.id'
+            ),
+          ),
+        ),
+        'fields' => array(
+          'TechnologyIncentive.id',
+          'TechnologyIncentive.incentive_id',
+          'TechnologyIncentive.technology_id',
+          'TechnologyIncentive.amount',
+          'TechnologyIncentive.is_active',
+          
+          'Incentive.incentive_id',
+          'Incentive.incentive_type_id',
+          'Incentive.name',
+          'Incentive.expiration_date',
+          'Incentive.equipment_manufacturer_id',
+          'Incentive.excluded',
+          
+          'IncentiveAmountType.incentive_amount_type_id',
+          'IncentiveAmountType.name',
+        ),
+        'conditions' => array(
+          'NOT' => array( 'TechnologyIncentive.id' => $technology_incentive['TechnologyIncentive']['id'] ),
+          'Incentive.excluded' => 0,
+          'TechnologyIncentive.is_active' => 1,
+          'OR' => $this->geo_scope_conditions( $zip_code ),
+        ),
+        'order' => array(
+          'TechnologyIncentive.amount DESC',
+          'Incentive.name',
+        ),
+      )
+    );
+    
+    return $related;
   }
   
   /**
@@ -258,5 +365,48 @@ class TechnologyIncentive extends AppModel {
     );
     
     return $incentives;
+  }
+  
+  /**
+   * Returns the geographic scope conditions for a given zip code.
+   * For example, results being pulled for 21224 should include
+   * all incentives specifically tied to that zip code as well as
+   * tied to the entire state and nationwide.
+   *
+   * The resulting array of conditions will have to be OR'd where
+   * used. e.g. 'OR' => $this->geo_scope_conditions( $zip_code )
+   *
+   * @param 	$zip_code
+   * @return	array   An array ready for use in find conditions
+   * @access	public
+   */
+  private function geo_scope_conditions( $zip_code ) {
+    # Which state owns this zip code?
+    $state = $this->Incentive->ZipCode->field( 'state', array( 'ZipCode.zip' => $zip_code ) );
+    
+    # Which incentives are specific to this zip
+    $zip_code_incentives = $this->Incentive->ZipCodeIncentive->find(
+      'all',
+      array(
+        'fields' => array( 'DISTINCT ZipCodeIncentive.incentive_id'),
+        'conditions' => array( 'ZipCodeIncentive.zip' => $zip_code ),
+      )
+    );
+    # Formatted in a nicely indexed array
+    $zip_code_incentives = Set::extract( '/ZipCodeIncentive/incentive_id', $zip_code_incentives );
+    
+    return array(
+      'Incentive.state' => 'US',  # nationwide incentives
+      array(
+        # Incentives that apply to the entire state that owns the zip code
+        'Incentive.entire_state' => 1,
+        'Incentive.state'        => $state,
+      ),
+      array(
+        # Incentive that belong to a given zip in the current state
+        'Incentive.id' => $zip_code_incentives,
+        'Incentive.state' => $state,
+      ),
+    );
   }
 }

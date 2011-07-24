@@ -107,24 +107,29 @@ class ProposalsController extends AppController {
    * @access	public
    */
   public function send_request( $requestor = null ) {
-    # The incentive that was specifically selected for the proposal request.
-    $quoted_incentive   = $this->Proposal->Requestor->Building->Address->ZipCode->Incentive->TechnologyIncentive->get( $this->data['TechnologyIncentive']['id'] );
+    # We could get to TechnologyIncentive through associations, but
+    # it's a long chain. This way feels cleaner.
+    $this->TechnologyIncentive = ClassRegistry::init( 'TechnologyIncentive' );
     
-    # If the quoted incentive is manufacturer-specific, we need to ignore
-    # incentives for other manufacturers.
-    $manufacturer       = null;
+    # The incentive that was specifically selected for the proposal request.
+    $quoted_incentive = $this->TechnologyIncentive->get( $this->data['TechnologyIncentive']['id'] );
+    
+    # If the quoted incentive is manufacturer-specific, we need to
+    # identify the manufacturer so we can ignore incentives offered
+    # by other manufacturers.
+    $manufacturer = null;
+    
     if( $quoted_incentive['Incentive']['incentive_type_id'] === 'MANU' && !empty( $quoted_incentive['Incentive']['equipment_manufacturer_id'] ) ) {
       $manufacturer = $quoted_incentive['Incentive']['equipment_manufacturer_id'];
     }
     
-    # Related incentives (ignoring the quoted incentive)
-    $related_incentives = $this->Proposal->Requestor->Building->incentives(
-      $this->data['Building']['id'],
-      array(
-        'technology_id' => $this->data['Proposal']['technology_id'],
-        'equipment_manufacturer_id' => $manufacturer,
-        'not' => array( $quoted_incentive['TechnologyIncentive']['id'] ),
-      )
+    # Related incentives (will ignore the quoted incentive)
+    # TODO: Change all instances of "zipcode" to "zip_code"
+    $zip_code = $this->Proposal->Requestor->Building->zipcode( $this->data['Building']['id'] );
+    $related_incentives = $this->TechnologyIncentive->related(
+      $quoted_incentive,
+      $zip_code,
+      $manufacturer
     );
     $requestor = empty( $requestor ) ? $this->Auth->user() : $requestor;
     $address   = $this->Proposal->Requestor->Building->address( $this->data['Building']['id'] );
