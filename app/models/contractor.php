@@ -65,6 +65,24 @@ class Contractor extends AppModel {
 	);
   
   /**
+   * OVERRIDES
+   */
+  
+  /**
+   * Overrides Model::saveAll()
+   */
+  public function saveAll( $data = null, $options = array() ) {
+    # The address model is polymorphic, so when saving multiple
+    # models, ensure that the proper polymorphic model value is
+    # set.
+    if( isset( $data['BillingAddress'] ) && !isset( $data['BillingAddress']['model'] ) ) {
+      $data['BillingAddress']['model'] = $this->alias;
+    }
+    
+    return parent::saveAll( $data, $options );
+  }
+  
+  /**
    * PUBLIC METHODS
    */
   

@@ -486,6 +486,10 @@ class BuildingsController extends AppController {
       }
     }
     
+    # Don't make the mistake of uncommenting this. It will prevent the
+    # user data from pre-populating in the event of a validation error.
+    # unset( $this->data[$role] );
+    
     return $user;
   }
   
