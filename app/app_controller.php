@@ -2,7 +2,25 @@
 
 class AppController extends Controller {
   public $helpers    = array( 'Html', 'Number', 'Session', 'Text', 'Time' );
-  public $components = array( 'Auth', 'RequestHandler', 'Session' );
+  public $components = array(
+    'Auth' => array(
+      'authorize'     => 'controller',
+      'fields'        => array( 'username' => 'email', 'password' => 'password' ),
+      'userScope'     => array( 'User.deleted' => 0 ),
+      'loginRedirect' => array(
+        'controller' => 'buildings',
+        'action'     => 'questionnaire',
+      ),
+      'autoRedirect' => false,
+      'logoutRedirect' => array(
+        'controller' => 'pages',
+        'action' => 'display',
+        'home'
+      ),
+    ),
+    'RequestHandler',
+    'Session'
+  );
   
   /**
    * OVERRIDES
@@ -36,27 +54,6 @@ class AppController extends Controller {
       $this->unforceSSL();
     }
 
-    # By default, deny access to everything
-    $this->Auth->deny( '*' );
-    
-    $this->Auth->userModel = 'User';
-		$this->Auth->fields = array(
-			'username' => 'email',
-			'password' => 'password'
-		);
-    $this->Auth->userScope = array( 'User.deleted' => 0 );
-    $this->Auth->loginAction = array(
-      'controller' => 'users',
-      'action'     => 'login',
-      'admin'      => false
-    );
-    $this->Auth->autoRedirect = false;
-    $this->Auth->loginRedirect = array(
-      'controller' => 'buildings',
-      'action'     => 'questionnaire',
-    );
-    $this->Auth->logoutRedirect = Router::url( '/' );
-    
     $this->Auth->authError  = __( 'Authentication required. Please login.', true );
     $this->Auth->loginError = __( 'Invalid authentication credentials. Please try again.', true );
 
@@ -80,8 +77,8 @@ class AppController extends Controller {
     }
     
     /**
-     * Turn off debug output for ajax requests and don't attempt
-     * to automatically render a view.
+     * Turn off debug output for ajax requests its output will hose the
+     * structured response format.
      */
     if( $this->RequestHandler->isAjax() ) {
       Configure::write( 'debug', 0 );
@@ -128,6 +125,17 @@ class AppController extends Controller {
   /**
    * PUBLIC FUNCTIONS
    */
+  
+  /**
+   * Has the final call over whether a user gets authenticated. Called
+   * by the Auth component.
+   *
+   * @return	boolean
+   * @access	public
+   */
+  public function isAuthorized() {
+    return true;
+  }
   
   /**
    * PROTECTED METHODS

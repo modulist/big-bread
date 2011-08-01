@@ -74,10 +74,10 @@ class UsersController extends AppController {
    * @access  public
    */
   public function register( $user_id = null ) {
-    $this->User->id = $user_id;
-    
     # Handle a submitted registration
     if( !empty( $this->data ) ) {
+      $this->User->id = $user_id;
+      
       # The password value is hashed automagically. We need to hash the
       # confirmation value manually for validation.
       # @see User::identical()
@@ -111,18 +111,19 @@ class UsersController extends AppController {
       }
     }
     else {
-      # I have no idea why this has to be done, but the user data is
-      # getting validated when first entering the app.
-      $this->User->validate = array();
-      
       # Populate existing data, if any
       $this->data = $this->User->find(
         'first',
         array(
           'contain'    => false,
+          # 'fields'     => array( 'User.id', 'user_type_id', 'first_name', 'last_name', 'email', 'phone_number', 'invite_code' ),
           'conditions' => array( 'User.id' => $user_id ),
         )
       );
+      # I have no idea why this has to be done, but without explicitly
+      # setting the data, the pre-populated form is displayed with
+      # validation errors.
+      $this->User->set( $this->data );
     }
     
     # Populate the available user types

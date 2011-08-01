@@ -177,25 +177,10 @@ class User extends AppModel {
    * @access	public
    */
   public function beforeFind( $query ) {
-    if( empty( $query['fields'] ) ) {
-      // Don't return the password field when returning everything
-      $query['fields'] = array(
-        'id',
-        'user_type_id',
-        'first_name',
-        'last_name',
-        'full_name',
-        'email',
-        'phone_number',
-        'invite_code',
-        'admin',
-        'show_questionnaire_instructions',
-        'last_login',
-        'deleted',
-        'created',
-        'modified',
-      );
-    }
+    # Don't return the password field unless it's specified.
+    $query['fields'] = empty( $query['fields'] )
+      ? array_diff( array_keys( $this->schema() ), array( 'password' ) )
+      : $query['fields'];
     
     return $query;
   }
