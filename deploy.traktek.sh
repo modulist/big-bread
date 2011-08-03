@@ -2,7 +2,7 @@
 
 # project_name=bigbread
 # build_root=~/Development/.build
-env="dev"
+env="traktek"
 host="bigbread.traktekpartners.com"
 root="/var/www/sites/clients/bigbread"
 
