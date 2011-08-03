@@ -7,15 +7,20 @@ host="bigbread.traktekpartners.com"
 root="/var/www/sites/clients/bigbread"
 
 if [ $# -lt 1 ]; then
-  echo "Usage: ./deploy.$env.sh <dbpassword>"
-  exit 1
+  # The dev database will not be updated from production data
+  updatedb=false
+else
+  updatedb=true
+  dbpassword=$1
 fi
-
-dbpassword=$1
-
-echo "Updating the bigbread database from production..."
-ssh root@$host "mysqldump -hbigbread.net -ubigbread -p'$1' --opt --complete-insert bigbread_prd | sed -e s/bigbread_prd/bigbread/ | mysql -udrupal -psql5Serv bigbread"
-echo "...complete."
+  
+if $updatedb; then  
+  echo "Updating the bigbread database from production..."
+  ssh root@$host "mysqldump -hbigbread.net -ubigbread -p'$1' --opt --complete-insert bigbread_prd | sed -e s/bigbread_prd/bigbread/ | mysql -udrupal -psql5Serv bigbread"
+  echo "...complete."
+else
+  echo "No arguments passed. Data will not be updated from production."
+fi
 
 echo "Sync'ing updated files to $root..."
 rsync -vcrlDtOzi --progress \
@@ -59,9 +64,12 @@ ssh root@$host "find $root/app/tmp/cache -type f -exec rm {} \;"
 echo "...complete."
 
 # Execute the upgrade.sql file
-echo "Running upgrade.sql..."
-ssh root@$host "cat $root/app/config/sql/upgrade.sample.sql | sed -e s/@DB_NAME@/bigbread/ > $root/app/config/sql/upgrade.sql"
-ssh root@$host "cat $root/app/config/sql/upgrade.sql | mysql -udrupal -psql5Serv"
-echo "...complete."
+if $updatedb; then
+  echo "Running upgrade.sql..."
+  ssh root@$host "cat $root/app/config/sql/upgrade.sample.sql | sed -e s/@DB_NAME@/bigbread/ > $root/app/config/sql/upgrade.sql"
+  ssh root@$host "cat $root/app/config/sql/upgrade.sql | mysql -udrupal -psql5Serv"
+  echo "...complete."
+fi
+
 echo ""
 echo "That's it. Everything should be ready to go"

@@ -5,20 +5,22 @@
 env="dev"
 root="www/__subdomains/$env.bigbread.net"
 
-if [ $# -lt 2 ]; then
-  echo "Usage: ./deploy.$env.sh <commit> <dbpassword>"
-  exit 1
+if [ $# -lt 1 ]; then
+  # The dev database will not be updated from production data
+  updatedb=false
+else
+  updatedb=true
+  dbpassword=$1
 fi
 
-# commit=$1
-dbpassword=$2
 
-# rm -rf $build_root/$project_name
-# git archive $commit --prefix=$project_name/ | tar -x -C $build_root
-
-echo "Download a copy of the production database..."
-ssh bigbread "scripts/import.sh $env"
-echo "...complete."
+if $updatedb; then
+  echo "Download a copy of the production database..."
+  ssh bigbread "scripts/import.sh $env"
+  echo "...complete."
+else
+  echo "No arguments passed. Data will not be updated from production."
+fi
 
 echo "Sync'ing updated files to $root..."
 rsync -vcrlDtOzi --progress \
@@ -60,9 +62,12 @@ ssh bigbread "find $root/app/tmp/cache -type f -exec rm {} \;"
 echo "...complete."
 
 # Execute the upgrade.sql file
-echo "Running upgrade.sql..."
-ssh bigbread "cat $root/app/config/sql/upgrade.sample.sql | sed -e s/@DB_NAME@/bigbread_$env/ > $root/app/config/sql/upgrade.sql"
-ssh bigbread "cat $root/app/config/sql/upgrade.sql | mysql -ubigbread -p'$dbpassword'"
-echo "...complete."
+if $updatedb; then
+  echo "Running upgrade.sql..."
+  ssh bigbread "cat $root/app/config/sql/upgrade.sample.sql | sed -e s/@DB_NAME@/bigbread_$env/ > $root/app/config/sql/upgrade.sql"
+  ssh bigbread "cat $root/app/config/sql/upgrade.sql | mysql -ubigbread -p'$dbpassword'"
+  echo "...complete."
+fi
+
 echo ""
 echo "That's it. Everything should be ready to go"
