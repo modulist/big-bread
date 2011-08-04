@@ -1,4 +1,4 @@
-<p>A little birdy told us that you forgot your password. Well, we've reset it for you. Just access the site using the link below and enter a new password to restore your access to BigBread.net</p>
+<p>A little birdy told us that you forgot your password. Well, we've reset it for you. Just access the site using the link below and enter a new password to restore your access to SaveBigBread.com</p>
 
 <p><?php echo $this->Html->url( array( 'controller' => 'users', 'action' => 'invite', $invite_code ), true ) ?></p>
 

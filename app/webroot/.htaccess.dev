@@ -23,7 +23,7 @@ AddDefaultCharset UTF-8
   RewriteCond %{REMOTE_ADDR} !^98\.203\.35\.
   # Peter Home
   RewriteCond %{REMOTE_ADDR} !^96\.241\.49\.
-  RewriteRule ^(.*)$ http://www.bigbread.net/$1 [R=301,L]
+  RewriteRule ^(.*)$ http://www.savebigbread.com/$1 [R=301,L]
   
   # TODO: Remove this if we run on a server with PHP as Apache module
   # Bluehost runs PHP as a CGI process, so this hack is necessary

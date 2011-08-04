@@ -3,7 +3,7 @@
 <!-- Used by the address list in the sidebar -->
 <?php echo $this->Html->script( 'jquery/jquery.cycle.all.min.js', array( 'inline' => false ) ) ?>
 
-<h1 class="printable"><?php __( 'Visit BigBread.net for the latest in personalized discounts and information' ) ?></h1>
+<h1 class="printable"><?php __( 'Visit SaveBigBread.com for the latest in personalized discounts and information' ) ?></h1>
 
 <?php echo $this->element( 'building_info', array( 'data' => $building ) ) ?>
 

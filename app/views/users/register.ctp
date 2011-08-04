@@ -2,7 +2,7 @@
 <?php echo $this->Form->input( 'User.invite_code', array( 'type' => 'hidden' ) ) ?>
 
 <div id="signupheader">
-  <h1>Join BigBread.net</h1>
+  <h1>Join SaveBigBread.com</h1>
   <label>Choose your primary role*</label>
   
   <ul id="user_type">

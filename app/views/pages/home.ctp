@@ -9,7 +9,7 @@
       <span class="orange">home</span>.
     </p>
     <p>
-      BigBread.net brings together all the energy efficiency, home improvement rebates that help you lower your home maintenance costs and lower your monthly utility bills.
+      SaveBigBread.com brings together all the energy efficiency, home improvement rebates that help you lower your home maintenance costs and lower your monthly utility bills.
     </p>
     <?php if( !$this->Session->check( 'Auth.User' ) ): ?>
       <br />

@@ -1,9 +1,9 @@
-<?php $this->set( 'title_for_layout', __( 'Why BigBread.net?', true ) ) ?>
+<?php $this->set( 'title_for_layout', __( 'Why SaveBigBread.com?', true ) ) ?>
 
-<h1>Why BigBread.net?</h1>
+<h1>Why SaveBigBread.com?</h1>
 
 <p>
-  Saving money is hard.It's even more aggravating when you know savings are out there and you can't figure out how to find them. BigBread.net hears you and understands. We've gathered hundreds of home improvement rebate programs and broken down the program information into thousands of rebates so that you can search offers that are relevant to you. We've also reviewed the information so that we can guide you toward single, double or triple dipping across multiple rebates.
+  Saving money is hard.It's even more aggravating when you know savings are out there and you can't figure out how to find them. SaveBigBread.com hears you and understands. We've gathered hundreds of home improvement rebate programs and broken down the program information into thousands of rebates so that you can search offers that are relevant to you. We've also reviewed the information so that we can guide you toward single, double or triple dipping across multiple rebates.
 </p>
 
 <h2>Our Background</h2>

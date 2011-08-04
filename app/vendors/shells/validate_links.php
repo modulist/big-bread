@@ -205,7 +205,7 @@ class ValidateLinksShell extends Shell {
     */
     $this->SwiftMailer->sendAs   = 'text';
     $this->SwiftMailer->from     = Configure::read( 'email.do_not_reply_address' ); 
-    $this->SwiftMailer->fromName = 'BIGBREAD.net Link Validator';
+    $this->SwiftMailer->fromName = 'SaveBigBread.com Link Validator';
     $this->SwiftMailer->to       = Configure::read( 'email.redirect_all_email_to' )
         ? Configure::read( 'email.redirect_all_email_to' )
         : Configure::read( 'email.default_recipient' );
@@ -216,7 +216,7 @@ class ValidateLinksShell extends Shell {
     $this->set( 'summary', $this->summary );
     
     try { 
-      if( !$this->SwiftMailer->send( 'link_validation', 'BIGBREAD.net Link Validation (' . date( 'm/d/Y' ) . ')', 'native' ) ) {
+      if( !$this->SwiftMailer->send( 'link_validation', 'SaveBigBread.com Link Validation (' . date( 'm/d/Y' ) . ')', 'native' ) ) {
         foreach($this->SwiftMailer->postErrors as $failed_send_to) { 
           $this->log( 'Failed to send link validation email to ' . $failed_send_to . '.' ); 
         }

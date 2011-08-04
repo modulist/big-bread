@@ -3,13 +3,12 @@ AddDefaultCharset UTF-8
 <IfModule mod_rewrite.c>
   RewriteEngine On
 	
-  RewriteCond %{HTTP_HOST} !^www\.bigbread\.net [NC]
-  RewriteRule ^(.*)$ http://www.bigbread.net/$1 [R=301,L]
+  RewriteCond %{HTTP_HOST} !^www\.savebigbread\.com [NC]
+  RewriteRule ^(.*)$ http://www.savebigbread.com/$1 [R=301,L]
 	
   # All SSL access attempts are sent to production, so send them
   # back if requesting a subdomain
-  RewriteCond %{HTTP_HOST} !^bigbread.net$
-  RewriteCond %{HTTP_HOST} !^www.bigbread.net$
+  RewriteCond %{HTTP_HOST} !^www.savebigbread.com$
   RewriteCond %{SERVER_PORT} ^443$
   RewriteRule ^(.*)$ http://%{HTTP_HOST}/$1 [R=301,L]
   

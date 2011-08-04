@@ -208,7 +208,7 @@ class UsersController extends AppController {
           */
           $this->SwiftMailer->sendAs   = 'both'; 
           $this->SwiftMailer->from     = Configure::read( 'email.do_not_reply_address' ); 
-          $this->SwiftMailer->fromName = 'BigBread.net';
+          $this->SwiftMailer->fromName = 'SaveBigBread.com';
           $this->SwiftMailer->to       = Configure::read( 'email.redirect_all_email_to' )
             ? Configure::read( 'email.redirect_all_email_to' )
             : $this->data['User']['email'];
@@ -218,7 +218,7 @@ class UsersController extends AppController {
           $this->set( 'invite_code', $invite_code ); 
            
           try {
-            if( !$this->SwiftMailer->send( 'forgot_password', 'Your BigBread.net password has been reset', 'native' ) ) {
+            if( !$this->SwiftMailer->send( 'forgot_password', 'Your SaveBigBread.com password has been reset', 'native' ) ) {
               foreach($this->SwiftMailer->postErrors as $failed_send_to) { 
                 $this->log( 'Failed to send forgot password email to ' . $failed_send_to ); 
               }

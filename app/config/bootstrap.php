@@ -64,7 +64,7 @@ define( 'DATETIME_FORMAT_MYSQL', DATE_FORMAT_MYSQL . ' ' . TIME_FORMAT_MYSQL );
       
 Configure::write( 'Env.name', 'Production' );
 Configure::write( 'Env.code', 'PRD' );
-Configure::write( 'Env.domain', 'www.bigbread.net' );
+Configure::write( 'Env.domain', 'www.savebigbread.com' );
 
 # Defines the controller => actions for which SSL should be forced.
 Configure::write(

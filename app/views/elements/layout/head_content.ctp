@@ -1,5 +1,5 @@
 <meta charset="utf-8" />
-<title><?php echo 'BigBread.net' . ( !empty( $title_for_layout ) ? ' : ' . $title_for_layout : '' ) ?></title>
+<title><?php echo 'SaveBigBread.com' . ( !empty( $title_for_layout ) ? ' : ' . $title_for_layout : '' ) ?></title>
 
 <?php echo $this->Html->meta( 'icon' ) . "\n" ?>
 

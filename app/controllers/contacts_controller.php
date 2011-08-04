@@ -60,7 +60,7 @@ class ContactsController extends AppController {
         $this->set( 'message', $this->data['Contact']['message'] );
         
         try { 
-          if( !$this->SwiftMailer->send( 'contact', 'Feedback from from BIGBREAD.net', 'native' ) ) {
+          if( !$this->SwiftMailer->send( 'contact', 'Feedback from from SaveBigBread.com', 'native' ) ) {
             $this->Session->setFlash( 'Something prevented us from delivering your feeback. Please try again later.', null, null, 'warning' );
             $this->log( 'Error sending email', LOG_ERR );
           }
