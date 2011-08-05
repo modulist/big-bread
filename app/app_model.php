@@ -2,22 +2,6 @@
 
 class AppModel extends Model {
   public $actsAs = array( 'Nullable', 'Containable' );
-  
-  /**
-   * Validates the model data. This function can be called independently
-   * on any model for validation independent of a save operation. It
-   * can also be overridden by any given model to also validate associated
-   * models.
-   *
-   * @param   $data
-   * @return  array
-   * @access  public
-   */
-  public function validate( $data = array() ) {
-    $this->set( $data );
-
-    return !$this->validates() ? $this->invalidFields() : array();
-  }
 
   /**
    * Override Model::deconstruct() in order to use an integrated date
