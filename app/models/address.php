@@ -37,11 +37,15 @@ class Address extends AppModel {
         'last'       => true,
 			),
       'known' => array(
-        'rule'    => array( 'known' ), 
+        'rule'    => array( 'known_zip_code' ), 
         'message' => 'Please check the zip code. This one is not in our database.' 
       ),
 		),
 	);
+  
+  /**
+   * CUSTOM VALIDATION
+   */
   
   /**
    * Custom validation method to ensure that the entered zip exists in
@@ -50,9 +54,8 @@ class Address extends AppModel {
    *
    * @param   $field
    * @access  public
-   * @todo    This should be moved to ZipCode
    */
-  public function known( $field ) {
+  public function known_zip_code( $field ) {
     $zip = array_shift( $field );
     
     return $this->ZipCode->find(
