@@ -242,7 +242,7 @@ class Building extends AppModel {
    * @return	array
    */
   public function incentives( $building_id, $conditions = array() ) {
-    return $this->Address->ZipCode->Incentive->TechnologyIncentive->incentives( $this->zipcode( $building_id ), $building_id, $conditions );
+    return $this->Address->ZipCode->Incentive->TechnologyIncentive->incentives( $this->zip_code( $building_id ), $building_id, $conditions );
   }
   
   /**
@@ -272,7 +272,7 @@ class Building extends AppModel {
    * @param 	$building_id
    * @return	string
    */
-  public function zipcode( $building_id ) {
+  public function zip_code( $building_id ) {
     $address = $this->Address->find(
       'first',
       array(

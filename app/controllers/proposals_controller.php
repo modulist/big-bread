@@ -124,8 +124,7 @@ class ProposalsController extends AppController {
     }
     
     # Related incentives (will ignore the quoted incentive)
-    # TODO: Change all instances of "zipcode" to "zip_code"
-    $zip_code = $this->Proposal->Requestor->Building->zipcode( $this->data['Building']['id'] );
+    $zip_code = $this->Proposal->Requestor->Building->zip_code( $this->data['Building']['id'] );
     $related_incentives = $this->TechnologyIncentive->related(
       $quoted_incentive,
       $zip_code,
