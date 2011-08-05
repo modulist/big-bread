@@ -44,7 +44,6 @@ class AppModel extends Model {
    *                    an array if no property is specified,
    *                    a scalar if a property is specified
    * @access    public
-   * @todo      Detect Auth user model automatically?
    */
   public function current_user( $property = null ) {
     return User::get( $property );

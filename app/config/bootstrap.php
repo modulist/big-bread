@@ -83,11 +83,10 @@ Configure::write(
 
 Configure::write( 'Feature.contractor_registration.enabled', false );
 
-# TODO: Change this to a bigbread.net address?
-Configure::write( 'email.default_recipient', 'wamaull@federatedpower.com' );
-Configure::write( 'email.feedback_recipient', Configure::read( 'email.default_recipient' ) );
-Configure::write( 'email.proposal_recipient', Configure::read( 'email.default_recipient' ) );
-Configure::write( 'email.do_not_reply_address','DO-NOT-REPLY@bigbread.net' );
+Configure::write( 'email.default_recipient', 'tony@savebigbread.com' );
+Configure::write( 'email.feedback_recipient', 'feedback@savebigbread.com' );
+Configure::write( 'email.proposal_recipient', 'proposals@savebigbread.com' );
+Configure::write( 'email.do_not_reply_address','support@savebigbread.com' );
 
 # Cache configuration
 Cache::config(
