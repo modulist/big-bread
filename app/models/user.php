@@ -188,6 +188,23 @@ class User extends AppModel {
   /**
    * PUBLIC METHODS
    */
+  
+  /**
+   * Retrieves the authenticated user data or, optionally, a specific
+   * property of the user data.
+   *
+   * @param 	$property
+   * @return	mixed
+   * @access	public
+   */
+  static public function get( $property = null ) {
+    $user = Configure::read( 'User' );
+    if( empty( $user ) || ( !empty( $property ) && !array_key_exists( $property, $user ) ) ) {
+      return false;
+    }
+    
+    return empty( $property ) ? $user : $user[$property];
+  }
 
   /**
    * Generates an invite code

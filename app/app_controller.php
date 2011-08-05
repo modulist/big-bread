@@ -30,7 +30,7 @@ class AppController extends Controller {
    * Override this method to ensure that some components get loaded
    * conditionally.
    *
-   * @access	public
+   * @access  public
    */
   public function constructClasses() {
     if( Configure::read( 'debug' ) > 0 ) {
@@ -66,6 +66,12 @@ class AppController extends Controller {
         header( 'Not Authorized', true, 401 );
         exit( 'Unable to authenticate.' );
       }
+    }
+    
+    # Write auth user data to a config variable for easy access
+    $user = $this->Auth->user();
+    if( !empty( $user ) ) {
+      Configure::write( 'User', $user[$this->Auth->getModel()->alias] );
     }
 
     /**
@@ -110,16 +116,13 @@ class AppController extends Controller {
     # If password values are set in the data structure of a GET request,
     # clear them. The encrypted values just create confusion.
     if( $this->RequestHandler->isGet() ) {
-      if( isset( $this->data['User']['password'] ) ) {
-        $this->data['User']['password'] = '';
+      if( isset( $this->data[$this->Auth->getModel()->alias]['password'] ) ) {
+        $this->data[$this->Auth->getModel()->alias]['password'] = '';
       }
-      if( isset( $this->data['User']['confirm_password'] ) ) {
-        $this->data['User']['confirm_password'] = '';
+      if( isset( $this->data[$this->Auth->getModel()->alias]['confirm_password'] ) ) {
+        $this->data[$this->Auth->getModel()->alias]['confirm_password'] = '';
       }
     }
-    
-    # Let the view be aware of whether this is an SSL request
-    $this->set( 'is_ssl', $this->RequestHandler->isSSL() );
   }
   
   /**
@@ -130,8 +133,8 @@ class AppController extends Controller {
    * Has the final call over whether a user gets authenticated. Called
    * by the Auth component.
    *
-   * @return	boolean
-   * @access	public
+   * @return  boolean
+   * @access  public
    */
   public function isAuthorized() {
     return true;
@@ -150,18 +153,7 @@ class AppController extends Controller {
    * @access  protected
    */
   protected function current_user( $property = null) {
-    $user = $this->Auth->user();
-    
-    if( !empty( $user ) ) {
-      if( empty( $property ) ) {
-        $user = $user[$this->Auth->userModel]; # Return the complete user array
-      }
-      else {
-        $user = $this->Auth->user( $property ); # Return a specific property
-      }
-    }
-    
-    return $user;
+    return User::get( $property );
   }
   
   /**
