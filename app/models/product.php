@@ -1,6 +1,5 @@
 <?php
 
-# TODO: Change to ProductCatalog
 class Product extends AppModel {
 	public $name = 'Product';
   
