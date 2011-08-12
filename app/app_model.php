@@ -4,6 +4,10 @@ class AppModel extends Model {
   public $actsAs = array( 'Nullable', 'Containable' );
 
   /**
+   * OVERRIDES
+   */
+
+  /**
    * Override Model::deconstruct() in order to use an integrated date
    * value, but multipart time value. The parent method expects both
    * date and time to be segmented, but, if a date picker is used to
@@ -37,17 +41,41 @@ class AppModel extends Model {
   }
   
   /**
-   * Returns the current user object/array. Useful in the context of
-   * the Auditable behavior.
-   *
-   * @return    mixed   null if empty,
-   *                    an array if no property is specified,
-   *                    a scalar if a property is specified
-   * @access    public
+   * CALLBACK METHODS
    */
-  public function current_user( $property = null ) {
-    return User::get( $property );
+  
+  /**
+   * CakePHP's afterFind callback.
+   *
+   * @param 	$results
+   * @param   $primary
+   * @return	mixed
+   * @access	public
+   */
+  public function afterFind( $results, $primary = false ) {
+    # Massage aggregated result values so they're less awkward
+    if( !empty( $results ) ) {
+      foreach( $results as $i => $result ) {
+        if( !empty( $result[0] ) ) { # Aggregate values are stored in a standalone, indexed array
+          foreach( $result[0] as $field => $value ) { # aggregated field alias => aggregate value
+            if( !empty( $result[$this->alias][$field] ) ) {
+              $field = 'aggregated_' . $field;
+            }
+            
+            $results[$i][$this->alias][$field] = $value;
+          }
+          
+          unset( $results[$i][0] ); # Unset the awkward array element
+        }
+      }
+    }
+    
+    return parent::afterFind( $results, $primary );
   }
+  
+  /**
+   * VALIDATION METHODS
+   */
   
   /**
    * Validates a datetime value by acting as a decorator for native
@@ -86,6 +114,23 @@ class AppModel extends Model {
     }
     
     return true; 
+  }
+  
+  /**
+   * PUBLIC METHODS
+   */
+  
+  /**
+   * Returns the current user object/array. Useful in the context of
+   * the Auditable behavior.
+   *
+   * @return    mixed   null if empty,
+   *                    an array if no property is specified,
+   *                    a scalar if a property is specified
+   * @access    public
+   */
+  public function current_user( $property = null ) {
+    return User::get( $property );
   }
   
   /**

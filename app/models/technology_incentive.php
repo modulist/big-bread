@@ -171,7 +171,7 @@ class TechnologyIncentive extends AppModel {
           'NOT' => array( 'TechnologyIncentive.id' => $technology_incentive['TechnologyIncentive']['id'] ),
           'Incentive.excluded' => 0,
           'TechnologyIncentive.is_active' => 1,
-          'OR' => $this->geo_scope_conditions( $zip_code ),
+          'OR' => static::geo_scope_conditions( $zip_code ),
         ),
         'order' => array(
           'TechnologyIncentive.amount DESC',
@@ -380,12 +380,14 @@ class TechnologyIncentive extends AppModel {
    * @return	array   An array ready for use in find conditions
    * @access	public
    */
-  private function geo_scope_conditions( $zip_code ) {
+  static public function geo_scope_conditions( $zip_code ) {
+    $Incentive = ClassRegistry::init( 'Incentive' );
+    
     # Which state owns this zip code?
-    $state = $this->Incentive->ZipCode->field( 'state', array( 'ZipCode.zip' => $zip_code ) );
+    $state = $Incentive->ZipCode->field( 'state', array( 'ZipCode.zip' => $zip_code ) );
     
     # Which incentives are specific to this zip
-    $zip_code_incentives = $this->Incentive->ZipCodeIncentive->find(
+    $zip_code_incentives = $Incentive->ZipCodeIncentive->find(
       'all',
       array(
         'fields' => array( 'DISTINCT ZipCodeIncentive.incentive_id'),

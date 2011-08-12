@@ -29,6 +29,17 @@ class ZipCode extends AppModel {
   );
   
   /**
+   * Returns the state that owns a given zip code.
+   *
+   * @param 	$zip_code
+   * @return	string
+   * @access	public
+   */
+  public function state( $zip_code ) {
+    return $this->field( 'state', array( 'ZipCode.zip' => $zip_code ) );
+  }
+  
+  /**
    * Returns the locale (city, state) for a given zip code
    *
    * @param 	$zip
@@ -44,6 +55,46 @@ class ZipCode extends AppModel {
         'conditions' => array( 'ZipCode.zip' => $zip ),
       )
     );
+  }
+  
+  /**
+   * Returns the id of each incentive specifically targeting a
+   * particular zip code.
+   *
+   * THIS METHOD DOES NOT RETURN ALL INCENTIVES OR EVEN ALL INCENTIVE
+   * DATA. IDs ONLY AND ONLY FOR THOSE INCENTIVES THAT TARGET A
+   * SPECIFIC ZIP CODE.
+   *
+   * @param 	$zip_code
+   * @return	array
+   * @access	public
+   */
+  public function incentives( $zip_code ) {
+    $cache_config = 'day';
+    $cache_key    = strtolower( 'zipcode_incentives_' . $zip_code );
+    
+    $zip_code_incentives = Cache::read( $cache_key, $cache_config );
+    
+    if( $zip_code_incentives === false ) {
+      if( Configure::read( 'Env.code' ) != 'PRD' ) $this->log( '{ZipCode::incentives} Running query for incentives (cache key: ' . $cache_key . ')', LOG_DEBUG );
+      
+      $zip_code_incentives = $this->ZipCodeIncentive->find(
+        'all',
+        array(
+          'fields' => array( 'DISTINCT ZipCodeIncentive.incentive_id'),
+          'conditions' => array( 'ZipCodeIncentive.zip' => $zip_code ),
+        )
+      );
+      
+      $zip_code_incentives = Set::extract( '/ZipCodeIncentive/incentive_id', $zip_code_incentives );
+      
+      Cache::write( $cache_key, $zip_code_incentives, $cache_config );
+    }
+    else {
+      if( Configure::read( 'Env.code' ) != 'PRD' ) $this->log( '{ZipCode::incentives} Pulling incentives data from cache (cache key: ' . $cache_key . ')', LOG_DEBUG );
+    }
+    
+    return $zip_code_incentives;
   }
   
   /**
@@ -77,17 +128,6 @@ class ZipCode extends AppModel {
     $type = array( 'code' => $type_code, 'name' => $type );
     
     return array( 'Type' => $type, 'Utilities' => $utilities );
-  }
-  
-  /**
-   * Retrieves the relevant incentives (rebates) for a given zip code.
-   *
-   * @param 	$zip
-   * @param   $building_id
-   * @return	array
-   */
-  public function incentives( $zip ) {
-    return $this->Incentive->TechnologyIncentive->incentives( $zip );
   }
 }
 
