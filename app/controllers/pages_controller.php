@@ -91,4 +91,19 @@ public function beforeFilter() {
 		$this->set(compact('page', 'subpage', 'title_for_layout'));
 		$this->render(implode('/', $path));
 	}
+  
+  /**
+   * Used for testing various bits and bobs.
+   *
+   * @return	void
+   * @access	public
+   */
+  public function test() {
+    $this->autoRender = false;
+    
+    $this->loadModel( 'TechnologyGroup' );
+    
+    new PHPDump( $this->TechnologyGroup->incentive_count( '21224' ), 'Incentive Counts' );
+    new PHPDump( $this->TechnologyGroup->incentive_count( '21224', 'c44374b2-6f7f-11e0-be41-80593d270cc9' ) ); # Appliances
+  }
 }

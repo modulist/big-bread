@@ -50,6 +50,7 @@ Router::parseExtensions( 'json', 'jsonp' );
 /**
  * ...and connect the rest of 'Pages' controller's urls.
  */
+  Router::connect( '/pages/test', array( 'controller' => 'pages', 'action' => 'test' ) );
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 
 /**
