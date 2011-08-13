@@ -139,13 +139,7 @@ class ProposalsController extends AppController {
       ? Configure::read( 'email.redirect_all_email_to' )
       : $requestor['User']['email'];
     
-    /** 
-    $this->SwiftMailer->smtpType = 'tls'; 
-    $this->SwiftMailer->smtpHost = 'smtp.gmail.com'; 
-    $this->SwiftMailer->smtpPort = 465; 
-    $this->SwiftMailer->smtpUsername = 'my_email@gmail.com'; 
-    $this->SwiftMailer->smtpPassword = 'hard_to_guess'; 
-    */ 
+    # @see AppController::__construct() for common settings
     $this->SwiftMailer->sendAs   = 'html'; # TODO: send to 'both'?
     $this->SwiftMailer->from     = $requestor['User']['email']; 
     $this->SwiftMailer->fromName = $requestor['User']['full_name'];

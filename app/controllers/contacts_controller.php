@@ -38,13 +38,7 @@ class ContactsController extends AppController {
       $this->Contact->set( $this->data );
       
       if( $this->Contact->validates() ) {
-        /** 
-        $this->SwiftMailer->smtpType = 'tls'; 
-        $this->SwiftMailer->smtpHost = 'smtp.gmail.com'; 
-        $this->SwiftMailer->smtpPort = 465; 
-        $this->SwiftMailer->smtpUsername = 'my_email@gmail.com'; 
-        $this->SwiftMailer->smtpPassword = 'hard_to_guess'; 
-        */
+        # @see AppController::__construct() for common settings
         $this->SwiftMailer->sendAs   = 'text'; 
         $this->SwiftMailer->from     = $this->data['Contact']['email']; 
         $this->SwiftMailer->fromName = $this->data['Contact']['full_name'];

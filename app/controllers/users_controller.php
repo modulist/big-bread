@@ -199,13 +199,7 @@ class UsersController extends AppController {
           
           $this->User->saveField( 'password', null );
    
-          /** 
-          $this->SwiftMailer->smtpType = 'tls'; 
-          $this->SwiftMailer->smtpHost = 'smtp.gmail.com'; 
-          $this->SwiftMailer->smtpPort = 465; 
-          $this->SwiftMailer->smtpUsername = 'my_email@gmail.com'; 
-          $this->SwiftMailer->smtpPassword = 'hard_to_guess'; 
-          */
+          # @see AppController::__construct() for common settings
           $this->SwiftMailer->sendAs   = 'both'; 
           $this->SwiftMailer->from     = Configure::read( 'email.do_not_reply_address' ); 
           $this->SwiftMailer->fromName = 'SaveBigBread.com';

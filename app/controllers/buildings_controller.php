@@ -670,13 +670,7 @@ class BuildingsController extends AppController {
         ? Configure::read( 'email.redirect_all_email_to' )
         : $this->Auth->user( 'email' );
         
-      /** 
-      $this->SwiftMailer->smtpType = 'tls'; 
-      $this->SwiftMailer->smtpHost = 'smtp.gmail.com'; 
-      $this->SwiftMailer->smtpPort = 465; 
-      $this->SwiftMailer->smtpUsername = 'my_email@gmail.com'; 
-      $this->SwiftMailer->smtpPassword = 'hard_to_guess'; 
-      */
+      # @see AppController::__construct() for common settings
       $this->SwiftMailer->sendAs   = 'both'; 
       $this->SwiftMailer->from     = Configure::read( 'email.do_not_reply_address' ); 
       $this->SwiftMailer->fromName = 'SaveBigBread.com';
