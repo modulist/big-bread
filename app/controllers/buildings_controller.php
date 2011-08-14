@@ -37,6 +37,42 @@ class BuildingsController extends AppController {
   }
   
   /**
+   * Displays the form to add a new location/building.
+   *	
+   * @access	public
+   */
+  public function add() {
+    
+  }
+  
+  /**
+   * Displays the form to edit a new location/building.
+   *	
+   * @access	public
+   */
+  public function edit() {
+    
+  }
+  
+  /**
+   * Displays the form to add/edit building characteristics.
+   *
+   * @access	public
+   */
+  public function characteristics() {
+    
+  }
+  
+  /**
+   * Displays the form to add/edit building equipment.
+   *
+   * @access	public
+   */
+  public function equipment() {
+    
+  }
+  
+  /**
    * Displays the survey form.
    *
    * @param 	$building_id
