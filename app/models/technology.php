@@ -43,6 +43,19 @@ class Technology extends AppModel {
    */
   
   /**
+   * Retrieves incentive information for a given technology and a
+   * given zip code.
+   *
+   * @param 	$technology_id mixed  A single id or an array of ids.
+   * @param   $zip_code
+   * @return	array
+   * @access	public
+   */
+  public function incentives( $technology_id, $zip_code ) {
+    return $this->TechnologyIncentive->all( $zip_code, $technology_id );
+  }
+  
+  /**
    * Retrieves the energy sources relevant to a given technology.
    *
    * @param 	$technology_id

@@ -71,6 +71,99 @@ class TechnologyIncentive extends AppModel {
   }
   
   /**
+   * Retrieves a set of incentives for a given zip code. Optionally,
+   * this list may be limited to a specific set of technologies.
+   *
+   * @param 	$zip_code
+   * @param   $technology_ids mixed A technology id or array of technology ids
+   * @return	array
+   * @access	public
+   */
+  public function all( $zip_code, $technology_ids = array() ) {
+    if( !is_array( $technology_ids ) ) {
+      $technology_ids = array( $technology_ids );
+    }
+    
+    $conditions = array(
+      'Incentive.excluded' => 0,
+      'TechnologyIncentive.is_active' => 1,
+      'OR' => array(
+        'Incentive.expiration_date' => null, 
+        'Incentive.expiration_date >= ' => date( DATE_FORMAT_MYSQL ),
+      ),
+      'OR' => self::geo_scope_conditions( $zip_code ),
+    );
+    
+    if( !empty( $technology_ids ) ) {
+      $conditions['Technology.id'] = $technology_ids;
+    }
+    
+    $incentives = $this->find(
+      'all',
+      array(
+        'contain' => false,
+        'fields'  => array(
+          'TechnologyGroup.id',
+          'TechnologyGroup.name',
+          'Technology.id',
+          'Technology.name',
+          'Incentive.id',
+          'Incentive.name',
+          'Incentive.expiration_date',
+          'TechnologyIncentive.id',
+          'TechnologyIncentive.amount',
+        ),
+        'joins' => array(
+          array(
+            'table'      => 'technologies',
+            'alias'      => 'Technology',
+            'type'       => 'inner', 
+            'foreignKey' => false,
+            'conditions' => array( 'TechnologyIncentive.technology_id = Technology.id' ),
+          ),
+          array(
+            'table'      => 'technology_groups',
+            'alias'      => 'TechnologyGroup',
+            'type'       => 'inner', 
+            'foreignKey' => false,
+            'conditions' => array( 'Technology.technology_group_id = TechnologyGroup.id' ),
+          ),
+          array(
+            'table'      => 'incentive',
+            'alias'      => 'Incentive',
+            'type'       => 'inner', 
+            'foreignKey' => false,
+            'conditions' => array( 'TechnologyIncentive.incentive_id = Incentive.id' ),
+          ),
+        ),
+        'conditions' => $conditions,
+        'order' => array(
+          'TechnologyGroup.name',
+          'Technology.name',
+          'TechnologyIncentive.amount DESC'
+        ),
+      )
+    );
+    
+    return $incentives;
+  }
+  
+  /**
+   * Pulls the details of a given incentive.
+   *
+   * @param 	$technology_incentive_id
+   * @return	array
+   * @access	public
+   */
+  static public function details( $technology_incentive_id ) {
+    # TODO: implement.
+    throw new Exception( 'TechnologyIncentive::details() has not be implemented.' );
+    
+    # TODO: Return appropriate value
+    return array();
+  }
+  
+  /**
    * Retrieves a list of incentives that are related to a given incentive.
    * "Related" means that the incentive is offered on the same technology
    * and, in the case of a manufacturer incentive, is not offered by a
@@ -84,10 +177,10 @@ class TechnologyIncentive extends AppModel {
    * @param   $manufacturer_id
    * @return	array
    * @access	public
+   * @todo    Can we leverate TechnologyIncentive::all() in any way?
    */
   public function related( $technology_incentive, $zip_code, $manufacturer_id = null ) {
     if( !is_array( $technology_incentive ) && strlen( $technology_incentive === 36 ) ) {
-      exit( 'pulling the quoted incentive' );
       # It looks like a UUID value was passed, so we need to pull
       # source incentive.
       $technology_incentive = $this->get( $technology_incentive );
@@ -195,6 +288,7 @@ class TechnologyIncentive extends AppModel {
    *          - equipment_manufacturer_id   Filter by a specific manufacturer id
    *          - not                         An array of technology_incentive_ids to ignore
    * @return	array
+   * @todo    REMOVE IN FAVOR OF TechnologyIncentive::all()
    */
   public function incentives( $zip, $building_id = null, $conditions = array() ) {
     $default_conditions = array(

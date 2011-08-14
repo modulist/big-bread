@@ -101,9 +101,7 @@ public function beforeFilter() {
   public function test() {
     $this->autoRender = false;
     
-    $this->loadModel( 'TechnologyGroup' );
-    
-    new PHPDump( $this->TechnologyGroup->incentive_count( '21224' ), 'Incentive Counts' );
-    new PHPDump( $this->TechnologyGroup->incentive_count( '21224', 'c44374b2-6f7f-11e0-be41-80593d270cc9' ) ); # Appliances
+    $this->loadModel( 'TechnologyIncentive' );
+    $this->TechnologyIncentive->all( '21224', 'c48c7270-6f7f-11e0-be41-80593d270cc9' );
   }
 }
