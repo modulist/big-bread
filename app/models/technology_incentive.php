@@ -65,6 +65,10 @@ class TechnologyIncentive extends AppModel {
           'TechnologyIncentive.id' => $id,
           'Incentive.excluded' => 0,
           'TechnologyIncentive.is_active' => 1,
+          'OR' => array(
+            'Incentive.expiration_date' => null, 
+            'Incentive.expiration_date >= ' => date( DATE_FORMAT_MYSQL ),
+          ),
         ),
       )
     );
