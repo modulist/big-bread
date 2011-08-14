@@ -241,6 +241,24 @@ class UsersController extends AppController {
 	}
   
   /**
+   * Displays the user dashboard.
+   *
+   * @access	public
+   */
+  public function dashboard() {
+    
+  }
+  
+  /**
+   * Displays the user profile page.
+   *
+   * @access	public
+   */
+  public function profile() {
+    
+  }
+  
+  /**
    * Dismisses an optional notice.
    *
    * @return	void
