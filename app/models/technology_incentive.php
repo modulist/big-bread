@@ -76,14 +76,16 @@ class TechnologyIncentive extends AppModel {
    *
    * @param 	$zip_code
    * @param   $technology_ids mixed A technology id or array of technology ids
+   * @param   $group          bool  Whether to include/group by the tech group
    * @return	array
    * @access	public
    */
-  public function all( $zip_code, $technology_ids = array() ) {
+  public function all( $zip_code, $technology_ids = array(), $group = true ) {
     if( !is_array( $technology_ids ) ) {
       $technology_ids = array( $technology_ids );
     }
     
+    # Build a complete set of conditions based on the parameters
     $conditions = array(
       'Incentive.excluded' => 0,
       'TechnologyIncentive.is_active' => 1,
@@ -96,6 +98,15 @@ class TechnologyIncentive extends AppModel {
     
     if( !empty( $technology_ids ) ) {
       $conditions['Technology.id'] = $technology_ids;
+    }
+    
+    # The order array will be affected by whether grouping is in play
+    $order = array(
+      'Technology.name',
+      'TechnologyIncentive.amount DESC',
+    );
+    if( $group ) {
+      array_unshift( $order, 'TechnologyGroup.name' );
     }
     
     $incentives = $this->find(
@@ -137,11 +148,7 @@ class TechnologyIncentive extends AppModel {
           ),
         ),
         'conditions' => $conditions,
-        'order' => array(
-          'TechnologyGroup.name',
-          'Technology.name',
-          'TechnologyIncentive.amount DESC'
-        ),
+        'order' => $order,
       )
     );
     

@@ -102,6 +102,6 @@ public function beforeFilter() {
     $this->autoRender = false;
     
     $this->loadModel( 'TechnologyIncentive' );
-    $this->TechnologyIncentive->all( '21224', 'c48c7270-6f7f-11e0-be41-80593d270cc9' );
+    new PHPDump( $this->TechnologyIncentive->all( '21224', array( 'c48c7270-6f7f-11e0-be41-80593d270cc9', 'c48c6d7a-6f7f-11e0-be41-80593d270cc9' ), true) ); # Dishwasher, AC
   }
 }
