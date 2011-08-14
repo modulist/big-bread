@@ -153,7 +153,7 @@ class UsersController extends AppController {
       # Update the session value
       $this->refresh_auth( 'last_login', date( 'Y-m-d H:i:s' ) );
       
-      if( $this->User->has_building( $this->Auth->User('id') ) ) {
+      if( $this->User->has_locations() ) {
         $this->redirect( array( 'controller' => 'buildings', 'action' => 'incentives' ), null, true );
       }
       else {

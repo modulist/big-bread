@@ -205,6 +205,30 @@ class User extends AppModel {
     
     return empty( $property ) ? $user : $user[$property];
   }
+  
+  /**
+   * Determines whether a given user has admin privileges.
+   *
+   * @param 	$user_id
+   * @return	boolean
+   * @access	public
+   */
+  static public function admin( $user_id ) {
+    return ClassRegistry::init( 'User' )->field( 'User.admin', array( 'User.id' => $user_id ) );
+  }
+  
+  /**
+   * Determines whether a given user holds a "client" role.
+   *
+   * @param 	$user_id
+   * @return	boolean
+   * @access	public
+   */
+  static public function client( $user_id ) {
+    $user_type_id = ClassRegistry::init( 'User' )->field( 'User.user_type_id', array( 'User.id' => $user_id ) );
+    
+    return in_array( $user_type_id, array( UserType::OWNER, UserType::BUYER ) );
+  }
 
   /**
    * Generates an invite code
@@ -222,6 +246,7 @@ class User extends AppModel {
    * @param 	$data
    * @return	boolean
    * @access	public
+   * @todo    Be nice to drop this and do something more robust.
    */
   public function add( $data ) {
     $user = !empty( $data[$this->alias]['email'] )
@@ -236,48 +261,18 @@ class User extends AppModel {
     
     return $user;
   }
-  
+
   /**
-   * Retrieves the buildings associated with a given user.
+   * Determines whether a user is associated with at least one building
+   * by returning the number of associated buildings.
    *
-   * @param 	$user_id
-   * @param   $admin    Whether the user is an admin
-   * @return	array
+   * @param   $user_id
+   * @return  integer
+   * @access  public
    */
-  public function buildings( $user_id ) {
-    if( User::admin( $user_id ) ) {
-      $conditions = false;
-    }
-    else {
-      $conditions = array(
-        'OR' => array(
-          'Building.client_id'    => $user_id,
-          'Building.realtor_id'   => $user_id,
-          'Building.inspector_id' => $user_id,
-        )
-      );
-    }
+  public function has_locations( $user_id = null ) {
+    $user_id = !empty( $user_id ) ? $user_id : self::get( 'id' );
     
-    /** TODO: include only fields we need */
-    return $this->Building->find(
-      'all',
-      array(
-        'contain' => array(
-          'Address' => array(
-            'ZipCode'
-          ),
-        ),
-        'conditions' => $conditions,
-        'order' => 'Building.created DESC'
-      )
-    );
-  }
-  
-  /**
-   * Returns the identifier of the most recently created building
-   * associated with the specified user.
-   */
-  public function has_building( $user_id ) {
     return $this->Building->find(
       'count',
       array(
@@ -291,6 +286,100 @@ class User extends AppModel {
         ),
       )
     );
+  }
+  
+  /**
+   * Retrieves the buildings associated with a given user.
+   *
+   * @param 	$user_id
+   * @param   $limit
+   * @return	array
+   */
+  public function locations( $user_id = null, $limit = null ) {
+    $user_id    = !empty( $user_id ) ? $user_id : self::get( 'id' );
+    $conditions = User::admin( $user_id )
+      ? false
+      : array(
+        'OR' => array(
+          'Building.client_id'    => $user_id,
+          'Building.realtor_id'   => $user_id,
+          'Building.inspector_id' => $user_id,
+        )
+      );
+    
+    /** TODO: include only fields we need */
+    return $this->Building->find(
+      'all',
+      array(
+        'contain' => array(
+          'Address' => array(
+            'ZipCode'
+          ),
+        ),
+        'conditions' => $conditions,
+        'order'      => 'Building.created DESC',
+        'limit'      => !empty( $limit ) ? $limit : false,
+      )
+    );
+  }
+  
+  /**
+   * Legacy alias for User::locations().
+   *
+   * @param 	$user_id
+   * @param   $limit 
+   * @return	array
+   * @access	public
+   */
+  public function buildings( $user_id = null, $limit = null ) {
+    return $this->locations( $user_id, $limit );
+  }
+  
+  /**
+   * Adds a technology to a user's watch list.
+   *
+   * @param   $technology_id
+   * @param 	$user_id
+   * @return	boolean
+   * @access	public
+   */
+  public function watch_technology( $technology_id, $user_id = null ) {
+    $user_id = !empty( $user_id ) ? $user_id : self::get( 'id' );
+    
+    # TODO: implement.
+    throw new Exception( 'User::watch_technology() has not be implemented.' );
+  }
+  
+  /**
+   * Removes a technology from a user's watch list.
+   *
+   * @param   $technology_id
+   * @param 	$user_id
+   * @return	boolean
+   * @access	public
+   */
+  public function unwatch_technology( $technology_id, $user_id = null ) {
+    $user_id = !empty( $user_id ) ? $user_id : self::get( 'id' );
+    
+    # TODO: implement.
+    throw new Exception( 'User::unwatch_technology() has not be implemented.' );
+  }
+  
+  /**
+   * Retrieves a user's watched technology list.
+   *
+   * @param 	$user_id
+   * @return	array
+   * @access	public
+   */
+  public function watched_technologies( $user_id = null, $limit = null ) {
+    $user_id = !empty( $user_id ) ? $user_id : self::get( 'id' );
+    
+    # TODO: implement.
+    throw new Exception( 'User::watched_technologies() has not be implemented.' );
+    
+    # Pulled watched_technologies.technology_id
+    # Get list.
   }
   
   /**
@@ -315,55 +404,5 @@ class User extends AppModel {
     );
     
     return !empty( $user ) ? $user[$this->alias]['id'] : false;
-  }
-  
-  /**
-   * Custom validation method to ensure that two field values are the
-   * same before validating the model. Useful (and ubiquitous) for
-   * authentication credentials.
-   *
-   * @param   $field
-   * @param   $confirm_field
-   * @access  public
-   * @see     http://bakery.cakephp.org/articles/aranworld/2008/01/14/using-equalto-validation-to-compare-two-form-fields
-   * @todo    Move this to app_model? Could be useful elsewhere.
-   */
-  public function identical( $field = array(), $confirm_field = null ) {
-    foreach( $field as $key => $value ) {
-      $compare = $this->data[$this->alias][$confirm_field];
-      
-      if( $value !== $compare ) {
-        return false; 
-      }
-      else { 
-        continue; 
-      } 
-    }
-    
-    return true; 
-  }
-  
-  /**
-   * Determines whether a given user has admin privileges.
-   *
-   * @param 	$user_id
-   * @return	boolean
-   * @access	public
-   */
-  static public function admin( $user_id ) {
-    return ClassRegistry::init( 'User' )->field( 'User.admin', array( 'User.id' => $user_id ) );
-  }
-  
-  /**
-   * Determines whether a given user holds a "client" role.
-   *
-   * @param 	$user_id
-   * @return	boolean
-   * @access	public
-   */
-  static public function client( $user_id ) {
-    $user_type_id = ClassRegistry::init( 'User' )->field( 'User.user_type_id', array( 'User.id' => $user_id ) );
-    
-    return in_array( $user_type_id, array( UserType::OWNER, UserType::BUYER ) );
   }
 }

@@ -105,20 +105,30 @@ class AppModel extends Model {
   /**
    * Custom validation method specific to integers.
    *
-   * @param   $field
+   * @param   $check
    * @access  public
    */
-  public function integer( $field = array() ) {
-    foreach( $field as $key => $value ) { 
-      if( !preg_match( '/^\d+$/', $value ) ) {
-        return false; 
-      }
-      else { 
-        continue; 
-      } 
-    }
+  public function integer( $check = array() ) {
+    $value = array_shift( array_values( $check ) );
     
-    return true; 
+    return preg_match( '/^\d+$/', $value );
+  }
+  
+  /**
+   * Custom validation method to ensure that two field values are the
+   * same before validating the model. Useful (and ubiquitous) for
+   * authentication credentials.
+   *
+   * @param   $field
+   * @param   $confirm_field
+   * @access  public
+   * @see     http://bakery.cakephp.org/articles/aranworld/2008/01/14/using-equalto-validation-to-compare-two-form-fields
+   */
+  public function identical( $check = array(), $confirm_field = null ) {
+    $value   = array_shift( array_values( $check ) );
+    $compare = $this->data[$this->alias][$confirm_field];
+    
+    return $value === $compare;
   }
   
   /**
