@@ -131,4 +131,28 @@ class ApiV1 extends Api {
       return array( 'errors' => $this->User->invalidFields() );
     }
   }
+  
+  /**
+   * Adds a technology to a given user's watch list.
+   *
+   * @param 	$user_id
+   * @param   $technology_id
+   * @return	boolean
+   * @access	public
+   */
+  public function users_watch_technology( $user_id, $technology_id ) {
+    return ClassRegistry::init( 'User' )->watch_technology( $technology_id, $user_id );
+  }
+
+  /**
+   * Adds a technology to a given user's watch list.
+   *
+   * @param 	$user_id
+   * @param   $technology_id
+   * @return	boolean
+   * @access	public
+   */
+  public function users_unwatch_technology( $user_id, $technology_id ) {
+    return ClassRegistry::init( 'User' )->unwatch_technology( $technology_id, $user_id );
+  }
 }

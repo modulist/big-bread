@@ -29,10 +29,9 @@ class ApiController extends AppController {
   }
 
   /**
-   * description
+   * Dispatches an API request to the appropriate method of intended
+   * API version.
    *
-   * @param 	$arg
-   * @return	type		description
    * @access	public
    */
   public function dispatch() {

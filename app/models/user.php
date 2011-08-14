@@ -348,6 +348,9 @@ class User extends AppModel {
     
     # TODO: implement.
     throw new Exception( 'User::watch_technology() has not be implemented.' );
+    
+    # TODO: Return appropriate value
+    return false;
   }
   
   /**
@@ -363,6 +366,9 @@ class User extends AppModel {
     
     # TODO: implement.
     throw new Exception( 'User::unwatch_technology() has not be implemented.' );
+    
+    # TODO: Return appropriate value
+    return false;
   }
   
   /**
