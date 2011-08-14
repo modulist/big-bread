@@ -196,13 +196,12 @@ class ValidateLinksShell extends Shell {
    * @access	public
    */
   public function send_report() {
-    /** 
     $this->SwiftMailer->smtpType = 'tls'; 
     $this->SwiftMailer->smtpHost = 'smtp.gmail.com'; 
     $this->SwiftMailer->smtpPort = 465; 
-    $this->SwiftMailer->smtpUsername = 'my_email@gmail.com'; 
-    $this->SwiftMailer->smtpPassword = 'hard_to_guess'; 
-    */
+    $this->SwiftMailer->smtpUsername = 'do-not-reply@savebigbread.com'; 
+    $this->SwiftMailer->smtpPassword = '971gMAndxmHPBAG'; 
+    
     $this->SwiftMailer->sendAs   = 'text';
     $this->SwiftMailer->from     = Configure::read( 'email.do_not_reply_address' ); 
     $this->SwiftMailer->fromName = 'SaveBigBread.com Link Validator';
