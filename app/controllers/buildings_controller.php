@@ -73,6 +73,15 @@ class BuildingsController extends AppController {
   }
   
   /**
+   * Displays the set of incentives that apply to this building.
+   *
+   * @access	public
+   */
+  public function ways_to_save() {
+    
+  }
+  
+  /**
    * Displays the survey form.
    *
    * @param 	$building_id
