@@ -30,15 +30,7 @@ class AppController extends Controller {
   public function __construct( $id = false, $table = null, $ds = null ) {
     parent::__construct( $id, $table, $ds );
   
-    # Set common mail server properties if the SwiftMailer component
-    # is in play.
-    if( isset( $this->SwiftMailer ) ) {
-      $this->SwiftMailer->smtpType     = 'tls'; 
-      $this->SwiftMailer->smtpHost     = 'smtp.gmail.com'; 
-      $this->SwiftMailer->smtpPort     = 465; 
-      $this->SwiftMailer->smtpUsername = 'do-not-reply@savebigbread.com'; 
-      $this->SwiftMailer->smtpPassword = 'Z<4&Yd>a'; 
-    }
+
   }
   
   /**
@@ -107,6 +99,16 @@ class AppController extends Controller {
      */
     if( $this->RequestHandler->isAjax() ) {
       Configure::write( 'debug', 0 );
+    }
+    
+    # Set common mail server properties if the SwiftMailer component
+    # is in play.
+    if( isset( $this->SwiftMailer ) ) {
+      $this->SwiftMailer->smtpType     = 'tls'; 
+      $this->SwiftMailer->smtpHost     = 'smtp.gmail.com'; 
+      $this->SwiftMailer->smtpPort     = 465; 
+      $this->SwiftMailer->smtpUsername = 'do-not-reply@savebigbread.com'; 
+      $this->SwiftMailer->smtpPassword = '971gMAndxmHPBAG';
     }
   }
 

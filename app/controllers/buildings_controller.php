@@ -678,10 +678,10 @@ class BuildingsController extends AppController {
       $this->SwiftMailer->cc       = array( $cc_email => $this->Auth->user( 'full_name' ) );
       
       //set variables to template as usual 
-      $this->set( 'invite_code', $invitee['invite_code'] ); 
-       
+      $this->set( 'invite_code', $invitee['invite_code'] );
+      
       try { 
-        if( !$this->SwiftMailer->send( 'invite', $this->Auth->user( 'full_name' ) . ' is inviting you to save at SaveBigBread.com', 'native' ) ) {
+        if( !$this->SwiftMailer->send( 'invite', $this->Auth->user( 'full_name' ) . ' is inviting you to save at SaveBigBread.com' ) ) {
           foreach($this->SwiftMailer->postErrors as $failed_send_to) { 
             $this->log( 'Failed to send invitation email to ' . $failed_send_to . ' (' . $invitee['role'] . ')' ); 
           }
