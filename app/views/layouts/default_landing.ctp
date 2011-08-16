@@ -7,16 +7,15 @@
 <body class="no-js onecolumn">
   
 <div id="wrapper">
-  <div id="header">
+  <header>
     <?php echo $this->element( 'layout/header' ) ?>
-  </div><!-- #header -->
+  </header><!-- #header -->
   
   <div id="page_content"> 				
     <div id="bodymain">
       <div id="content">
         <?php echo $this->element( 'layout/flash_messages' ) ?>
         
-        TEST
         <?php echo $content_for_layout ?>
       </div> <!-- #content -->
       <div class="clear"></div>
