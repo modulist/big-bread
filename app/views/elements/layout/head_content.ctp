@@ -2,6 +2,8 @@
 <title><?php echo 'SaveBigBread.com' . ( !empty( $title_for_layout ) ? ' : ' . $title_for_layout : '' ) ?></title>
 
 <?php echo $this->Html->meta( 'icon' ) . "\n" ?>
+<!-- add in the 960.gs grid system -->
+<?php echo $this->Html->css( '/css/960.css' ) ?>
 
 <?php echo $this->Html->css( 'screen', 'stylesheet', array( 'media' => 'screen' ) ) ?>
 <?php echo $this->Html->css( 'print', 'stylesheet', array( 'media' => 'print' ) ) ?>
