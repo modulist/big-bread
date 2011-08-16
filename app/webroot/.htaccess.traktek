@@ -22,7 +22,7 @@ AddDefaultCharset UTF-8
   # Claudio
   RewriteCond %{REMOTE_ADDR} !^98\.203\.35\.
   # Lauren
-  RewriteCond %{REMOTE_ADDR} !^76\.127i\.154\.
+  RewriteCond %{REMOTE_ADDR} !^76\.127\.154\.
   # Peter Home
   RewriteCond %{REMOTE_ADDR} !^96\.241\.49\.
   RewriteRule ^(.*)$ http://www.savebigbread.com/$1 [R=301,L]
