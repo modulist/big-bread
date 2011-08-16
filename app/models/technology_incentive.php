@@ -275,7 +275,7 @@ class TechnologyIncentive extends AppModel {
           'NOT' => array( 'TechnologyIncentive.id' => $technology_incentive['TechnologyIncentive']['id'] ),
           'Incentive.excluded' => 0,
           'TechnologyIncentive.is_active' => 1,
-          'OR' => static::geo_scope_conditions( $zip_code ),
+          'OR' => self::geo_scope_conditions( $zip_code ),
         ),
         'order' => array(
           'TechnologyIncentive.amount DESC',
