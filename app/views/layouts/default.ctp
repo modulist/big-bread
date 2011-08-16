@@ -7,26 +7,25 @@
 <body class="no-js onecolumn">
   
 <div id="wrapper">
-  <div id="header">
+  <header>
     <?php echo $this->element( 'layout/header' ) ?>
-  </div><!-- #header -->
+  </header><!-- #header -->
   
-  <div id="page_content"> 				
+  <section id="page_content"> 				
     <div id="bodymain">
       <div id="content">
         <?php echo $this->element( 'layout/flash_messages' ) ?>
         
-        TEST
         <?php echo $content_for_layout ?>
       </div> <!-- #content -->
       <div class="clear"></div>
       
     </div> <!-- #bodymain -->
-  </div> <!-- #page_content -->
+  </section> <!-- #page_content -->
   
-  <div id="footer">
+  <footer>
     <?php echo $this->element( 'layout/footer' ) ?>
-  </div> <!-- #footer -->
+  </footer> <!-- #footer -->
 </div> <!-- #wrapper -->
   
 <?php echo $this->element( 'layout/include_scripts' ) ?>
