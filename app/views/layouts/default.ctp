@@ -4,7 +4,7 @@
   <?php echo $this->element( 'layout/head_content' ) ?>
 </head>
 
-<body class="no-js onecolumn">
+<body class="<?php echo Inflector::underscore( $this->name ) . ' ' . Inflector::underscore( $this->action ) ?><?php echo $this->Session->check( 'Auth.User' ) ? ' authenticated' : false ?>">
   
 <div id="wrapper">
   <header>
