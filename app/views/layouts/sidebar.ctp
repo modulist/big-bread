@@ -7,18 +7,18 @@
 <body class="no-js">
   
 <div id="wrapper">
-  <div id="header">
+  <header>
     <?php echo $this->element( 'layout/header' ) ?>
-  </div><!-- #header -->
+  </header><!-- #header -->
   
-  <div id="page_content">
+  <section  id="page_content">
     <?php echo $this->element( 'layout/header_rebate_bar' ) ?>
   				
     <div id="bodymain">
       
-      <div id="sidebar">
+      <aside id="sidebar">
         <?php echo $this->element( 'layout/sidebar/' . $this->action ) ?>
-      </div> <!-- #sidebar -->
+      </aside> <!-- #sidebar -->
   
       <div id="content">
         <?php echo $this->element( 'layout/flash_messages' ) ?>
@@ -29,12 +29,12 @@
       
     </div><!-- #bodymain -->
     <div class="clear"></div>
-  </div><!-- #page_content -->
+  </section><!-- #page_content -->
   <div class="clear"></div>
   
-  <div id="footer">
+  <footer>
     <?php echo $this->element( 'layout/footer' ) ?>
-  </div>
+  </footer>
 </div> <!-- #wrapper -->
   
 <?php echo $this->element( 'layout/include_scripts' ) ?>
