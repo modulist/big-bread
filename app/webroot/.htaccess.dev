@@ -9,6 +9,8 @@ AddDefaultCharset UTF-8
   # 
   # Rob Home
   RewriteCond %{REMOTE_ADDR} !^68\.48\.9\.
+  # Rob's Client Site
+  RewriteCond %{REMOTE_ADDR} !^71\.127\.151\.
   # Rob's Outlaws' Home
   RewriteCond %{REMOTE_ADDR} !^173\.71\.205\.
   # Georg Work
