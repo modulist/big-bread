@@ -1,5 +1,4 @@
 <div id="logoheader">
-  <div id="version"><?php echo $this->Html->image( 'beta.png', array( 'title' => 'beta' ) ) ?></div>
   <div id="logo">
     <?php echo $this->Html->image( 'logo.png', array( 'url' => Router::url( '/' ), 'title' => 'beta' ) ) ?>
   </div>
