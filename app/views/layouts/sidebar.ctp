@@ -12,7 +12,6 @@
   </header><!-- #header -->
   
   <section  id="page_content">
-    <?php echo $this->element( 'layout/header_rebate_bar' ) ?>
   				
     <div id="bodymain">
       
