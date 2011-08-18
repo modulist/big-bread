@@ -369,6 +369,8 @@ form small { display: block;
 }
 .hasDatepicker { width: 225px; }
 
+select { padding: 0 0 0 8px; }
+option { padding: 0 8px; line-height: 24px; }
 .input.select.horizontal { float: left;
   margin-right: 20px;
 }
