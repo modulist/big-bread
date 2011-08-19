@@ -20,7 +20,7 @@
 <div class="main-menu">
   <?php if( $this->Session->check( 'Auth.User' ) ): ?>
     <ul class="menu">
-    	<li class="leaf"><a href="/user/dashboard">My Home</a></li>
+    	<li class="leaf"><a href="/users/dashboard">My Home</a></li>
     	<li class="leaf"><a href="/buildings/incentives">Ways to Save</a></li>
     	<li class="leaf"><a href="/questionnaire//equipment">Add Equipment</a></li>
     	<li class="leaf"><a href="/tools">Tools</a></li>
