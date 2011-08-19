@@ -123,13 +123,13 @@ body.onecolumn #content { background: #FFFFFF; min-height:400px; padding: 50px 6
 #terms p { padding:10px 0; }
 /* ============================= sidebar ======================= */
 #sidebar{ float: left; width:220px; background: #fff;height:100%; border: 1px solid white; border-radius: 20px; -moz-border-radius: 20px;}
-#questionnaire { width:220px; color:#0e6e76; padding: 20px 0; border: 1px solid white; border-radius: 20px; -moz-border-radius: 20px; }
-#questionnaire ul, #questionnaire_act ul, #questionnaire_nav ul{ list-style:none; }
-#questionnaire h2{ padding: 0 0 20px 20px; color:#0e6e76; }
-#questionnaire li a{ padding: 10px 0 10px 50px; font-size:14px; background: url(../img/WhiteCircle.png) no-repeat 20px 5px; color:#0e6e76;font-weight:bold;  display: block; }
-#questionnaire li a:hover, #questionnaire li a.active{ background:#fff url(../img/WhiteCircleCheck.png) no-repeat 20px 5px; color:#000;font-weight:bold;  filter:alpha(opacity=50);-moz-opacity:0.5;-khtml-opacity: 0.5;opacity: 0.5; text-decoration:none; }
-#questionnaire li a.disabled { filter:alpha(opacity=50);-moz-opacity:0.5;-khtml-opacity: 0.5;opacity: 0.5; }
-#questionnaire li a.disabled:hover { padding: 10px 0 10px 50px; font-size:14px; background: url(../img/WhiteCircle.png) no-repeat 20px 5px; color:#808080;font-weight:bold;display: block; }
+#vertical-nav { width:220px; color:#0e6e76; padding: 20px 0; border: 1px solid white; border-radius: 20px; -moz-border-radius: 20px; }
+#vertical-nav ul, #questionnaire_act ul, #questionnaire_nav ul{ list-style:none; }
+#vertical-nav h2{ padding: 0 0 20px 20px; color:#0e6e76; }
+#vertical-nav li a{ padding: 10px 0 10px 50px; font-size:14px; background: url(../img/WhiteCircle.png) no-repeat 20px 5px; color:#0e6e76;font-weight:bold;  display: block; }
+#vertical-nav li a:hover, #vertical-nav li a.active{ background:#fff url(../img/WhiteCircleCheck.png) no-repeat 20px 5px; color:#000;font-weight:bold;  filter:alpha(opacity=50);-moz-opacity:0.5;-khtml-opacity: 0.5;opacity: 0.5; text-decoration:none; }
+#vertical-nav li a.disabled { filter:alpha(opacity=50);-moz-opacity:0.5;-khtml-opacity: 0.5;opacity: 0.5; }
+#vertical-nav li a.disabled:hover { padding: 10px 0 10px 50px; font-size:14px; background: url(../img/WhiteCircle.png) no-repeat 20px 5px; color:#808080;font-weight:bold;display: block; }
 
 #questionnaire_nav li, #questionnaire_act li { float:left; }
 #getstart { background:#fff; padding: 20px; border: 1px solid white; border-radius: 20px; -moz-border-radius: 20px;}

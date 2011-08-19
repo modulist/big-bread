@@ -4,7 +4,7 @@
   <?php echo $this->element( 'layout/head_content' ) ?>
 </head>
 
-<body class="<?php echo Inflector::underscore( $this->name ) . ' ' . Inflector::underscore( $this->action ) ?><?php echo $this->Session->check( 'Auth.User' ) ? ' authenticated' : false ?>">
+<body class="front <?php echo Inflector::underscore( $this->name ) . ' ' . Inflector::underscore( $this->action ) ?><?php echo $this->Session->check( 'Auth.User' ) ? ' authenticated' : false ?>">
 <!-- default_landing.ctp -->
   
 <div id="wrapper">
