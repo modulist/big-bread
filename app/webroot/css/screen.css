@@ -314,10 +314,10 @@ body.onecolumn #content h1 { margin: 0 0 .25em 0; }
 
 
 /* ============================= footer ====================== */
-#footer { font-size:11px;border-top:solid 5px #111; color:#ddd; padding:40px 0 0 20px; height:130px; }
-#footer a { color:#01deb8; }
-#footerleft { float: left; color:#ddd; background:url(../img/footer-background.png) top no-repeat; height:50px;width:1000px; }
-#footerleft p { padding: 5px 0 0 11px; color:#ddd; background:url(../img/footer-blk.png) top no-repeat; height:153px;width:1000px; }
+footer { background: url(../img/footer-background.png) top no-repeat; height: 200px;  }
+footer a { color:#01deb8; }
+footer .footer-inner { color: #383737; background: url(../img/footer-blk.png) 0px 20px no-repeat; height:153px ;width:1000px; }
+footer .footer-menu { padding: 5px 0 0 0; color:#ddd; }
 #footerright { width:0px; float: right; padding:20px 0 0 0; color: #63635B; }
 #footerright img { margin-left: 10px; }
 
