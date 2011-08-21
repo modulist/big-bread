@@ -12,9 +12,6 @@ This is the default h2 style to be used throughout the site.
 <h2 class="title">h2.title: Mauris sapien est, fringilla at malesuada in, <a href="#">click here</a>.</h2>
 This is an h2 style to be used where more emphasis is needed, such as within a masthead.
 
-<h2 class="journey">h2.journey: Castles Along the Rhine and Danube <a href="#">This is a link</a>.</h2>
-This style will always be a link back to the Jourmey's home page, which is why the link color is the same as the default color.
-
 <h3>h3: Nunc et est ante. <a href="#">Click here!</a></h3>
 Used throughout the site in the main body column . Also used in trip extension panel headers.
 

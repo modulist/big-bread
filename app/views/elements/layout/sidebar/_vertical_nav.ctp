@@ -1,3 +1,4 @@
+<!-- vertical nav -->
 <div id="vertical-nav">
   <ul class="left-menu">
     <?php foreach( Questionnaire::$navigation as $id => $label ): ?>
