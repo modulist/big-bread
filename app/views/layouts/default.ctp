@@ -7,7 +7,7 @@
 <body class="<?php echo Inflector::underscore( $this->name ) . ' ' . Inflector::underscore( $this->action ) ?><?php echo $this->Session->check( 'Auth.User' ) ? ' authenticated' : false ?>">
   
 <div id="wrapper">
-  <header>
+  <header id="header">
     <?php echo $this->element( 'layout/header' ) ?>
   </header><!-- #header -->
   
@@ -23,7 +23,7 @@
     </div> <!-- #bodymain -->
   </section> <!-- #page_content -->
   
-  <footer>
+  <footer id="footer">
     <?php echo $this->element( 'layout/footer' ) ?>
   </footer> <!-- #footer -->
 </div> <!-- #wrapper -->

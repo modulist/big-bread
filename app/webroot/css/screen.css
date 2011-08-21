@@ -128,14 +128,19 @@ body.onecolumn #content { background: #FFFFFF; min-height:400px; padding: 50px 6
 #terms p { padding:10px 0; }
 
 /* ============================= sidebar ======================= */
-#sidebar{ float: left; width:220px; background: #fff;height:100%; border: 1px solid white; border-radius: 20px; -moz-border-radius: 20px;}
-#vertical-nav { width:220px; color:#0e6e76; padding: 20px 0; border: 1px solid white; border-radius: 20px; -moz-border-radius: 20px; }
+#sidebar{ position: fixed; top: 207px; margin: 0 0 0 20px; width:200px; min-height: 200px; border-top-left-radius: 20px; border-bottom-left-radius: 20px; -moz-border-top-left-radius: 20px; -moz-border-bottom-left-radius: 20px; background: #fff; padding: 0 20px 0; }
+#vertical-nav { width:220px; color:#0e6e76; padding: 20px 0 0; }
 #vertical-nav ul, #questionnaire_act ul, #questionnaire_nav ul{ list-style:none; }
+#vertical-nav ul { padding: 0; }
 #vertical-nav h2 { padding: 0 0 20px 20px; color:#0e6e76; }
-#vertical-nav li a{ padding: 10px 0 10px 50px; font-size:14px; background: url(../img/WhiteCircle.png) no-repeat 20px 5px; color:#0e6e76;font-weight:bold;  display: block; }
-#vertical-nav li a:hover, #vertical-nav li a.active{ background:#fff url(../img/WhiteCircleCheck.png) no-repeat 20px 5px; color:#000;font-weight:bold;  filter:alpha(opacity=50);-moz-opacity:0.5;-khtml-opacity: 0.5;opacity: 0.5; text-decoration:none; }
-#vertical-nav li a.disabled { filter:alpha(opacity=50);-moz-opacity:0.5;-khtml-opacity: 0.5;opacity: 0.5; }
+#vertical-nav li { font: 14px/1.25em 'UltraRegular'; }
+#vertical-nav li a { padding: 10px 0 ; color:#0e6e76; display: block; }
+#vertical-nav li a:hover, 
+#vertical-nav li a.active { filter: alpha(opacity=50); -moz-opacity:0.5; -khtml-opacity: 0.5; opacity: 0.5; text-decoration:none; }
+#vertical-nav li a.disabled { filter: alpha(opacity=50); -moz-opacity:0.5; -khtml-opacity: 0.5; opacity: 0.5; }
 #vertical-nav li a.disabled:hover { padding: 10px 0 10px 50px; font-size:14px; background: url(../img/WhiteCircle.png) no-repeat 20px 5px; color:#808080;font-weight:bold;display: block; }
+#vertical-nav li.top-link { font: 11px Georgia, 'Times New Roman' sans-serif; }
+#vertical-nav li.top-link a { color: #3f3f3f }
 
 #questionnaire_nav li, #questionnaire_act li { float:left; }
 #getstart { background:#fff; padding: 20px; border: 1px solid white; border-radius: 20px; -moz-border-radius: 20px;}
@@ -155,8 +160,9 @@ body.onecolumn #content { background: #FFFFFF; min-height:400px; padding: 50px 6
 #address-panel-nav .next { float: right; }
 
 /* ============================= content ===================== */
-#content { float: left;width: 740px; background: #fff; border: 1px solid white; border-radius: 20px; -moz-border-radius: 20px; }
-#contentheader { background: #fff;	border-bottom: 1px solid #aaa; padding: 10px 0 0 30px; font:14px/15px Arial, Helvetica, sans-serif; color:#666;width:662px; }
+/* claudio: most of these classes can be scraped */
+#content { width: 740px; background: #fff; border: 1px solid white; border-radius: 20px; -moz-border-radius: 20px; margin: 0 0 0 240px; }
+#contentheader { border-bottom: 1px solid #aaa; padding: 10px 0 0 30px; font:14px/15px Arial, Helvetica, sans-serif; color:#666; width:662px; }
 #contentheader p { font-size:15px; }
 #contentheader li, #contentheader a { color:#619300; padding: 1px 0 7px 0;list-style:none;font-size:12px; }
 
@@ -173,7 +179,6 @@ body.onecolumn #content { background: #FFFFFF; min-height:400px; padding: 50px 6
 #signupbody { margin:0 auto; width: 666px; background: #F9FAF4; margin:0 auto; padding: 20px 0 20px 20px; }
 #house_img { float: left;width: 200px;padding:10px 0 30px 0px; }
 #house_info { float: left; }
-#info {	background: #F9FAF4; border-top: 9px solid #C2D89A;	padding: 8px;	font-size:14px;	color:#333; }
 #general_Info #info { border-top: 0 none; }
 #content #info h2 { margin: 0.25em 0; color: #545454; font-size: 22px; font-weight: normal; }
 #general_Info #info h2 { margin: 1em 0 0.25em 0; }
@@ -258,7 +263,6 @@ table.incentive-tnc td.conditions { }
 
 #printnow { width:122px; margin:0 auto; padding: 10px 0 30px 0; }
 
-#general_Info { background: #F9FAF4;padding:10px 10px 0 10px; font-size:16px; border: 1px solid white; border-radius: 20px; -moz-border-radius: 20px; }
 #signupbody td{ font-weight:bold;color: #333;font-size:16px;width: 200px;padding:0 50px 0 0; }
 #submitcol{ width: 100%;text-align:right; }
 #submitcol input{ border: none; margin-right:-70px; }
@@ -272,26 +276,6 @@ table.incentive-tnc td.conditions { }
 #reason p{ padding:5px 5px 5px 0; }
 #reason th{ color:#619300;text-align:center; }
 #reason td{ vertical-align:top; }
-
-/* ============================= homepage ====================== */
-.intro { width: 845px; margin: 5px auto 0 auto; font-weight:bold; line-height: 32px; }
-.intro p { 
-	padding: 0; font-size:14px; color:#999; line-height:1.3em; }
-.intro p.introbigtext { 
-	font-size: 30px; line-height: 1em; padding: 25px 0 10px 0; }
-.intro p.introbigtext span { 
-	font-size: 30px; line-height: 1em; }
-.intro p.introbigtext br { line-height: 1em; }
-.green { color: #668A2E; }
-.orange { color: #D65B18; }
-#homepage #content h2 { color: #3D770B; font-size:24px; font-weight:normal; margin-top: 0.25em; }
-.introcolumn { margin: 0 25px 0 30px; padding: 0 10px 0 0;
- width: 25%; float: left; }
-.introcolumn p { margin:0; padding: 5px 0; font-size: 14px; color: #595959; line-height: 1.1em; font-family: Georgia, "Times New Roman", serif; }
-#content .introcolumn h2 {   color: #0c5145;
-    font-size: 25px;
-    margin: 10px 0 15px;
-    padding: 0 0 10px; }
 
 /* ============================= questionnaire ====================== */
 .section { display: none; }
@@ -468,6 +452,25 @@ option { padding: 0 8px; line-height: 24px; }
 
 
 
-/** home page styles **/
+/* ============================= homepage ====================== */
 body.front { }
 body.front h2 { }
+.intro { width: 845px; margin: 5px auto 0 auto; font-weight:bold; line-height: 32px; }
+.intro p { 
+	padding: 0; font-size:14px; color:#999; line-height:1.3em; }
+.intro p.introbigtext { 
+	font-size: 30px; line-height: 1em; padding: 25px 0 10px 0; }
+.intro p.introbigtext span { 
+	font-size: 30px; line-height: 1em; }
+.intro p.introbigtext br { line-height: 1em; }
+.green { color: #668A2E; }
+.orange { color: #D65B18; }
+#homepage #content h2 { color: #3D770B; font-size:24px; font-weight:normal; margin-top: 0.25em; }
+.introcolumn { margin: 0 25px 0 30px; padding: 0 10px 0 0;
+ width: 25%; float: left; }
+.introcolumn p { margin:0; padding: 5px 0; font-size: 14px; color: #595959; line-height: 1.1em; font-family: Georgia, "Times New Roman", serif; }
+#content .introcolumn h2 {   color: #0c5145;
+    font-size: 25px;
+    margin: 10px 0 15px;
+    padding: 0 0 10px; }
+
