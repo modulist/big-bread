@@ -26,11 +26,32 @@
 	  
 	<div id="content-bottom" class="content-bottom">
 		<div id="column-first" class="grid-3">
-		</div>	  
+			<h2>Replace an old appliance - and save!</h2>
+			Find rebates >
+			Need to replace an appliance, your A/C,  windows, or any other piece of 
+equipment in your home?
+			We’ll help you find not one, but multiple rebates when you’re looking for a replacement.
+		</div>	  <!-- #column-first -->
+		
 		<div id="column-middle" class="grid-3">
-		</div>	  
+		<h2>Set up a home profile for more savings.</h2>
+		Set up a profile >
+		Complete a profile of the equipment and appliances in your house, and you can be the first to know about recalls, and other rebates.
+
+There are $2 billion in rebates and other  incentives waiting to be claimed by homeowners like you.
+		</div>	 <!-- #column-middle -->
+		
 		<div id="column-last" class="grid-3">
-		</div>	  
+		I never knew you could save this much!
+		Annette B. , Washington, DC
+		
+		Before Big Bread, I’d  leave so much money on the table...
+		Julian G., Orlando, FL
+		
+		Talk us up!
+		
+		Read our blog ›
+		</div> <!-- #column-last -->
 
 	  <?php //echo $content_for_layout ?>
 	</div> <!-- #content-bottom -->
