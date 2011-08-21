@@ -128,19 +128,19 @@ body.onecolumn #content { background: #FFFFFF; min-height:400px; padding: 50px 6
 #terms p { padding:10px 0; }
 
 /* ============================= sidebar ======================= */
-#sidebar{ position: fixed; top: 207px; margin: 0 0 0 20px; width:200px; min-height: 200px; border-top-left-radius: 20px; border-bottom-left-radius: 20px; -moz-border-top-left-radius: 20px; -moz-border-bottom-left-radius: 20px; background: #fff; padding: 0 20px 0; }
-#vertical-nav { width:220px; color:#0e6e76; padding: 20px 0 0; }
+#sidebar{ position: fixed; top: 207px; margin: 0 0 0 20px; width:200px; border-top-left-radius: 20px; border-bottom-left-radius: 20px; -moz-border-top-left-radius: 20px; -moz-border-bottom-left-radius: 20px; background: #fff; padding: 0 20px 0; }
+#vertical-nav { width:190px; color:#0e6e76; padding: 20px 0 0; }
 #vertical-nav ul, #questionnaire_act ul, #questionnaire_nav ul{ list-style:none; }
-#vertical-nav ul { padding: 0; }
+#vertical-nav ul { padding: 0; margin-top: 0; }
 #vertical-nav h2 { padding: 0 0 20px 20px; color:#0e6e76; }
 #vertical-nav li { font: 14px/1.25em 'UltraRegular'; }
-#vertical-nav li a { padding: 10px 0 ; color:#0e6e76; display: block; }
+#vertical-nav li a { padding: 6px 0 ; color:#0e6e76; display: block; }
 #vertical-nav li a:hover, 
 #vertical-nav li a.active { filter: alpha(opacity=50); -moz-opacity:0.5; -khtml-opacity: 0.5; opacity: 0.5; text-decoration:none; }
 #vertical-nav li a.disabled { filter: alpha(opacity=50); -moz-opacity:0.5; -khtml-opacity: 0.5; opacity: 0.5; }
-#vertical-nav li a.disabled:hover { padding: 10px 0 10px 50px; font-size:14px; background: url(../img/WhiteCircle.png) no-repeat 20px 5px; color:#808080;font-weight:bold;display: block; }
+#vertical-nav li a.disabled:hover { color:#808080; }
 #vertical-nav li.top-link { font: 11px Georgia, 'Times New Roman' sans-serif; }
-#vertical-nav li.top-link a { color: #3f3f3f }
+#vertical-nav li.top-link a { background: url(../img/arrow-top.png) 0 5px no-repeat; color: #3f3f3f; padding: 0 0 6px 15px; }
 
 #questionnaire_nav li, #questionnaire_act li { float:left; }
 #getstart { background:#fff; padding: 20px; border: 1px solid white; border-radius: 20px; -moz-border-radius: 20px;}
