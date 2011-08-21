@@ -8,23 +8,33 @@
 <!-- default_landing.ctp -->
   
 <div id="wrapper">
-  <header>
-    <?php echo $this->element( 'layout/header' ) ?>
-  </header><!-- #header -->
-  
-  <div id="page_content"> 				
-    <div id="bodymain">
-      <div id="content">
-        
-        
-        <?php echo $this->element( 'layout/flash_messages' ) ?>
-        
-        <?php echo $content_for_layout ?>
-      </div> <!-- #content -->
-      <div class="clear"></div>
-      
-    </div> <!-- #bodymain -->
-  </div> <!-- #page_content -->
+	<div id="content-top" class="content-top">
+	  <?php //echo $this->element( 'layout/flash_messages' ) ?>
+		<div class="branding">
+		
+		</div>
+	  
+	  <div class="background-elements">
+	  </div>
+	  
+	  <div class="slide-show">
+	  
+	  </div>
+	  
+	  
+	</div> <!-- #content-top -->
+	  
+	<div id="content-bottom" class="content-bottom">
+		<div id="column-first" class="grid-3">
+		</div>	  
+		<div id="column-middle" class="grid-3">
+		</div>	  
+		<div id="column-last" class="grid-3">
+		</div>	  
+
+	  <?php //echo $content_for_layout ?>
+	</div> <!-- #content-bottom -->
+	<div class="clear"></div>
   
   <div id="footer">
     <?php echo $this->element( 'layout/footer' ) ?>

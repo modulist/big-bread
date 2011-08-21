@@ -161,7 +161,7 @@ body.onecolumn #content { background: #FFFFFF; min-height:400px; padding: 50px 6
 
 /* ============================= content ===================== */
 /* claudio: most of these classes can be scraped */
-#content { width: 740px; background: #fff; border: 1px solid white; border-radius: 20px; -moz-border-radius: 20px; margin: 0 0 0 240px; }
+#content { width: 720px; background: #fff; border: 1px solid white; border-radius: 20px; -moz-border-radius: 20px; margin: 0 0 0 240px; padding: 0 0 0 20px; }
 #contentheader { border-bottom: 1px solid #aaa; padding: 10px 0 0 30px; font:14px/15px Arial, Helvetica, sans-serif; color:#666; width:662px; }
 #contentheader p { font-size:15px; }
 #contentheader li, #contentheader a { color:#619300; padding: 1px 0 7px 0;list-style:none;font-size:12px; }
