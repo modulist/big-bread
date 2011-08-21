@@ -4,7 +4,7 @@
   <?php echo $this->element( 'layout/head_content' ) ?>
 </head>
 
-<body class="no-js">
+<body>
   
 <div id="wrapper">
   <header>
@@ -16,7 +16,10 @@
     <div id="bodymain">
       
       <aside id="sidebar">
-        <?php echo $this->element( 'layout/sidebar/' . $this->action ) ?>
+        <!-- page-specific sidebar -->
+        <?php if( file_exists( ELEMENTS . 'layout/sidebar/' . Inflector::underscore( $this->name ) . '/' . Inflector::underscore( $this->action ) . '.ctp' ) ): ?>
+          <?php echo $this->element( 'layout/sidebar/' . Inflector::underscore( $this->name ) . '/' . Inflector::underscore( $this->action ) ) ?>
+        <?php endif; ?>
       </aside> <!-- #sidebar -->
   
       <div id="content">

@@ -4,7 +4,8 @@
   <?php echo $this->element( 'layout/head_content' ) ?>
 </head>
 
-<body class="no-js onecolumn">
+<body class="front <?php echo Inflector::underscore( $this->name ) . ' ' . Inflector::underscore( $this->action ) ?><?php echo $this->Session->check( 'Auth.User' ) ? ' authenticated' : false ?>">
+<!-- default_landing.ctp -->
   
 <div id="wrapper">
   <header>
@@ -14,6 +15,8 @@
   <div id="page_content"> 				
     <div id="bodymain">
       <div id="content">
+        
+        
         <?php echo $this->element( 'layout/flash_messages' ) ?>
         
         <?php echo $content_for_layout ?>
