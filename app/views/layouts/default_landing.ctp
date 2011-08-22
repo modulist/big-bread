@@ -8,7 +8,7 @@
 <!-- default_landing.ctp -->
   
 <div id="wrapper" class="container_12">
-	<div id="content-top" class="content-top">
+	<div id="content-top" class="content-top grid_12">
 	  <?php //echo $this->element( 'layout/flash_messages' ) ?>
 		<div class="branding">
 		
@@ -24,7 +24,7 @@
 	  
 	</div> <!-- /#content-top -->
 	  
-	<div id="content-bottom" class="content-bottom">
+	<div id="content-bottom" class="content-bottom grid_10 clearfix">
 		<div id="column-first" class="grid_3">
 			<h2>Replace an old appliance - and save!</h2>
 			<a class="button-home" href="/users/register">Find rebates</a>
@@ -85,7 +85,6 @@
 
 	  <?php //echo $content_for_layout ?>
 	</div> <!-- #content-bottom -->
-	<div class="clear"></div>
   
   <footer>
     <?php echo $this->element( 'layout/footer' ) ?>

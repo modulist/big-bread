@@ -7,13 +7,13 @@
 <body>
   
 <div id="wrapper" class="container_12">
-  <header>
+  <header class="clearfix">
     <?php echo $this->element( 'layout/header' ) ?>
   </header><!-- #header -->
   
   <section id="page_content">
   				
-    <div id="bodymain">
+    <div id="bodymain" class="clearfix">
       
       <aside id="sidebar">
         <!-- page-specific sidebar -->
