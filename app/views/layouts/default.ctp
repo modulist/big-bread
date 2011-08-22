@@ -7,18 +7,17 @@
 <body class="<?php echo Inflector::underscore( $this->name ) . ' ' . Inflector::underscore( $this->action ) ?><?php echo $this->Session->check( 'Auth.User' ) ? ' authenticated' : false ?>">
   
 <div id="wrapper" class="container_12">
-  <header id="header">
+  <header class="clearfix">
     <?php echo $this->element( 'layout/header' ) ?>
   </header><!-- #header -->
   
   <section id="page_content"> 				
-    <div id="bodymain">
-      <div id="content" class="grid_9">
+    <div id="bodymain" class="clearfix">
+      <div id="content" class="grid_9 clearfix">
         <?php echo $this->element( 'layout/flash_messages' ) ?>
         
         <?php echo $content_for_layout ?>
       </div> <!-- #content -->
-      <div class="clear"></div>
       
     </div> <!-- #bodymain -->
   </section> <!-- #page_content -->
