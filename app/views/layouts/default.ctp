@@ -6,14 +6,14 @@
 
 <body class="<?php echo Inflector::underscore( $this->name ) . ' ' . Inflector::underscore( $this->action ) ?><?php echo $this->Session->check( 'Auth.User' ) ? ' authenticated' : false ?>">
   
-<div id="wrapper">
+<div id="wrapper" class="container_12">
   <header id="header">
     <?php echo $this->element( 'layout/header' ) ?>
   </header><!-- #header -->
   
   <section id="page_content"> 				
     <div id="bodymain">
-      <div id="content">
+      <div id="content" class="grid_9">
         <?php echo $this->element( 'layout/flash_messages' ) ?>
         
         <?php echo $content_for_layout ?>

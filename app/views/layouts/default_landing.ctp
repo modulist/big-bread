@@ -7,7 +7,7 @@
 <body class="front <?php echo Inflector::underscore( $this->name ) . ' ' . Inflector::underscore( $this->action ) ?><?php echo $this->Session->check( 'Auth.User' ) ? ' authenticated' : false ?>">
 <!-- default_landing.ctp -->
   
-<div id="wrapper">
+<div id="wrapper" class="container_12">
 	<div id="content-top" class="content-top">
 	  <?php //echo $this->element( 'layout/flash_messages' ) ?>
 		<div class="branding">
@@ -25,23 +25,23 @@
 	</div> <!-- /#content-top -->
 	  
 	<div id="content-bottom" class="content-bottom">
-		<div id="column-first" class="grid-3">
+		<div id="column-first" class="grid_3">
 			<h2>Replace an old appliance - and save!</h2>
 			<a class="button-home" href="/users/register">Find rebates</a>
-			Need to replace an appliance, your A/C,  windows, or any other piece of equipment in your home?
-			We&#146;ll help you find not one, but multiple rebates when you&#146;re looking for a replacement.
+			<p>Need to replace an appliance, your A/C,  windows, or any other piece of equipment in your home?</p>
+			<p>We&#146;ll help you find not one, but multiple rebates when you&#146;re looking for a replacement.</p>
 		</div>	  <!-- /#column-first -->
 		
-		<div id="column-middle" class="grid-3">
+		<div id="column-middle" class="grid_3">
 		<h2>Set up a home profile for more savings.</h2>
 			<a class="button-home" href="/users/register">Set up a profile</a>
-			Complete a profile of the equipment and appliances in your house, and you can be the first to know about recalls, and other rebates.
-			There are $2 billion in rebates and other  incentives waiting to be claimed by homeowners like you.
+			<p>Complete a profile of the equipment and appliances in your house, and you can be the first to know about recalls, and other rebates.</p>
+			<p>There are $2 billion in rebates and other  incentives waiting to be claimed by homeowners like you.</p>
 		</div>	 <!-- /#column-middle -->
 		
 		
 		
-		<div id="column-last" class="grid-3">
+		<div id="column-last" class="grid_3">
 			<div id="testimonials">
 				<div class="testimonial-item">
 					<div class="testimonial-quote">
@@ -87,9 +87,9 @@
 	</div> <!-- #content-bottom -->
 	<div class="clear"></div>
   
-  <div id="footer">
+  <footer>
     <?php echo $this->element( 'layout/footer' ) ?>
-  </div> <!-- #footer -->
+  </footer> <!-- #footer -->
 </div> <!-- #wrapper -->
   
 <?php echo $this->element( 'layout/include_scripts' ) ?>

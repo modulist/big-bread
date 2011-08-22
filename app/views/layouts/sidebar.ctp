@@ -6,12 +6,12 @@
 
 <body>
   
-<div id="wrapper">
+<div id="wrapper" class="container_12">
   <header>
     <?php echo $this->element( 'layout/header' ) ?>
   </header><!-- #header -->
   
-  <section  id="page_content">
+  <section id="page_content">
   				
     <div id="bodymain">
       
@@ -22,7 +22,7 @@
         <?php endif; ?>
       </aside> <!-- #sidebar -->
   
-      <div id="content">
+      <div id="content" class="grid_9">
         <?php echo $this->element( 'layout/flash_messages' ) ?>
         
         <?php echo $content_for_layout ?>
