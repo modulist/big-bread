@@ -459,9 +459,9 @@ option { padding: 0 8px; line-height: 24px; }
 /* ============================= homepage ====================== */
 body.front { }
 body.front h2 { }
-body.front #content-top {margin: auto; background: url(../img/home-content-top-background.png) top no-repeat; height:377px;}
-body.front #content-bottom { margin: auto; width: 800px; background-color: white;}
-.branding {}
+body.front #content-top {margin-top:30px;margin-left:0px; background: url(../img/home-content-top-background.png) top no-repeat; height:377px; width:1000px;}
+body.front #content-bottom { margin: auto; width: 1000px; background-color: white;}
+.branding {margin-top: 75px; margin-left:50px;}
 .background-elements {}
 .intro { width: 845px; margin: 5px auto 0 auto; font-weight:bold; line-height: 32px; }
 .intro p { 
@@ -481,4 +481,5 @@ body.front #content-bottom { margin: auto; width: 800px; background-color: white
     font-size: 25px;
     margin: 10px 0 15px;
     padding: 0 0 10px; }
+
 
