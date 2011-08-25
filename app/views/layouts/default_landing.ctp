@@ -11,7 +11,7 @@
   <div id="content-top" class="content-top grid_12">
     <?php //echo $this->element( 'layout/flash_messages' ) ?>
     <div class="branding">
-    
+    <img src="webroot/img/home-logo.png" />
     </div>
     
     <div class="background-elements">
