@@ -462,7 +462,7 @@ body.front h2 { }
 body.front #content-top {margin-top:30px;margin-left:0px; background: url(../img/home-content-top-background.png) top no-repeat; height:377px; width:1000px;}
 body.front #content-bottom { margin: auto; width: 1000px; background-color: white;}
 .branding {margin-top: 75px; margin-left:50px;}
-.background-elements {}
+.background-elements {height:193px; margin-top:170px; margin-left:240px;}
 .intro { width: 845px; margin: 5px auto 0 auto; font-weight:bold; line-height: 32px; }
 .intro p { 
 	padding: 0; font-size:14px; color:#999; line-height:1.3em; }

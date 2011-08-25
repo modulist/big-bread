@@ -15,6 +15,7 @@
     </div>
     
     <div class="background-elements">
+    <img src="img/home-top-content-trees.png" />
     </div>
     
     <div class="slide-show">
