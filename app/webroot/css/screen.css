@@ -496,6 +496,7 @@ body.front #content-bottom p { margin:0; padding: 5px 0; font-size: 14px; color:
 img.floatLeft { float: left; margin: 4px; }
 img.floatRight { float: right; margin: 4px; }
 
+body.front footer {background: none;}
 body.front .footer-inner {background: none;}
-body.front .footer-menu {background: none;color: white;}
+body.front .footer-menu, body.front .footer-menu a {color: white;}
 
