@@ -458,7 +458,7 @@ option { padding: 0 8px; line-height: 24px; }
 
 /* ============================= homepage ====================== */
 body.front { }
-body.front h2 { }
+body.front h2 {margin-top: 0;}
 body.front #content-top {margin-top:30px;margin-left:0px; background: url(../img/home-content-top-background.png) top no-repeat; height:377px; width:1000px;}
 body.front #content-bottom { margin: auto; padding-left: 150px; width: 850px; background-color: white;}
 .branding {margin-top: 75px; margin-left:50px;}
@@ -481,9 +481,18 @@ body.front #content-bottom { margin: auto; padding-left: 150px; width: 850px; ba
     font-size: 25px;
     margin: 10px 0 15px;
     padding: 0 0 10px; }
+body.front #column-first {margin-right: 45px;}
+body.front #column-middle {margin-right: 45px;}     
+body.front #content-bottom p { margin:0; padding: 5px 0; font-size: 14px; color: #595959; line-height: 1.3em; font-family: Georgia, "Times New Roman", serif; }   
 .slide-show {float: left;}
 .house-signup {margin-left:30px; margin-top:-200px;background: url(../img/home-top-content-house-background.png) top no-repeat; height:218px;width:373px;}
 .house-signup h2 {color: #000;font-size: 25px;text-align: center;padding-top:76px;}
 .house-signup input {color:#739b96; width:200px; height:29px;font: 15px/1.125 'UltraRegular';margin-left:36px;border: 1px solid #425c40; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; background-color: #afe8e1;}
 .house-signup .submit {width: 70px; height: 47px; float:right;border:none;background-color: transparent;margin-top:-76px;margin-right:24px;}
+.button-home {background: url(../img/home-blue-button.png) top no-repeat; width:178px; height:35px;}
+
+.button-home-text {color: white; font: 12px/1.5 'UltraRegular';letter-spacing: 0.05em;padding:6px;}
+.green-dot-divider {padding: 6px 0 6px 0;}
+img.floatLeft { float: left; margin: 4px; }
+img.floatRight { float: right; margin: 4px; }
 

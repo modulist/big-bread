@@ -34,21 +34,26 @@
   <div id="content-bottom" class="content-bottom grid_10 clearfix">
     <div id="column-first" class="grid_3">
       <h2><?php __( 'Replace an old appliance - and save!' ) ?></h2>
-      <?php echo $this->Html->link( __( 'Find rebates', true ), array( 'controller' => 'users', 'action' => 'register' ), array( 'class' => 'button-home' ) ) ?>
-      <p><?php __( 'Need to replace an appliance, your A/C, windows, or any other piece of equipment in your home?' ) ?></p>
+      	<div class="green-dot-divider"><img src="img/green-dot-divider.png" /></div>
+      	<div class="button-home"><span class="button-home-text">Find rebates</span></div>
+      	<img src="img/applicance-icon.png" class="floatRight" />	
+      <p><?php __( 'Need to replace an appliance, your A/C, windows, or any other piece of equipment in your home?' ) ?></p>   
       <p><?php __( 'We&#146;ll help you find not one, but multiple rebates when you&#146;re looking for a replacement.' ) ?></p>
     </div>    <!-- /#column-first -->
     
     <div id="column-middle" class="grid_3">
     <h2><?php __( 'Set up a home profile for more savings.' ) ?></h2>
-      <?php echo $this->Html->link( __( 'Set up a profile', true ), array( 'controller' => 'users', 'action' => 'register' ), array( 'class' => 'button-home' ) ) ?>
+    <div class="green-dot-divider"><img src="img/green-dot-divider.png" /></div>
+      <div class="button-home"><span class="button-home-text">Set up a profile</span></div>    
       <p><?php __( 'Complete a profile of the equipment and appliances in your house, and you can be the first to know about recalls, and other rebates.' ) ?></p>
+      <img src="img/rebate-money-icon.png" class="floatRight" />
       <p><?php __( 'There are $2 billion in rebates and other incentives waiting to be claimed by homeowners like you.' ) ?></p>
     </div>   <!-- /#column-middle -->
     
     
     
     <div id="column-last" class="grid_3">
+    <div class="green-dot-divider"><img src="img/green-dot-divider.png" /></div>
       <div id="testimonials">
         <div class="testimonial-item">
           <div class="testimonial-quote">
@@ -68,6 +73,7 @@
           </div>  
         </div> <!-- /item -->
       </div> <!-- /testimonials -->
+      <div class="green-dot-divider"><img src="img/green-dot-divider.png" /></div>
     
       <div id="social-media">
         <h2>Talk us up!</h2>
@@ -83,7 +89,7 @@
           </div>
         </div> <!-- /icon-grid -->
       </div> <!-- /social media -->   
-    
+    <div class="green-dot-divider"><img src="img/green-dot-divider.png" /></div>
       <div id="blog-link">
         <a href="/blog">Read our blog &rsaquo;</a>
       </div><!-- /#blog-link -->
