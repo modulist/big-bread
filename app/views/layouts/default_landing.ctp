@@ -72,20 +72,24 @@
             Julian G., Orlando, FL
           </div>  
         </div> <!-- /item -->
+        <div class="testimonial-item">
+          <div class="add-story">Add your Big Bread story &rsaquo;</div> 	
+        </div> <!-- /item -->
       </div> <!-- /testimonials -->
       <div class="green-dot-divider"><img src="img/green-dot-divider.png" /></div>
     
       <div id="social-media">
+      <div id="microphone"><img src="img/home-microphone-icon.png" /></div>
         <h3>Talk us up!</h3>
         <div class="icon-grid">
           <div id="google-plus" class="icon">
-            <a href="http://google.com/plus" rel="nofollow"><img src="../img/icon-google-plus.png" alt="Google Plus"></a>
+            <a href="http://google.com/plus" rel="nofollow"><img src="img/icon-google-plus.png" alt="Google Plus"></a>
           </div>
           <div id="facebook" class="icon">
-            <a href="http://www.facebook.com" rel="nofollow"><img src="../img/icon-facebook.png" alt="Facebook"></a>
+            <a href="http://www.facebook.com" rel="nofollow"><img src="img/icon-facebook.png" alt="Facebook"></a>
           </div>
           <div id="twitter" class="icon">
-            <a href="http://www.twitter.com/savebigbread" rel="nofollow"><img src="../img/icon-twitter.png" alt="Twitter"></a>
+            <a href="http://www.twitter.com/savebigbread" rel="nofollow"><img src="img/icon-twitter.png" alt="Twitter"></a>
           </div>
         </div> <!-- /icon-grid -->
       </div> <!-- /social media -->   

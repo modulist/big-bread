@@ -505,6 +505,11 @@ body.front .copyright {color: #000; font: 11px/1.125 Georgia, "Times New Roman",
 .testimonial-quote {color: #0c5145; font: 14px/1.125 'UltraRegular'; font-weight:normal; letter-spacing 0.05em;margin-bottom: 6px;}
 .testimonial-source {color:#595959; font: 11px/1.125 Georgia, "Times New Roman", serif; }
 .testimonial-quote-mark {color: #82ac6e; font:Georgia, "Times New Roman", serif; padding:2px;}
-
+.add-story {color: #058871; font: 16/1.125 Georgia, "Times New Roman", serif; font-weight:bold;}
+#microphone {float: left;}
+#google-plus {float:left;}
+#facebook {float:left;}
+#twitter {float:left;}
+.icon {padding: 0 6px;}
 
 
