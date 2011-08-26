@@ -98,7 +98,7 @@
 
     <?php //echo $content_for_layout ?>
   </div> <!-- #content-bottom -->
-  
+  <div id="page-bottom"><img src="img/home-page-bottom.gif" /></div>
   <footer>
     <?php echo $this->element( 'layout/footer' ) ?>
   </footer> <!-- #footer -->
