@@ -57,7 +57,7 @@
       <div id="testimonials">
         <div class="testimonial-item">
           <div class="testimonial-quote">
-            I never knew you could save this much!
+            <span class="testimonial-quote-mark">"</span>I never knew you could save this much!<span class="testimonial-quote-mark">"</span>
           </div>
           <div class="testimonial-source">
             Annette B. , Washington, DC
@@ -66,7 +66,7 @@
         
         <div class="testimonial-item">
           <div class="testimonial-quote">
-            Before Big Bread, I&#146;d  leave so much money on the table...
+            <span class="testimonial-quote-mark">"</span>Before Big Bread, I&#146;d  leave so much money on the table...<span class="testimonial-quote-mark">"</span>
           </div>
           <div class="testimonial-source">
             Julian G., Orlando, FL
@@ -76,7 +76,7 @@
       <div class="green-dot-divider"><img src="img/green-dot-divider.png" /></div>
     
       <div id="social-media">
-        <h2>Talk us up!</h2>
+        <h3>Talk us up!</h3>
         <div class="icon-grid">
           <div id="google-plus" class="icon">
             <a href="http://google.com/plus" rel="nofollow"><img src="../img/icon-google-plus.png" alt="Google Plus"></a>
@@ -91,7 +91,7 @@
       </div> <!-- /social media -->   
     <div class="green-dot-divider"><img src="img/green-dot-divider.png" /></div>
       <div id="blog-link">
-        <a href="/blog">Read our blog &rsaquo;</a>
+        <a href="/blog"><h3>Read our blog &rsaquo;</h3></a>
       </div><!-- /#blog-link -->
 
     </div> <!-- /#column-last -->
