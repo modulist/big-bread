@@ -22,7 +22,7 @@
     	<div class="house-signup"><h2>Start saving today!</h2>
     	<form>
     	<input type="text" name="name" value="Your name" /><br />
-    	<input type="text" name="email" value="Your email address">
+    	<input type="text" name="email" value="Your email address"><br />
     	<input type="image" src="img/home-top-content-house-arrow.png" value="Submit" alt="Submit" class="submit">
     	</form>
     	</div>
@@ -35,7 +35,7 @@
     <div id="column-first" class="grid_3">
       <h2><?php __( 'Replace an old appliance - and save!' ) ?></h2>
       	<div class="green-dot-divider"><img src="img/green-dot-divider.png" /></div>
-      	<div class="button-home"><span class="button-home-text">Find rebates</span></div>
+      	<div class="button-home"><div class="button-home-text">Find rebates</div></div>
       	<img src="img/applicance-icon.png" class="floatRight" />	
       <p><?php __( 'Need to replace an appliance, your A/C, windows, or any other piece of equipment in your home?' ) ?></p>   
       <p><?php __( 'We&#146;ll help you find not one, but multiple rebates when you&#146;re looking for a replacement.' ) ?></p>
@@ -44,7 +44,7 @@
     <div id="column-middle" class="grid_3">
     <h2><?php __( 'Set up a home profile for more savings.' ) ?></h2>
     <div class="green-dot-divider"><img src="img/green-dot-divider.png" /></div>
-      <div class="button-home"><span class="button-home-text">Set up a profile</span></div>    
+      <div class="button-home"><div class="button-home-text">Set up a profile</div></div>    
       <p><?php __( 'Complete a profile of the equipment and appliances in your house, and you can be the first to know about recalls, and other rebates.' ) ?></p>
       <img src="img/rebate-money-icon.png" class="floatRight" />
       <p><?php __( 'There are $2 billion in rebates and other incentives waiting to be claimed by homeowners like you.' ) ?></p>
