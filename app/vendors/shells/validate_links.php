@@ -26,6 +26,8 @@ class ValidateLinksShell extends Shell {
   public function startup() {
     parent::startup();
     
+    ini_set( 'memory_limit', '128M' );
+    
     echo "Beginning link validation at " . date( 'm/d/Y H:i:s' ) . "\n";
     
     $this->Controller  = new Controller();
