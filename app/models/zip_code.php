@@ -58,6 +58,87 @@ class ZipCode extends AppModel {
   }
   
   /**
+   * Returns the total savings available for a given zip code. The
+   * number returned includes only those incentives measured in USD.
+   *
+   * @param 	$zip_code
+   * @param   $grouped    Whether to itemize the total savings by
+   *                      technology group or return just the sum.
+   * @param   $group_id   A technology group id if only the savings
+   *                      for a single group is desired.
+   * @return	mixed
+   * @access	public
+   */
+  public function savings( $zip_code, $grouped = true, $group_id = null ) {
+    $savings = ClassRegistry::init( 'TechnologyGroup' )->find(
+      'all',
+      array(
+        'contain' => false,
+        'fields'  => array(
+          'TechnologyGroup.id',
+          'TechnologyGroup.name',
+          'SUM( TechnologyIncentive.amount) savings',
+        ),
+        'group'   => array(
+          'TechnologyGroup.id',
+          'TechnologyGroup.name',
+        ),
+        'conditions' => array(
+          'IncentiveAmountType.incentive_amount_type_id' => 'USD',
+          'TechnologyIncentive.is_active' => 1,
+          'Incentive.excluded' => 0,
+          'OR' => array(
+            'Incentive.expiration_date' => null, 
+            'Incentive.expiration_date >= ' => date( DATE_FORMAT_MYSQL ),
+          ),
+          'OR' => TechnologyIncentive::geo_scope_conditions( $zip_code ),
+        ),
+        'joins' => array(
+          array(
+            'table'      => 'technologies',
+            'alias'      => 'Technology',
+            'type'       => 'inner', 
+            'foreignKey' => false,
+            'conditions' => 'TechnologyGroup.id = Technology.technology_group_id',
+          ),
+          array(
+            'table'      => 'technology_incentives',
+            'alias'      => 'TechnologyIncentive',
+            'type'       => 'inner', 
+            'foreignKey' => false,
+            'conditions' => 'Technology.id = TechnologyIncentive.technology_id',
+          ),
+          array(
+            'table'      => 'incentive',
+            'alias'      => 'Incentive',
+            'type'       => 'inner', 
+            'foreignKey' => false,
+            'conditions' => 'TechnologyIncentive.incentive_id = Incentive.id',
+          ),
+          array(
+            'table'      => 'incentive_amount_types',
+            'alias'      => 'IncentiveAmountType',
+            'type'       => 'inner',
+            'foreignKey' => 'false',
+            'conditions' => 'TechnologyIncentive.incentive_amount_type_id = IncentiveAmountType.id',
+          ),
+        ),
+      )
+    );
+    
+    $savings = Set::combine( $savings, '{n}.TechnologyGroup.id', '{n}.TechnologyGroup' );
+    
+    if( !empty( $group_id ) ) {
+      $savings = $savings[$group_id]['savings'];
+    }
+    else if( $grouped ) {
+      $savings = array_sum( $savings );
+    }
+    
+    return $savings;
+  }
+  
+  /**
    * Returns the id of each incentive specifically targeting a
    * particular zip code.
    *
