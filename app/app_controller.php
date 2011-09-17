@@ -8,8 +8,8 @@ class AppController extends Controller {
       'fields'        => array( 'username' => 'email', 'password' => 'password' ),
       'userScope'     => array( 'User.deleted' => 0 ),
       'loginRedirect' => array(
-        'controller' => 'buildings',
-        'action'     => 'questionnaire',
+        'controller' => 'users',
+        'action'     => 'dashboard',
       ),
       'autoRedirect' => false,
       'logoutRedirect' => array(

@@ -2,8 +2,12 @@
 
 class User extends AppModel {
 	public $name = 'User';
+  public $displayField = 'full_name';
   
-  public $belongsTo = array( 'UserType' );
+  public $belongsTo = array(
+    'UserType',
+    'ZipCode'    => array( 'foreignKey' => 'zip_code' ),
+  );
   public $hasOne = array(
     'ApiUser' => array(
       'dependent' => true,
@@ -92,10 +96,17 @@ class User extends AppModel {
         'message' => 'Passwords do not match.' 
       ),
     ),
-		'confirm_password' => array(
-      'identical' => array(
-        'rule'    => array( 'identical', 'password' ), 
-        'message' => 'Passwords do not match.' 
+    'zip_code' => array(
+			'postal' => array(
+				'rule'       => array( 'postal', null, 'us' ),
+				'message'    => 'Zip code must be a valid US postal code.',
+				'allowEmpty' => false,
+				'required'   => true,
+        'last'       => true,
+			),
+      'known' => array(
+        'rule'    => array( 'known_zip_code' ), 
+        'message' => 'Please check the zip code. This one is not in our database.' 
       ),
     ),
 		'phone_number' => array(
@@ -183,6 +194,30 @@ class User extends AppModel {
       : $query['fields'];
     
     return $query;
+  }
+  
+  /**
+   * CUSTOM VALIDATION METHODS
+   */
+  
+  /**
+   * Custom validation method to ensure that the entered zip exists in
+   * the database. Everything we do hinges on the zip code so an invalid
+   * value needs to be caught and reported.
+   *
+   * @param   $field
+   * @access  public
+   */
+  public function known_zip_code( $field ) {
+    $zip_code = array_shift( $field );
+    
+    return $this->ZipCode->find(
+      'count',
+      array(
+        'contain'    => false,
+        'conditions' => array( 'ZipCode.zip' => $zip_code ),
+      )
+    );
   }
   
   /**

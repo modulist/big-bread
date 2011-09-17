@@ -22,4 +22,12 @@ CREATE TABLE watched_technologies(
     ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+ALTER TABLE users
+  ADD zip_code char(5) NULL AFTER password,
+  ADD CONSTRAINT fk__users__us_zipcode FOREIGN KEY( zip_code )
+    REFERENCES us_zipcode( zip )
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE;
+--  DROP show_questionnaire_instructions;
+
 SET foreign_key_checks = 1;
