@@ -8,6 +8,9 @@
 <!-- default_landing.ctp -->
   
 <div id="wrapper" class="container_12">
+  
+  <?php echo $this->Html->link( 'Signup Form', array( 'controller' => 'users', 'action' => 'register' ) ) ?>
+  
   <div id="content-top" class="content-top grid_12">
     <?php //echo $this->element( 'layout/flash_messages' ) ?>
     <div class="branding">

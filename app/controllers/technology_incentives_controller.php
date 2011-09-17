@@ -20,4 +20,14 @@ class TechnologyIncentivesController extends AppController {
   public function quote() {
     
   }
+  
+  /**
+   * Displays the UI to begin the process of redeeming a rebate.
+   *
+   * @param 	$TBD
+   * @access	public
+   */
+  public function redeem() {
+    
+  }
 }

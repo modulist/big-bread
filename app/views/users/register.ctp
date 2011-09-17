@@ -1,19 +1,10 @@
 <?php echo $this->Form->create( 'User', array( 'action' => 'register', $this->data['User']['invite_code'] ) ) ?>
 <?php echo $this->Form->input( 'User.invite_code', array( 'type' => 'hidden' ) ) ?>
 
+<?php echo $this->Html->link( 'Dashboard', array( 'action' => 'dashboard' ) ) ?>
+
 <div id="signupheader">
   <h1>Join SaveBigBread.com</h1>
-  <label>Choose your primary role*</label>
-  
-  <ul id="user_type">
-    <?php echo $this->Form->hidden( 'User.user_type_id', array( 'id' => 'UserUserTypeId_', 'value' => '' ) ) ?>
-    <?php foreach( $userTypes as $id => $name ): ?>
-      <li>
-        <?php echo $this->Html->image( strtolower( Inflector::slug( $name ) ) . '.png', array( 'class' => 'icon', 'title' => $name, 'data-for' => 'UserUserTypeId' . Inflector::slug( $id, '' ) ) ) ?><br />
-        <?php echo $this->Form->radio( 'User.user_type_id', array( $id => $name ), array( 'legend' => false, 'hiddenField' => false ) ) ?>
-      </li>
-    <?php endforeach; ?>
-  </ul>
   
   <?php if( Configure::read( 'Feature.contractor_registration.enabled' ) ): ?>
     <p><?php printf( __( 'Are you a contractor? Please use our %s.', true ), $this->Html->link( __( 'contractor registration', true ), array( 'controller' => 'contractors', 'action' => 'index' ) ) ) ?></p>

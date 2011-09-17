@@ -73,11 +73,12 @@ class BuildingsController extends AppController {
   }
   
   /**
-   * Displays the set of incentives that apply to this building.
+   * Displays the ways to save content.
    *
+   * @param 	$building_id	
    * @access	public
    */
-  public function ways_to_save() {
+  public function ways_to_save( $building_id ) {
     
   }
   

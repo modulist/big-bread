@@ -4,8 +4,9 @@
 <?php echo $this->Html->meta( 'icon' ) . "\n" ?>
 <!-- add in the 960.gs grid system -->
 <?php echo $this->Html->css( '/css/960.css' ) ?>
-<!-- Fancybox creates a nice looking modal -->
-<?php echo $this->Html->css( '/js/jquery/fancybox/jquery.fancybox-1.3.4.css' ) ?>
+<?php # echo $this->Html->css( '/js/jquery/fancybox/jquery.fancybox-1.3.4.css' ) ?>
+<?php echo $this->Html->css( 'jqueryui/themes/aristo/jquery-ui-1.8.7.custom.css' ) ?>
+
 <!-- Decent looking tooltips -->
 <?php echo $this->Html->css( '/js/jquery/tipsy/tipsy.css' ) ?>
 

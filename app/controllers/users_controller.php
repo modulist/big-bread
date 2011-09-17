@@ -254,7 +254,7 @@ class UsersController extends AppController {
    *
    * @access	public
    */
-  public function profile() {
+  public function edit() {
     
   }
   
