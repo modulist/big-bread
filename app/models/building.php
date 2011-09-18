@@ -74,6 +74,14 @@ class Building extends AppModel {
   );
   
 	public $validate = array(
+    'name' => array(
+      'notEmpty' => array(
+        'rule'       => 'notEmpty',
+        'message'    => 'Give this location a name.',
+        'allowEmpty' => false,
+        'required'   => true,
+      ),
+    ),
     'client_id'  => array(
       'notEmpty' => array(
         'rule'       => 'notEmpty',

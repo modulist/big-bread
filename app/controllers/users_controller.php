@@ -13,7 +13,11 @@ class UsersController extends AppController {
     parent::beforeFilter();
     
     $this->Auth->allow( '*' );
-    $this->Auth->deny( 'dismiss_notice' );
+    $this->Auth->deny(
+      'dashboard',
+      'dismiss_notice', # TODO: Kill this action?
+      'edit'
+    );
     
     # TODO: Move this to a component callback?
     # Squash the phone number if it exists in a data array to prep for save
@@ -239,8 +243,12 @@ class UsersController extends AppController {
    *
    * @access	public
    */
-  public function dashboard() {
+  public function dashboard( $user_id = null ) {
+    $user_id = empty( $user_id ) ? $this->Auth->user( 'id' ) : $user_id;
     
+    $has_locations = $this->User->has_locations();
+    
+    $this->set( compact( 'has_locations' ) );
   }
   
   /**
@@ -249,7 +257,7 @@ class UsersController extends AppController {
    * @access	public
    */
   public function edit() {
-    
+  
   }
   
   /**
@@ -257,6 +265,7 @@ class UsersController extends AppController {
    *
    * @return	void
    * @access	public
+   * @todo    We can probably kill this
    */
   public function dismiss_notice( $notice ) {
     $this->autoRender = false;
@@ -266,17 +275,6 @@ class UsersController extends AppController {
       # Update the session value
       $this->refresh_auth();
     }
-  }
-  
-  /**
-   * Presents the admin options menu.
-   *
-   * @return  void
-   * @access  public
-   */
-	public function admin_index() {
-		$title_for_layout = 'Site Administrator';
-		$this->set( compact( 'title_for_layout' ) );
   }
   
   /**

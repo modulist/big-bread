@@ -42,7 +42,19 @@ class BuildingsController extends AppController {
    * @access	public
    */
   public function add() {
+    if( !empty( $this->data ) ) {
+      $this->Building->set( $this->data );
+      
+      if( $this->Building->saveAll( $this->data, array( 'validate' => 'only' ) ) ) {
+        $this->Session->setFlash( 'This is a wireframe. Nothing really happened, but let\'s pretend it did.', null, null, 'success' );
+        $this->redirect( $this->referer( array( 'controller' => 'users', 'action' => 'dashboard' ), null, true ) );
+      }
+      else {
+        $this->Session->setFlash( 'There was an error saving this location.', null, null, 'validation' );
+      }
+    }
     
+    # TODO: Whatever we need to render a view
   }
   
   /**

@@ -30,4 +30,7 @@ ALTER TABLE users
     ON UPDATE CASCADE;
 --  DROP show_questionnaire_instructions;
 
+ALTER TABLE buildings
+  ADD name varchar(255) NULL AFTER id;
+
 SET foreign_key_checks = 1;

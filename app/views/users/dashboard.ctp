@@ -1,6 +1,10 @@
+<?php if( !$has_locations ): ?>
+  <?php echo $this->element( '../buildings/_form', array( 'short' => true ) ) ?>
+<?php endif; ?>
+
 <h1>Dashboard</h1>
 
-<p>Replace this markup with that required for the user dashboard.</p>
+<p>Replace any markup with that required for the user dashboard.</p>
 
 <h2>Links to:</h2>
 <ul>
