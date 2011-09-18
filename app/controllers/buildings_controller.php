@@ -47,6 +47,11 @@ class BuildingsController extends AppController {
       
       if( $this->Building->saveAll( $this->data, array( 'validate' => 'only' ) ) ) {
         $this->Session->setFlash( 'This is a wireframe. Nothing really happened, but let\'s pretend it did.', null, null, 'success' );
+        
+        if( isset( $this->data['Building']['electricity_provider_id'] ) ) { # Submitting from the long form
+          $this->redirect( array( 'action' => 'shell', '$this->Building->id' ), null, true );
+        }
+        
         $this->redirect( $this->referer( array( 'controller' => 'users', 'action' => 'dashboard' ), null, true ) );
       }
       else {
@@ -64,6 +69,43 @@ class BuildingsController extends AppController {
    */
   public function edit() {
     
+  }
+  
+  /**
+   * Displays the form to set/update building shell info.
+   *
+   * @param 	$building_id
+   * @return			
+   * @access	public
+   */
+  public function shell( $building_id ) {
+    $this->data = $this->Building->find(
+      'first',
+      array(
+        'contain'    => array(
+          'BuildingWindowSystem' => array(
+            'fields' => array(
+              'BuildingWindowSystem.window_pane_type_id',
+              'BuildingWindowSystem.frame_material_id',
+            )
+          )
+        ),
+        'fields'     => array(
+          'Building.insulation_level_id',
+          'Building.roof_insulation_level_id',
+          'Building.drafts',
+          'Building.windows_frequently_open',
+          'Building.visible_weather_stripping',
+          'Building.visible_caulking',
+          'Building.window_wall',
+          
+        ),
+        'conditions' => array(
+          'Building.id' => $building_id,
+          'deleted'     => 0,
+        ),
+      )
+    );
   }
   
   /**
