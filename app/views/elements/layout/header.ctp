@@ -1,17 +1,14 @@
 <div id="logoheader">
   <div id="logo">
-    <?php echo $this->Html->image( 'logo.png', array( 'url' => Router::url( '/' ), 'title' => 'beta' ) ) ?>
+    <?php echo $this->Html->image( 'logo.png', array( 'url' => '/', 'title' => 'beta' ) ) ?>
   </div>
   <div id="nav-links">
     <ul id="menu">
-      <!-- <li class="first"><?php echo $this->Html->link( 'Invite Friends', '#' ) ?></li> -->
-      <!-- <li><?php echo $this->Html->link( 'Manage Profile', '#' ) ?></li> -->
-      <!-- <li><?php echo $this->Html->link( 'Contact', Router::url( '/contact' ) ) ?></li> -->
       <?php if( $this->Session->check( 'Auth.User' ) ): ?>
-        <li class="first last"><?php echo $this->Html->link( 'Logout', Router::url( '/logout' ) ) ?></li>
+        <li class="first last"><?php echo $this->Html->link( 'Logout', array( 'controller' => 'users', 'action' => 'logout' ) ) ?></li>
       <?php else: ?>
-        <li class="first"><?php echo $this->Html->link( 'Login', Router::url( '/login' ) ) ?></li>
-        <li class="last"><?php echo $this->Html->link( 'Register', Router::url( '/register' ) ) ?></li>
+        <li class="first"><?php echo $this->Html->link( 'Login', array( 'controller' => 'users', 'action' => 'login' ) ) ?></li>
+        <li class="last"><?php echo $this->Html->link( 'Register', array( 'controller' => 'users', 'action' => 'register' ) ) ?></li>
       <?php endif; ?>
     </ul>
   </div>

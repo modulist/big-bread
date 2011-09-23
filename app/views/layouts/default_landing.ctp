@@ -12,7 +12,6 @@
   <?php echo $this->Html->link( 'Signup Form', array( 'controller' => 'users', 'action' => 'register' ) ) ?>
   
   <div id="content-top" class="content-top grid_12">
-    <?php //echo $this->element( 'layout/flash_messages' ) ?>
     <div class="branding">
       <?php echo $this->Html->image( 'home-logo.png' ) ?>
     </div>
