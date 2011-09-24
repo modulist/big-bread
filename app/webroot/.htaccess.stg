@@ -9,19 +9,22 @@ AddDefaultCharset UTF-8
   # 
   # Rob Home
   RewriteCond %{REMOTE_ADDR} !^68\.48\.9\.
+  # Rob's Client Site
+  RewriteCond %{REMOTE_ADDR} !^71\.127\.151\.
   # Rob's Outlaws' Home
   RewriteCond %{REMOTE_ADDR} !^173\.71\.205\.
   # Georg Work
   RewriteCond %{REMOTE_ADDR} !^128\.173\.211\.
+  # Tony Work
   RewriteCond %{REMOTE_ADDR} !^76\.160\.175\.
   # Tony Home
-  RewriteCond %{REMOTE_ADDR} !^173\.66\.250\.
+  RewriteCond %{REMOTE_ADDR} !^96\.241\.115\.
   # Cyril
-  RewriteCond %{REMOTE_ADDR} !^209\.6\.166\.
+  RewriteCond %{REMOTE_ADDR} !^209\.6\.169\.
   # Claudio
   RewriteCond %{REMOTE_ADDR} !^98\.203\.35\.
   # Lauren
-  RewriteCond %{REMOTE_ADDR} !^76\.127i\.154\.
+  RewriteCond %{REMOTE_ADDR} !^76\.127\.154\.
   # Peter Home
   RewriteCond %{REMOTE_ADDR} !^96\.241\.49\.
   RewriteRule ^(.*)$ http://www.savebigbread.com/$1 [R=301,L]
