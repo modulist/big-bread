@@ -124,16 +124,38 @@ class UsersController extends AppController {
       $this->User->set( $this->data );
     }
     
-    # Populate the available user types
-    $userTypes = $this->User->UserType->find(
-      'list',
+    $technologies = $this->User->TechnologyWatchList->Technology->TechnologyGroup->find(
+      'all',
       array(
-        'contain'    => false,
-        'conditions' => array( 'selectable' => 1, 'deleted' => 0 ),
-        'order' => 'name'
+        'contain'    => array(
+          'Technology' => array(
+            'fields' => array(
+              'Technology.id',
+              'Technology.name',
+            ),
+            'conditions' => array(
+              'Technology.display' => 1,
+            ),
+            'order' => array(
+              'Technology.name',
+            )
+          )
+        ),
+        'fields'     => array(
+          'TechnologyGroup.id',
+          'TechnologyGroup.name',
+          'TechnologyGroup.display_order',
+        ),
+        'conditions' => array(
+          'TechnologyGroup.display' => 1,
+        ),
+        'order'   => array(
+          'TechnologyGroup.display_order',
+        )
       )
     );
-    $this->set( compact( 'userTypes' ) );
+  
+    $this->set( compact( 'technologies' ) );
   }
 
   /**

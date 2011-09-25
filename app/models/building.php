@@ -44,9 +44,6 @@ class Building extends AppModel {
 		'Occupant' => array(
       'dependent' => true,
     ),
-		'Questionnaire' => array(
-      'dependent' => true,
-    ),
   );
 	public $hasMany = array(
     'BuildingProduct' => array(

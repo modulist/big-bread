@@ -35,6 +35,14 @@ class User extends AppModel {
     'Proposal' => array(
       'dependent' => true,
     ),
+    'TechnologyWatchList' => array(
+      'className'  => 'WatchList',
+      'foreignKey' => 'foreign_key',
+      'conditions' => array(
+        'model' => 'Technology',
+      ),
+      'dependent'  => true,
+    )
   );
   
   public $actsAs = array(
