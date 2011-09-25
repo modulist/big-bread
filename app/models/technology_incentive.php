@@ -78,13 +78,16 @@ class TechnologyIncentive extends AppModel {
    * Retrieves a set of incentives for a given zip code. Optionally,
    * this list may be limited to a specific set of technologies.
    *
-   * @param 	$zip_code
+   * @param 	$zip_codes      mixed One or more zip codes to filter on
    * @param   $technology_ids mixed A technology id or array of technology ids
    * @param   $group          bool  Whether to include/group by the tech group
    * @return	array
    * @access	public
    */
-  public function all( $zip_code, $technology_ids = array(), $group = true ) {
+  public function all( $zip_codes, $technology_ids = array(), $group = true ) {
+    if( !is_array( $zip_codes ) ) {
+      $zip_codes = array( $zip_codes );
+    }
     if( !is_array( $technology_ids ) ) {
       $technology_ids = array( $technology_ids );
     }
@@ -97,7 +100,7 @@ class TechnologyIncentive extends AppModel {
         'Incentive.expiration_date' => null, 
         'Incentive.expiration_date >= ' => date( DATE_FORMAT_MYSQL ),
       ),
-      'OR' => self::geo_scope_conditions( $zip_code ),
+      'OR' => self::geo_scope_conditions( $zip_codes ),
     );
     
     if( !empty( $technology_ids ) ) {
@@ -152,7 +155,7 @@ class TechnologyIncentive extends AppModel {
           ),
         ),
         'conditions' => $conditions,
-        'order' => $order,
+        'order'      => $order,
       )
     );
     
@@ -481,22 +484,22 @@ class TechnologyIncentive extends AppModel {
    * The resulting array of conditions will have to be OR'd where
    * used. e.g. 'OR' => $this->geo_scope_conditions( $zip_code )
    *
-   * @param 	$zip_code
-   * @return	array   An array ready for use in find conditions
+   * @param 	$zip_codes  
+   * @return	array       An array ready for use in find conditions
    * @access	public
    */
-  static public function geo_scope_conditions( $zip_code ) {
+  static public function geo_scope_conditions( $zip_codes ) {
     $Incentive = ClassRegistry::init( 'Incentive' );
     
     # Which state owns this zip code?
-    $state = $Incentive->ZipCode->field( 'state', array( 'ZipCode.zip' => $zip_code ) );
+    $state = $Incentive->ZipCode->field( 'state', array( 'ZipCode.zip' => $zip_codes ) );
     
     # Which incentives are specific to this zip
     $zip_code_incentives = $Incentive->ZipCodeIncentive->find(
       'all',
       array(
         'fields' => array( 'DISTINCT ZipCodeIncentive.incentive_id'),
-        'conditions' => array( 'ZipCodeIncentive.zip' => $zip_code ),
+        'conditions' => array( 'ZipCodeIncentive.zip' => $zip_codes ),
       )
     );
     # Formatted in a nicely indexed array

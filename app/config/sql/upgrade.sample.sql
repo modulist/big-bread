@@ -24,7 +24,8 @@ CREATE TABLE watch_lists(
   CONSTRAINT fk__watch_lists__technologies FOREIGN KEY( foreign_key )
     REFERENCES technologies( id )
     ON UPDATE CASCADE
-    ON DELETE CASCADE
+    ON DELETE CASCADE,
+  CONSTRAINT uix_watch_lists UNIQUE INDEX( user_id, foreign_key, model )
 ) ENGINE=InnoDB;
 
 ALTER TABLE users

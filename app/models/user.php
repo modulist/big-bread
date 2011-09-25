@@ -389,11 +389,13 @@ class User extends AppModel {
   public function watch_technology( $technology_id, $user_id = null ) {
     $user_id = !empty( $user_id ) ? $user_id : self::get( 'id' );
     
-    # TODO: implement.
-    throw new Exception( 'User::watch_technology() has not be implemented.' );
+    $data = array(
+      'user_id'     => $user_id,
+      'foreign_key' => $technology_id,
+      'model'       => 'Technology',
+    );
     
-    # TODO: Return appropriate value
-    return false;
+    return $this->TechnologyWatchList->save( $data );
   }
   
   /**
@@ -407,28 +409,35 @@ class User extends AppModel {
   public function unwatch_technology( $technology_id, $user_id = null ) {
     $user_id = !empty( $user_id ) ? $user_id : self::get( 'id' );
     
-    # TODO: implement.
-    throw new Exception( 'User::unwatch_technology() has not be implemented.' );
+    $watch_list_id = $this->TechnologyWatchList->field(
+      'id',
+      array(
+        'TechnologyWatchList.foreign_key' => $technology_id,
+        'TechnologyWatchList.user_id'     => $user_id,
+        'TechnologyWatchList.model'       => 'Technology',
+      )
+    );
     
-    # TODO: Return appropriate value
-    return false;
+    return $this->TechnologyWatchList->delete( $watch_list_id );
   }
   
   /**
-   * Retrieves a user's watched technology list.
+   * Retrieves the incentives relevant to a given user's list of
+   * watched technologies.
    *
    * @param 	$user_id
    * @return	array
    * @access	public
    */
-  public function watched_technologies( $user_id = null, $limit = null ) {
+  public function rebates( $user_id = null, $limit = null ) {
     $user_id = !empty( $user_id ) ? $user_id : self::get( 'id' );
     
     # TODO: implement.
     throw new Exception( 'User::watched_technologies() has not be implemented.' );
-    
-    # Pulled watched_technologies.technology_id
-    # Get list.
+  
+    # Pull technology IDs in user's TechnologyWatchList
+    # Which location or locations are we interested in?
+    # Call TechnologyIncentive->all() to get rebates
   }
   
   /**
