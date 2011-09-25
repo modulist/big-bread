@@ -43,6 +43,47 @@ class Technology extends AppModel {
    */
   
   /**
+   * Returns a list of technologies to be displayed grouped by their
+   * containing TechnologyGroup.
+   *
+   * @param   $
+   * @return  array
+   * @access  public
+   */
+  public function grouped() {
+    return $this->TechnologyGroup->find(
+      'all',
+      array(
+        'contain'    => array(
+          'Technology' => array(
+            'fields' => array(
+              'Technology.id',
+              'Technology.name',
+            ),
+            'conditions' => array(
+              'Technology.display' => 1,
+            ),
+            'order' => array(
+              'Technology.name',
+            )
+          )
+        ),
+        'fields'     => array(
+          'TechnologyGroup.id',
+          'TechnologyGroup.name',
+          'TechnologyGroup.display_order',
+        ),
+        'conditions' => array(
+          'TechnologyGroup.display' => 1,
+        ),
+        'order'   => array(
+          'TechnologyGroup.display_order',
+        )
+      )
+    );
+  }
+  
+  /**
    * Retrieves incentive information for a given technology and a
    * given zip code.
    *
@@ -61,6 +102,7 @@ class Technology extends AppModel {
    * @param 	$technology_id
    * @return	array
    * @access	public
+   * @todo    Remove this. No longer required?
    */
   public function energy_sources( $technology_id ) {
     return $this->EnergySource->find(
