@@ -6,7 +6,7 @@ class AppController extends Controller {
     'Auth' => array(
       'authorize'     => 'controller',
       'fields'        => array( 'username' => 'email', 'password' => 'password' ),
-      'userScope'     => array( 'User.deleted' => 0 ),
+      'userScope'     => array( 'User.active' => 1 ),
       'loginRedirect' => array(
         'controller' => 'users',
         'action'     => 'dashboard',
@@ -21,17 +21,6 @@ class AppController extends Controller {
     'RequestHandler',
     'Session'
   );
-  
-  /**
-   * Constructor
-   *
-   * @access	public
-   */
-  public function __construct( $id = false, $table = null, $ds = null ) {
-    parent::__construct( $id, $table, $ds );
-  
-
-  }
   
   /**
    * OVERRIDES

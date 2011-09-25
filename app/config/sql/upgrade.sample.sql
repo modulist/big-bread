@@ -30,6 +30,7 @@ CREATE TABLE watch_lists(
 ALTER TABLE users
   DROP deleted,
   DROP show_questionnaire_instructions,
+  ADD active boolean NOT NULL DEFAULT 1 AFTER last_login,
   ADD zip_code char(5) NULL AFTER password,
   ADD CONSTRAINT fk__users__us_zipcode FOREIGN KEY( zip_code )
     REFERENCES us_zipcode( zip )
