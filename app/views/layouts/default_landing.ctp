@@ -39,7 +39,7 @@
 	    		
 	        <?php # TODO: Replace this with form helper ?>
 	        <form>
-	          <input type="text" id="zipcode" name="zipcode" value="33156" />
+	          <input type="text" id="zipcode" name="zipcode" value="<?php echo $this->Session->read( 'default_zip_code' ) ?>" />
 	          <input type="submit" id="zipcode-submit" value="Enter&rsaquo;" alt="Enter" />
 	        </form>
 	      	<p><?php __( 'Not from <strong>33156</strong>? Update your zip code above' ) ?></p>

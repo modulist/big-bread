@@ -73,6 +73,28 @@ class AppController extends Controller {
     if( !empty( $user ) ) {
       Configure::write( 'User', $user[$this->Auth->getModel()->alias] );
     }
+    
+    # Get a default zip code if the user is anonymous or if, for whatever
+    # reason, the user does not have a default zip code value.
+    if( !$this->Session->check( 'default_zip_code' ) ) {
+      if( empty( $user ) || empty( $user[$this->Auth->getModel()->alias]['zip_code'] ) ) {
+        $client_ip = $this->RequestHandler->getClientIP();
+        $response  = ClassRegistry::init( 'HttpSocket', 'Core' )->get(
+          'http://api.ipinfodb.com/v3/ip-city/',
+          'key=' . APIKEY_IPINFODB . '&ip=' . $client_ip . '&format=json'
+        );
+        $response = json_decode( $response, true );
+        
+        $default_zip_code = strlen( preg_replace( '/[^\d]/', '', $response['zipCode'] ) ) > 0
+          ? preg_replace( '/[^\d]/', '', $response['zipCode'] )
+          : '21224';
+      }
+      else {
+        $default_zip_code = $user[$this->Auth->getModel()->alias]['zip_code'];
+      }
+      
+      $this->Session->write( 'default_zip_code', $default_zip_code );
+    }
 
     /**
      * If data is being submitted, then attach the user data to it

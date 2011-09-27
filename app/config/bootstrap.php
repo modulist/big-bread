@@ -49,6 +49,9 @@
  *
  */
 
+# Any API keys or similar data
+define( 'APIKEY_IPINFODB', 'f3f849970d5353c1de35ec39d8c2e6b2c355360193f84b0bb693b78d9cbc4b7c' );
+
 # DATE/TIME FORMATTING CONSTANTS
 define( 'DATE_FORMAT_SHORT', 'm/d/Y' );
 define( 'DATE_FORMAT_LONG_WITH_DAY', 'l, F j, Y' );
