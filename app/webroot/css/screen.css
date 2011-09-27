@@ -459,11 +459,15 @@ option { padding: 0 8px; line-height: 24px; }
 /* ============================= homepage ====================== */
 body.front { }
 body.front h2 {margin-top: 0;}
-body.front h3 {margin-top: 0;font-size: 18px;}
-body.front #content-top {margin-top:30px;margin-left:0px; background: url(../img/home-content-top-background.png) top no-repeat; height:377px; width:1000px;}
+body.front h3 {margin-top: 0;font-size: 16px; color: #5c998f;}
+body.front #content-top {margin-top:30px;margin-left:0px; background: url(../img/home-content-top-background.png) top no-repeat; height: 494px; width: 1000px;}
+body.front #content-top-inner { background: url(../img/home-top-content-trees.png) 50px 255px no-repeat, url(../img/home-top-content-trees.png) right 255px no-repeat; }
 body.front #content-bottom { margin: auto; padding-left: 150px; width: 850px; background-color: white;}
-.branding {margin-top: 75px; margin-left:50px;}
-.background-elements {float: left; height:193px;margin-top:-62px;margin-left:232px;}
+.branding { margin-top: 75px; margin-left:50px;}
+body.front .branding { margin: 0;}
+body.front #logo { margin: 5px 0 0 22px;}
+body.front #slogan { margin: -180px 0 0 240px; font: 36px/1.0 'BirraStout'; color:#16433b; font-weight:normal; font-stretch: condensed; }
+
 .intro { width: 845px; margin: 5px auto 0 auto; font-weight:bold; line-height: 32px; }
 .intro p { 
 	padding: 0; font-size:14px; color:#999; line-height:1.3em; }
@@ -487,10 +491,16 @@ body.front #column-middle {margin-right: 45px;}
 body.front #content-bottom p { margin:0; padding: 5px 0; font-size: 14px; color: #595959; line-height: 1.3em; font-family: Georgia, "Times New Roman", serif; }   
 
 .slide-show {float: left;}
-.house-signup {margin-left:30px; margin-top:-160px;background: url(../img/home-top-content-house-background.png) top no-repeat; height:218px;width:373px;}
-.house-signup h2 {color: #000;font-size: 25px;text-align: center;padding-top:76px;}
-.house-signup input {color:#739b96; width:200px; height:29px;font: 15px/1.125 'UltraRegular';margin-left:36px;border: 1px solid #425c40; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; background-color: #afe8e1;}
-.house-signup .submit {width: 70px; height: 47px; float:right;border:none;background-color: transparent;margin-top:-76px;margin-right:24px;}
+.sample-rebate { width: 447px; height: 327px; margin: -13px 0 0 250px; padding: 90px 0 0; background: url(../img/sample-rebate-outer.png) no-repeat; text-align: center; }
+.sample-rebate p { color: #000; }
+.sample-rebate p.headline { font: 18px/1.25 'UltraRegular'; letter-spacing: .07em; color: #254a46; }
+.sample-rebate p.sample-rebate-amount { font: 48px/1.25 'UltraRegular'; letter-spacing: .1em; }
+.house-signup { width: 336px; height: 183px; margin: 0 0 0 54px; padding: 20px 0; background: url(../img/sample-rebate-inner.png) 0px 0px no-repeat;
+.house-signup #front { color:#5b776c; width:150px; height:50px;font: 30px/1 'UltraRegular';margin-left:36px;border: 1px solid #425c40; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; background-color: #afe8e1;}
+.house-signup input[type=submit],input[type=reset]{ border: 1px solid #4677a4; -moz-border-radius: 4px;-webkit-border-radius: 4px; -khtml-border-radius: 4px; border-radius: 4px; background: url(../img/bk-button.png) repeat-x #4a9dc0; color:#FFF; padding: 4px 30px; font-weight: bold; text-align: center !important; text-shadow: -1px -1px 1px #1a4b60; }
+
+body.front .login input { color:#739b96; width:200px; height:29px;font: 15px/1.125 'UltraRegular';margin-left:36px;border: 1px solid #425c40; border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; background-color: #afe8e1;}
+body.front .login .submit {width: 70px; height: 47px; float:right;border:none;background-color: transparent;margin-top:-76px;margin-right:24px;}
 
 
 .button-home {background: url(../img/home-blue-button.png) top no-repeat; width:178px; height:35px;margin-bottom: 12px;}

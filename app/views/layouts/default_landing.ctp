@@ -12,69 +12,97 @@
   <?php echo $this->Html->link( 'Signup Form', array( 'controller' => 'users', 'action' => 'register' ) ) ?>
   
   <div id="content-top" class="content-top grid_12">
-    <div class="branding">
-      <?php echo $this->Html->image( 'home-logo.png' ) ?>
-    </div>
-    
-    <div class="background-elements">
-      <?php echo $this->Html->image( 'home-top-content-trees.png' ) ?>
-    </div>
-    
-    <div class="slide-show">
-    	<div class="house-signup">
-        <h2><?php __( 'Start saving today!' ) ?></h2>
-        <?php # TODO: Replace this with form helper ?>
-        <form>
-          <input type="text" name="name" value="Your name" /><br />
-          <input type="text" name="email" value="Your email address"><br />
-          <input type="image" src="img/home-top-content-house-arrow.png" value="Submit" alt="Submit" class="submit">
-        </form>
+  	<div id="content-top-inner">
+	    <div class="branding">
+	    	<div id="logo"><?php echo $this->Html->image( 'logo-home-2.png' ) ?></div>
+	      <div id="slogan"><?php __( 'Save Big Bread with<br />home energy rebates.' ) ?></div>
+	    </div>
+	    
+	    <div class="sample-rebate">
+	    	<div class="house-signup">
+	      	<p class="headline"><?php __( 'We&#146;ve found more than' ) ?></p>
+	      	<p class="sample-rebate-amount"><?php __( '$6,130*' ) ?></p>
+	      	<p class="headline"><?php __( 'in savings in your area.' ) ?></p>
+	    		
+	        <?php # TODO: Replace this with form helper ?>
+	        <form>
+	          <input type="text" id="zipcode" name="zipcode" value="33156" />
+	          <input type="submit" value="Enter&rsaquo;" alt="Enter" />
+	        </form>
+	      	<p><?php __( 'Not from <strong>33156</strong>? Update your zip code above' ) ?></p>
+	      </div>  
     	</div>
     </div>
   </div> <!-- /#content-top -->
     
   <div id="content-bottom" class="content-bottom grid_10 clearfix">
     <div id="column-first" class="grid_3">
-      <h2><?php __( 'Replace an old appliance - and save!' ) ?></h2>
+      <h3><?php __( '*Here&#146;s how it works:' ) ?></h3>
       <div class="green-dot-divider">
         <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
-      </div>
-      <div class="button-home">
-        <div class="button-home-text"><?php __( 'Find rebates' ) ?></div>
-      </div>
+      </div>     
       
-      <?php echo $this->Html->image( 'appliance-icon.png', array( 'class' => 'floatRight' ) ) ?>
+      <?php //echo $this->Html->image( 'appliance-icon.png', array( 'class' => 'floatRight' ) ) ?>
       
-      <p><?php __( 'Need to replace an appliance, your A/C, windows, or any other piece of equipment in your home?' ) ?></p>   
-      <p><?php __( 'We&#146;ll help you find not one, but multiple rebates when you&#146;re looking for a replacement.' ) ?></p>
+      <p><?php __( 'There are $2 billion in energy credits and rebates available from utilities as well as federal, state, and local governments' ) ?></p>   
+      <p><?php __( 'Here are just some of the available rebates for HVAC systems in <br /><strong>Fort Lauderdale, FL</strong>:' ) ?></p>
+      <table class="rebates-preview">
+      	<tr class="odd">
+      		<td class="rebate-source">Florida Power and Light</td>
+      		<td class="rebate-amount">$1,930</td>
+      	</tr>
+      	<tr class="even">
+      		<td class="rebate-source">Lennox</td>
+      		<td class="rebate-amount">$1,200</td>      	
+      	</tr>
+      	<tr class="odd">
+      		<td class="rebate-source">Carrier Infinity</td>
+      		<td class="rebate-amount">$1,000</td>
+      	</tr>
+      	<tr class="even">
+      		<td class="rebate-source">Rheem</td>
+      		<td class="rebate-amount">$1,000</td>      	
+      	</tr>
+      	<tr class="odd">
+      		<td class="rebate-source">Trane</td>
+      		<td class="rebate-amount">$1,000</td>
+      	</tr>
+      </table>
+      <p><?php __( 'Enter our site and find more ways to save through rebates' ) ?></p>
     </div>    <!-- /#column-first -->
     
     <div id="column-middle" class="grid_3">
-      <h2><?php __( 'Set up a home profile for more savings.' ) ?></h2>
+      <h3><?php __( 'Find a contractor' ) ?></h3>
+      <div class="green-dot-divider">
+        <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
+      </div>      
+      <p><?php __( 'Big Bread can help you get quotes from contractors in your area &ndash; free of charge' ) ?></p>
+      
+      <?php //echo $this->Html->image( 'rebate-money-icon.png', array( 'class' => 'floatRight' ) ) ?>
+      
+      <h3><?php __( 'Redeem a rebate' ) ?></h3>
       <div class="green-dot-divider">
         <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
       </div>
-      <div class="button-home">
-        <div class="button-home-text"><?php __( 'Set up a profile' ) ?></div>
-      </div>    
+      <p><?php __( 'Tell us about your purchase and upload a scan of the invoice, and we&#146;ll handle the rest for you.' ) ?></p>
+
+      <div class="green-dot-divider">
+        <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
+      </div>
       
-      <p><?php __( 'Complete a profile of the equipment and appliances in your house, and you can be the first to know about recalls, and other rebates.' ) ?></p>
-      
-      <?php echo $this->Html->image( 'rebate-money-icon.png', array( 'class' => 'floatRight' ) ) ?>
-      
-      <p><?php __( 'There are $2 billion in rebates and other incentives waiting to be claimed by homeowners like you.' ) ?></p>
+      <div id="blog-link">
+        <h3><?php echo $this->Html->link( __( 'Read our blog &rsaquo;', true ), '/blog', array( 'escape' => false ) ) ?></h3>
+      </div><!-- /#blog-link -->
+
     </div>   <!-- /#column-middle -->
     
     
     
     <div id="column-last" class="grid_3">
-      <div class="green-dot-divider">
-        <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
-      </div>
       <div id="testimonials">
         <div class="testimonial-item">
           <div class="testimonial-quote">
-            <span class="testimonial-quote-mark">"</span>I never knew you could save this much!<span class="testimonial-quote-mark">"</span>
+            <span class="testimonial-quote-mark">&ldquo;</span>I never knew you could save this much!<span class="testimonial-quote-mark">&rdquo;</span>
           </div>
           <div class="testimonial-source">
             Annette B. , Washington, DC
@@ -83,7 +111,7 @@
         
         <div class="testimonial-item">
           <div class="testimonial-quote">
-            <span class="testimonial-quote-mark">"</span>Before Big Bread, I&#146;d  leave so much money on the table...<span class="testimonial-quote-mark">"</span>
+            <span class="testimonial-quote-mark">&ldquo;</span>Before Big Bread, I&#146;d  leave so much money on the table...<span class="testimonial-quote-mark">&rdquo;</span>
           </div>
           <div class="testimonial-source">
             Julian G., Orlando, FL
@@ -115,13 +143,6 @@
         </div> <!-- /icon-grid -->
       </div> <!-- /social media -->   
       
-      <div class="green-dot-divider">
-        <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
-      </div>
-      
-      <div id="blog-link">
-        <h3><?php echo $this->Html->link( __( 'Read our blog &rsaquo;', true ), '/blog', array( 'escape' => false ) ) ?></h3>
-      </div><!-- /#blog-link -->
 
     </div> <!-- /#column-last -->
 
