@@ -12,6 +12,19 @@
   <?php echo $this->Html->link( 'Signup Form', array( 'controller' => 'users', 'action' => 'register' ) ) ?>
   
   <div id="content-top" class="content-top grid_12">
+  	<div class="login-wrapper">
+  		Registered Users
+  		<div id="login-trigger"><a href="#">Log in &rsaquo;</a></div>
+  		<div id="login-popup" class="clearfix">
+  			<form>
+  				<div class="instructions">Log in as a registered user:</div>
+  				<input type="text" id="login-token-1" name="username" value="Email or username" />
+  				<input type="password" id="login-token-2" name="password" value="Password" />
+  				<input type="submit" value="Log in" />
+  				<div class="password-recovery">Don&#146;t have an account? <a href="/signup">Click here</a> to sign up.</div>
+  			</form>
+  		</div>
+  	</div>
   	<div id="content-top-inner">
 	    <div class="branding">
 	    	<div id="logo"><?php echo $this->Html->image( 'logo-home-2.png' ) ?></div>
@@ -27,7 +40,7 @@
 	        <?php # TODO: Replace this with form helper ?>
 	        <form>
 	          <input type="text" id="zipcode" name="zipcode" value="33156" />
-	          <input type="submit" value="Enter&rsaquo;" alt="Enter" />
+	          <input type="submit" id="zipcode-submit" value="Enter&rsaquo;" alt="Enter" />
 	        </form>
 	      	<p><?php __( 'Not from <strong>33156</strong>? Update your zip code above' ) ?></p>
 	      </div>  
@@ -45,7 +58,7 @@
       <?php //echo $this->Html->image( 'appliance-icon.png', array( 'class' => 'floatRight' ) ) ?>
       
       <p><?php __( 'There are $2 billion in energy credits and rebates available from utilities as well as federal, state, and local governments' ) ?></p>   
-      <p><?php __( 'Here are just some of the available rebates for HVAC systems in <br /><strong>Fort Lauderdale, FL</strong>:' ) ?></p>
+      <p><?php __( 'Here are just some of the available rebates for HVAC systems in <br /><span class="rebate-city">Fort Lauderdale, FL</span>:' ) ?></p>
       <table class="rebates-preview">
       	<tr class="odd">
       		<td class="rebate-source">Florida Power and Light</td>
