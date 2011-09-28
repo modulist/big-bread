@@ -33,7 +33,7 @@
 		<?php echo $this->Form->input( 'User.zip_code' ) ?>
 	</div>
 	<div class="grid_3 last zip-code-instructions">
-		<p>So we can find you rebates and discounts specific to your area</p>
+		<p>So we can find you rebates and discounts specific to your area.</p>
 	</div>
 </div>
 
