@@ -15,7 +15,7 @@
 	<div id="my-interests">
 		<h2>My Interests</h2>
 	  <p class="instructions">
-	  	Select as many categories of rebates as you like by clicking on the stars below. 
+	  	Select as many categories of rebates as you like by clicking on the stars below. You can always change this later.
 	  </p>
 		<div class="my-interests-grid clearfix">
 	  	<div class="column-first grid_3">
@@ -64,7 +64,7 @@
 	  </div>
 	</div><!-- /my interests-->
 
-  <div id="user-registration">
+  <div id="user-registration" class="grid_9">
   	<?php echo $this->element( '../users/_form' ) ?>
   </div>
 

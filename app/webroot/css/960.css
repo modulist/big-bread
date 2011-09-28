@@ -651,3 +651,7 @@ body {
 .container_16 {
   zoom: 1;
 }
+
+/* fix to remove extra padding from nested girds */
+.grid_9 .grid_3.first { margin-left: 0; }
+.grid_9 .grid_3.last { margin-right: 0; }
