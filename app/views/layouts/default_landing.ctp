@@ -115,7 +115,7 @@
       <div id="testimonials">
         <div class="testimonial-item">
           <div class="testimonial-quote">
-            <span class="testimonial-quote-mark">&ldquo;</span>I never knew you could save this much!<span class="testimonial-quote-mark">&rdquo;</span>
+            <div class="testimonial-quote-mark">&ldquo;</div>I never knew you could save this much!<div class="testimonial-quote-mark">&rdquo;</div>
           </div>
           <div class="testimonial-source">
             Annette B. , Washington, DC
@@ -124,7 +124,7 @@
         
         <div class="testimonial-item">
           <div class="testimonial-quote">
-            <span class="testimonial-quote-mark">&ldquo;</span>Before Big Bread, I&#146;d  leave so much money on the table...<span class="testimonial-quote-mark">&rdquo;</span>
+            <div class="testimonial-quote-mark">&ldquo;</div>Before Big Bread, I&#146;d  leave so much money on the table...<div class="testimonial-quote-mark">&rdquo;</div>
           </div>
           <div class="testimonial-source">
             Julian G., Orlando, FL

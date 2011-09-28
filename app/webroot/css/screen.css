@@ -38,7 +38,7 @@ a.toggle-form { color: #e48d3f; }
 p { margin:0; padding:0; }
 
 h1, #infohead { font: 30px/1.125 'BirraStout'; color:#0c4d54; font-weight:normal; margin: 0 0 10px 0; padding:0; line-height:1em; }
-h2 { font: 24px/1.125 'UltraRegular'; color:#0c4d54; margin: 1.75em 0 0.25em; }
+h2 { font: 24px/1.125 'UltraRegular'; color:#0c4d54; margin: 1.75em 0 0.25em; letter-spacing: .07em; }
 aside h2 { font-size: 14px; }
 h3 { font: 21px/1.125 'UltraRegular'; color:#0c4d54; margin: 1.75em 0 0.25em; }
 h4 { font: 18px/1.125 'UltraRegular'; color:#0c4d54; margin: 1.75em 0 0.25em; }
@@ -323,6 +323,7 @@ input.placeholder, :-moz-placeholder { color: #bbb !important; }
 .error .form-error{ border:2px solid #d63301 !important; }
 .form { width: 70%; margin: 30px auto; }
 .required label:before { content: '* '; color: #e70000; }
+span.input.text.required { color: #e70000; }
 .error, .error-message { color: #d63301; }
 
 div.input{ margin: 20px 0; }
@@ -333,6 +334,8 @@ input[type=radio] { margin: 0 4px 0 25px; border: 0 none; }
 
 input[type=text], input[type=password],
 textarea { width: 300px; background-color: #FFF; border: 1px solid #8ed7c8; -moz-border-radius: 4px; -webkit-border-radius: 4px; -khtml-border-radius:4px; border-radius: 4px; box-shadow: 0px 0px 5px  #8ed7c8; }
+#UserRegisterForm .grid_3 { margin: 0 20px 0 0; }
+#UserRegisterForm input[type=text], #UserRegisterForm input[type=password] { width: 220px; }
 label { color: #0c4d54; font-weight: bold; font-size: 14px; display:inline; }
 div.input label { display: block; }
 div.checkbox label, div.radio label { display: inline; }
@@ -370,6 +373,10 @@ option { padding: 0 8px; line-height: 24px; }
   margin-right: 20px;
 }
 
+/* ============================= user messages ======================= */
+#messages { margin-top: 40px; padding: 10px 0 20px 120px; background: url(../img/handyman.png) 15px top no-repeat, url(../img/dotrule-green-4px.png) bottom left repeat-x; min-height: 105px; }
+#messages p { font: 18px/24px Georgia, sans-serif; color: #57550f;}
+
 /* Contractor registration bits */
 #county_list, #county_list ol,
 #manufacturer_lists, #manufacturer_lists ol { list-style: none;
@@ -384,6 +391,20 @@ option { padding: 0 8px; line-height: 24px; }
 #manufacturer_lists ol li { float: none;
   margin-right: 0;
 }
+
+table.my-interests { width: 700px; font-size: 14px; color: #0c4d54; padding: 5px 0 10px; margin: 10px 0 40px; background: url(../img/dotrule-green-4px.png) top left repeat-x, url(../img/dotrule-green-4px.png) bottom left repeat-x; }
+.my-interests tr { vertical-align: top; }
+.my-interests td { width: 210px; padding-right: 20px; }
+.my-interests td.last { padding-right: 0; }
+.my-interests h4 { padding: 10px 0 10px 10px; margin: 0 0 4px; font-size: 14px; background: url(../img/dotrule-orange-2px.png) bottom repeat-x; letter-spacing: .06em; }
+.my-interests ul { padding: 0; margin: 0 0 10px; }
+.my-interests li,
+.my-interests li.not-starred{ padding: 2px 0 2px 30px; list-style: none inside;  background: url(../img/sprite-rebate-table.png) -4px -7px no-repeat; }
+.my-interests li:hover { background: url(../img/sprite-rebate-table.png) -4px -27px no-repeat rgba(143, 212, 105, 0.25); }
+.my-interests li.starred{ background: url(../img/sprite-rebate-table.png) -4px -27px no-repeat rgba(143, 212, 105, 0.1); }
+
+#user-registration { background: url(../img/dotrule-green-4px.png) bottom left repeat-x; }
+
 
 /* ============================= Join ======================= */
 #join { background-color: #C2D89A; }
@@ -534,10 +555,10 @@ body.front .footer-menu, body.front .footer-menu a {color: #d5f1c6; font: 11px/1
 body.front .copyright {color: #000; font: 11px/1.125 Georgia, "Times New Roman", serif;text-align: right;}
 
 .testimonial-item {margin-top: 6px; margin-bottom: 12px;}
-.testimonial-quote {color: #5c998f; font: 14px/1.125 'UltraRegular'; font-weight:normal; letter-spacing 0.05em;margin-bottom: 6px;}
-.testimonial-source {color:#595959; font: 11px/1.125 Georgia, "Times New Roman", serif; }
-.testimonial-quote-mark {color: #82ac6e; font:Georgia, "Times New Roman", serif; padding:2px;}
-.add-story {color: #058871; font: 16/1.125 Georgia, "Times New Roman", serif; font-weight:bold;}
+.testimonial-quote { color: #5c998f; font: 14px/1.125 'UltraRegular'; font-weight:normal; letter-spacing 0.05em;margin-bottom: 6px; text-indent: -17px; padding-left: 17px; }
+.testimonial-source {color:#595959; font: 11px/1.125 Georgia, "Times New Roman", serif; padding-left: 17px; }
+.testimonial-quote-mark { height: 12px; display: inline; vertical-align: -6px; color: #82ac6e; font: 24px/12px 'UltraRegular', serif; padding:2px;}
+.add-story {color: #058871; font: 16/1.125 Georgia, "Times New Roman", serif; font-weight:bold; padding-left: 17px; }
 #microphone {float: left;}
 #google-plus {float:left;}
 #facebook {float:left;}
