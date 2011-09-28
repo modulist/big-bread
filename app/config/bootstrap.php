@@ -50,7 +50,7 @@
  */
 
 # Any API keys or similar data
-define( 'APIKEY_IPINFODB', 'f3f849970d5353c1de35ec39d8c2e6b2c355360193f84b0bb693b78d9cbc4b7c' );
+define( 'APIKEY_IPINFODB', 'f3f849970d5353c1de35ec39d8c2e6b2c355360193f84b0bb693b78d9cbc4b7c' ); # http://ipinfodb.com
 
 # DATE/TIME FORMATTING CONSTANTS
 define( 'DATE_FORMAT_SHORT', 'm/d/Y' );
