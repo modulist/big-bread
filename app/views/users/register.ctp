@@ -2,7 +2,7 @@
 
 <!-- Messaging area -->
 
-<div id="messages">
+<div id="messages" class="grid_9">
 	<h1>Let&#146;s find rebates in your area</h1>
 	<p>First,  you&#146;ll have to help us out by letting us know what kinds of rebates you&#146;re interested in.</p>
 </div>
@@ -12,8 +12,8 @@
   <?php echo $this->Form->input( 'User.invite_code', array( 'type' => 'hidden' ) ) ?>
   
 	<!-- my interests -->
-	<div id="my-interests">
-		<h2>My Interests</h2>
+	<div id="my-interests" class="grid_9">
+		<h2>What are you interested in?</h2>
 	  <p class="instructions">
 	  	Select as many categories of rebates as you like by clicking on the stars below. You can always change this later.
 	  </p>

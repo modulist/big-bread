@@ -164,8 +164,9 @@ body.onecolumn #content { background: #FFFFFF; min-height:400px; padding: 50px 6
 #address-panel-nav .next { float: right; }
 
 /* ============================= content ===================== */
+#content, #content.grid_9 { width: 718px; margin: 0 0 0 220px; padding: 0 20px; background: #fff; border: 1px solid white; border-radius: 20px; -moz-border-radius: 20px; }
+
 /* claudio: most of these classes can be scraped */
-#content { background: #fff; border: 1px solid white; border-radius: 20px; -moz-border-radius: 20px; margin: 0 0 0 240px; padding: 0 20px; }
 #contentheader { border-bottom: 1px solid #aaa; padding: 10px 0 0 30px; font:14px/15px Arial, Helvetica, sans-serif; color:#666; width:662px; }
 #contentheader p { font-size:15px; }
 #contentheader li, #contentheader a { color:#619300; padding: 1px 0 7px 0;list-style:none;font-size:12px; }
@@ -374,6 +375,7 @@ option { padding: 0 8px; line-height: 24px; }
 
 /* ============================= user messages ======================= */
 #messages { margin-top: 40px; padding: 10px 0 20px 120px; background: url(../img/handyman.png) 15px top no-repeat, url(../img/dotrule-green-4px.png) bottom left repeat-x; min-height: 105px; }
+#messages.grid_9 { padding: 10px 0 20px 120px; width: 580px; }
 #messages p { font: 18px/24px Georgia, sans-serif; color: #57550f;}
 
 /* Contractor registration bits */
@@ -392,9 +394,8 @@ option { padding: 0 8px; line-height: 24px; }
 }
 
 /* ============================= User signup ======================= */
-
-#my-interests { padding-left: 10px; }
-.my-interests-grid { width: 700px; font-size: 14px; color: #0c4d54; padding: 5px 0 10px; margin: 10px 0 40px; background: url(../img/dotrule-green-4px.png) top left repeat-x, url(../img/dotrule-green-4px.png) bottom left repeat-x; }
+#my-interests { padding: 0 10px; }
+.my-interests-grid { font-size: 14px; color: #0c4d54; padding: 5px 0 30px; margin: 10px -10px 0; background: url(../img/dotrule-green-4px.png) bottom left repeat-x; }
 .my-interests-grid .grid_3 { width: 210px; margin: 0 20px 0 0;}
 .my-interests-grid h4 { padding: 10px 0 10px 10px; margin: 0 0 4px; font-size: 14px; background: url(../img/dotrule-orange-2px.png) bottom left repeat-x; letter-spacing: .1em; }
 .my-interests-grid ul { padding: 0; margin: 0 0 10px; }
@@ -410,8 +411,10 @@ option { padding: 0 8px; line-height: 24px; }
 #UserRegisterForm .zip-code label:before { content: "Your "; text-transform: capitalize; color: #0c4d54; }
 #UserRegisterForm .zip-code input { font: 24px/1 'UltraRegular', Georgia, serif; color: #548287; padding-left:10px; }
 #UserRegisterForm .zip-code-instructions { padding-top: 54px; }
+#UserRegisterForm .submit { width: 700px; margin: 0 10px; }
 #UserRegisterForm input[type="submit"] { width: 220px; height: 40px; margin: 20px 0 40px 10px; }
-#user-registration { background: url(../img/dotrule-green-4px.png) bottom left repeat-x; padding: 0 0 20px; }
+
+#user-registration { background: url(../img/dotrule-green-4px.png) bottom left repeat-x; padding: 0 10px 20px; }
 #user-registration h4 { padding-left: 10px;}
 
 /* ============================= Join ======================= */
