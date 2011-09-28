@@ -10,7 +10,7 @@
 			<a href="#user-registration">Create my Big Bread account</a>
 		</li>
 		<li class="">
-			<a href="#UserZipCode">Utility-providers</a>
+			<a href="#UserZipCode">Your zip code</a>
 		</li>
   </ul>
 </div>
