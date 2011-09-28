@@ -398,10 +398,9 @@ table.my-interests { width: 700px; font-size: 14px; color: #0c4d54; padding: 5px
 .my-interests td.last { padding-right: 0; }
 .my-interests h4 { padding: 10px 0 10px 10px; margin: 0 0 4px; font-size: 14px; background: url(../img/dotrule-orange-2px.png) bottom repeat-x; letter-spacing: .06em; }
 .my-interests ul { padding: 0; margin: 0 0 10px; }
-.my-interests li,
-.my-interests li.not-starred{ padding: 2px 0 2px 30px; list-style: none inside;  background: url(../img/sprite-rebate-table.png) -4px -7px no-repeat; }
+.my-interests li { padding: 2px 0 2px 30px; list-style: none inside;  background: url(../img/sprite-rebate-table.png) -4px -7px no-repeat; }
 .my-interests li:hover { background: url(../img/sprite-rebate-table.png) -4px -27px no-repeat rgba(143, 212, 105, 0.25); }
-.my-interests li.starred{ background: url(../img/sprite-rebate-table.png) -4px -27px no-repeat rgba(143, 212, 105, 0.1); }
+.my-interests li.active { background: url(../img/sprite-rebate-table.png) -4px -27px no-repeat rgba(143, 212, 105, 0.1); }
 
 #user-registration { background: url(../img/dotrule-green-4px.png) bottom left repeat-x; }
 

@@ -23,7 +23,7 @@
 	    	<td class="column-first">
 	      	<h4>Heating and Cooling</h4>
 	        <ul>
-	        	<li class="starred"><a href="#">Air conditioner</a></li>
+	        	<li class="active"><a href="#">Air conditioner</a></li>
 	        	<li><a href="#">Boiler</a></li>
 	        	<li><a href="#">Furnace</a></li>
 	        	<li><a href="#">Heat Pump</a></li>
@@ -41,9 +41,9 @@
 	      	<h4>Kitchen</h4>
 	        <ul>
 	        	<li><a href="#">Refrigerator</a></li>
-	        	<li class="starred"><a href="#">Freezer</a></li>
+	        	<li class="active"><a href="#">Freezer</a></li>
 	        	<li><a href="#">Range/cooktop/oven</a></li>
-	        	<li class="starred"><a href="#">Dishwasher</a></li>
+	        	<li class="active"><a href="#">Dishwasher</a></li>
 	        </ul>
 	      	<h4>Laundry</h4>
 	        <ul>
