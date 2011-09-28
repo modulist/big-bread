@@ -42,7 +42,7 @@
 	          <input type="text" id="zipcode" name="zipcode" value="<?php echo $this->Session->read( 'default_zip_code' ) ?>" />
 	          <input type="submit" id="zipcode-submit" value="Enter&rsaquo;" alt="Enter" />
 	        </form>
-	      	<p><?php __( 'Not from <strong>33156</strong>? Update your zip code above' ) ?></p>
+	      	<p><?php printf( __( 'Not from %s%d%s? Update your zip code above', true ), '<strong>', $this->Session->read( 'default_zip_code' ), '</strong>' ) ?></p>
 	      </div>  
     	</div>
     </div>
