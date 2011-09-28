@@ -13,58 +13,55 @@
   
 	<!-- my interests -->
 	<div id="my-interests">
-		<h2>What are you interested in?</h2>
+		<h2>My Interests</h2>
 	  <p class="instructions">
-	  	Select as many categories of rebates as you like by clicking on the stars below. <br />
-	  	You can always change this later.
+	  	Select as many categories of rebates as you like by clicking on the stars below. 
 	  </p>
-		<table class="my-interests">
-	  	<tr>
-	    	<td class="column-first">
-	      	<h4>Heating and Cooling</h4>
-	        <ul>
-	        	<li class="active"><a href="#">Air conditioner</a></li>
-	        	<li><a href="#">Boiler</a></li>
-	        	<li><a href="#">Furnace</a></li>
-	        	<li><a href="#">Heat Pump</a></li>
-	        	<li><a href="#">Space heaters</a></li>
-	        	<li><a href="#">Ducts</a></li>
-	        </ul>
-	        <h4>Building shell</h4>
-	        <ul>
-	        	<li><a href="#">Windows</a></li>
-	        	<li><a href="#">Doors</a></li>
-	        	<li><a href="#">Roof</a></li>
-	        </ul>
-	      </td>
-	    	<td class="column-middle">
-	      	<h4>Kitchen</h4>
-	        <ul>
-	        	<li><a href="#">Refrigerator</a></li>
-	        	<li class="active"><a href="#">Freezer</a></li>
-	        	<li><a href="#">Range/cooktop/oven</a></li>
-	        	<li class="active"><a href="#">Dishwasher</a></li>
-	        </ul>
-	      	<h4>Laundry</h4>
-	        <ul>
-	        	<li><a href="#">Washer</a></li>
-	        	<li><a href="#">Dryer</a></li>
-	        </ul>
-	      </td>
-	    	<td class="column-last">
-	      	<h4>Hot Water</h4>
-	        <ul>
-	        	<li><a href="#">Water heater</a></li>
-	        	<li><a href="#">Solar water heater</a></li>
-	        </ul>
-	      	<h4>Lighting</h4>
-	        <ul>
-	        	<li><a href="#">Light bulbs</a></li>
-	        	<li><a href="#">Light fixtures</a></li>
-	        </ul>
-	      </td>
-	    </tr>
-	  </table>
+		<div class="my-interests-grid clearfix">
+	  	<div class="column-first grid_3">
+	    	<h4>Heating and Cooling</h4>
+	      <ul>
+	      	<li class="active"><a href="#">Air conditioner</a></li>
+	      	<li><a href="#">Boiler</a></li>
+	      	<li><a href="#">Furnace</a></li>
+	      	<li><a href="#">Heat Pump</a></li>
+	      	<li><a href="#">Space heaters</a></li>
+	      	<li><a href="#">Ducts</a></li>
+	      </ul>
+	      <h4>Building shell</h4>
+	      <ul>
+	      	<li><a href="#">Windows</a></li>
+	      	<li><a href="#">Doors</a></li>
+	      	<li><a href="#">Roof</a></li>
+	      </ul>
+	    </div>
+	  	<div class="column-middle grid_3">
+	    	<h4>Kitchen</h4>
+	      <ul>
+	      	<li><a href="#">Refrigerator</a></li>
+	      	<li class="active"><a href="#">Freezer</a></li>
+	      	<li><a href="#">Range/cooktop/oven</a></li>
+	      	<li class="active"><a href="#">Dishwasher</a></li>
+	      </ul>
+	    	<h4>Laundry</h4>
+	      <ul>
+	      	<li><a href="#">Washer</a></li>
+	      	<li><a href="#">Dryer</a></li>
+	      </ul>
+	    </div>
+	  	<div class="column-last grid_3">
+	    	<h4>Hot Water</h4>
+	      <ul>
+	      	<li><a href="#">Water heater</a></li>
+	      	<li><a href="#">Solar water heater</a></li>
+	      </ul>
+	    	<h4>Lighting</h4>
+	      <ul>
+	      	<li><a href="#">Light bulbs</a></li>
+	      	<li><a href="#">Light fixtures</a></li>
+	      </ul>
+	    </div>
+	  </div>
 	</div><!-- /my interests-->
 
   <div id="user-registration">
