@@ -8,7 +8,7 @@
  */
 ?>
 <h2>Now, let&#146;s create your Big Bread account:</h2>
-<span class="input text required">*</span> Indicates required fields
+<p><span class="input text required">*</span> Indicates required fields</p>
 <div class="clearfix">
 	<div class="grid_3">
 		<?php echo $this->Form->input( 'User.first_name', array( 'placeholder' => 'Your first name' ) ) ?>
@@ -28,7 +28,7 @@
 </div>
 
 <div class="clearfix">
-	<div class="grid_3">
+	<div class="grid_3 zip-code">
 		<?php echo $this->Form->input( 'User.zip_code' ) ?>
 	</div>
 </div>
