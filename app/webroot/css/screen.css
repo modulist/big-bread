@@ -132,7 +132,7 @@ body.onecolumn #content { background: #FFFFFF; min-height:400px; padding: 50px 6
 #terms p { padding:10px 0; }
 
 /* ============================= sidebar ======================= */
-#sidebar{ position: fixed; top: 207px; margin: 0 0 0 20px; width:180px; border-top-left-radius: 20px; border-bottom-left-radius: 20px; -moz-border-top-left-radius: 20px; -moz-border-bottom-left-radius: 20px; background: #fff; padding: 0 20px 0; }
+#sidebar{ position: fixed; top: 207px; margin: 0 0 0 20px; width:180px; border-top-left-radius: 20px; border-bottom-left-radius: 20px; -moz-border-top-left-radius: 20px; -moz-border-bottom-left-radius: 20px; background: #fff; padding: 0 20px 0 30px; }
 #vertical-nav { width:190px; color:#0e6e76; padding: 20px 0 0; }
 #vertical-nav ul, #questionnaire_act ul, #questionnaire_nav ul{ list-style:none; }
 #vertical-nav ul { padding: 0; margin-top: 0; }
@@ -580,3 +580,6 @@ body.front .copyright {color: #000; font: 11px/1.125 Georgia, "Times New Roman",
 .icon {padding: 0 6px;}
 
 
+/*=========== temporary fixes and hidden objects ==========*/
+body.users.register .main-menu,
+body.users.register #nav-links { display:none; }
