@@ -145,7 +145,6 @@ class BuildingsController extends AppController {
    */
   public function questionnaire( $building_id = null, $anchor = null ) {
     $this->helpers[] = 'Form';
-    $this->layout    = 'sidebar';
 
     # All of the addresses associated with a given user (sidebar display)
     $addresses = $this->Building->Client->buildings( $this->Auth->user( 'id' ) );
@@ -340,8 +339,6 @@ class BuildingsController extends AppController {
    * @param   $technology_group_slug
    */
   public function incentives( $building_id = null, $technology_group_slug = null ) {
-    $this->layout = 'sidebar';
-    
     # All of the addresses associated with a given user (sidebar display)
     $addresses = $this->Building->Client->buildings( $this->Auth->user( 'id' ) );
     
