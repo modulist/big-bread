@@ -132,7 +132,7 @@ body.onecolumn #content { background: #FFFFFF; min-height:400px; padding: 50px 6
 #terms p { padding:10px 0; }
 
 /* ============================= sidebar ======================= */
-#sidebar{ position: fixed; top: 207px; margin: 0 0 0 20px; width:200px; border-top-left-radius: 20px; border-bottom-left-radius: 20px; -moz-border-top-left-radius: 20px; -moz-border-bottom-left-radius: 20px; background: #fff; padding: 0 20px 0; }
+#sidebar{ position: fixed; top: 207px; margin: 0 0 0 20px; width:180px; border-top-left-radius: 20px; border-bottom-left-radius: 20px; -moz-border-top-left-radius: 20px; -moz-border-bottom-left-radius: 20px; background: #fff; padding: 0 20px 0; }
 #vertical-nav { width:190px; color:#0e6e76; padding: 20px 0 0; }
 #vertical-nav ul, #questionnaire_act ul, #questionnaire_nav ul{ list-style:none; }
 #vertical-nav ul { padding: 0; margin-top: 0; }
@@ -164,7 +164,9 @@ body.onecolumn #content { background: #FFFFFF; min-height:400px; padding: 50px 6
 #address-panel-nav .next { float: right; }
 
 /* ============================= content ===================== */
-#content, #content.grid_9 { width: 718px; margin: 0 0 0 220px; padding: 0 20px; background: #fff; border: 1px solid white; border-radius: 20px; -moz-border-radius: 20px; }
+#content, #content.grid_9 { width: 700px; margin: 0 0 0 240px; padding: 0 20px; background: #fff; border-radius: 20px; -moz-border-radius: 20px; -webkit-border-radius: 20px; }
+.grid_9 .grid_9 { margin-left: 0; margin-right: 0; padding-left: 10px; padding-right: 10px; width: 680px; }
+.grid_9 .grid_9 .grid_3 { width: 210px; }
 
 /* claudio: most of these classes can be scraped */
 #contentheader { border-bottom: 1px solid #aaa; padding: 10px 0 0 30px; font:14px/15px Arial, Helvetica, sans-serif; color:#666; width:662px; }
@@ -334,7 +336,7 @@ input[type=checkbox] { margin-right: 7px; border: 0 none; }
 input[type=radio] { margin: 0 4px 0 25px; border: 0 none; }
 
 input[type=text], input[type=password],
-textarea { width: 300px; background-color: #FFF; border: 1px solid #8ed7c8; -moz-border-radius: 4px; -webkit-border-radius: 4px; -khtml-border-radius:4px; border-radius: 4px; box-shadow: 0px 0px 5px  #8ed7c8; }
+textarea { width: 210px; margin-right: 10px; background-color: #FFF; border: 1px solid #8ed7c8; -moz-border-radius: 4px; -webkit-border-radius: 4px; -khtml-border-radius:4px; border-radius: 4px; box-shadow: 0px 0px 5px  #8ed7c8; }
 
 label { color: #0c4d54; font-weight: bold; font-size: 14px; display:inline; }
 div.input label { display: block; }
@@ -342,7 +344,7 @@ div.checkbox label, div.radio label { display: inline; }
 fieldset { border: 0 none; margin: 0 0 10px 0; }
 fieldset div.cloneable { border-bottom: 1px solid #CCC; }
 
-input[type=submit],input[type=reset]{ border: 1px solid #4677a4; -moz-border-radius: 4px;-webkit-border-radius: 4px; -khtml-border-radius: 4px; border-radius: 4px; background: url(../img/bk-button.png) repeat-x #4a9dc0; color:#FFF; padding: 4px 30px; font-weight: bold; text-align: center !important; text-shadow: -1px -1px 1px #1a4b60; }
+input[type=submit],input[type=reset]{ border: 1px solid #4677a4; -moz-border-radius: 4px; -webkit-border-radius: 4px; -khtml-border-radius: 4px; border-radius: 4px; background: url(../img/bk-button.png) repeat-x #4a9dc0; color:#FFF; padding: 4px 30px; font-weight: bold; text-align: center !important; text-shadow: -1px -1px 1px #1a4b60; width: 210px; heigt: 40px; }
 input[type=submit]:hover,input[type=reset]:hover { background: url(../img/bk-button-over.png) repeat-x #4a9dc0; }
 .buttons { text-align:center !important; }
 .form .buttons { text-align:left; }
@@ -394,9 +396,9 @@ option { padding: 0 8px; line-height: 24px; }
 }
 
 /* ============================= User signup ======================= */
-#my-interests { padding: 0 10px; }
+#my-interests { }
 .my-interests-grid { font-size: 14px; color: #0c4d54; padding: 5px 0 30px; margin: 10px -10px 0; background: url(../img/dotrule-green-4px.png) bottom left repeat-x; }
-.my-interests-grid .grid_3 { width: 210px; margin: 0 20px 0 0;}
+.my-interests-grid .grid_3 { margin: 0 20px 0 0;}
 .my-interests-grid h4 { padding: 10px 0 10px 10px; margin: 0 0 4px; font-size: 14px; background: url(../img/dotrule-orange-2px.png) bottom left repeat-x; letter-spacing: .1em; }
 .my-interests-grid ul { padding: 0; margin: 0 0 10px; }
 .my-interests-grid li { padding: 2px 0 2px 30px; list-style: none inside;  background: url(../img/sprite-rebate-table.png) -4px -7px no-repeat; }
@@ -404,15 +406,16 @@ option { padding: 0 8px; line-height: 24px; }
 .my-interests-grid li.active{ background: url(../img/sprite-rebate-table.png) -4px -27px no-repeat rgba(143, 212, 105, 0.1); }
 
 #UserRegisterForm .grid_3 { margin: 0 10px 0 0; }
-#UserRegisterForm input[type=text], #UserRegisterForm input[type=password] { width: 220px; }
+#UserRegisterForm .grid_3 last { margin: 0; }
+#UserRegisterForm input[type=text], #UserRegisterForm input[type=password] { width: 200px; }
 #UserRegisterForm p { font: 14px/18px Georgia, serif; }
 #user-registration p { color: #0c4d54;}
 #UserRegisterForm .zip-code label { text-transform: lowercase; font: 21px/1 'UltraRegular', Georgia, serif; color: #0c4d54; padding: 0 0 6px 10px; }
 #UserRegisterForm .zip-code label:before { content: "Your "; text-transform: capitalize; color: #0c4d54; }
-#UserRegisterForm .zip-code input { font: 24px/1 'UltraRegular', Georgia, serif; color: #548287; padding-left:10px; }
+#UserRegisterForm .zip-code input { width: 195px; font: 24px/1 'UltraRegular', Georgia, serif; color: #548287; padding-left:10px; margin-right: 20px; }
 #UserRegisterForm .zip-code-instructions { padding-top: 54px; }
 #UserRegisterForm .submit { width: 700px; margin: 0 10px; }
-#UserRegisterForm input[type="submit"] { width: 220px; height: 40px; margin: 20px 0 40px 10px; }
+#UserRegisterForm input[type="submit"] { width: 210px; height: 40px; margin: 20px 0 40px; }
 
 #user-registration { background: url(../img/dotrule-green-4px.png) bottom left repeat-x; padding: 0 10px 20px; }
 #user-registration h4 { padding-left: 10px;}
