@@ -38,10 +38,10 @@ a.toggle-form { color: #e48d3f; }
 p { margin:0; padding:0; }
 
 h1, #infohead { font: 30px/1.125 'BirraStout'; color:#0c4d54; font-weight:normal; margin: 0 0 10px 0; padding:0; line-height:1em; }
-h2 { font: 24px/1.125 'UltraRegular'; color:#0c4d54; margin: 1.75em 0 0.25em; letter-spacing: .07em; }
+h2 { font: 24px/1.125 'UltraRegular'; color:#0c4d54; font-weight: normal; margin: 1.75em 0 0.25em; letter-spacing: .07em; }
 aside h2 { font-size: 14px; }
-h3 { font: 21px/1.125 'UltraRegular'; color:#0c4d54; margin: 1.75em 0 0.25em; letter-spacing: .07em }
-h4 { font: 18px/1.125 'UltraRegular'; color:#0c4d54; margin: 1.75em 0 0.25em; letter-spacing: .07em }
+h3 { font: 21px/1.125 'UltraRegular'; color:#0c4d54; font-weight: normal; margin: 1.75em 0 0.25em; letter-spacing: .07em }
+h4 { font: 18px/1.125 'UltraRegular'; color:#0c4d54; font-weight: normal; margin: 1.75em 0 0.25em; letter-spacing: .07em }
 h1 a, h2 a, h3 a, h4 a { color: #3d7e65  }
 
 h5 { font: 16px/1.125 Arial, Helvetica, sans-serif; font-weight: bold; margin: 2em 0 0.25em; }
@@ -51,6 +51,11 @@ h5 a, h6 a { color: #666;  }
 .hidden { display: none; }
 .loading { padding-left: 10px; }
 .loading .spinner { vertical-align: middle; }
+
+table { border-spacing: 0; }
+tr.odd { background-color: rgba(143, 212, 105, 0.1)/*#f4fbf0*/; border: none; }
+tr.even { background-color: transparent;  }
+tr:hover { background-color: rgba(143, 212, 105, 0.25); }
 
 .clear { clear:both; }
 .clearfix:after { visibility: hidden; display: block; font-size: 0; content: '.'; clear: both; height: 0; }
@@ -419,6 +424,28 @@ option { padding: 0 8px; line-height: 24px; }
 
 #user-registration { background: url(../img/dotrule-green-4px.png) bottom left repeat-x; padding: 0 10px 20px; }
 #user-registration h4 { padding-left: 10px;}
+
+/* ============================= Dashboard elements ======================= */
+
+#my-locations { font-size: 14px; padding-right: 0; }
+#my-locations h2 { margin: 40px 0 0; }
+#my-locations h4 { margin: 0 10px 10px 110px; font-size: 14px; background: url(/img/dotrule-orange-2px.png) bottom repeat-x; padding: 0 0 10px; }
+.location-wrapper { margin-top: 20px; }
+.location-icon { float:left; background: url(/img/icon-location.png) no-repeat; width: 87px; height: 45px; font: 14px/1 'BirraStout', serif; color: #0c4d54; text-align: center; padding: 23px 12px 0 0; letter-spacing: -.2em; }
+.location-address { float: left; width: 170px; margin: 0 10px; }
+.location-address p { font-weight: bold; color: #548287; line-height: 18px; }
+.location-equipment-grid.grid_5 { width: 360; margin-right: 0; }
+table.location-equipment { width: 100%; margin: 0 0 15px; }
+.location-equipment td { padding: 2px 5px; }
+.location-equipment td.model-name { width: 40%; }
+.location-equipment td.controls { width: 20%; font-size: 11px; letter-spacing: .06em; }
+.add-location-button { background-color: #4ac092; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; text-align: center; margin: 62px 0 0; padding: 3px 15px; float: right; }
+.edit-location-button { display: block; width: 48px; background: url(/img/bk-blue-popup.png) 42px -10px no-repeat #4c96b6; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; margin: 10px 0 0; padding: 4px 10px;  }
+.add-equipment-button { background-color: #4c96b6; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; text-align: center; margin: 10px 0 0; padding: 3px 15px; }
+.edit-location-button:hover,
+.add-equipment-button:hover { background-color: #3b7e9a; text-decoration: none; }
+
+
 
 /* ============================= Join ======================= */
 #join { background-color: #C2D89A; }

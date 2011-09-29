@@ -5,6 +5,7 @@
 
 <h1 class="printable"><?php __( 'Visit SaveBigBread.com for the latest in personalized discounts and information' ) ?></h1>
 
+<!-- my location html has been added to /app/views/elements/building_info.ctp to replace #contentheader -->
 <?php echo $this->element( 'building_info', array( 'data' => $building ) ) ?>
 
 <div id="contentbody">
