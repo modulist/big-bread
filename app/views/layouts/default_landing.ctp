@@ -8,21 +8,20 @@
 <!-- default_landing.ctp -->
   
 <div id="wrapper" class="container_12">
-  
-  <?php echo $this->Html->link( 'Signup Form', array( 'controller' => 'users', 'action' => 'register' ) ) ?>
-  
   <div id="content-top" class="content-top grid_12">
   	<div class="login-wrapper">
-  		Registered Users
-  		<div id="login-trigger"><a href="#">Log in &rsaquo;</a></div>
+  		<?php __( 'Registered Users' ) ?>
+  		<div id="login-trigger"><?php echo $this->Html->link( __( 'Log in &rsaquo;', true ), '#', array( 'escape' => false ) ) ?></div>
   		<div id="login-popup" class="clearfix">
-  			<form>
-  				<div class="instructions">Log in as a registered user:</div>
-  				<input type="text" id="login-token-1" name="username" value="Email or username" />
-  				<input type="password" id="login-token-2" name="password" value="Password" />
-  				<input type="submit" value="Log in" />
-  				<div class="password-recovery">Don&#146;t have an account? <a href="/signup">Click here</a> to sign up.</div>
-  			</form>
+        <?php echo $this->Form->create( 'User', array( 'action' => 'login', 'inputDefaults' => array( 'error' => false ) ) ) ?>
+          <?php echo $this->Form->input( 'User.email', array( 'id' => 'login-token-1', 'autofocus' => 'true' ) ) ?>
+          <?php echo $this->Form->input( 'User.password', array( 'id' => 'login-token-2' ) ) ?>
+        
+          <div class="password-recovery">
+            <?php printf( __( 'Don&#146;t have an account? %s.', true ), $this->Html->link( __( 'Sign up now', true ), array( 'controller' => 'users', 'action' => 'register' ) ) ) ?>
+          </div>
+          
+        <?php echo $this->Form->end( __( 'Login', true ) ) ?>
   		</div>
   	</div>
   	<div id="content-top-inner">
@@ -34,7 +33,7 @@
 	    <div class="sample-rebate">
 	    	<div class="house-signup">
 	      	<p class="headline"><?php __( 'We&#146;ve found more than' ) ?></p>
-	      	<p class="sample-rebate-amount"><?php __( '$6,130*' ) ?></p>
+	      	<p class="sample-rebate-amount"><?php echo $this->Number->format( $total_savings, array( 'places' => 0, 'before' => '$' ) ) ?>*</p>
 	      	<p class="headline"><?php __( 'in savings in your area.' ) ?></p>
 	    		
 	        <?php # TODO: Replace this with form helper ?>

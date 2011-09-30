@@ -126,13 +126,14 @@ class ZipCode extends AppModel {
       )
     );
     
-    $savings = Set::combine( $savings, '{n}.TechnologyGroup.id', '{n}.TechnologyGroup' );
-    
-    if( !empty( $group_id ) ) {
-      $savings = $savings[$group_id]['savings'];
+    if( !$grouped && empty( $group_id ) ) {
+      $savings = array_sum( Set::extract( '/TechnologyGroup/savings', $savings ) );
     }
     else if( $grouped ) {
-      $savings = array_sum( $savings );
+      $savings = Set::combine( $savings, '{n}.TechnologyGroup.id', '{n}.TechnologyGroup' );
+    }
+    else {
+      $savings = $savings[$group_id]['savings'];
     }
     
     return $savings;
@@ -207,7 +208,7 @@ class ZipCode extends AppModel {
     
     $non_manufacturer_rebates = array_slice( Set::combine( $non_manufacturer_rebates, '{n}.Incentive.name', '{n}.TechnologyIncentive.amount' ), 0, 3 );
   
-    return $manufacturer_rebates + $non_manufacturer_rebates; # Who knew the "+" operator would join arrays?
+    return array_merge( $manufacturer_rebates, $non_manufacturer_rebates );
   }
   
   /**

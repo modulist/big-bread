@@ -8,13 +8,13 @@
     </div>     
     
     <p><?php __( 'There are $2 billion in energy credits and rebates available from utilities as well as federal, state, and local governments' ) ?></p>   
-    <p><?php __( 'Here are just some of the available rebates for HVAC systems in <br /><span class="rebate-city">Fort Lauderdale, FL</span>:' ) ?></p>
+    <p><?php printf( __( 'Here are just some of the available rebates for HVAC systems in %s:', true ), '<br /><span class="rebate-city">' . h( $locale['ZipCode']['city'] ) . ', ' . h( $locale['ZipCode']['state'] ) . '</span>' ) ?></p>
     <table class="rebates-preview">
       <?php $i = 0 ?>
       <?php foreach( $featured_rebates as $name => $amount ): ?>
         <tr class="<?php echo $i++ % 2 === 0 ? 'even' : 'odd' ?>">
-          <td class="rebate-source"><?php echo h( preg_replace( '/-.+$/', '', $name ) ) ?></td>
-          <td class="rebate-amount"><?php echo h( $amount ) ?></td>
+          <td class="rebate-source" title="<?php echo h( preg_replace( '/-.+$/', '', $name ) ) ?>"><?php echo h( $this->Text->truncate( preg_replace( '/-.+$/', '', $name ), 25, array( 'ending' => '...', 'exact' => false ) ) ) ?></td>
+          <td class="rebate-amount"><?php echo $this->Number->format( $amount, array( 'before' => '$', 'places' => 2 ) ) ?></td>
         </tr>
       <?php endforeach; ?>
     </table>

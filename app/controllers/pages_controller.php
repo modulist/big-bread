@@ -92,8 +92,13 @@ public function beforeFilter() {
     if( $page == 'home' ) {
       $this->layout = 'default_landing';
       
-      $featured_rebates = ClassRegistry::init( 'ZipCode' )->featured_rebates( $this->Session->read( 'default_zip_code' ) );
-      $this->set( compact( 'featured_rebates' ) );
+      $this->loadModel( 'ZipCode' );
+      $zip_code         = $this->Session->read( 'default_zip_code' );
+      $total_savings    = $this->ZipCode->savings( $zip_code, false );
+      $featured_rebates = $this->ZipCode->featured_rebates( $zip_code );
+      $locale           = $this->ZipCode->locale( $zip_code );
+      
+      $this->set( compact( 'featured_rebates', 'locale', 'total_savings' ) );
     }
     
 		$this->set(compact('page', 'subpage', 'title_for_layout'));
