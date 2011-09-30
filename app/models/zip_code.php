@@ -139,6 +139,78 @@ class ZipCode extends AppModel {
   }
   
   /**
+   * Returns the top incentives in a given zip code for a given technology
+   * group.
+   *
+   * @param   $zip_code
+   * @return  array
+   * @access  public
+   */
+  public function featured_rebates( $zip_code, $technology_group_id = null ) {
+    if( empty( $technology_group_id ) ) {
+      $technology_group_id = ClassRegistry::init( 'TechnologyGroup' )->field(
+        'id',
+        array( 'TechnologyGroup.incentive_tech_group_id' => 'HVAC' )
+      );
+    }
+    
+    # Find top 2 manufacturer incentives
+    $manufacturer_rebates = ClassRegistry::init( 'TechnologyIncentive' )->find(
+      'all',
+      array(
+        'contain' => array( 'Incentive', 'Technology' ),
+        'fields'  => array(
+          'Incentive.name',
+          'TechnologyIncentive.amount',
+        ),
+        'conditions' => array(
+          'Incentive.excluded' => 0,
+          'TechnologyIncentive.is_active' => 1,
+          'Technology.technology_group_id' => $technology_group_id,
+          'Incentive.incentive_type_id' => 'MANU',
+          'OR' => array(
+            'Incentive.expiration_date' => null, 
+            'Incentive.expiration_date >= ' => date( DATE_FORMAT_MYSQL ),
+          ),
+          'OR' => TechnologyIncentive::geo_scope_conditions( $zip_code ),
+        ),
+        'order'      => array( 'TechnologyIncentive.amount DESC' ),
+        'limit'      => 20,
+      )
+    );
+    $manufacturer_rebates = array_slice( Set::combine( $manufacturer_rebates, '{n}.Incentive.name', '{n}.TechnologyIncentive.amount' ), 0, 2 );
+    
+    # Fine top 2 non-manufacturer incentives
+    $non_manufacturer_rebates = ClassRegistry::init( 'TechnologyIncentive' )->find(
+      'all',
+      array(
+        'contain' => array( 'Incentive', 'Technology' ),
+        'fields'  => array(
+          'Incentive.name',
+          'TechnologyIncentive.amount',
+        ),
+        'conditions' => array(
+          'Incentive.excluded' => 0,
+          'TechnologyIncentive.is_active' => 1,
+          'Technology.technology_group_id' => $technology_group_id,
+          'Incentive.incentive_type_id <>' => 'MANU',
+          'OR' => array(
+            'Incentive.expiration_date' => null, 
+            'Incentive.expiration_date >= ' => date( DATE_FORMAT_MYSQL ),
+          ),
+          'OR' => TechnologyIncentive::geo_scope_conditions( $zip_code ),
+        ),
+        'order'      => array( 'TechnologyIncentive.amount DESC' ),
+        'limit'      => 20,
+      )
+    );
+    
+    $non_manufacturer_rebates = array_slice( Set::combine( $non_manufacturer_rebates, '{n}.Incentive.name', '{n}.TechnologyIncentive.amount' ), 0, 3 );
+  
+    return $manufacturer_rebates + $non_manufacturer_rebates; # Who knew the "+" operator would join arrays?
+  }
+  
+  /**
    * Returns the id of each incentive specifically targeting a
    * particular zip code.
    *

@@ -91,6 +91,9 @@ public function beforeFilter() {
     
     if( $page == 'home' ) {
       $this->layout = 'default_landing';
+      
+      $featured_rebates = ClassRegistry::init( 'ZipCode' )->featured_rebates( $this->Session->read( 'default_zip_code' ) );
+      $this->set( compact( 'featured_rebates' ) );
     }
     
 		$this->set(compact('page', 'subpage', 'title_for_layout'));

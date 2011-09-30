@@ -489,6 +489,10 @@ class TechnologyIncentive extends AppModel {
    * @access	public
    */
   static public function geo_scope_conditions( $zip_codes ) {
+    if( !is_array( $zip_codes ) ) {
+      $zip_codes = array( $zip_codes );
+    }
+    
     $Incentive = ClassRegistry::init( 'Incentive' );
     
     # Which state owns this zip code?
