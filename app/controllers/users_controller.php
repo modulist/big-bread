@@ -81,36 +81,58 @@ class UsersController extends AppController {
     # Handle a submitted registration
     if( !empty( $this->data ) ) {
       $this->User->id = $user_id;
-      
-      $this->data['TechnologyWatchList']['selected'] = explode( ',', $this->data['TechnologyWatchList']['selected'] );
-      /* 
+
       # The password value is hashed automagically. We need to hash the
       # confirmation value manually for validation.
       # @see User::identical()
       $this->data['User']['confirm_password'] = $this->Auth->password( $this->data['User']['confirm_password'] );
       
-      if( $this->User->save( $this->data ) ) {
-        $this->Session->setFlash( 'Welcome to BigBread. Thanks for registering.', null, null, 'success' );
-        $this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
-        $this->Auth->login( $this->data ); # Authenticate the new user
-        
-        # Update the session info
-        $this->refresh_auth();
-        $this->redirect( $this->Auth->redirect(), null, true );
-      }
-      else {
-        $this->Session->setFlash( 'There\'s a problem with your registration. Please correct the errors below.', null, null, 'validation' );
-        
-        # If the save fails, set the user id so that the form is rendered
-        # for editing, if applicable
-        $this->data['User']['id'] = $user_id;
-        
-        # If the save fails, blank the password values
-        $this->data['User']['password'] = '';
-        $this->data['User']['confirm_password'] = '';
-      }
-      */
+      # Get the selected watchlist items in a format we can work with
+      $this->data['WatchedTechnology']['selected'] = array_filter( explode( ',', $this->data['WatchedTechnology']['selected'] ) );
       
+      # Save the user and their watchlist in a transaction. Model::saveAll()
+      # does not work in this scenario.
+      $ds= $this->User->getDataSource();
+      $ds->begin( $this->User );
+      
+      if( $this->User->save( $this->data['User'] ) ) {
+        # Build an array of TechnologyWatchList items
+        # Set property defaults for a watchlist item.
+        $tech_watchlist_defaults = array(
+          'user_id'     => $this->User->id,
+          'model'       => 'Technology',
+          'foreign_key' => null,
+        );
+        # Compile an array of TechnologyWatchList object data
+        $this->data['TechnologyWatchList'] = array();
+        foreach( $this->data['WatchedTechnology']['selected'] as $technology_id ) {
+          $tech_watch_list_item = array( 'foreign_key' => $technology_id );
+          
+          array_push( $this->data['TechnologyWatchList'], array_merge( $tech_watchlist_defaults, $tech_watch_list_item ) );
+        }
+      
+        if( !in_array( false, $this->User->TechnologyWatchList->saveAll( $this->data['TechnologyWatchList'], array( 'atomic' => false ) ) ) ) {
+          $this->Session->setFlash( 'Welcome to SaveBigBread. Thanks for registering.', null, null, 'success' );
+          $this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
+          $this->Auth->login( $this->data ); # Authenticate the new user
+          
+          $ds->commit( $this->User );
+          $this->redirect( $this->Auth->redirect(), null, true );
+        }
+      }
+      
+      $ds->rollback( $this->User );
+      $this->Session->setFlash( 'There\'s a problem with your registration. Please correct the errors below.', null, null, 'validation' );
+      
+      # If the save fails, set the user id so that the form is rendered
+      # for editing, if applicable
+      $this->data['User']['id'] = $user_id;
+      
+      # If the save fails, blank the password values
+      $this->data['User']['password'] = '';
+      $this->data['User']['confirm_password'] = '';
+      
+      exit( 'failed' );
     }
     else if( !empty( $user_id ) ) {
       # Populate existing data, if any
@@ -125,7 +147,7 @@ class UsersController extends AppController {
       # setting the data, the pre-populated form is displayed with
       # validation errors.
       $this->User->set( $this->data );
-      $this->data['TechnologyWatchList']['selected'] = Set::extract( '/TechnologyWatchList/id', $this->data );
+      $this->data['WatchedTechnology']['selected'] = Set::extract( '/TechnologyWatchList/id', $this->data );
     }
     else if( isset( $this->params['url']['zip_code'] ) ) {
       # If the zip code is valid, overwrite the "detected" zip
@@ -134,8 +156,8 @@ class UsersController extends AppController {
       }
     }
     
-    if( !isset( $this->data['TechnologyWatchList']['selected'] ) ) {
-      $this->data['TechnologyWatchList']['selected'] = array();
+    if( !isset( $this->data['WatchedTechnology']['selected'] ) ) {
+      $this->data['WatchedTechnology']['selected'] = array();
     }
     
     $watchable_technologies = array_chunk( $this->User->TechnologyWatchList->Technology->grouped(), 2 );

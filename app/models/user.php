@@ -289,8 +289,9 @@ class User extends AppModel {
    * @param 	$data
    * @return	boolean
    * @access	public
-   * @todo    Be nice to drop this and do something more robust.
+   * @todo    KILL THIS
    */
+  /* 
   public function add( $data ) {
     $user = !empty( $data[$this->alias]['email'] )
       ? $this->known( $data[$this->alias]['email'] ) # returns the user's id
@@ -304,6 +305,7 @@ class User extends AppModel {
     
     return $user;
   }
+  */
 
   /**
    * Determines whether a user is associated with at least one building

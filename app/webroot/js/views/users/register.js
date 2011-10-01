@@ -5,7 +5,7 @@ $(document).ready( function() {
     
     var $this                 = $(this);
     var selected_id           = $this.attr( 'data-watch-technology-id' );
-    var technology_watch_list = $('#TechnologyWatchListSelected').val().split( ',' );
+    var technology_watch_list = $('#WatchedTechnologySelected').val().split( ',' );
     
     $this.parent().toggleClass( 'active' );
     
@@ -22,6 +22,6 @@ $(document).ready( function() {
     }
     
     // Convert the array back to a string and reset the hidden value
-    $('#TechnologyWatchListSelected').val( technology_watch_list.join( ',' ) );
+    $('#WatchedTechnologySelected').val( technology_watch_list.join( ',' ) );
   });
 });
