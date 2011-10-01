@@ -41,12 +41,12 @@ Router::parseExtensions( 'json', 'jsonp' );
  
  /** Aliases */
   Router::connect( '/invite/:invite_code', array( 'controller' => 'users', 'action' => 'invite', array( 'invite_code' => '[a-fA-F0-9]{32}' ) ) );
-  Router::connect( '/signup', array( 'controller' => 'users', 'action' => 'register' ) );
-  Router::connect( '/login', array( 'controller' => 'users', 'action' => 'login' ) );
-  Router::connect( '/logout', array( 'controller' => 'users', 'action' => 'logout' ) );
-  Router::connect( '/profile', array( 'controller' => 'users', 'action' => 'edit' ) );
+  Router::connect( '/signup/*', array( 'controller' => 'users', 'action' => 'register' ) );
+  Router::connect( '/login/*', array( 'controller' => 'users', 'action' => 'login' ) );
+  Router::connect( '/logout/*', array( 'controller' => 'users', 'action' => 'logout' ) );
+  Router::connect( '/profile/*', array( 'controller' => 'users', 'action' => 'edit' ) );
   Router::connect( '/questionnaire/*', array( 'controller' => 'buildings', 'action' => 'questionnaire' ) );
-  Router::connect( '/feedback', array( 'controller' => 'contacts', 'action' => 'index' ) );
+  Router::connect( '/feedback/*', array( 'controller' => 'contacts', 'action' => 'index' ) );
   Router::connect( '/locations/:action/*', array( 'controller' => 'buildings', 'action' => 'index' ) );
 
 /**

@@ -267,7 +267,11 @@ class AppController extends Controller {
    */
   private function forceSSL() {
     if( !$this->RequestHandler->isSSL() ) {
-      $this->redirect( 'https://' . $_SERVER['HTTP_HOST'] . $this->here, null, true );
+      $redirect_to = $this->params;
+      unset( $redirect_to['url']['ext'] ); # Otherwise, ext=<whatever> will be added to the query string
+      
+      $redirect_to = 'https://' . $_SERVER['HTTP_HOST'] . Router::reverse( $redirect_to );
+      $this->redirect( $redirect_to, null, true );
     }
   }
   
