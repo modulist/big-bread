@@ -6,6 +6,7 @@
 <?php echo $this->Form->create( 'User', array( 'action' => 'register' ) ) ?>
   <?php echo $this->Form->input( 'User.user_type_id', array( 'type' => 'hidden', 'value' => UserType::OWNER ) ) ?>
   <?php echo $this->Form->input( 'User.invite_code', array( 'type' => 'hidden' ) ) ?>
+  <?php echo $this->Form->input( 'TechnologyWatchList.selected', array( 'type' => 'hidden', 'value' => join( ',', $this->data['TechnologyWatchList']['selected'] ) ) ) ?>
   
 	<!-- my interests -->
 	<div id="my-interests" class="grid_9">
@@ -20,7 +21,9 @@
               <h4><?php echo h( $group['TechnologyGroup']['title'] ) ?></h4>
               <ul>
                 <?php foreach( $group['Technology'] as $technology ): ?>
-                  <li><?php echo $this->Html->link( h( $technology['name'] ), '#' ) ?></li>
+                  <li<?php echo in_array( $technology['id'], $this->data['TechnologyWatchList']['selected'] ) ? ' class="active"' : false ?>>
+                    <?php echo $this->Html->link( h( $technology['name'] ), '#', array( 'data-watch-technology-id' => $technology['id'] ) ) ?>
+                  </li>
                 <?php endforeach; ?>
               </ul>
           <?php endforeach; ?>
@@ -33,4 +36,4 @@
   	<?php echo $this->element( '../users/_form' ) ?>
   </div>
 
-<?php echo $this->Form->end( 'Let\'s go!' ) ?>
+<?php echo $this->Form->end( __( 'Let\'s go!', true ) ) ?>

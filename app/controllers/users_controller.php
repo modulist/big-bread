@@ -82,8 +82,8 @@ class UsersController extends AppController {
     if( !empty( $this->data ) ) {
       $this->User->id = $user_id;
       
-      new PHPDump( $this->data ); exit;
-      
+      $this->data['TechnologyWatchList']['selected'] = explode( ',', $this->data['TechnologyWatchList']['selected'] );
+      /* 
       # The password value is hashed automagically. We need to hash the
       # confirmation value manually for validation.
       # @see User::identical()
@@ -109,13 +109,15 @@ class UsersController extends AppController {
         $this->data['User']['password'] = '';
         $this->data['User']['confirm_password'] = '';
       }
+      */
+      
     }
     else if( !empty( $user_id ) ) {
       # Populate existing data, if any
       $this->data = $this->User->find(
         'first',
         array(
-          'contain'    => false,
+          'contain'    => array( 'TechnologyWatchList' ),
           'conditions' => array( 'User.id' => $user_id ),
         )
       );
@@ -123,12 +125,17 @@ class UsersController extends AppController {
       # setting the data, the pre-populated form is displayed with
       # validation errors.
       $this->User->set( $this->data );
+      $this->data['TechnologyWatchList']['selected'] = Set::extract( '/TechnologyWatchList/id', $this->data );
     }
     else if( isset( $this->params['url']['zip_code'] ) ) {
       # If the zip code is valid, overwrite the "detected" zip
       if( Validation::postal( $this->params['url']['zip_code'], null, 'us' ) ) {
         $this->Session->write( 'default_zip_code', $this->params['url']['zip_code'] );
       }
+    }
+    
+    if( !isset( $this->data['TechnologyWatchList']['selected'] ) ) {
+      $this->data['TechnologyWatchList']['selected'] = array();
     }
     
     $watchable_technologies = array_chunk( $this->User->TechnologyWatchList->Technology->grouped(), 2 );
