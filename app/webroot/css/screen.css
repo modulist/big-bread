@@ -557,15 +557,15 @@ table.rebate-content { margin-left: 60px; color: #666; }
 
 
 /* ============================= homepage ====================== */
-body.front { }
-body.front h2 {margin-top: 0;}
-body.front h3 {margin-top: 0;font-size: 16px; color: #5c998f;}
-body.front #content-top {margin-top:30px;margin-left:0px; background: url(../img/home-content-top-background.png) top no-repeat; height: 494px; width: 1000px;}
-body.front #content-top-inner { background: url(../img/home-top-content-trees.png) 50px 255px no-repeat, url(../img/home-top-content-trees.png) right 255px no-repeat; }
-body.front .login-wrapper { float: right; width: 310px; font: 14px/1 'UltraRegular', serif; color: #308166; letter-spacing: .07em;  }
-body.front #login-trigger { display: inline; color: #16433b; }
-body.front #login-trigger a { background: url(../img/login-cloud.png) no-repeat; padding: 23px 20px;  }
-body.front #login-popup { visibility: hidden; float: right; padding: 33px 25px 20px; border-radius: 20px; -moz-border-radius: 20px; -webkit-border-radius: 20px; background-color: #89dfdc; box-shadow: 20px 20px 20px #000; }
+body.layout-default_landing { }
+body.layout-default_landing h2 {margin-top: 0;}
+body.layout-default_landing h3 {margin-top: 0;font-size: 16px; color: #5c998f;}
+body.layout-default_landing #content-top {margin-top:30px;margin-left:0px; background: url(../img/home-content-top-background.png) top no-repeat; height: 494px; width: 1000px;}
+body.layout-default_landing #content-top-inner { background: url(../img/home-top-content-trees.png) 50px 255px no-repeat, url(../img/home-top-content-trees.png) right 255px no-repeat; }
+body.layout-default_landing .login-wrapper { float: right; width: 310px; font: 14px/1 'UltraRegular', serif; color: #308166; letter-spacing: .07em;  }
+body.layout-default_landing #login-trigger { display: inline; color: #16433b; }
+body.layout-default_landing #login-trigger a { background: url(../img/login-cloud.png) no-repeat; padding: 23px 20px;  }
+body.layout-default_landing #login-popup { visibility: hidden; float: right; padding: 33px 25px 20px; border-radius: 20px; -moz-border-radius: 20px; -webkit-border-radius: 20px; background-color: #89dfdc; box-shadow: 20px 20px 20px #000; }
 #login-popup .instructions { font-size: 18px; color: #000; padding: 0 0 6px; }
 #login-popup input[type='text'] { width: 290px; border: 1px solid #466e66; background-color: #ddfffe; font: 14px 'UltraRegular', serif; color: #9bb4b1; padding: 4px 12px; }
 #login-popup input[type='password'] { width: 150px; border: 1px solid #466e66; background-color: #ddfffe; font: 14px 'UltraRegular', serif; color: #9bb4b1; padding: 4px 12px; }
@@ -573,11 +573,11 @@ body.front #login-popup { visibility: hidden; float: right; padding: 33px 25px 2
 #login-popup .password-recovery { font: 12px Georgia, serif; color: #000; padding: 10px 0 0; }
 #login-popup .password-recovery a { font-weight: bold; }
 
-body.front #content-bottom { margin: auto; padding-left: 150px; width: 850px; background-color: white;}
+body.layout-default_landing #content-bottom { margin: auto; padding-left: 150px; width: 850px; background-color: white;}
 .branding { margin-top: 75px; margin-left:50px;}
-body.front .branding { margin: 0;}
-body.front #logo { margin: 5px 0 0 22px;}
-body.front #slogan { margin: -180px 0 0 240px; font: 36px/1.0 'BirraStout'; color:#16433b; font-weight:normal; font-stretch: condensed; }
+body.layout-default_landing .branding { margin: 0;}
+body.layout-default_landing #logo { margin: 5px 0 0 22px;}
+body.layout-default_landing #slogan { margin: -180px 0 0 240px; font: 36px/1.0 'BirraStout'; color:#16433b; font-weight:normal; font-stretch: condensed; }
 
 .intro { width: 845px; margin: 5px auto 0 auto; font-weight:bold; line-height: 32px; }
 .intro p { 
@@ -597,11 +597,11 @@ body.front #slogan { margin: -180px 0 0 240px; font: 36px/1.0 'BirraStout'; colo
     font-size: 25px;
     margin: 10px 0 15px;
     padding: 0 0 10px; }
-body.front #column-first {margin-right: 45px;}
-body.front #column-middle {margin-right: 45px;}     
-body.front #content-bottom p { margin:0; padding: 5px 0; font-size: 14px; color: #595959; line-height: 1.3em; font-family: Georgia, "Times New Roman", serif; }   
-body.front .green-dot-divider { padding: 0;}
-body.front #blog-link a { color: #5c998f; }
+body.layout-default_landing #column-first {margin-right: 45px;}
+body.layout-default_landing #column-middle {margin-right: 45px;}     
+body.layout-default_landing #content-bottom p { margin:0; padding: 5px 0; font-size: 14px; color: #595959; line-height: 1.3em; font-family: Georgia, "Times New Roman", serif; }   
+body.layout-default_landing .green-dot-divider { padding: 0;}
+body.layout-default_landing #blog-link a { color: #5c998f; }
 .slide-show {float: left;}
 .sample-rebate { width: 447px; height: 327px; margin: -13px 0 0 250px; padding: 90px 0 0; background: url(../img/sample-rebate-outer.png) no-repeat; text-align: center; }
 .sample-rebate p { color: #000; }
@@ -628,10 +628,10 @@ table.rebates-preview { font: 12px/14px Georgia, serif; color: #595959; width: 1
 img.floatLeft { float: left; margin: 4px; }
 img.floatRight { float: right; margin: 4px; }
 
-body.front footer {background: none; height: 126px;margin:0; padding:0;}
-body.front .footer-inner {background: none;margin:0; padding:0;}
-body.front .footer-menu, body.front .footer-menu a {color: #d5f1c6; font: 11px/1.125 Georgia, "Times New Roman", serif;text-align: right; }
-body.front .copyright {color: #000; font: 11px/1.125 Georgia, "Times New Roman", serif;text-align: right;}
+body.layout-default_landing footer {background: none; height: 126px;margin:0; padding:0;}
+body.layout-default_landing .footer-inner {background: none;margin:0; padding:0;}
+body.layout-default_landing .footer-menu, body.layout-default_landing .footer-menu a {color: #d5f1c6; font: 11px/1.125 Georgia, "Times New Roman", serif;text-align: right; }
+body.layout-default_landing .copyright {color: #000; font: 11px/1.125 Georgia, "Times New Roman", serif;text-align: right;}
 
 .testimonial-item {margin-top: 6px; margin-bottom: 12px;}
 .testimonial-quote { color: #5c998f; font: 14px/1.125 'UltraRegular'; font-weight:normal; letter-spacing 0.05em;margin-bottom: 6px; text-indent: -17px; padding-left: 17px; }
