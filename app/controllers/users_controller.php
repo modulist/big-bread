@@ -131,8 +131,6 @@ class UsersController extends AppController {
       # If the save fails, blank the password values
       $this->data['User']['password'] = '';
       $this->data['User']['confirm_password'] = '';
-      
-      exit( 'failed' );
     }
     else if( !empty( $user_id ) ) {
       # Populate existing data, if any
