@@ -15,33 +15,6 @@ $(document).ready( function() {
     e.preventDefault();
   });
   
-  // Dismisses optional flash messages
-  $( '.dismiss' ).click( function( e ) {
-    var $flash  = $(this).closest( '.flash' );
-    var notice = $(this).attr( 'data-notice' );
-    $.get( '/users/dismiss_notice/' + notice,
-      null,
-      function( e ) {
-        $flash.fadeOut( 'slow' );
-      }
-    );
-    
-    e.preventDefault();  
-  });
-  
-  // Loads dialogs (fancybox)
-  $( '.dialog.iframe' ).fancybox({
-    'height': '50%',
-    'width': '50%'
-  });
-  // $( '.dialog' ).fancybox({ /** OPTIONS TBD */ });
-  
-  // Closes fancybox dialog windows from a link
-  $( 'a.dialog-close' ).click( function( e ) {
-    parent.$.fancybox.close();
-    e.preventDefault();
-  });
-  
   /** FORMS */
   
   // Depends on the jQuery autotab plugin
