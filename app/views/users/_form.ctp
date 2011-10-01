@@ -7,7 +7,7 @@
  * is contractor).
  */
 ?>
-<h2>Now, let&#146;s create your Big Bread account:</h2>
+<h2><?php __( 'Now, let&#146;s create your Big Bread account:' ) ?></h2>
 <div class="clearfix">
 	<div class="grid_3 first">
 		<?php echo $this->Form->input( 'User.first_name', array( 'placeholder' => 'Your first name' ) ) ?>
@@ -30,10 +30,10 @@
 
 <div class="clearfix">
 	<div class="grid_3 first zip-code">
-		<?php echo $this->Form->input( 'User.zip_code' ) ?>
+		<?php echo $this->Form->input( 'User.zip_code', array( 'default' => $this->Session->read( 'default_zip_code' ) ) ) ?>
 	</div>
 	<div class="grid_3 last zip-code-instructions">
-		<p>So we can find you rebates and discounts specific to your area.</p>
+		<p><?php __( 'So we can find you rebates and discounts specific to your area.' ) ?></p>
 	</div>
 </div>
 

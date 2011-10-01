@@ -114,7 +114,6 @@ class UsersController extends AppController {
         'first',
         array(
           'contain'    => false,
-          # 'fields'     => array( 'User.id', 'user_type_id', 'first_name', 'last_name', 'email', 'phone_number', 'invite_code' ),
           'conditions' => array( 'User.id' => $user_id ),
         )
       );
@@ -124,9 +123,9 @@ class UsersController extends AppController {
       $this->User->set( $this->data );
     }
     
-    $technologies = $this->User->TechnologyWatchList->Technology->grouped();
+    $watchable_technologies = array_chunk( $this->User->TechnologyWatchList->Technology->grouped(), 2 );
   
-    $this->set( compact( 'technologies' ) );
+    $this->set( compact( 'watchable_technologies' ) );
   }
 
   /**

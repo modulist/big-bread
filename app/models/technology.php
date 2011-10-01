@@ -70,7 +70,7 @@ class Technology extends AppModel {
         ),
         'fields'     => array(
           'TechnologyGroup.id',
-          'TechnologyGroup.name',
+          'TechnologyGroup.title',
           'TechnologyGroup.display_order',
         ),
         'conditions' => array(

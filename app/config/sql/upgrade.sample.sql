@@ -47,10 +47,10 @@ ALTER TABLE technologies
     ON DELETE NO ACTION
     ON UPDATE CASCADE;
 
-INSERT INTO technology_groups( id, incentive_tech_group_id, name, parent_group_id, rebate_bar )
+INSERT INTO technology_groups( id, incentive_tech_group_id, name, title, parent_group_id, rebate_bar )
 VALUES
-  ( '4e7a5b45-387c-4ef6-81bb-22536e891b5e', 'KTCH', 'Kitchen', null, 1 ),
-  ( '4e7a5b45-6054-4f0c-b939-22536e891b5e', 'LNDR', 'Laundry', null, 1 );
+  ( '4e7a5b45-387c-4ef6-81bb-22536e891b5e', 'KTCH', 'Kitchen', 'Kitchen', null, 1 ),
+  ( '4e7a5b45-6054-4f0c-b939-22536e891b5e', 'LNDR', 'Laundry', 'Laundry', null, 1 );
 
 UPDATE technology_groups
    SET rebate_bar = 0
@@ -65,11 +65,12 @@ UPDATE technology_groups
  WHERE incentive_tech_group_id = 'HVAC';
 
 UPDATE technology_groups
-   SET display_order = 3
- WHERE incentive_tech_group_id = 'HW';
+   SET display_order = 2,
+       name = 'Building Shell'
+ WHERE incentive_tech_group_id = 'ENV';
 
 UPDATE technology_groups
-   SET display_order = 2
+   SET display_order = 3
  WHERE incentive_tech_group_id = 'KTCH';
 
 UPDATE technology_groups
@@ -77,9 +78,8 @@ UPDATE technology_groups
  WHERE incentive_tech_group_id = 'LNDR';
 
 UPDATE technology_groups
-   SET display_order = 5,
-       name = 'Building Shell'
- WHERE incentive_tech_group_id = 'ENV';
+   SET display_order = 5
+ WHERE incentive_tech_group_id = 'HW';
 
 UPDATE technology_groups
    SET display_order = 6
