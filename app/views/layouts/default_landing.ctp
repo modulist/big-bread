@@ -36,7 +36,7 @@
           <p class="sample-rebate-amount"><?php echo $this->Number->format( $total_savings, array( 'places' => 0, 'before' => '$' ) ) ?>*</p>
           <p class="headline"><?php __( 'in savings in your area.' ) ?></p>
           
-          <?php echo $this->Form->create( 'User', array( 'action' => 'register' ) ) ?>
+          <?php echo $this->Form->create( 'User', array( 'action' => 'register', 'type' => 'get' ) ) ?>
             <?php echo $this->Form->input( 'User.zip_code', array( 'label' => false, 'id' => 'zipcode', 'default' => $this->Session->read( 'default_zip_code' ) ) ) ?>
           <?php echo $this->Form->end( array( 'label' => __( 'Enter&rsaquo;', true ), 'div' => false, 'id' => 'zipcode-submit', 'escape' => false ) ) ?>
 
