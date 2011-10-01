@@ -151,6 +151,8 @@ body.onecolumn #content { background: #FFFFFF; min-height:400px; padding: 50px 6
 #vertical-nav li.top-link { font: 11px Georgia, 'Times New Roman', sans-serif; }
 #vertical-nav li.top-link a { background: url(../img/arrow-top.png) 0 5px no-repeat; color: #3f3f3f; padding: 0 0 6px 15px; }
 
+.users.register #sidebar{ top: 230px; }
+
 #questionnaire_nav li, #questionnaire_act li { float:left; }
 #getstart { background:#fff; padding: 20px; border: 1px solid white; border-radius: 20px; -moz-border-radius: 20px;}
 #tips { min-height:162px; background:#518205;padding:10px 0; }
