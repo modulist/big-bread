@@ -17,11 +17,11 @@
 <div class="main-menu">
   <?php if( $this->Session->check( 'Auth.User' ) ): ?>
     <ul class="menu">
-    	<li class="leaf"><a href="/users/dashboard">My Home</a></li>
-    	<li class="leaf"><a href="/buildings/incentives">Ways to Save</a></li>
-    	<li class="leaf"><a href="/questionnaire//location">Add a Location</a></li>
-    	<li class="leaf"><a href="/questionnaire//equipment">Add Equipment</a></li>
-    	<li class="leaf"><a href="/tools">Tools</a></li>
+    	<li class="leaf"><?php echo $this->Html->link( 'My Home', array( 'controller' => 'users', 'action' => 'dashboard' ) ) ?></li>
+    	<li class="leaf"><?php echo $this->Html->link( 'Ways to Save', array( 'controller' => 'buildings', 'action' => 'incentives' ) ) ?></li>
+    	<li class="leaf"><?php echo $this->Html->link( 'Add a Location', array( 'controller' => 'buildings', 'action' => 'add' ) ) ?></li>
+    	<li class="leaf"><?php echo $this->Html->link( 'Add Equipment', array( 'controller' => 'buildings', 'action' => 'equipment' ) ) ?></li>
+    	<li class="leaf"><?php echo $this->Html->link( 'Tools', '#' ) ?></li>
     </ul>
   <?php endif; ?>
 </div>

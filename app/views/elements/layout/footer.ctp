@@ -8,5 +8,3 @@
   	&copy; 2009-<?php echo date( 'Y', time() ) ?> Federated Power, Inc.<?php echo Configure::read( 'Env.code' ) !== 'PRD' ? ' | ' . strtoupper( Configure::read( 'Env.name' ) ) : false ?>
   </div>
 </div>
-
-<div class="printable">www.SaveBigBread.com</div>

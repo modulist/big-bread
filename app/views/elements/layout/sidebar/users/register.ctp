@@ -1,16 +1,16 @@
 <div id="vertical-nav">
   <ul class="left-menu">
 		<li class="top-link">
-			<a href="#">top</a>
+      <?php echo $this->Html->link( __( 'top', true ), '#' ) ?>
 		</li>
 		<li class="">
-			<a href="#my-interests">My interests</a>
+			<?php echo $this->Html->link( __( 'My interests', true ), '#my-interests' ) ?>
 		</li>
 		<li class="">
-			<a href="#user-registration">Create my Big Bread account</a>
+			<?php echo $this->Html->link( __( 'Create my Big Bread account', true ), '#user-registration' ) ?>
 		</li>
 		<li class="">
-			<a href="#UserZipCode">My zip code</a>
+			<?php echo $this->Html->link( __( 'My zip code', true ), '#UserZipCode' ) ?>
 		</li>
   </ul>
 </div>
