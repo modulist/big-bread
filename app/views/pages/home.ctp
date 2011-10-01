@@ -39,7 +39,7 @@
     </div>
     
     <div id="blog-link">
-      <h3><?php echo $this->Html->link( __( 'Read our blog &rsaquo;', true ), '/blog', array( 'escape' => false ) ) ?></h3>
+      <h3><?php echo $this->Html->link( __( 'Read our blog &rsaquo;', true ), 'http://www.savebigbread.com', array( 'escape' => false ) ) ?></h3>
     </div><!-- /#blog-link -->
   </div>   <!-- /#column-middle -->
   
