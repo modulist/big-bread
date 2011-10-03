@@ -448,6 +448,24 @@ table.location-equipment { width: 100%; margin: 0 0 15px; }
 .edit-location-button:hover,
 .add-equipment-button:hover { background-color: #3b7e9a; text-decoration: none; }
 
+table.pending-quotes {width: 700px; font-size: 11px; color: #0c4d54; padding: 5px 0 10px; margin: 10px 0 40px; background: url(../img/dotrule-green-4px.png) top left repeat-x, url(/img/dotrule-green-4px.png) bottom left repeat-x; }
+.pending-quotes tr { vertical-align: top; background: url(/img/dotrule-orange-1px.png) top left repeat-x; }
+.pending-quotes tr.first { vertical-align: top; background: none; }
+.pending-quotes tr.odd { background-color: rgba(143, 212, 105, 0.1)/*#f4fbf0*/; border: none; }
+.pending-quotes tr:hover, .pending-quotes tr.odd:hover, .pending-quotes tr.even:hover { background-color: rgba(143, 212, 105, 0.25); } 
+.pending-quotes tr.even { background-color: #fff;  }
+.pending-quotes td { padding: 10px 5px; }
+.pending-quotes td.quote-category {  font-size: 12px; font-weight: bold; padding-left: 10px; width: 325px; }
+.pending-quotes td.quote-category { }
+a.remove-button { color: #c00; }
+
+a.details-button, a.quote-button { display: inline-block; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; color: #fff; padding: 3px 5px 3px 9px; margin-bottom: 2px; }
+a.details-button:hover, a.quote-button:hover { text-decoration: none; background-color: #333; }
+a.details-button { background-color: #527b48; }
+a.quote-button { background-color: #ef7600; }
+
+
+
 /* ============================= My rebates ======================= */
 table.rebates-watch-list { width: 700px; border: none; padding: 5px 0 10px; background: url(../img/dotrule-green-4px.png) top left repeat-x, url(../img/dotrule-green-4px.png) bottom left repeat-x; }
 .rebates-watch-list td { font: 12px/1.2 Georgia, "Times New Roman", Times, serif; }
