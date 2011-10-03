@@ -5,12 +5,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs.model.datasources
@@ -562,7 +562,7 @@ class DboSource extends DataSource {
 			);
 		}
 		if (
-			preg_match('/^([\w-]+(\.[\w-]+|\(.*\))*)\s+' . preg_quote($this->alias) . '\s*([\w-]+)$/', $data, $matches
+			preg_match('/^([\w-]+(\.[\w-]+|\(.*\))*)\s+' . preg_quote($this->alias) . '\s*([\w-]+)$/i', $data, $matches
 		)) {
 			return $this->cacheMethod(
 				__FUNCTION__, $cacheKey,
@@ -2239,8 +2239,8 @@ class DboSource extends DataSource {
  * @access private
  */
 	function __parseKey(&$model, $key, $value) {
-		$operatorMatch = '/^((' . implode(')|(', $this->__sqlOps);
-		$operatorMatch .= '\\x20)|<[>=]?(?![^>]+>)\\x20?|[>=!]{1,3}(?!<)\\x20?)/is';
+		$operatorMatch = '/^(((' . implode(')|(', $this->__sqlOps);
+		$operatorMatch .= ')\\x20?)|<[>=]?(?![^>]+>)\\x20?|[>=!]{1,3}(?!<)\\x20?)/is';
 		$bound = (strpos($key, '?') !== false || (is_array($value) && strpos($key, ':') !== false));
 
 		if (!strpos($key, ' ')) {
@@ -2439,7 +2439,7 @@ class DboSource extends DataSource {
 			}
 
 			if (strpos($key, '.')) {
-				$key = preg_replace_callback('/([a-zA-Z0-9_]{1,})\\.([a-zA-Z0-9_]{1,})/', array(&$this, '__quoteMatchedField'), $key);
+				$key = preg_replace_callback('/([a-zA-Z0-9_-]{1,})\\.([a-zA-Z0-9_-]{1,})/', array(&$this, '__quoteMatchedField'), $key);
 			}
 			if (!preg_match('/\s/', $key) && !strpos($key, '.')) {
 				$key = $this->name($key);
@@ -2466,7 +2466,7 @@ class DboSource extends DataSource {
 				$group = array($group);
 			}
 			foreach($group as $index => $key) {
-				if ($model->isVirtualField($key)) {
+				if (is_object($model) && $model->isVirtualField($key)) {
 					$group[$index] = '(' . $model->getVirtualField($key) . ')';
 				}
 			}

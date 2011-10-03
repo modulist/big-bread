@@ -5,12 +5,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) Tests <http://book.cakephp.org/view/1196/Testing>
- * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  *	Licensed under The Open Group Test Suite License
  *	Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://book.cakephp.org/view/1196/Testing CakePHP(tm) Tests
  * @package       cake
  * @subpackage    cake.tests.cases.libs.model.datasources
@@ -2395,6 +2395,12 @@ class DboSourceTest extends CakeTestCase {
 		$result = $this->testDb->conditions($conditions);
 		$expected = " WHERE `Artist`.`name` = 'JUDY AND MARY'";
 		$this->assertEqual($result, $expected);
+
+		$conditions = array('Company.name similar to ' => 'a word');
+		$result = $this->testDb->conditions($conditions);
+		$expected = " WHERE `Company`.`name` similar to 'a word'";
+		$this->assertEqual($result, $expected);
+
 	}
 
 /**
@@ -2548,11 +2554,11 @@ class DboSourceTest extends CakeTestCase {
 		$this->assertEqual($result, $expected);
 
 		$result = $this->testDb->conditions(array('score BETWEEN ? AND ?' => array(90.1, 95.7)));
-		$expected = " WHERE `score` BETWEEN 90.100000 AND 95.700000";
+		$expected = " WHERE `score` BETWEEN 90.1 AND 95.7";
 		$this->assertEqual($result, $expected);
 
 		$result = $this->testDb->conditions(array('Post.title' => 1.1));
-		$expected = " WHERE `Post`.`title` = 1.100000";
+		$expected = " WHERE `Post`.`title` = 1.1";
 		$this->assertEqual($result, $expected);
 
 		$result = $this->testDb->conditions(array('Post.title' => 1.1), true, true, new Post());
@@ -2565,6 +2571,10 @@ class DboSourceTest extends CakeTestCase {
 
 		$result = $this->testDb->conditions(array('MAX(Post.rating) >' => '50'));
 		$expected = " WHERE MAX(`Post`.`rating`) > '50'";
+		$this->assertEqual($result, $expected);
+
+		$result = $this->testDb->conditions(array('lower(Article.title)' =>  'secrets'));
+		$expected = " WHERE lower(`Article`.`title`) = 'secrets'";
 		$this->assertEqual($result, $expected);
 
 		$result = $this->testDb->conditions(array('title LIKE' => '%hello'));
@@ -3512,6 +3522,10 @@ class DboSourceTest extends CakeTestCase {
 		$result = $this->testDb->order(array('Property.sale_price IS NULL'));
 		$expected = ' ORDER BY `Property`.`sale_price` IS NULL ASC';
 		$this->assertEqual($result, $expected);
+		
+		$result = $this->testDb->order(array('Export.column-name' => 'ASC'));
+		$expected = ' ORDER BY `Export`.`column-name` ASC';
+		$this->assertEqual($result, $expected, 'Columns with -s are not working with order()');
 	}
 
 /**
@@ -4077,9 +4091,13 @@ class DboSourceTest extends CakeTestCase {
 		$result = $this->testDb->name(array('my-name', 'Foo-Model.*'));
 		$expected = array('`my-name`', '`Foo-Model`.*');
 		$this->assertEqual($result, $expected);
-		
+
 		$result = $this->testDb->name(array('Team.P%', 'Team.G/G'));
 		$expected = array('`Team`.`P%`', '`Team`.`G/G`');
+		$this->assertEqual($result, $expected);
+
+		$result = $this->testDb->name('Model.name as y');
+		$expected = '`Model`.`name` AS `y`';
 		$this->assertEqual($result, $expected);
 	}
 
@@ -4158,7 +4176,6 @@ class DboSourceTest extends CakeTestCase {
 		Configure::write('debug', 2);
 
 		$this->testDb->error = true;
-		$this->expectError();
 		ob_start();
 		$this->testDb->showQuery('Error 2');
 		$contents = ob_get_clean();
@@ -4545,6 +4562,16 @@ class DboSourceTest extends CakeTestCase {
 		$result = $this->db->group('this_year',$Article);
 		$expected = " GROUP BY (YEAR(`Article`.`created`))";
 		$this->assertEqual($expected, $result);
+	}
+
+/**
+ * Test that group works without a model
+ *
+ * @return void
+ */
+	function testGroupNoModel() {
+		$result = $this->db->group('created');
+		$this->assertEqual(' GROUP BY created', $result);
 	}
 
 /**
