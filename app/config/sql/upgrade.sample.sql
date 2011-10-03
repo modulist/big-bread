@@ -5,6 +5,29 @@ SET foreign_key_checks = 0;
 
 DROP TABLE questionnaires;
 
+DROP TABLE IF EXISTS messages;
+CREATE TABLE messages(
+  id            char(36)      NOT NULL,
+  transport     varchar(255)  NOT NULL DEFAULT 'email',
+  type          varchar(255)  NULL,
+  sender_id     char(36)      NOT NULL,
+  recipient_id  char(36)      NOT NULL,
+  sent          boolean       NOT NULL DEFAULT 0,
+  
+  created       datetime      NULL,
+  modified      datetime      NULL,
+  
+  PRIMARY KEY( id ),
+  CONSTRAINT fk__messages__senders FOREIGN KEY( sender_id )
+    REFERENCES users( id )
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+  CONSTRAINT fk__messages__recipients FOREIGN KEY( recipient_id )
+    REFERENCES users( id )
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+) ENGINE=InnoDB;
+
 -- Polymorphic table so that anything can be watched
 DROP TABLE IF EXISTS watched_technologies; -- Original table name
 DROP TABLE IF EXISTS watch_lists;
