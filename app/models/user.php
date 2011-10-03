@@ -146,7 +146,9 @@ class User extends AppModel {
     parent::__construct( $id, $table, $ds );
     
     $this->virtualFields['full_name'] = sprintf( 'CONCAT(%s.first_name, " ", %s.last_name)', $this->alias, $this->alias );
-    $this->whitelist = array_diff( array_keys( $this->schema() ), array( 'id', 'admin', 'last_login', 'deleted', 'created', 'modified' ) );
+    # Generate a whitelist that doesn't require me to make an update every time
+    # I add a property...unless I don't want that property to be batch updated.
+    $this->whitelist = array_diff( array_keys( $this->schema() ), array( 'id', 'admin', 'last_login', 'active', 'created', 'modified' ) );
   }
   
   /**

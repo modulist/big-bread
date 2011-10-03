@@ -1,12 +1,13 @@
 <?php
 
+# TODO: REMOVE THIS?
 class EnergySource extends AppModel {
 	public $name       = 'EnergySource';
 	public $useTable   = 'incentive_tech_energy_type';
 	public $primaryKey = 'incentive_tech_energy_type_id';
 	
 	public $belongsTo = array(
-    /** TODO: IncentiveTechEnergyGroup */
+    # TODO: IncentiveTechEnergyGroup
     'Technology' => array(
       'className'  => 'Technology',
       'foreignKey' => 'incentive_tech_id',

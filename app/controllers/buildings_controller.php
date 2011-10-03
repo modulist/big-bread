@@ -21,6 +21,8 @@ class BuildingsController extends AppController {
 
   public function beforeRender() {
     # Generate a list of tech groups for the rebate bar
+    # TODO: REMOVE THIS
+    /*
     $technology_groups = $this->Building->BuildingProduct->Product->Technology->TechnologyGroup->find(
       'list',
       array(
@@ -29,6 +31,7 @@ class BuildingsController extends AppController {
       )
     );
     $this->set( compact( 'technology_groups' ) );
+    */
     
     # Explode the phone number if it exists in a data array to prep for form display
     if( isset( $this->data[$this->Building->Client->alias]['phone_number'] ) && is_string( $this->data[$this->Building->Client->alias]['phone_number'] ) ) {
@@ -72,52 +75,6 @@ class BuildingsController extends AppController {
   }
   
   /**
-   * Displays the form to set/update building shell info.
-   *
-   * @param 	$building_id
-   * @return			
-   * @access	public
-   */
-  public function shell( $building_id ) {
-    $this->data = $this->Building->find(
-      'first',
-      array(
-        'contain'    => array(
-          'BuildingWindowSystem' => array(
-            'fields' => array(
-              'BuildingWindowSystem.window_pane_type_id',
-              'BuildingWindowSystem.frame_material_id',
-            )
-          )
-        ),
-        'fields'     => array(
-          'Building.insulation_level_id',
-          'Building.roof_insulation_level_id',
-          'Building.drafts',
-          'Building.windows_frequently_open',
-          'Building.visible_weather_stripping',
-          'Building.visible_caulking',
-          'Building.window_wall',
-          
-        ),
-        'conditions' => array(
-          'Building.id' => $building_id,
-          'deleted'     => 0,
-        ),
-      )
-    );
-  }
-  
-  /**
-   * Displays the form to add/edit building characteristics.
-   *
-   * @access	public
-   */
-  public function characteristics() {
-    
-  }
-  
-  /**
    * Displays the form to add/edit building equipment.
    *
    * @access	public
@@ -137,12 +94,56 @@ class BuildingsController extends AppController {
   }
   
   /**
+   * Sends an invitation email
+   *
+   * @param 	$to     An INDEXED array of invited users
+   * @access	public
+   * @todo    Outsource to MailChimp?
+   */
+  private function send_invite( $to ) {
+    foreach( $to as $invitee ) {
+      $this->log( '{BuildingsController::create} Sending invite to ' . $invitee['email'] . '. Code: ' . $invitee['invite_code'], LOG_DEBUG );
+      
+      # Use redirected email addresses, if warranted
+      $to_email = Configure::read( 'email.redirect_all_email_to' )
+        ? Configure::read( 'email.redirect_all_email_to' )
+        : $invitee['email'];
+      $cc_email = Configure::read( 'email.redirect_all_email_to' )
+        ? Configure::read( 'email.redirect_all_email_to' )
+        : $this->Auth->user( 'email' );
+        
+      # @see AppController::__construct() for common settings
+      $this->SwiftMailer->sendAs   = 'both'; 
+      $this->SwiftMailer->from     = Configure::read( 'email.do_not_reply_address' ); 
+      $this->SwiftMailer->fromName = 'SaveBigBread.com';
+      $this->SwiftMailer->to       = array( $to_email => $invitee['full_name'] );
+      $this->SwiftMailer->cc       = array( $cc_email => $this->Auth->user( 'full_name' ) );
+      
+      //set variables to template as usual 
+      $this->set( 'invite_code', $invitee['invite_code'] );
+      
+      try { 
+        if( !$this->SwiftMailer->send( 'invite', $this->Auth->user( 'full_name' ) . ' is inviting you to save at SaveBigBread.com' ) ) {
+          foreach($this->SwiftMailer->postErrors as $failed_send_to) { 
+            $this->log( 'Failed to send invitation email to ' . $failed_send_to . ' (' . $invitee['role'] . ')' ); 
+          }
+        } 
+      } 
+      catch( Exception $e ) { 
+        $this->log( 'Failed to send email: ' . $e->getMessage() ); 
+      } 
+    }
+  }
+ 
+  /**
    * Displays the survey form.
    *
    * @param 	$building_id
    * @param   $section
    * @return	type		description
+   * @todo    REMOVE THIS
    */
+  /*
   public function questionnaire( $building_id = null, $anchor = null ) {
     $this->helpers[] = 'Form';
 
@@ -325,19 +326,22 @@ class BuildingsController extends AppController {
     # Set a default building_id as a place holder
     $building_id = empty( $building_id ) ? 'new' : $building_id;
     
-    /** Prepare the view */
+    # Prepare the view
     $middle_steps = array_slice( $steps, 1, count( $steps ) - 2 );
     $show_rebate_link = in_array( $anchor, $middle_steps );
     $this->populate_lookups();
     $this->set( compact( 'addresses', 'anchor', 'building_id', 'is_client', 'show_rebate_link' ) );
   }
+  */
 
   /**
    * Displays the set of rebates available for a given building.
    *
    * @param 	$building_id
    * @param   $technology_group_slug
+   * @todo    REMOVE THIS
    */
+  /*
   public function incentives( $building_id = null, $technology_group_slug = null ) {
     # All of the addresses associated with a given user (sidebar display)
     $addresses = $this->Building->Client->buildings( $this->Auth->user( 'id' ) );
@@ -395,10 +399,14 @@ class BuildingsController extends AppController {
     
     $this->set( compact( 'building', 'addresses', 'incentive_count', 'incentives', 'technology_group_slug', 'tip' ) );
   }
+  */
    
   /**
    * Downloads the questionnaire PDF.
+   *
+   * @todo  REMOVE THIS
    */
+  /*
   public function download_questionnaire() {
     $this->view = 'Media';
     $params     = array(
@@ -411,6 +419,7 @@ class BuildingsController extends AppController {
     
    $this->set( $params );
   }
+  */
   
   /**
    * PRIVATE METHODS
@@ -422,7 +431,9 @@ class BuildingsController extends AppController {
    * the variables in the view space.
    *
    * @access	private
+   * @todo    REMOVE THIS
    */
+  /* 
   private function populate_lookups() {
     $basementTypes = $this->Building->BasementType->find(
       'list',
@@ -487,6 +498,7 @@ class BuildingsController extends AppController {
     
     $this->set( compact( 'basementTypes', 'buildingShapes', 'buildingTypes', 'exposureTypes', 'frameMaterials', 'insulationLevels', 'maintenanceLevels', 'roofInsulationLevels', 'roofSystems', 'shadingTypes', 'technologies', 'userTypes', 'wallSystems', 'windowPaneTypes' ) );
   }
+  */
   
   /**
    * Saves a client record.
@@ -494,10 +506,13 @@ class BuildingsController extends AppController {
    * @param 	$building_id
    * @return	boolean
    * @access	private
+   * @todo    REMOVE THIS
    */
+  /* 
   private function save_client( $building_id = null ) {
     return $this->save_user( $building_id, 'Client' );
   }
+  */
   
   /**
    * Saves an inspector record. An inspector is not required so if no
@@ -506,7 +521,9 @@ class BuildingsController extends AppController {
    * @param 	$building_id
    * @return	boolean
    * @access	private
+   * @todo    REMOVE THIS
    */
+  /*
   private function save_inspector( $building_id = null ) {
     if( empty( $this->data['Inspector']['email'] ) ) {
       unset( $this->data['Inspector'] );
@@ -518,6 +535,7 @@ class BuildingsController extends AppController {
     
     return $response;
   }
+  */
   
   /**
    * Saves a realtor record. A realtor is not required so if no
@@ -526,7 +544,9 @@ class BuildingsController extends AppController {
    * @param 	$building_id
    * @return	boolean
    * @access	private
+   * @todo    REMOVE THIS
    */
+  /* 
   private function save_realtor( $building_id = null ) {
     if( empty( $this->data['Realtor']['email'] ) ) {
       unset( $this->data['Realtor'] );
@@ -538,6 +558,7 @@ class BuildingsController extends AppController {
     
     return $response;
   }
+  */
   
   /**
    * Saves a user record.
@@ -545,7 +566,9 @@ class BuildingsController extends AppController {
    * @param 	$building_id
    * @return	boolean
    * @access	private
+   * @todo    REMOVE THIS
    */
+  /*
   private function save_user( $building_id = null, $role ) {
     $foreign_key = strtolower( $role ) . '_id';
     
@@ -589,6 +612,7 @@ class BuildingsController extends AppController {
     
     return $user;
   }
+  */
   
   /**
    * Saves a utility provider
@@ -597,7 +621,9 @@ class BuildingsController extends AppController {
    * @param   $type         Electricity | Gas | Water
    * @return	boolean
    * @access	private
+   * @todo    REMOVE THIS
    */
+  /*
   private function save_utility_provider( $building_id, $type ) {
     $code = ZipCodeUtility::$type_code_reverse_lookup[$type];
     $type = strtolower( $type );
@@ -658,6 +684,7 @@ class BuildingsController extends AppController {
     
     return true;
   }
+  */
 
   /**
    * Saves a product record and the associated building-product record.
@@ -666,6 +693,7 @@ class BuildingsController extends AppController {
    * @return  boolean
    * @access  private
    */
+  /* 
   private function save_product( $building_id ) {
     $validates = true;
     
@@ -682,9 +710,7 @@ class BuildingsController extends AppController {
         continue;
       }
        
-      /**
-       * Determine whether this product already exists in our catalog.
-       */
+      # Determine whether this product already exists in our catalog.
       $product_id = $this->Building->BuildingProduct->Product->known( $make, $model, $energy );
       
       if( !$product_id ) { # This product is not in the catalog yet
@@ -722,82 +748,18 @@ class BuildingsController extends AppController {
     
     return true;
   }
-
-  /**
-   * Updates the building roof system(s).
-   *
-   * @param 	$building_id
-   * @return	boolean
-   * @access	private
-   */
-  private function save_building_roof_system( $building_id ) {
-    # Cull out the unselected roof systems
-    foreach( $this->data['BuildingRoofSystem'] as $i => $roof_system ) {
-      if( empty( $roof_system['roof_system_id'] ) ) {
-        unset( $this->data['BuildingRoofSystem'][$i] );
-      }
-      else if( !empty( $building_id ) ) {
-        $this->data['BuildingRoofSystem'][$i]['building_id'] = $building_id;
-      }
-    }
-    
-    # If there's nothing left, then clear it all
-    if( empty( $this->data['BuildingRoofSystem'] ) ) {
-      unset( $this->data['BuildingRoofSystem'] );
-    }
-    
-    return true;
-  }
-  
-  /**
-   * Sends an invitation email
-   *
-   * @param 	$to     An INDEXED array of invited users
-   * @access	public
-   */
-  private function send_invite( $to ) {
-    foreach( $to as $invitee ) {
-      $this->log( '{BuildingsController::create} Sending invite to ' . $invitee['email'] . '. Code: ' . $invitee['invite_code'], LOG_DEBUG );
-      
-      # Use redirected email addresses, if warranted
-      $to_email = Configure::read( 'email.redirect_all_email_to' )
-        ? Configure::read( 'email.redirect_all_email_to' )
-        : $invitee['email'];
-      $cc_email = Configure::read( 'email.redirect_all_email_to' )
-        ? Configure::read( 'email.redirect_all_email_to' )
-        : $this->Auth->user( 'email' );
-        
-      # @see AppController::__construct() for common settings
-      $this->SwiftMailer->sendAs   = 'both'; 
-      $this->SwiftMailer->from     = Configure::read( 'email.do_not_reply_address' ); 
-      $this->SwiftMailer->fromName = 'SaveBigBread.com';
-      $this->SwiftMailer->to       = array( $to_email => $invitee['full_name'] );
-      $this->SwiftMailer->cc       = array( $cc_email => $this->Auth->user( 'full_name' ) );
-      
-      //set variables to template as usual 
-      $this->set( 'invite_code', $invitee['invite_code'] );
-      
-      try { 
-        if( !$this->SwiftMailer->send( 'invite', $this->Auth->user( 'full_name' ) . ' is inviting you to save at SaveBigBread.com' ) ) {
-          foreach($this->SwiftMailer->postErrors as $failed_send_to) { 
-            $this->log( 'Failed to send invitation email to ' . $failed_send_to . ' (' . $invitee['role'] . ')' ); 
-          }
-        } 
-      } 
-      catch( Exception $e ) { 
-        $this->log( 'Failed to send email: ' . $e->getMessage() ); 
-      } 
-    }
-  }
-  
+  */
+ 
   /**
    * 
    *
    * @param 	$data
+   * @todo    REMOVE THIS
    */
+  /*
   private function prep_utility_data( $data ) {
-    /** Handle utility providers if an unknown was specified */
-    /** TODO: Can we move this down the stack somewhere? */
+    # Handle utility providers if an unknown was specified
+    # TODO: Can we move this down the stack somewhere?
     foreach( ZipCode::$type_codes as $code => $type ) {
       $type = strtolower( $type );
       $name = $data['Building'][$type . '_provider_name'];
@@ -871,4 +833,5 @@ class BuildingsController extends AppController {
     
     return $data;
   }
+  */
 }

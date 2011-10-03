@@ -62,6 +62,7 @@ class Utility extends AppModel {
    *                      of zip codes.
    * @return	array
    * @access	public
+   * @todo    RENAME to Utility::zip_codes()
    */
   public function by_zip_code( $zip_codes ) {
     if( !is_array( $zip_codes ) ) {

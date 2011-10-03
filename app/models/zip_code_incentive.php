@@ -7,7 +7,7 @@ class ZipCodeIncentive extends AppModel {
 	public $belongsTo = array(
 		'Incentive' => array(
 			'className'  => 'Incentive',
-			'foreignKey' => false,  # actually 'incentive_id', but we need to fool Cake
+			'foreignKey' => false,
 			'conditions' => array( 'ZipCodeIncentive.incentive_id' => 'Incentive.incentive_id' ),
 		),
 		'ZipCode' => array(

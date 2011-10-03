@@ -207,8 +207,8 @@ class Building extends AppModel {
   public function __construct( $id = false, $table = null, $ds = null ) {
     parent::__construct( $id, $table, $ds );
     
-    # Since this is a big model with a lot of modifiable fields, generate the whitelist from
-    # a blacklist. In this case, everything is whitelisted except id, created & modified.
+    # Generate a whitelist that doesn't require me to make an update every time
+    # I add a property...unless I don't want that property to be batch updated.
     $this->whitelist = array_diff( array_keys( $this->schema() ), array( 'id', 'deleted', 'created', 'modified' ) );
   }
   
