@@ -1,11 +1,8 @@
-<iframe src="http://cakephp.org/bake-banner" width="830" height="160" style="overflow:hidden; border:none;">
-	<p>For updates and important announcements, visit http://cakefest.org</p>
-</iframe>
 <h2>Sweet, "Test App" got Baked by CakePHP!</h2>
 
 <?php
 if (Configure::read() > 0):
-	Debugger::checkSecurityKeys();
+	Debugger::checkSessionKey();
 endif;
 ?>
 <p>
@@ -26,7 +23,7 @@ endif;
 	$settings = Cache::settings();
 	if (!empty($settings)):
 		echo '<span class="notice success">';
-				printf(__('The %s is being used for caching. To change the config edit APP/config/core.php ', true), '<em>'. $settings['engine'] . 'Engine</em>');
+				echo sprintf(__('The %s is being used for caching. To change the config edit APP/config/core.php ', true), '<em>'. $settings['engine'] . 'Engine</em>');
 		echo '</span>';
 	else:
 		echo '<span class="notice">';
@@ -77,7 +74,7 @@ if (!empty($filePresent)):
 <h3><?php __('Editing this Page') ?></h3>
 <p>
 <?php
-	printf(__('To change the content of this page, edit: %s
+	echo sprintf(__('To change the content of this page, edit: %s
 		To change its layout, edit: %s
 		You can also add some CSS styles for your pages at: %s', true),
 		APP . 'views' . DS . 'pages' . DS . 'home.ctp.<br />',  APP . 'views' . DS . 'layouts' . DS . 'default.ctp.<br />', APP . 'webroot' . DS . 'css');
