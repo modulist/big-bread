@@ -1,27 +1,21 @@
 <?php
-/* SVN FILE: $Id$ */
-
 /**
  * Cake Socket connection class.
  *
  * PHP versions 4 and 5
  *
- * CakePHP(tm) :  Rapid Development Framework (http://www.cakephp.org)
- * Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @filesource
- * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
- * @link          http://www.cakefoundation.org/projects/info/cakephp CakePHP(tm) Project
+ * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs
  * @since         CakePHP(tm) v 1.2.0
- * @version       $Revision$
- * @modifiedby    $LastChangedBy$
- * @lastmodified  $Date$
- * @license       http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 App::import('Core', 'Validation');
 
@@ -93,6 +87,7 @@ class CakeSocket extends Object {
  * Constructor.
  *
  * @param array $config Socket configuration, which will be merged with the base configuration
+ * @see CakeSocket::$_baseConfig
  */
 	function __construct($config = array()) {
 		parent::__construct();
@@ -127,7 +122,7 @@ class CakeSocket extends Object {
 		}
 
 		if (!empty($errNum) || !empty($errStr)) {
-			$this->setLastError($errStr, $errNum);
+			$this->setLastError($errNum, $errStr);
 		}
 
 		$this->connected = is_resource($this->connection);
@@ -187,7 +182,7 @@ class CakeSocket extends Object {
  */
 	function lastError() {
 		if (!empty($this->lastError)) {
-			return $this->lastError['num'].': '.$this->lastError['str'];
+			return $this->lastError['num'] . ': ' . $this->lastError['str'];
 		} else {
 			return null;
 		}
@@ -217,8 +212,14 @@ class CakeSocket extends Object {
 				return false;
 			}
 		}
-
-		return fwrite($this->connection, $data, strlen($data));
+		$totalBytes = strlen($data);
+		for ($written = 0, $rv = 0; $written < $totalBytes; $written += $rv) {
+			$rv = fwrite($this->connection, substr($data, $written));
+			if ($rv === false || $rv === 0) {
+				return $written;
+			}
+		}
+		return $written;
 	}
 
 /**
@@ -307,4 +308,3 @@ class CakeSocket extends Object {
 		return true;
 	}
 }
-?>
