@@ -3,8 +3,8 @@ AddDefaultCharset UTF-8
 <IfModule mod_rewrite.c>
   RewriteEngine On
 	
-  RewriteCond %{HTTP_HOST} !^bigbread\.local [NC]
-  RewriteRule ^(.*)$ http://bigbread.local/$1 [R=301,L]
+  RewriteCond %{HTTP_HOST} !^bigbread\.dev [NC]
+  RewriteRule ^(.*)$ http://bigbread.dev/$1 [R=301,L]
 	
   # TODO: Remove this if we run on a server with PHP as Apache module
   # Bluehost runs PHP as a CGI process, so this hack is necessary
