@@ -5,8 +5,7 @@
 </head>
 
 <body class="layout-default_landing <?php echo Inflector::underscore( $this->name ) . ' ' . Inflector::underscore( $this->action ) ?><?php echo $this->Session->check( 'Auth.User' ) ? ' authenticated' : false ?>">
-<!-- default_landing.ctp -->
-  
+
 <div id="wrapper" class="container_12">
   <div id="content-top" class="content-top grid_12">
     <div class="login-wrapper">

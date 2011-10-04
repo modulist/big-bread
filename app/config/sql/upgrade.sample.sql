@@ -4,7 +4,7 @@ SET NAMES utf8;
 SET foreign_key_checks = 0;
 
 DROP TABLE questionnaires;
-/* 
+/*
 DROP TABLE IF EXISTS messages;
 CREATE TABLE messages(
   id            char(36)      NOT NULL,
@@ -28,7 +28,6 @@ CREATE TABLE messages(
     ON DELETE CASCADE
 ) ENGINE=InnoDB;
 */
-
 -- Polymorphic table so that anything can be watched
 DROP TABLE IF EXISTS watched_technologies; -- Original table name
 DROP TABLE IF EXISTS watch_lists;
