@@ -9,19 +9,23 @@
 <div id="wrapper" class="container_12">
   <div id="content-top" class="content-top grid_12">
     <div class="login-wrapper">
-      <?php __( 'Registered Users' ) ?>
-      <div id="login-trigger"><?php echo $this->Html->link( __( 'Log in &rsaquo;', true ), '#', array( 'escape' => false ) ) ?></div>
-      <div id="login-popup" class="clearfix">
-        <?php echo $this->Form->create( 'User', array( 'action' => 'login', 'inputDefaults' => array( 'error' => false ) ) ) ?>
-          <?php echo $this->Form->input( 'User.email', array( 'id' => 'login-token-1', 'autofocus' => 'true' ) ) ?>
-          <?php echo $this->Form->input( 'User.password', array( 'id' => 'login-token-2' ) ) ?>
-        
-          <div class="password-recovery">
-            <?php printf( __( 'Don&#146;t have an account? %s.', true ), $this->Html->link( __( 'Sign up now', true ), array( 'controller' => 'users', 'action' => 'register' ) ) ) ?>
-          </div>
+      <?php if( !$this->Session->check( 'Auth.User' ) ): ?>
+        <?php __( 'Registered Users' ) ?>
+        <div id="login-trigger"><?php echo $this->Html->link( __( 'Log in &rsaquo;', true ), '#', array( 'escape' => false ) ) ?></div>
+        <div id="login-popup" class="clearfix">
+          <?php echo $this->Form->create( 'User', array( 'action' => 'login', 'inputDefaults' => array( 'error' => false ) ) ) ?>
+            <?php echo $this->Form->input( 'User.email', array( 'id' => 'login-token-1', 'autofocus' => 'true' ) ) ?>
+            <?php echo $this->Form->input( 'User.password', array( 'id' => 'login-token-2' ) ) ?>
           
-        <?php echo $this->Form->end( __( 'Login', true ) ) ?>
-      </div>
+            <div class="password-recovery">
+              <?php printf( __( 'Don&#146;t have an account? %s.', true ), $this->Html->link( __( 'Sign up now', true ), array( 'controller' => 'users', 'action' => 'register' ) ) ) ?>
+            </div>
+            
+          <?php echo $this->Form->end( __( 'Login', true ) ) ?>
+        </div>
+      <?php else: ?>
+        <?php printf( __( 'Welcome back, %s', true ), $this->Session->read( 'Auth.User.first_name' ) ) ?>            
+      <?php endif; ?>
     </div>
     <div id="content-top-inner">
       <div class="branding">

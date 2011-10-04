@@ -171,18 +171,18 @@ class UsersController extends AppController {
    */
 	public function login() {
     # Logging in and authenticated
-    if ( !empty( $this->data ) && $this->Auth->user() ) {
+    if( !empty( $this->data ) && $this->Auth->user() ) {
       $this->User->id = $this->Auth->user( 'id' );
 			$this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
       
       # Update the session value
       $this->refresh_auth( 'last_login', date( 'Y-m-d H:i:s' ) );
       
-      if( $this->User->has_locations() ) {
-        $this->redirect( array( 'controller' => 'buildings', 'action' => 'incentives' ), null, true );
+      if( !$this->RequestHandler->isAjax() ) {
+        $this->redirect( $this->Auth->redirect(), null, true );
       }
       else {
-        $this->redirect( $this->Auth->redirect(), null, true );
+        $this->autoRender = false;
       }
 		}
     # Probably an error logging in

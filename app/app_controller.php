@@ -14,8 +14,7 @@ class AppController extends Controller {
       'autoRedirect' => false,
       'logoutRedirect' => array(
         'controller' => 'pages',
-        'action' => 'display',
-        'home'
+        'action' => 'home',
       ),
     ),
     'RequestHandler',

@@ -17,6 +17,13 @@ $(document).ready( function() {
   
   /** FORMS */
   
+  // Disable buttons on a form being submitted
+  $( 'form' ).submit( function( e ) {
+    $this = $(this);
+    
+    $(':button', $this).attr( 'disabled', 'disabled' );
+  });
+  
   // Depends on the jQuery autotab plugin
   // http://www.mathachew.com/sandbox/jquery-autotab/
   $( '.phonenumber input' ).autotab_magic().autotab_filter( 'number' );
