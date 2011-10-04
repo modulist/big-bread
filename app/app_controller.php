@@ -45,13 +45,15 @@ class AppController extends Controller {
    */
   
   public function beforeFilter() {
-    # Force expected actions to https, others away from it.
-    $force_ssl = Configure::read( 'Route.force_ssl' );
-    if( isset( $force_ssl[$this->name] ) && in_array( $this->action, $force_ssl[$this->name] ) ) {
-      $this->forceSSL();
-    }
-    else if( !isset( $force_ssl[$this->name] ) || !in_array( $this->action, $force_ssl[$this->name] ) ) {
-      $this->unforceSSL();
+    if( !$this->RequestHandler->isAjax() ) { # Don't mess w/ ajax requests (same origin policy)
+      # Force expected actions to https, others away from it.
+      $force_ssl = Configure::read( 'Route.force_ssl' );
+      if( isset( $force_ssl[$this->name] ) && in_array( $this->action, $force_ssl[$this->name] ) ) {
+        $this->forceSSL();
+      }
+      else if( !isset( $force_ssl[$this->name] ) || !in_array( $this->action, $force_ssl[$this->name] ) ) {
+        $this->unforceSSL();
+      }
     }
 
     $this->Auth->authError  = __( 'Authentication required. Please login.', true );
