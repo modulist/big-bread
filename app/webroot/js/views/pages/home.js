@@ -18,7 +18,7 @@ $(document).ready( function() {
         location.reload();
       },
       error: function( e, jqXHR, settings, thrownError ) {
-        alert( 'Invalid authentication credentials. Please try again.' );
+        $this.before( '<div class="flash error">Invalid authentication credentials. Please try again.</div>' );
       },
       complete: function() {
         $(':button', $this).removeAttr( 'disabled' );
