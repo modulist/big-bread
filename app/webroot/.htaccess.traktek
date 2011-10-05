@@ -25,6 +25,8 @@ AddDefaultCharset UTF-8
   RewriteCond %{REMOTE_ADDR} !^98\.203\.35\.
   # Lauren
   RewriteCond %{REMOTE_ADDR} !^76\.127\.154\.
+  # Lauren - new
+  RewriteCond %{REMOTE_ADDR} !^50\.133\.169\.
   # Lauren in Baltimore
   RewriteCond %{REMOTE_ADDR} !^65\.199\.61\.
   # Peter Home
