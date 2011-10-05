@@ -101,7 +101,7 @@ public function beforeFilter() {
   public function home() {
     # If already logged in, the dashboard is the de facto homepage
     if( $this->Session->check( 'Auth.User' ) ) {
-    #   $this->redirect( array( 'controller' => 'users', 'action' => 'dashboard' ) );
+      $this->redirect( array( 'controller' => 'users', 'action' => 'dashboard' ) );
     }
     
     $this->layout = 'default_landing';
