@@ -16,12 +16,11 @@
           <?php echo $this->Form->create( 'User', array( 'action' => 'login', 'inputDefaults' => array( 'error' => false ) ) ) ?>
             <?php echo $this->Form->input( 'User.email', array( 'id' => 'login-token-1', 'autofocus' => 'true' ) ) ?>
             <?php echo $this->Form->input( 'User.password', array( 'id' => 'login-token-2' ) ) ?>
-          
-            <div class="password-recovery">
-              <?php printf( __( 'Don&#146;t have an account? %s.', true ), $this->Html->link( __( 'Sign up now', true ), array( 'controller' => 'users', 'action' => 'register' ) ) ) ?>
-            </div>
-            
           <?php echo $this->Form->end( __( 'Login', true ) ) ?>
+
+          <div class="password-recovery">
+            <?php printf( __( 'Don&#146;t have an account? %s.', true ), $this->Html->link( __( 'Sign up now', true ), array( 'controller' => 'users', 'action' => 'register' ) ) ) ?>
+          </div>
         </div>
       <?php else: ?>
         <?php printf( __( 'Welcome back, %s', true ), $this->Session->read( 'Auth.User.first_name' ) ) ?>            
