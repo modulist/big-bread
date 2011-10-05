@@ -18,11 +18,14 @@ $(document).ready( function() {
       url: $this.attr( 'action' ),
       type: 'POST',
       data: $this.serialize(),
+      beforeSend: function() {
+        $('.flash.error', $this).slideUp()
+      },
       success: function( data, status, jqXHR ) {
         location.reload();
       },
       error: function( e, jqXHR, settings, thrownError ) {
-        $this.before( '<div class="flash error">Invalid authentication credentials. Please try again.</div>' );
+        $this.prepend( '<div class="flash error">Invalid authentication credentials. Please try again.</div>' );
       },
       complete: function() {
         $(':button', $this).removeAttr( 'disabled' );

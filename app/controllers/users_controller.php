@@ -189,6 +189,11 @@ class UsersController extends AppController {
     else if( !empty( $this->data ) ) {
       # Clear the password fields we we don't display encrypted values
       $this->data['User']['password'] = null;
+      
+      if( $this->RequestHandler->isAjax() ) {
+        $this->autoRender = false;
+        header( 'Not Authorized', true, 401 );
+      }
     }
     
 		$this->set( 'title_for_layout', 'Login' );
