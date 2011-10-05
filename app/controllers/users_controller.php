@@ -192,6 +192,7 @@ class UsersController extends AppController {
       
       if( $this->RequestHandler->isAjax() ) {
         $this->autoRender = false;
+        $this->Session->delete( 'Message.auth' ); # We'll display this manually in an Ajax request.
         header( 'Not Authorized', true, 401 );
       }
     }
