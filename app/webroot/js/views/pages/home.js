@@ -19,13 +19,18 @@ $(document).ready( function() {
       type: 'POST',
       data: $this.serialize(),
       beforeSend: function() {
-        $('.flash.error', $this).slideUp()
+        $('.flash.error', $this).fadeTo( 200, 0 );
       },
       success: function( data, status, jqXHR ) {
         location.reload();
       },
       error: function( e, jqXHR, settings, thrownError ) {
-        $this.prepend( '<div class="flash error">Invalid authentication credentials. Please try again.</div>' );
+        if( $('.flash.error', $this).length > 0 ) {
+          $('.flash.error').fadeTo( 200, 100 );
+        }
+        else {
+          $this.prepend( '<div class="flash error">Invalid authentication credentials. Please try again.</div>' );
+        }
       },
       complete: function() {
         $(':button', $this).removeAttr( 'disabled' );
