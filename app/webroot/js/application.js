@@ -40,7 +40,7 @@ $(document).ready( function() {
    * Set the datepicker date format, where applicable.
    */
   if( $( '.date' ).length ) {
-    $( '.date' ).datepicker({ dateFormat: 'MM d, yy' });
+    $( 'input.date' ).datepicker({ dateFormat: 'MM d, yy' });
   }
 });
 

@@ -2,21 +2,9 @@
   <?php echo $this->element( '../buildings/_form', array( 'short' => true ) ) ?>
 <?php endif; ?>
 
-
-<!--<ul>
-  <li><?php echo $this->Html->link( 'Ways to Save', array( 'controller' => 'buildings', 'action' => 'ways_to_save', 'zip_code' ) ) ?></li>
-  <li><?php echo $this->Html->link( 'Add Location', array( 'controller' => 'buildings', 'action' => 'add' ) ) ?></li>
-  <li><?php echo $this->Html->link( 'Edit Location', array( 'controller' => 'buildings', 'action' => 'edit', 'building_id' ) ) ?></li>
-  <li><?php echo $this->Html->link( 'Add/Edit Equipment', array( 'controller' => 'buildings', 'action' => 'equipment', 'building_id' ) ) ?></li>
-  <li><?php echo $this->Html->link( 'Redeem a Rebate', array( 'controller' => 'technology_incentives', 'action' => 'redeem' ) ) ?></li>
-  <li><?php echo $this->Html->link( 'Profile', array( 'controller' => 'users', 'action' => 'edit' ) ) ?></li>
-</ul>-->
-
-
-
 <div id="messages" class="grid_9">
-	<h1>Let&#146;s find rebates in your area</h1>
-	<p>First,  you&#146;ll have to help us out by letting us know what kinds of rebates you&#146;re interested in.</p>
+	<h1><?php __( 'Let&#146;s find rebates in your area' ) ?></h1>
+	<p><?php __( 'First, you&#146;ll have to help us out by letting us know what kinds of rebates you&#146;re interested in.' ) ?></p>
 </div><!-- /#messages -->
 
 <div id="my-locations" class="grid_9">
