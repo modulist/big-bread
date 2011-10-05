@@ -36,7 +36,7 @@
       <div class="sample-rebate">
         <div class="house-signup">
           <p class="headline"><?php __( 'We&#146;ve found more than' ) ?></p>
-          <p class="sample-rebate-amount"><?php echo $this->Number->format( $total_savings, array( 'places' => 0, 'before' => '$' ) ) ?>*</p>
+          <p class="sample-rebate-amount"><span><?php echo $this->Number->format( $total_savings, array( 'places' => 0, 'before' => '$' ) ) ?></span>*</p>
           <p class="headline"><?php __( 'in savings in your area.' ) ?></p>
           
           <?php echo $this->Form->create( 'User', array( 'action' => 'register', 'type' => 'get' ) ) ?>

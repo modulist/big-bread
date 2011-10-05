@@ -1,3 +1,9 @@
+/**
+ * Control key codes:
+ * - null, backspace, horizontal tab, return, shift, control, alt, escape, meta
+ */
+var control_keys = [0,8,9,13,16,17,18,27,91];
+  
 $(document).ready( function() {
   /** MODERNIZR */
   if( !Modernizr.input.placeholder ) {
@@ -17,6 +23,8 @@ $(document).ready( function() {
   
   /** FORMS */
   
+  // See control_keys global above.
+  
   // Disable buttons on a form being submitted
   $( 'form' ).submit( function( e ) {
     $this = $(this);
@@ -27,12 +35,6 @@ $(document).ready( function() {
   // Depends on the jQuery autotab plugin
   // http://www.mathachew.com/sandbox/jquery-autotab/
   $( '.phonenumber input' ).autotab_magic().autotab_filter( 'number' );
-  
-  /**
-   * Control key codes:
-   * - null, backspace, horizontal tab, return, shift, control, alt, escape, meta
-   */
-  var control_keys = [0,8,9,13,16,17,18,27,91];
   
   /**
    * Set the datepicker date format, where applicable.

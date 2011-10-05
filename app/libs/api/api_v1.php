@@ -62,6 +62,25 @@ class ApiV1 extends Api {
   }
   
   /**
+   * Retrieves featured rebate information for a zip code.
+   *
+   * @param   $zip_code
+   * @return  array
+   * @access  public
+   */
+  public function zip_codes_overview( $zip_code ) {
+    $this->ZipCode = ClassRegistry::init( 'ZipCode' );
+    
+    $overview = array(
+      'locale'           => $this->ZipCode->locale( $zip_code ),
+      'total_savings'    => $this->ZipCode->savings( $zip_code, false ),
+      'featured_rebates' => $this->ZipCode->featured_rebates( $zip_code ),
+    );
+        
+    return $overview;
+  }
+  
+  /**
    * Retrieves all US states.
    *
    * @return  array

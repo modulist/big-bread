@@ -13,7 +13,7 @@
       <?php $i = 0 ?>
       <?php foreach( $featured_rebates as $name => $amount ): ?>
         <tr class="<?php echo $i++ % 2 === 0 ? 'even' : 'odd' ?>">
-          <td class="rebate-source" title="<?php echo h( preg_replace( '/-.+$/', '', $name ) ) ?>"><?php echo h( $this->Text->truncate( preg_replace( '/-.+$/', '', $name ), 25, array( 'ending' => '...', 'exact' => false ) ) ) ?></td>
+          <td class="rebate-source" title="<?php echo h( preg_replace( '/-.+$/', '', $name ) ) ?>"><?php echo h( $this->Text->truncate( preg_replace( '/\s*-.+$/', '', $name ), 25, array( 'ending' => '...', 'exact' => false ) ) ) ?></td>
           <td class="rebate-amount"><?php echo $this->Number->format( $amount, array( 'before' => '$', 'places' => 2 ) ) ?></td>
         </tr>
       <?php endforeach; ?>
