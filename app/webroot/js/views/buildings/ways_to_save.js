@@ -1,5 +1,5 @@
 $(document).ready( function() {
-  $('#get-a-quote, #show-details').click( function( e ) {
+  $('#show-details').click( function( e ) {
     e.preventDefault();
     
     var $this = $(this);
