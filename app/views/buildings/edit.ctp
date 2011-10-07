@@ -1,3 +1,6 @@
-<h1>Edit Location</h1>
+<div id="messages" class="grid_9">
+	<h1>Edit a location</h1>
+	<p>to save on major home improvement projects, or simply when replacing an appliance.</p>
+</div><!-- /#messages -->
 
-<p>Replace this markup.</p>
+<?php echo $this->element( '../buildings/_form', array( 'short' => false ) ) ?>

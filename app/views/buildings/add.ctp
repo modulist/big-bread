@@ -1,5 +1,6 @@
-<h1><?php __( 'Add a New Location' ) ?></h1>
+<div id="messages" class="grid_9">
+	<h1>Add a new location</h1>
+	<p>to save on major home improvement projects, or simply when replacing an appliance.</p>
+</div><!-- /#messages -->
 
 <?php echo $this->element( '../buildings/_form', array( 'short' => false ) ) ?>
-
-<p>Replace anything in here that needs replacing. Not the form though. If you must mess with that, we should talk first.</p>
