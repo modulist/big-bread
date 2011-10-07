@@ -354,25 +354,10 @@ fieldset div.cloneable { border-bottom: 1px solid #CCC; }
 
 input[type=submit],input[type=reset]{ border: 1px solid #4677a4; -moz-border-radius: 4px; -webkit-border-radius: 4px; -khtml-border-radius: 4px; border-radius: 4px; background: url(../img/bk-button.png) repeat-x #4a9dc0; color:#FFF; padding: 4px 30px; font-weight: bold; text-align: center !important; text-shadow: -1px -1px 1px #1a4b60; width: 210px; heigt: 40px; }
 input[type=submit]:hover,input[type=reset]:hover { background: url(../img/bk-button-over.png) repeat-x #4a9dc0; }
-.buttons { text-align:center !important; }
 #slider {margin-top:20px; margin-bottom:10px;width:300px;}
 input.autocomplete {background: url(/img/autocomplete-icon.png) no-repeat right;}
 input.autocomplete.active {background: url(/img/throbber-FPO.gif) no-repeat right;}
 
-.form .buttons { text-align:left; }
-.buttons div.button { display:inline; margin-right:10px; }
-.buttons .button.disabled { display: none; }
-button,
-a.button { 
-	border: 0 none;
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
-    -khtml-border-radius: 6px;
-    border-radius: 6px; background-color: #e48d3f; color:#FFF; font-weight:bold; font-size: 12px;
-  display: block;
-  float: left; padding: 13px 15px; }
-.intro button,
-.intro a.button { font-size: 14px; margin-bottom: 10px; text-decoration: none; }
 .intro .link-action { clear: left; }
 input[type=text][disabled] { background: transparent; border: none; color: #eee; }
 form .input.phonenumber .area-code, form .input.phonenumber .exchange { width: 3em; }
@@ -461,12 +446,6 @@ table.current-equipment { width: 100%; margin: 15px 0 15px; background: url(/img
 .location-equipment-grid.grid_4 { width: 300; margin-right: 0; }
 .location-equipment-grid.grid_5 { width: 350; margin-right: 0; }
 
-.add-location-button { background-color: #4ac092; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; text-align: center; margin: 62px 0 0; padding: 3px 15px; float: right; }
-.edit-location-button { display: block; width: 48px; background: url(/img/bk-blue-popup.png) 42px -10px no-repeat #4c96b6; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; margin: 10px 0 0; padding: 4px 10px;  }
-.add-equipment-button { background-color: #4c96b6; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; text-align: center; margin: 10px 0 0; padding: 3px 15px; }
-.edit-location-button:hover,
-.add-equipment-button:hover { background-color: #3b7e9a; text-decoration: none; }
-
 #BuildingAddForm input[type='text'] { width: 300px; }
 #BuildingAddForm input[type='submit'] {width: 220px; line-height: 210%;margin-bottom: 30px;margin-left:150px;}
 #BuildingAddForm .AddLocationState { width: 180px; float: left; margin: 0 10px 0 0; }
@@ -501,6 +480,30 @@ table.pending-quotes {width: 700px; font-size: 11px; color: #0c4d54; padding: 5p
 .pending-quotes td { padding: 10px 5px; }
 .pending-quotes td.quote-category {  font-size: 12px; font-weight: bold; padding-left: 10px; width: 325px; }
 .pending-quotes td.quote-category { }
+
+/* ============================= buttons ======================= */
+.form .buttons { text-align:center; }
+.buttons div.button { display:inline; margin-right:10px; }
+.buttons .button.disabled { display: none; }
+button,
+a.button { 
+	border: 0 none;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -khtml-border-radius: 6px;
+    border-radius: 6px; background-color: #e48d3f; color:#FFF; font-weight:bold; font-size: 12px;
+  display: block;
+  float: left; padding: 13px 15px; }
+.intro button,
+.intro a.button { font-size: 14px; margin-bottom: 10px; text-decoration: none; }
+.add-location-button { background-color: #4ac092; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; text-align: center; margin: 62px 0 0; padding: 3px 15px; float: right; }
+.edit-location-button { display: block; width: 48px; background: url(/img/bk-blue-popup.png) 42px -10px no-repeat #4c96b6; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; margin: 10px 0 0; padding: 4px 10px;  }
+.add-equipment-button { background-color: #4c96b6; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; text-align: center; margin: 10px 0 0; padding: 3px 15px; }
+.edit-location-button:hover,
+.add-equipment-button:hover { background-color: #3b7e9a; text-decoration: none; }
+.choose-button {float:left; background: url(/img/button-choose.png) no-repeat; width:118px; height: 22px; margin-top: 12px;}
+.choose-button p {font: 11px/1 Georgia, serif; color: #fff; padding: 5px; vertical-align: middle;}
+
 a.remove-button { color: #c00; }
 
 a.details-button, a.quote-button { display: inline-block; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; color: #fff; padding: 3px 5px 3px 9px; margin-bottom: 2px; }
