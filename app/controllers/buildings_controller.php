@@ -89,8 +89,59 @@ class BuildingsController extends AppController {
    * @param 	$building_id	
    * @access	public
    */
-  public function ways_to_save( $building_id ) {
+  public function ways_to_save( $building_id = null ) {
+    $user_id = $this->Auth->user( 'id' );
+    # Determine which zip code to use
+    if( empty( $building_id ) ) {
+      $location = $this->Building->Client->locations( $user_id, 1 );
+      $location = $location[0];
+    }
+    else {
+      $location = $this->Building->find(
+        'first',
+        array(
+          'contain' => array(
+            'Address' => array(
+              'ZipCode'
+            ),
+          ),
+          'conditions' => array(
+            'Building.id' => $building_id,
+            'OR' => array(
+              'Building.client_id'    => $user_id,
+              'Building.realtor_id'   => $user_id,
+              'Building.inspector_id' => $user_id,
+            )
+          ),
+        )
+      );
+    }
     
+    $zip_code  = empty( $location )
+      ? $this->Auth->user( 'zip_code' )
+      : $location['Address']['zip_code'];
+    
+    # If we still don't have a zip code, redirect to the dashboard
+    if( empty( $zip_code ) ) {
+      $this->Session->setFlash( 'Please add a location to see your potential savings.', null, null, 'info' );
+      $this->redirect( $this->referer( array( 'controller' => 'users', 'action' => 'dashboard' ) ), null, true );
+    }
+    
+    $rebates = Set::combine( $this->Building->incentives( $zip_code ), '{n}.TechnologyIncentive.id', '{n}', '{n}.Technology.name' );
+    
+    if( empty( $location ) ) {
+      $rebates_for = $zip_code;
+    }
+    else if( empty( $location['Building']['name'] ) ) {
+      $rebates_for = $location['Address']['address_1'];
+    }
+    else {
+      $rebates_for = $location['Building']['name'];
+    }
+    
+    $this->set( compact( 'rebates', 'location', 'rebates_for', 'zip_code' ) );
+    
+    # new PHPDump( $rebates ); exit;
   }
   
   /**

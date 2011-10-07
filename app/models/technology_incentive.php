@@ -96,6 +96,8 @@ class TechnologyIncentive extends AppModel {
     $conditions = array(
       'Incentive.excluded' => 0,
       'TechnologyIncentive.is_active' => 1,
+      'TechnologyGroup.display' => 1,
+      'Technology.display' => 1,
       'OR' => array(
         'Incentive.expiration_date' => null, 
         'Incentive.expiration_date >= ' => date( DATE_FORMAT_MYSQL ),
@@ -113,7 +115,7 @@ class TechnologyIncentive extends AppModel {
       'TechnologyIncentive.amount DESC',
     );
     if( $group ) {
-      array_unshift( $order, 'TechnologyGroup.name' );
+      array_unshift( $order, 'TechnologyGroup.display_order' );
     }
     
     $incentives = $this->find(
@@ -122,9 +124,10 @@ class TechnologyIncentive extends AppModel {
         'contain' => false,
         'fields'  => array(
           'TechnologyGroup.id',
-          'TechnologyGroup.name',
+          'TechnologyGroup.title',
           'Technology.id',
           'Technology.name',
+          'Technology.display',
           'Incentive.id',
           'Incentive.name',
           'Incentive.expiration_date',

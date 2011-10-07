@@ -5,159 +5,43 @@
 
 <h1 class="printable"><?php __( 'Visit SaveBigBread.com for the latest in personalized discounts and information' ) ?></h1>
 
-<!-- my location html has been added to /app/views/elements/building_info.ctp to replace #contentheader -->
-<?php echo $this->element( 'building_info', array( 'data' => $building ) ) ?>
-
-
 <!-- start new html code for rebates table -->
 <div id="my-rebates" class="grid_9">
-<h2>Rebates for Main House</h2>
+<h2><?php printf( __( 'Rebates for %s', true ), $rebates_for ) ?></h2>
 	<table class="rebates-watch-list">
-  	<!-- air conditioner -->
     <tbody>
-      <tr class="rebate-category-row first">
-        <td class="rebate-category">
-          <table class="rebate-header">
-            <tr>
-              <td class="rebate-description">
-                <a href="#" class="expanded"><span class="rebate-category-title">Air conditioners</span> (5)</a>
-                <a href="#" class="star" title="click to remove">&nbsp;&nbsp;</a>
-              </td>
-              <td class="rebate-amount">$6,130</td>
-              <td class="rebate-total">total</td>
-            </tr>
-          </table>
-          <table class="rebate-content">
-            <tr class="first odd">
-              <td class="rebate-description">
-                <a href="#">Florida Power and Light -<br /> Residential Energy Efficiency Program</a>
-                <a href="#" class="details">details Ý</a>
-              </td>
-              <td class="rebate-dates">while funds last</td>
-              <td class="rebate-amount">$1,930</td>
-              <td class="rebate-action">
-                <a href="#" class="quote-button">GET A QUOTE &rsaquo;</a>
-                <!--<a href="#" class="details-button">DETAILS &rsaquo;</a>-->
-              </td>
-            </tr>
-            <tr class="even">
-              <td class="rebate-description">
-                <a href="#">Lennox HVAC Promotions</a>
-                <a href="#" class="details">details Ý</a>
-              </td>
-              <td class="rebate-dates">through <span class="date nowrap">08/26/2011</span></td>
-              <td class="rebate-amount">$1,200</td>
-              <td class="rebate-action">
-                <a href="#" class="quote-button">GET A QUOTE &rsaquo;</a>
-                <!--<a href="#" class="details-button">DETAILS &rsaquo;</a>-->
-              </td>
-            </tr>
-            <tr class="odd">
-              <td class="rebate-description">
-                <a href="#">Carrier Infinity Series HVAC Rebates</a>
-                <a href="#" class="details">details Ý</a>
-              </td>
-              <td class="rebate-dates">through <span class="date nowrap">08/31/2011</span></td>
-              <td class="rebate-amount">$1,000</td>
-              <td class="rebate-action">
-                <a href="#" class="quote-button">GET A QUOTE &rsaquo;</a>
-               <!--<a href="#" class="details-button">DETAILS &rsaquo;</a>-->
-               </td>
-            </tr>
-            <tr class="even">
-              <td class="rebate-description">
-                <a href="#">2011 Rheem HVAC Consumer CashBack Promotion</a>
-                <a href="#" class="details">details Ý</a>
-              </td>
-              <td class="rebate-dates">through <span class="date nowrap">11/15/2011</span></td>
-              <td class="rebate-amount">$1,000</td>
-              <td class="rebate-action">
-                <a href="#" class="quote-button">GET A QUOTE &rsaquo;</a>
-                <!--<a href="#" class="details-button">DETAILS &rsaquo;</a>-->
-              </td>
-            </tr>
-            <tr class="last odd">
-              <td class="rebate-description">
-                <a href="#">Trane HVAC Promotions</a>
-                <a href="#" class="details">details Ý</a>
-              </td>
-              <td class="rebate-dates">through <span class="date nowrap">08/15/2011</span></td>
-              <td class="rebate-amount">$1,000</td>
-              <td class="rebate-action">
-                <a href="#" class="quote-button">GET A QUOTE &rsaquo;</a>
-                <!--<a href="#" class="details-button">DETAILS &rsaquo;</a>-->
-              </td>
-            </tr>
-          </table>      
-        </td>
-      </tr>
-  
-      <!-- dishwashers -->
-       <tr class="rebate-category-row">
-        <td class="rebate-category">
-          <table class="rebate-header">
-            <tr>
-              <td class="rebate-description">
-                <a href="#" class="expanded"><span class="rebate-category-title">Dishwashers</span> (2)</a>
-                <a href="#" class="star" title="click to remove">&nbsp;&nbsp;</a>
-              </td>
-              <td class="rebate-amount">$100</td>
-              <td class="rebate-total">total</td>
-            </tr>
-          </table>
-          <table class="rebate-content">
-            <tr class="first odd">
-              <td class="rebate-description">
-                <a href="#">GE Caf&eacute; Series Appliance Rebates</a>
-              </td>
-              <td class="rebate-dates">through 10/02/2011</td>
-              <td class="rebate-amount">$50</td>
-              <td class="rebate-action">
-                <a href="#" class="details-button">DETAILS &rsaquo;</a>
-              </td>
-            </tr>
-            <tr class="last even">
-              <td class="rebate-description">
-                <a href="#">GE Profile Series Appliance Rebates</a>
-              </td>
-              <td class="rebate-dates">through 10/02/2011</td>
-              <td class="rebate-amount">$50</td>
-              <td class="rebate-action">
-                <a href="#" class="details-button">DETAILS &rsaquo;</a>
-              </td>
-            </tr>
-          </table>      
-        </td>
-      </tr>
-
-      
-      <!-- freezers -->
-       <tr class="rebate-category-row last">
-        <td class="rebate-category">
-          <table class="rebate-header">
-            <tr>
-              <td class="rebate-description">
-                <a href="#" class="expanded"><span class="rebate-category-title">Freezers</span> (1)</a>
-                <a href="#" class="star" title="click to remove">&nbsp;&nbsp;</a>
-              </td>
-              <td class="rebate-amount">$500</td>
-              <td class="rebate-total">total</td>
-            </tr>
-          </table>
-          <table class="rebate-content">
-            <tr class="first odd">
-              <td class="rebate-description">
-                <a href="#">Viking Special Promotions</a>
-              </td>
-              <td class="rebate-dates">through 09/30/2011</td>
-              <td class="rebate-amount">$500</td>
-              <td class="rebate-action">
-                <a href="#" class="details-button">DETAILS &rsaquo;</a>
-              </td>
-            </tr>
-          </table>      
-        </td>
-      </tr>
+    	<?php foreach( $rebates as $tech_name => $tech_rebates ): ?>
+        <tr class="rebate-category-row first">
+          <td class="rebate-category">
+            <table class="rebate-header">
+              <tr>
+                <td class="rebate-description">
+                  <a href="#" class="toggle collapsed"><span class="rebate-category-title"><?php echo h( $tech_name ) ?></span> (<?php echo count( $tech_rebates ) ?>)</a>
+                  <a href="#" class="star" title="click to add/remove"></a>
+                </td>
+                <td class="rebate-amount"><?php echo $this->Number->format( array_sum( Set::extract( '/TechnologyIncentive/amount', $tech_rebates ) ), array( 'places' => 0, 'before' => '$' ) ) ?></td>
+                <td class="rebate-total"><?php __( 'total' ) ?></td>
+              </tr>
+            </table>
+        
+            <?php foreach( $tech_rebates as $rebate ): ?>
+              <table class="rebate-content">
+                <tr class="first odd">
+                  <td class="rebate-description">
+                    <a href="#"><?php echo h( $rebate['Incentive']['name'] ) ?></a>
+                    <a href="#" class="details"><?php __( 'details' ) ?> &rsaquo;</a>
+                  </td>
+                  <td class="rebate-dates"><?php empty( $rebate['Incentive']['expiration_date'] ) ? __( 'while funds last', true ) : date( 'm/d/Y', strtotime( $rebate['Incentive']['expiration_date'] ) ) ?></td>
+                  <td class="rebate-amount"><?php echo $this->Number->format( $rebate['TechnologyIncentive']['amount'], array( 'places' => 0, 'before' => '$' ) ) ?></td>
+                  <td class="rebate-action">
+                    <?php echo $this->Html->link( __( 'GET A QUOTE &rsaquo;', true ), array( 'controller' => 'technology_incentives', 'action' => 'quote', $rebate['TechnologyIncentive']['id'] ), array( 'class' => 'quote-button', 'escape' => false ) ) ?>
+                  </td>
+                </tr>
+              </table> 
+            <?php endforeach; ?>
+          </td>
+        </tr>
+      <?php endforeach; ?>
 	  </tbody>
   </table>
 </div> <!-- #My rebates -->

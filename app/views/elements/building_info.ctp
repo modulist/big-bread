@@ -1,9 +1,10 @@
 <div id="my-locations" class="grid_9">
 	<div class="clearfix">
-		<a href="#" class="add-location-button">Add a location &rsaquo;</a>
-		<h2><?php __( 'Rebates for ' ) ?>Main House</h2>
+    <?php echo $this->Html->link( __( 'Add a location &rsaquo;', true ), '#', array( 'class' => 'add-location-button', 'escape' => false ) ) ?>
+		<h2><?php printf( __( 'Rebates for %s' ), 'Main House' ) ?></h2>
 	</div>
 	<div class="location-wrapper clearfix">
+    
 		<div class="location-icon">1</div>
 		<h4>Main House</h4>
 		<div class="location-address">
@@ -42,6 +43,8 @@
 			</table>
 			<a class="add-equipment-button" href="#">Add equipment</a>
 		</div><!-- /location-equipment-grid -->
+		
+    
 	</div><!-- /location-wrapper -->
 </div><!-- /my-locations -->
 

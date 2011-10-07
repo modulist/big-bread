@@ -3,14 +3,10 @@
 class Building extends AppModel {
 	public $name = 'Building';
 	public $belongsTo = array(
-		'BasementType',
-    'BuildingShape',
-		'BuildingType',
 		'Client' => array(
 			'className' => 'User',
 			'foreignKey' => 'client_id'
 		),
-		'ExposureType',
     'ElectricityProvider' => array(
       'className' => 'Utility',
     ),
@@ -21,12 +17,10 @@ class Building extends AppModel {
 			'className' => 'User',
 			'foreignKey' => 'inspector_id'
 		),
-    'MaintenanceLevel',
 		'Realtor' => array(
 			'className' => 'User',
 			'foreignKey' => 'realtor_id'
 		),
-		'ShadingType',
     'WaterProvider' => array(
       'className' => 'Utility',
     ),
@@ -38,21 +32,9 @@ class Building extends AppModel {
       'conditions' => array( 'Address.model' => 'Building' ),
       'dependent'  => true,
     ),
-    'BuildingWallSystem' => array( # Built for hasMany, but currently implemented as hasOne
-      'dependent' => true,
-    ), 
-		'Occupant' => array(
-      'dependent' => true,
-    ),
   );
 	public $hasMany = array(
     'BuildingProduct' => array(
-      'dependent' => true,
-    ),
-		'BuildingRoofSystem' => array(
-      'dependent' => true,
-    ),
-		'BuildingWindowSystem' => array(
       'dependent' => true,
     ),
 	);
@@ -242,12 +224,12 @@ class Building extends AppModel {
   /**
    * Retrieves the relevant incentives (rebates) for a given building.
    *
-   * @param 	$building_id
+   * @param 	$zip_code
    * @param   $conditions   Array of conditions to forward along
    * @return	array
    */
-  public function incentives( $building_id, $conditions = array() ) {
-    return $this->Address->ZipCode->Incentive->TechnologyIncentive->incentives( $this->zip_code( $building_id ), $building_id, $conditions );
+  public function incentives( $zip_code ) {
+    return $this->Address->ZipCode->Incentive->TechnologyIncentive->all( $zip_code );
   }
   
   /**

@@ -487,7 +487,7 @@ table.rebate-header { border: none; }
 .rebate-header .rebate-description a.star { width: 30px; height: 20px; background: url(../img/sprite-rebate-table.png) -12px -28px no-repeat; }
 .rebate-header .rebate-description span.rebate-category-title { font: 16px/1.25 "UltraRegular", serif; letter-spacing: .04em;  }
 
-table.rebate-content { margin-left: 60px; color: #666; }
+table.rebate-content { margin-left: 60px; color: #666; display: none; }
 .rebate-content tr { background: url(../img/dotrule-orange-1px.png) top left repeat-x; }
 .rebate-content tr.odd { background-color: rgba(143, 212, 105, 0.1)/*#f4fbf0*/; border: none; }
 .rebate-content tr.even { background-color: transparent;  }

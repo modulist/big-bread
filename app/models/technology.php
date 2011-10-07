@@ -46,7 +46,6 @@ class Technology extends AppModel {
    * Returns a list of technologies to be displayed grouped by their
    * containing TechnologyGroup.
    *
-   * @param   $
    * @return  array
    * @access  public
    */
