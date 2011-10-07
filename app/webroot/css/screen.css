@@ -355,6 +355,10 @@ fieldset div.cloneable { border-bottom: 1px solid #CCC; }
 input[type=submit],input[type=reset]{ border: 1px solid #4677a4; -moz-border-radius: 4px; -webkit-border-radius: 4px; -khtml-border-radius: 4px; border-radius: 4px; background: url(../img/bk-button.png) repeat-x #4a9dc0; color:#FFF; padding: 4px 30px; font-weight: bold; text-align: center !important; text-shadow: -1px -1px 1px #1a4b60; width: 210px; heigt: 40px; }
 input[type=submit]:hover,input[type=reset]:hover { background: url(../img/bk-button-over.png) repeat-x #4a9dc0; }
 .buttons { text-align:center !important; }
+#slider {margin-top:20px; margin-bottom:10px;width:300px;}
+input.autocomplete {background: url(/img/autocomplete-icon.png) no-repeat right;}
+input.autocomplete.active {background: url(/img/throbber-FPO.gif) no-repeat right;}
+
 .form .buttons { text-align:left; }
 .buttons div.button { display:inline; margin-right:10px; }
 .buttons .button.disabled { display: none; }
@@ -431,22 +435,62 @@ option { padding: 0 8px; line-height: 24px; }
 /* ============================= Dashboard elements ======================= */
 
 #my-locations { font-size: 14px; padding-right: 0; }
-#my-locations h2 { margin: 40px 0 0; }
+#my-utilities { font-size: 14px; padding-right: 0; margin-top:20px; margin-bottom: 40px; background: url(/img/dotrule-green-4px.png) top left repeat-x, url(/img/dotrule-green-4px.png) bottom left repeat-x;}
+#my-equipment { font-size: 14px; padding-right: 0; }
+
+#my-locations h2, #my-utilities h2 { margin: 20px 0 0; }
 #my-locations h4 { margin: 0 10px 10px 110px; font-size: 14px; background: url(/img/dotrule-orange-2px.png) bottom repeat-x; padding: 0 0 10px; }
-.location-wrapper { margin-top: 20px; }
-.location-icon { float:left; background: url(/img/icon-location.png) no-repeat; width: 87px; height: 45px; font: 14px/1 'BirraStout', serif; color: #0c4d54; text-align: center; padding: 23px 12px 0 0; letter-spacing: -.2em; }
+.location-wrapper, .utilities-wrapper, .equipment-wrapper { margin-top: 20px; }
+.location-icon { float:left; background: url(/img/icon-location.png) no-repeat; width: 87px; height: 45px; font: 14px/1 'BirraStout', serif; color: #0c4d54; text-align: center; padding: 23px 12px 0 0; letter-spacing: -.2em; margin-right:20px; }
+.location-icon-large { float:left; background: url(/img/icon-locations-lg.png) no-repeat; width: 127px; height: 90px; font: 14px/1 'BirraStout', serif; color: #0c4d54; text-align: center; padding: 23px 12px 0 0; letter-spacing: -.2em; margin-right:10px; }
+.utilities-icon { float:left; background: url(/img/icon-utilities.png) no-repeat; width: 127px; height: 90px; font: 14px/1 'BirraStout', serif; color: #0c4d54; text-align: center; padding: 23px 12px 0 0; letter-spacing: -.2em; margin-right:10px; }
 .location-address { float: left; width: 170px; margin: 0 10px; }
 .location-address p { font-weight: bold; color: #548287; line-height: 18px; }
-.location-equipment-grid.grid_5 { width: 360; margin-right: 0; }
+
 table.location-equipment { width: 100%; margin: 0 0 15px; }
+.location-equipment { float: left; width: 300px; margin: 0 10px; }
+.location-equipment .grid_4 { margin-left: 0; }
 .location-equipment td { padding: 2px 5px; }
 .location-equipment td.model-name { width: 40%; }
 .location-equipment td.controls { width: 20%; font-size: 11px; letter-spacing: .06em; }
+
+table.current-equipment { width: 100%; margin: 15px 0 15px; background: url(/img/dotrule-orange-2px.png) top repeat-x; }
+.current-equipment-icon {float:left; background: url(/img/equipment-current-icon.png) no-repeat; width: 67px; height: 71px;margin-right: 10px;}
+.current-equipment-title {font: 14px/1.2 'UltraRegular', Georgia, serif; color: #0c4d54;vertical-align: bottom;margin-top: 40px;}
+.add-equipment-grid.grid_3 { width: 220; margin-right:20px; float:right; vertical-align: top;}
+.location-equipment-grid.grid_4 { width: 300; margin-right: 0; }
+.location-equipment-grid.grid_5 { width: 350; margin-right: 0; }
+
 .add-location-button { background-color: #4ac092; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; text-align: center; margin: 62px 0 0; padding: 3px 15px; float: right; }
 .edit-location-button { display: block; width: 48px; background: url(/img/bk-blue-popup.png) 42px -10px no-repeat #4c96b6; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; margin: 10px 0 0; padding: 4px 10px;  }
 .add-equipment-button { background-color: #4c96b6; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; text-align: center; margin: 10px 0 0; padding: 3px 15px; }
 .edit-location-button:hover,
 .add-equipment-button:hover { background-color: #3b7e9a; text-decoration: none; }
+
+#BuildingAddForm input[type='text'] { width: 300px; }
+#BuildingAddForm input[type='submit'] {width: 220px; line-height: 210%;margin-bottom: 30px;margin-left:150px;}
+#BuildingAddForm .AddLocationState { width: 180px; float: left; margin: 0 10px 0 0; }
+#BuildingAddForm .AddLocationState input { width: 180px; margin: 4px 10px 0 0;}
+#BuildingAddForm .AddLocationState select { width: 180px; height: 24px;}
+#BuildingAddForm .AddLocationZip { width: 100px; float: left; margin: 0 10px 0 0; }
+#BuildingAddForm .AddLocationZip input { width: 100px; margin: 4px 10px 0 0; }
+#BuildingEditForm input[type='text'] { width: 300px; }
+#BuildingEditForm input[type='submit'] {width: 220px; line-height: 210%;margin-bottom: 30px;margin-left:150px;}
+#BuildingEditForm .AddLocationState { width: 180px; float: left; margin: 0 10px 0 0; }
+#BuildingEditForm .AddLocationState input { width: 180px; margin: 4px 10px 0 0;}
+#BuildingEditForm .AddLocationState select { width: 180px; height: 24px;}
+#BuildingEditForm .AddLocationZip { width: 100px; float: left; margin: 0 10px 0 0; }
+#BuildingEditForm .AddLocationZip input { width: 100px; margin: 4px 10px 0 0; }
+#EquipmentAddForm input[type='text'] { width: 300px; }
+#EquipmentAddForm select { width: 300px; }
+#EquipmentAddForm textarea { width: 300px; height:150px; } 
+#EquipmentAddForm input.year {border:0; font: 18px/1 Georgia, serif; color: #0c4d54; -moz-border-radius: 0; -webkit-border-radius: 0; -khtml-border-radius:0; border-radius: 0; box-shadow: none;}
+#EquipmentAddForm input[type='submit'] {width: 220px; line-height: 210%;margin-bottom: 30px;margin-top: 20px;}
+#EquipmentEditForm input[type='text'] { width: 300px; }
+#EquipmentEditForm select { width: 300px; }
+#EquipmentEditForm textarea { width: 300px; height:150px; } 
+#EquipmentEditForm input.year {border:0; font: 18px/1 Georgia, serif; color: #0c4d54; -moz-border-radius: 0; -webkit-border-radius: 0; -khtml-border-radius:0; border-radius: 0; box-shadow: none;}
+#EquipmentEditForm input[type='submit'] {width: 220px; line-height: 210%;margin-bottom: 30px;margin-top: 20px;}
 
 table.pending-quotes {width: 700px; font-size: 11px; color: #0c4d54; padding: 5px 0 10px; margin: 10px 0 40px; background: url(../img/dotrule-green-4px.png) top left repeat-x, url(/img/dotrule-green-4px.png) bottom left repeat-x; }
 .pending-quotes tr { vertical-align: top; background: url(/img/dotrule-orange-1px.png) top left repeat-x; }
