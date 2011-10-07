@@ -4,7 +4,7 @@
 <?php echo $this->Html->meta( 'icon' ) . "\n" ?>
 
 <?php echo $this->Html->css( '960.css' ) ?>
-<?php echo $this->Html->css( 'jqueryui/themes/aristo/jquery-ui-1.8.7.custom.css' ) ?>
+<?php echo $this->Html->css( 'jqueryui/themes/bigbread/jquery-ui-1.8.7.custom.css' ) ?>
 <!-- Decent looking tooltips -->
 <?php echo $this->Html->css( '/js/jquery/tipsy/tipsy.css' ) ?>
 
