@@ -352,7 +352,7 @@ div.checkbox label, div.radio label { display: inline; }
 fieldset { border: 0 none; margin: 0 0 10px 0; }
 fieldset div.cloneable { border-bottom: 1px solid #CCC; }
 
-input[type=submit],input[type=reset]{ border: 1px solid #4677a4; -moz-border-radius: 4px; -webkit-border-radius: 4px; -khtml-border-radius: 4px; border-radius: 4px; background: url(../img/bk-button.png) repeat-x #4a9dc0; color:#FFF; padding: 4px 30px; font-weight: bold; text-align: center !important; text-shadow: -1px -1px 1px rgba(0,0,0,0.2); width: 210px; heigt: 40px; }
+input[type=submit],input[type=reset]{ border: 1px solid #4677a4; -moz-border-radius: 4px; -webkit-border-radius: 4px; -khtml-border-radius: 4px; border-radius: 4px; background: url(../img/bk-button.png) repeat-x #4a9dc0; color:#FFF; padding: 4px 30px; font-weight: bold; text-align: center !important; text-shadow: -1px -1px 1px rgba(0,0,0,0.2); box-shadow:inset 0 0 10px #000000; width: 210px; heigt: 40px; }
 input[type=submit]:hover,input[type=reset]:hover { background: url(../img/bk-button-over.png) repeat-x #4a9dc0; }
 #slider {margin-top:20px; margin-bottom:10px;width:300px;}
 input.autocomplete {background: url(/img/autocomplete-icon.png) no-repeat right;}
@@ -471,7 +471,11 @@ table.current-equipment { width: 100%; margin: 15px 0 15px; background: url(/img
 #EquipmentEditForm input.year {border:0; font: 18px/1 Georgia, serif; color: #0c4d54; -moz-border-radius: 0; -webkit-border-radius: 0; -khtml-border-radius:0; border-radius: 0; box-shadow: none;}
 #EquipmentEditForm input[type='submit'] {width: 220px; line-height: 210%;margin-bottom: 30px;margin-top: 20px;}
 
+/* ============================= get a quote ======================= */
 .breadcrumb { font: 14px/1.25 Georgia, serif; font-weight: bold; color: #0c4d54; margin-top: 30px; }
+.popup { padding: 30px 20px; }
+.popup h2, .modal h2 { margin-top: 20px; }
+
 #ProposalRequestForm h2 { margin-top: 20px; }
 #ProposalRequestForm h4 { font-size: 14px; letter-spacing: .1em; background: url(/img/dotrule-orange-1px.png) repeat-x left bottom; padding: 0 0 10px; margin-bottom: 5px; }
 #ProposalRequestForm p { padding: 5px 0; }
@@ -556,6 +560,11 @@ table.rebate-content { margin-left: 60px; color: #666; display: none; }
 .rebate-content td.rebate-amount { color: #666; padding-right: 15px; }
 
 
+/* ============================= savings details ======================= */
+table.savings-detail-grid { width: 100%; background: url(../img/dotrule-orange-1px.png) bottom repeat-x; margin: 0 0 20px; }
+.savings-detail-grid tbody tr { background: url(../img/dotrule-orange-1px.png) top repeat-x; }
+.savings-detail-grid th { font: 14px/1.125 'UltraRegular', serif; letter-spacing: .1em; color: #0c4d54; text-align: left; padding: 30px 5px 6px; }
+.savings-detail-grid td { font-size: 12px; width: 33%; padding: 10px 5px; }
 
 
 /* ============================= Join ======================= */
