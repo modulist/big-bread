@@ -432,7 +432,7 @@ option { padding: 0 8px; line-height: 24px; }
 .location-address { float: left; width: 170px; margin: 0 10px; }
 .location-address p { font-weight: bold; color: #548287; line-height: 18px; }
 
-table.location-equipment { width: 100%; margin: 0 0 15px; }
+table.location-equipment { width: 350px; margin: 0 0 15px; }
 .location-equipment { float: left; width: 300px; margin: 0 10px; }
 .location-equipment .grid_4 { margin-left: 0; }
 .location-equipment td { padding: 2px 5px; }
@@ -443,8 +443,8 @@ table.current-equipment { width: 100%; margin: 15px 0 15px; background: url(/img
 .current-equipment-icon {float:left; background: url(/img/equipment-current-icon.png) no-repeat; width: 67px; height: 71px;margin-right: 10px;}
 .current-equipment-title {font: 14px/1.2 'UltraRegular', Georgia, serif; color: #0c4d54;vertical-align: bottom;margin-top: 40px;}
 .add-equipment-grid.grid_3 { width: 220; margin-right:20px; float:right; vertical-align: top;}
-.location-equipment-grid.grid_4 { width: 300; margin-right: 0; }
-.location-equipment-grid.grid_5 { width: 350; margin-right: 0; }
+.location-equipment-grid.grid_4 { width: 300px; margin-right: 0; }
+.location-equipment-grid.grid_5 { width: 350px; margin-right: 0; }
 
 #BuildingAddForm input[type='text'] { width: 300px; }
 #BuildingAddForm input[type='submit'] {width: 220px; line-height: 210%;margin-bottom: 30px;margin-left:150px;}
