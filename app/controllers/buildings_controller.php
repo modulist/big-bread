@@ -46,23 +46,15 @@ class BuildingsController extends AppController {
    */
   public function add() {
     if( !empty( $this->data ) ) {
-      $this->Building->set( $this->data );
-      
-      if( $this->Building->saveAll( $this->data, array( 'validate' => 'only' ) ) ) {
-        $this->Session->setFlash( 'This is a wireframe. Nothing really happened, but let\'s pretend it did.', null, null, 'success' );
+      if( $this->Building->saveAll( $this->data ) ) {
+        $this->Session->setFlash( sprintf( __( '"%s" was saved.', true ), !empty( $this->data['Building']['name'] ) ? $this->data['Building']['name'] : __( 'Your location', true ) ), null, null, 'success' );
         
-        if( isset( $this->data['Building']['electricity_provider_id'] ) ) { # Submitting from the long form
-          $this->redirect( array( 'action' => 'shell', '$this->Building->id' ), null, true );
-        }
-        
-        $this->redirect( $this->referer( array( 'controller' => 'users', 'action' => 'dashboard' ), null, true ) );
+        $this->redirect( array( 'controller' => 'users', 'action' => 'dashboard' ), null, true );
       }
       else {
-        $this->Session->setFlash( 'There was an error saving this location.', null, null, 'validation' );
+        $this->Session->setFlash( __( 'There was an error saving this location.', true ), null, null, 'validation' );
       }
     }
-    
-    # TODO: Whatever we need to render a view
   }
   
   /**
@@ -151,6 +143,10 @@ class BuildingsController extends AppController {
     
     $this->set( compact( 'location_id', 'rebates', 'rebates_for', 'watched_technologies' ) );
   }
+  
+  /**
+   * PRIVATE METHODS
+   */
   
   /**
    * Sends an invitation email

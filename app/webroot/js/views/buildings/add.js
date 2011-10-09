@@ -49,7 +49,7 @@ $(document).ready( function() {
     for( var i = 0; i < utility_types.length; i++ ) {
       var type = utility_types[i];
       
-      $('#Building' + type + 'ProviderName').attr( 'placeholder', 'Loading provider data...' );
+      $('#' + type + 'ProviderName').attr( 'placeholder', 'Loading provider data...' );
       
       $.ajax({
         url: '/api/v1/zip_codes/utilities/' + zip + '/' + type + '.json',
@@ -60,9 +60,8 @@ $(document).ready( function() {
         },
         success: function( data, status ) {
           var utility_type = data.Type.name;
-          
-          var $provider_name = $('#Building' + utility_type + 'ProviderName');
-          var $provider_id   = $('#Building' + utility_type + 'ProviderId');
+          var $provider_name = $('#' + utility_type + 'ProviderName');
+          var $provider_id   = $('#' + utility_type + 'ProviderId');
         
           // Massage the Cake data into something autocomplete-friendly
           // @see http://stackoverflow.com/questions/5708128/jqueryui-autocomplete-doesnt-really-autocomplete
