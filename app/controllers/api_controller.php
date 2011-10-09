@@ -116,7 +116,8 @@ class ApiController extends AppController {
         break;
       
       default:
-        $valid = $this->RequestHandler->isGet();
+        // In the case of an unspecified action, allow any request type
+        $valid = true;
         break;
     }
     

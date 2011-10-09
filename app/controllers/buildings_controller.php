@@ -91,10 +91,15 @@ class BuildingsController extends AppController {
    */
   public function ways_to_save( $location_id = null ) {
     $user_id = $this->Auth->user( 'id' );
+    
     # Determine which zip code to use
     if( empty( $location_id ) ) {
       $location = $this->Building->Client->locations( $user_id, 1 );
-      $location = !empty( $location ) ? $location[0] : $location;
+      
+      if( !empty( $location ) ) {
+        $location = $location[0];
+        $location_id = $location[0]['Building']['id'];
+      }
     }
     else {
       $location = $this->Building->find(
@@ -106,7 +111,7 @@ class BuildingsController extends AppController {
             ),
           ),
           'conditions' => array(
-            'Building.id' => $building_id,
+            'Building.id' => $location_id,
             'OR' => array(
               'Building.client_id'    => $user_id,
               'Building.realtor_id'   => $user_id,
@@ -144,7 +149,7 @@ class BuildingsController extends AppController {
     $watched_technologies = $this->Building->Client->technology_watch_list( $location_id );
     $watched_technologies = Set::extract( '/TechnologyWatchList/technology_id', $watched_technologies );
     
-    $this->set( compact( 'rebates', 'rebates_for', 'watched_technologies' ) );
+    $this->set( compact( 'location_id', 'rebates', 'rebates_for', 'watched_technologies' ) );
   }
   
   /**

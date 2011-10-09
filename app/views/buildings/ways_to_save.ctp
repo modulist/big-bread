@@ -20,8 +20,8 @@
                 <td class="rebate-description">
                   <?php echo $this->Html->link( '<span class="rebate-category-title">' . $tech_name . '</span> (' . count( $tech_rebates ) . ')', '#', array( 'class' => 'toggle collapsed', 'escape' => false ) ) ?>
                   
-                  <?php $watched = in_array( $tech_id, $watched_technologies ) ? 'active' : false ?>
-                  <?php echo $this->Html->link( '', '#', array( 'class' => 'star ' . $watched, 'title' => 'Click to add/remove this interest' ) ) ?>
+                  <?php $watched = in_array( $tech_id, $watched_technologies ) ? ' active' : false ?>
+                  <?php echo $this->Html->link( '', '#', array( 'class' => 'star' . $watched, 'title' => 'Click to add/remove this interest', 'data-user-id' => $this->Session->read( 'Auth.User.id' ), 'data-technology-id' => $tech_id, 'data-location-id' => $location_id ) ) ?>
                 </td>
                 <td class="rebate-amount"><?php echo $this->Number->format( array_sum( Set::extract( '/TechnologyIncentive/amount', $tech_rebates ) ), array( 'places' => 0, 'before' => '$' ) ) ?></td>
                 <td class="rebate-total"><?php __( 'total' ) ?></td>
