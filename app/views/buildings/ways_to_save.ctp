@@ -12,13 +12,16 @@
     <tbody>
       <?php $i = 0; ?>
       <?php foreach( $rebates as $tech_name => $tech_rebates ): ?>
+        <?php $tech_id = array_shift( Set::extract( '/Technology/id[:first]', $tech_rebates ) ) ?>
         <tr class="rebate-category-row<?php echo $i++ == 0 ? ' first' : false ?>">
           <td class="rebate-category">
             <table class="rebate-header">
               <tr>
                 <td class="rebate-description">
                   <?php echo $this->Html->link( '<span class="rebate-category-title">' . $tech_name . '</span> (' . count( $tech_rebates ) . ')', '#', array( 'class' => 'toggle collapsed', 'escape' => false ) ) ?>
-                  <?php echo $this->Html->link( '', '#', array( 'class' => 'star', 'title' => 'Click to add/remove this interest' ) ) ?>
+                  
+                  <?php $watched = in_array( $tech_id, $watched_technologies ) ? 'active' : false ?>
+                  <?php echo $this->Html->link( '', '#', array( 'class' => 'star ' . $watched, 'title' => 'Click to add/remove this interest' ) ) ?>
                 </td>
                 <td class="rebate-amount"><?php echo $this->Number->format( array_sum( Set::extract( '/TechnologyIncentive/amount', $tech_rebates ) ), array( 'places' => 0, 'before' => '$' ) ) ?></td>
                 <td class="rebate-total"><?php __( 'total' ) ?></td>

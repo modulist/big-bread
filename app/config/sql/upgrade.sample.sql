@@ -34,6 +34,7 @@ DROP TABLE IF EXISTS watch_lists;
 CREATE TABLE watch_lists(
   id            char(36)      NOT NULL,
   user_id       char(36)      COLLATE utf8_unicode_ci NOT NULL,
+  location_id   char(36)      COLLATE utf8_unicode_ci NULL, -- watch lists can be specific to a location
   foreign_key   char(36)      COLLATE utf8_unicode_ci NOT NULL,
   model         varchar(255)  NOT NULL,
   created       datetime      NULL,

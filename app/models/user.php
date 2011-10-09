@@ -383,6 +383,39 @@ class User extends AppModel {
   }
   
   /**
+   * Retrieves a user's watchlist for a given scenario.
+   *
+   * @param   $location_id
+   * @param   $user_id
+   * @return  array
+   * @access  public
+   */
+  public function technology_watch_list( $location_id = null, $user_id = null ) {
+    $user_id = !empty( $user_id ) ? $user_id : self::get( 'id' );
+    
+    $conditions = array(
+      'TechnologyWatchList.user_id'     => $user_id,
+      'TechnologyWatchList.model'       => 'Technology',
+    );
+    
+    if( !empty( $location_id ) ) {
+      $conditions['TechnologyWatchList.location_id'] = $location_id;
+    }
+    
+    return $this->TechnologyWatchList->find(
+      'all',
+      array(
+        'contain'    => false,
+        'fields'     => array(
+          'TechnologyWatchList.id',
+          'TechnologyWatchList.foreign_key AS technology_id',
+        ),
+        'conditions' => $conditions,
+      )
+    );
+  }
+  
+  /**
    * Adds a technology to a user's watch list.
    *
    * @param   $technology_id

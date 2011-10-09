@@ -89,12 +89,12 @@ class BuildingsController extends AppController {
    * @param 	$building_id	
    * @access	public
    */
-  public function ways_to_save( $building_id = null ) {
+  public function ways_to_save( $location_id = null ) {
     $user_id = $this->Auth->user( 'id' );
     # Determine which zip code to use
-    if( empty( $building_id ) ) {
+    if( empty( $location_id ) ) {
       $location = $this->Building->Client->locations( $user_id, 1 );
-      $location = $location[0];
+      $location = !empty( $location ) ? $location[0] : $location;
     }
     else {
       $location = $this->Building->find(
@@ -139,9 +139,12 @@ class BuildingsController extends AppController {
       $rebates_for = $location['Building']['name'];
     }
     
-    $this->set( compact( 'rebates', 'location', 'rebates_for', 'zip_code' ) );
+    # Pull the technology watch list and reduce it to just the technology ids
+    # so we can just use in_array() while looping.
+    $watched_technologies = $this->Building->Client->technology_watch_list( $location_id );
+    $watched_technologies = Set::extract( '/TechnologyWatchList/technology_id', $watched_technologies );
     
-    # new PHPDump( $rebates ); exit;
+    $this->set( compact( 'rebates', 'rebates_for', 'watched_technologies' ) );
   }
   
   /**
