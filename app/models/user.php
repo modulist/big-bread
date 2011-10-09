@@ -419,15 +419,17 @@ class User extends AppModel {
    * Adds a technology to a user's watch list.
    *
    * @param   $technology_id
+   * @param   $location_id
    * @param 	$user_id
    * @return	boolean
    * @access	public
    */
-  public function watch_technology( $technology_id, $user_id = null ) {
+  public function watch_technology( $technology_id, $location_id = null, $user_id = null ) {
     $user_id = !empty( $user_id ) ? $user_id : self::get( 'id' );
     
     $data = array(
       'user_id'     => $user_id,
+      'location_id' => $location_id,
       'foreign_key' => $technology_id,
       'model'       => 'Technology',
     );
@@ -443,15 +445,16 @@ class User extends AppModel {
    * @return	boolean
    * @access	public
    */
-  public function unwatch_technology( $technology_id, $user_id = null ) {
+  public function unwatch_technology( $technology_id, $location_id = null, $user_id = null ) {
     $user_id = !empty( $user_id ) ? $user_id : self::get( 'id' );
     
     $watch_list_id = $this->TechnologyWatchList->field(
       'id',
       array(
-        'TechnologyWatchList.foreign_key' => $technology_id,
-        'TechnologyWatchList.user_id'     => $user_id,
-        'TechnologyWatchList.model'       => 'Technology',
+       'TechnologyWatchList.foreign_key' => $technology_id,
+       'TechnologyWatchList.user_id'     => $user_id,
+       'TechnologyWatchList.location_id' => $location_id,
+       'TechnologyWatchList.model'       => 'Technology',
       )
     );
     
