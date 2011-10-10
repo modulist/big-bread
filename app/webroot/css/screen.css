@@ -540,11 +540,11 @@ table.rebate-header { border: none; }
 .rebate-category-row.last { background: none; }
 .rebate-header  td { padding: 5px; }
 .rebate-header .rebate-description { width: 440px; vertical-align: top; font-size: 14px; }
-.rebate-header .rebate-description a { padding: 0 0 0 10px; }
+.rebate-header .rebate-description a { display: block; float: left; padding: 0 0 0 20px; }
 .rebate-header .rebate-description a:hover { text-decoration: none; color: #01DEB8; }
 .rebate-header .rebate-description a.expanded { background: url(../img/sprite-rebate-table.png) -17px -50px no-repeat; }
 .rebate-header .rebate-description a.collapsed { background: url(../img/sprite-rebate-table.png) -17px  0 no-repeat; }
-.rebate-header .rebate-description a.star { width: 30px; height: 20px; background: url(../img/sprite-rebate-table.png) -12px -28px no-repeat; }
+.rebate-header .rebate-description a.star { margin-left: 10px; padding: 0; width: 20px; height: 20px; background: url(../img/sprite-rebate-table.png) -12px -28px no-repeat; }
 .rebate-header .rebate-description span.rebate-category-title { font: 16px/1.25 "UltraRegular", serif; letter-spacing: .04em;  }
 
 table.rebate-content { margin-left: 60px; color: #666; display: none; }
