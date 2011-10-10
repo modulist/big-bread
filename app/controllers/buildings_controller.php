@@ -90,7 +90,7 @@ class BuildingsController extends AppController {
       
       if( !empty( $location ) ) {
         $location = $location[0];
-        $location_id = $location[0]['Building']['id'];
+        $location_id = $location['Building']['id'];
       }
     }
     else {

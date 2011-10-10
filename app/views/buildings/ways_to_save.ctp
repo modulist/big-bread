@@ -13,7 +13,14 @@
       <?php $i = 0; ?>
       <?php foreach( $rebates as $tech_name => $tech_rebates ): ?>
         <?php $tech_id = array_shift( Set::extract( '/Technology/id[:first]', $tech_rebates ) ) ?>
-        <tr class="rebate-category-row<?php echo $i++ == 0 ? ' first' : false ?>">
+        <?php if( $i++ == 0 ): ?>
+          <?php $class = ' first' ?>
+        <?php elseif( $i == count( $rebates ) ): ?>
+          <?php $class = ' last' ?>
+        <?php else: ?>
+          <?php $class = false ?>
+        <?php endif; ?>
+        <tr class="rebate-category-row<?php echo $class ?>">
           <td class="rebate-category">
             <table class="rebate-header">
               <tr>
@@ -28,9 +35,10 @@
               </tr>
             </table>
         
-            <?php foreach( $tech_rebates as $rebate ): ?>
-              <table class="rebate-content">
-                <tr class="first odd">
+            <table class="rebate-content">
+              <?php $j = 0 ?>
+              <?php foreach( $tech_rebates as $rebate ): ?>
+                <tr class="first <?php echo $j++ % 2 === 0 ? 'even' : 'odd' ?>">
                   <td class="rebate-description">
                     <?php echo $this->Html->link( h( $rebate['Incentive']['name'] ), '#' ) ?>
                     <?php echo $this->Html->link( __( 'details &rsaquo;', true ), array( 'controller' => 'technology_incentives', 'action' => 'details', $rebate['TechnologyIncentive']['id'] ), array( 'class' => 'details', 'escape' => false ) ) ?>
@@ -41,8 +49,8 @@
                     <?php echo $this->Html->link( __( 'GET A QUOTE &rsaquo;', true ), array( 'controller' => 'technology_incentives', 'action' => 'quote', $rebate['TechnologyIncentive']['id'] ), array( 'class' => 'quote-button', 'escape' => false ) ) ?>
                   </td>
                 </tr>
-              </table> 
-            <?php endforeach; ?>
+              <?php endforeach; ?>
+            </table> 
           </td>
         </tr>
       <?php endforeach; ?>
