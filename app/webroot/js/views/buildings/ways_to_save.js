@@ -24,11 +24,12 @@ $(document).ready( function() {
     
     $( '<div/>' ).load( $this.attr( 'href' ) ).dialog({
       height: 'auto',
-      maxWidth: 600,
+      maxWidth: 800,
+      minWidth: 600,
+      position: 'center',
       resizable: false,
       title: $this.attr( 'title' ).length > 0 ? $this.attr( 'title' ) : false,
-      width: 'auto',
-      resize: function( e, ui ) {
+      open: function( e, ui ) {
         $(this).dialog( 'option', 'position', 'center' );
       }
     });
