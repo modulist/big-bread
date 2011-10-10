@@ -6,10 +6,13 @@ class TechnologyIncentivesController extends AppController {
   /**
    * Displays the details of a given incentive.
    *
+   * @param   $id
    * @access	public
    */
-  public function details() {
+  public function details( $id ) {
+    $rebate = $this->TechnologyIncentive->get( $id );
     
+    $this->set( compact( 'rebate' ) );
   }
   
   /**

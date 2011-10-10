@@ -57,6 +57,9 @@ class TechnologyIncentive extends AppModel {
             'PublicNote',
           ),
           'IncentiveAmountType',
+          'Technology' => array(
+            'TechnologyGroup',
+          ),
           'TechnologyOption',
           'TechnologyTerm',
           'Technology',

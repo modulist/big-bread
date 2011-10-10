@@ -40,8 +40,8 @@
               <?php foreach( $tech_rebates as $rebate ): ?>
                 <tr class="first <?php echo $j++ % 2 === 0 ? 'even' : 'odd' ?>">
                   <td class="rebate-description">
-                    <?php echo $this->Html->link( h( $rebate['Incentive']['name'] ), '#' ) ?>
-                    <?php echo $this->Html->link( __( 'details &rsaquo;', true ), array( 'controller' => 'technology_incentives', 'action' => 'details', $rebate['TechnologyIncentive']['id'] ), array( 'class' => 'details', 'escape' => false ) ) ?>
+                    <?php echo h( $rebate['Incentive']['name'] ) ?>
+                    <?php echo $this->Html->link( __( 'details &rsaquo;', true ), array( 'controller' => 'technology_incentives', 'action' => 'details', $rebate['TechnologyIncentive']['id'] ), array( 'class' => 'details', 'title' => 'Rebate details', 'escape' => false ) ) ?>
                   </td>
                   <td class="rebate-dates"><?php empty( $rebate['Incentive']['expiration_date'] ) ? __( 'while funds last', true ) : date( 'm/d/Y', strtotime( $rebate['Incentive']['expiration_date'] ) ) ?></td>
                   <td class="rebate-amount"><?php echo $this->Number->format( $rebate['TechnologyIncentive']['amount'], array( 'places' => 0, 'before' => '$' ) ) ?></td>

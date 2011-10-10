@@ -1,35 +1,60 @@
 <div class="modal popup">
-	<div class="breadcrumb">Heating and Cooling > Air Conditioners</div>
-	<h2>Florida Power and Light -<br />Residential Energy Efficiency Program</h2>
+	<div class="breadcrumb"><?php echo h( $rebate['Technology']['TechnologyGroup']['title'] ) ?> &gt; <?php echo h( $rebate['Technology']['name'] ) ?></div>
+	<h2><?php echo h( $rebate['Incentive']['name'] ) ?></h2>
 	
 	<table class="savings-detail-grid">
 		<thead class="first">
-			<th class="valid first">Valid until</th>
-			<th class="options">Options</th>
-			<th class="source last">Energy Source</th>
+			<th class="valid first"><?php __( 'Valid until' ) ?></th>
+			<th class="options"><?php __( 'Options' ) ?></th>
+			<th class="source last"><?php __( 'Energy Source' ) ?></th>
 		</thead>
 		<tr>
-			<td class="valid first">Funds run out</td>
-			<td class="options">None</td>
-			<td class="source">Electric</td>
+			<td class="valid first"><?php echo empty( $rebate['Incentive']['expiration_date'] ) ? __( 'While funds last', true ) : date( 'm/d/Y', strtotime( $rebate['Incentive']['expiration_date'] ) ) ?></td>
+			<td class="options">
+        <?php if( !empty( $rebate['TechnologyOption'] ) ): ?>
+          <ul>
+            <?php foreach( $rebate['TechnologyOption'] as $option ): ?>
+              <li><?php echo h( $option['name'] ) ?></li>
+            <?php endforeach; ?>
+          </ul>
+        <?php else: ?>
+          <?php __( 'None' ) ?>
+        <?php endif; ?>
+      </td>
+			<td class="source">
+        <?php foreach( $rebate['EnergySource'] as $esource ): ?>
+          <li><?php echo h( $esource['name'] ) ?></li>
+        <?php endforeach; ?>
+      </td>
 		</tr>
-		<thead char="last">
-			<th class="terms first">Terms</th>
-			<th class="conditions last" colspan="2">Conditions</th>
-		</thead>
-		<tr>
-			<td class="terms first">SEER</td>
-			<td class="conditions last" colspan="2">
-				Min SEER = 14<br />
-				Max. SEER =20
-			</td>
-		</tr>
-		<tr class="last">
-			<td class="terms first">General</td>
-			<td class="conditions last" colspan="2">
-				This is the maximum incentive in a SEER 20 5 ton + unit. See matrix to determine exact rebate.
-			</td>
-		</tr>
+    <?php if( !empty( $rebate['TechnologyTerm'] ) ): ?>
+      <thead char="last">
+        <th class="terms first"><?php __( 'Terms' ) ?></th>
+        <th class="conditions last" colspan="2"><?php __( 'Conditions' ) ?></th>
+      </thead>
+      <?php foreach( $rebate['TechnologyTerm'] as $term ): ?>
+        <tr>
+          <td class="terms first"><?php echo h( $term['name'] ) ?></td>
+          <td class="conditions last" colspan="2">
+            <?php if( !empty( $term['field1_name'] ) || !empty( $term['field2_name'] ) || !empty( $term['field3_name'] )  ): ?>
+              <ul>
+                <?php foreach( array( 'field1', 'field2', 'field3' ) as $i => $field ): ?>
+                  <?php if( !empty( $term[$field . '_name'] ) && !empty( $term['IncentiveTechTerm'][$field . '_value'] ) ): ?>
+                    <?php $display = $field != 'field3' # For field3, don't display the name value.
+                      ? h( $term[$field . '_name'] ) . ' = ' . h( $term['IncentiveTechTerm'][$field . '_value'] )
+                      : h( $term['IncentiveTechTerm'][$field . '_value'] );
+                    ?>
+                    <li><?php echo $display ?></li>
+                  <?php endif; ?>
+                <?php endforeach; ?>
+              </ul>
+            <?php else: ?>
+              <?php __( 'None' ) ?>
+            <?php endif; ?>
+          </td>
+        </tr>
+      <?php endforeach; ?> 
+    <?php endif; ?>
 	</table><!-- /savings-detail-grid -->				
   <a href="#" class="quote-button">GET A QUOTE &rsaquo;</a>
 </div><!-- /modal popup -->
