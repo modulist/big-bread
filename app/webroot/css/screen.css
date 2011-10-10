@@ -152,6 +152,7 @@ body.onecolumn #content { background: #FFFFFF; min-height:400px; padding: 50px 6
 #vertical-nav li.top-link a { background: url(../img/arrow-top.png) 0 5px no-repeat; color: #3f3f3f; padding: 0 0 6px 15px; }
 
 .users.register #sidebar{ top: 230px; }
+.users.dashboard #sidebar{ top: 300px; }
 
 #questionnaire_nav li, #questionnaire_act li { float:left; }
 #getstart { background:#fff; padding: 20px; border: 1px solid white; border-radius: 20px; -moz-border-radius: 20px;}
