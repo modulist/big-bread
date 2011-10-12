@@ -21,6 +21,8 @@ AddDefaultCharset UTF-8
   RewriteCond %{REMOTE_ADDR} !^96\.241\.115\.
   # Cyril
   RewriteCond %{REMOTE_ADDR} !^209\.6\.169\.
+  # Cyril - new
+  RewriteCond %{REMOTE_ADDR} !^209\.6\.166\.
   # Claudio
   RewriteCond %{REMOTE_ADDR} !^98\.203\.35\.
   # Lauren
