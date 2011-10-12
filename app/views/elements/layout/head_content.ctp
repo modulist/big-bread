@@ -12,5 +12,3 @@
 <?php echo $this->Html->css( 'print', 'stylesheet', array( 'media' => 'print' ) ) ?>
 
 <?php echo $this->Html->script( 'lib/modernizr-1.7.min.js' ) . "\n" ?>
-<?php echo $this->Html->script( '/js/jquery-ui-1.8.16.custom/js/jquery-1.6.2.min.js' ) . "\n" ?>
-<?php echo $this->Html->script( '/js/jquery-ui-1.8.16.custom/js/jquery-ui-1.8.16.custom.min.js' ) . "\n" ?>
