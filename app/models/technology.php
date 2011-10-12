@@ -16,7 +16,7 @@ class Technology extends AppModel {
       'className'  => 'EnergySource',
       'foreignKey' => 'technology_id',
     ),
-    'Product',
+    'Fixture',
     'TechnologyIncentive' => array(
       'className'  => 'TechnologyIncentive',
       'foreignKey' => 'incentive_tech_id',

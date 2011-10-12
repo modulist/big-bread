@@ -34,19 +34,10 @@ class Building extends AppModel {
     ),
   );
 	public $hasMany = array(
-    'BuildingProduct' => array(
+    'Fixture' => array(
       'dependent' => true,
-    ),
+    )
 	);
-  
-  public $hasAndBelongsToMany = array(
-    'Product' => array(
-      'className'             => 'Product',
-      'joinTable'             => 'building_products',
-      'foreignKey'            => 'building_id',
-      'associationForeignKey' => 'product_id',
-    ),
-  );
   
   public $actsAs = array(
     'AuditLog.Auditable',
@@ -193,8 +184,8 @@ class Building extends AppModel {
    */
   public function equipment( $building_id, $technology_id = null ) {
     $conditions = array(
-      'BuildingProduct.building_id' => $building_id,
-      'BuildingProduct.service_out' => null,
+      'Fixture.building_id' => $building_id,
+      'Fixture.service_out' => null,
     );
     
     # Optionally filter for a equipment of a specific technology
@@ -202,10 +193,10 @@ class Building extends AppModel {
       $conditions['Product.technology_id'] = $technology_id;
     }
     
-    return $this->BuildingProduct->find(
+    return $this->Fixture->find(
       'all',
       array(
-        'contain'    => array( 'Product' => array( 'Technology' ) ),
+        'contain'    => array( 'Technology' ),
         'conditions' => $conditions,
       )
     );

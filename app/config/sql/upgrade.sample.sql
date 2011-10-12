@@ -1,19 +1,18 @@
-USE @DB_NAME@;
+-- USE @DB_NAME@;
 
 SET NAMES utf8;
 SET foreign_key_checks = 0;
 
-DROP TABLE questionnaires;
-/*
+DROP TABLE IF EXISTS questionnaires;
+
 DROP TABLE IF EXISTS messages;
 CREATE TABLE messages(
   id            char(36)      NOT NULL,
   transport     varchar(255)  NOT NULL DEFAULT 'email',
   type          varchar(255)  NULL,
-  sender_id     char(36)      NOT NULL,
-  recipient_id  char(36)      NOT NULL,
+  sender_id     char(36)      COLLATE utf8_unicode_ci NOT NULL,
+  recipient_id  char(36)      COLLATE utf8_unicode_ci NOT NULL,
   sent          boolean       NOT NULL DEFAULT 0,
-  
   created       datetime      NULL,
   modified      datetime      NULL,
   
@@ -27,7 +26,36 @@ CREATE TABLE messages(
     ON UPDATE CASCADE
     ON DELETE CASCADE
 ) ENGINE=InnoDB;
-*/
+
+-- Merging products and building_products into one table: fixtures
+DROP TABLE IF EXISTS fixtures;
+RENAME TABLE building_products TO fixtures;
+ALTER TABLE fixtures
+  DROP FOREIGN KEY fk__building_products__products,
+  ADD energy_source_id  varchar(6)    COLLATE utf8_unicode_ci NULL AFTER product_id,
+  ADD model             varchar(255)  COLLATE utf8_unicode_ci NULL AFTER product_id,
+  ADD make              varchar(255)  COLLATE utf8_unicode_ci NULL AFTER product_id,
+  ADD technology_id     char(36)      COLLATE utf8_unicode_ci NOT NULL AFTER product_id;
+
+UPDATE fixtures f, products p
+   SET f.technology_id    = p.technology_id,
+       f.make             = p.make,
+       f.model            = p.model,
+       f.energy_source_id = p.energy_source_id
+ WHERE f.product_id = p.id;
+ 
+DROP TABLE products;
+ALTER TABLE fixtures
+  DROP product_id,
+  ADD CONSTRAINT fk__fixtures__technologies FOREIGN KEY( technology_id )
+    REFERENCES technologies( id )
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+  ADD CONSTRAINT fk__fixtures__incentive_tech_energy_type FOREIGN KEY( energy_source_id )
+    REFERENCES incentive_tech_energy_type( incentive_tech_energy_type_id )
+    ON UPDATE CASCADE
+    ON DELETE CASCADE;
+
 -- Polymorphic table so that anything can be watched
 DROP TABLE IF EXISTS watched_technologies; -- Original table name
 DROP TABLE IF EXISTS watch_lists;
@@ -124,9 +152,5 @@ UPDATE technologies
 UPDATE technologies
    SET display = 0
  WHERE incentive_tech_id IN( 'AIRSL', 'CEILF', 'CHP', 'CTRL', 'DHUM', 'DRHR', 'FIREPL', 'INS', 'LCTRL', 'MAINT', 'MOTOR', 'OTHER', 'POOLP', 'PSHEAT', 'PTHST', 'PV', 'RMAC', 'SHOWER', 'SIDING', 'STEAM', 'WBLD', 'WHFAN', 'WHINS', 'WIND' );
-/*
-ALTER TABLE products
-  DROP INDEX uix__products__make_model_energy,
-  ADD CONSTRAINT uix__products__make_model UNIQUE INDEX( make, model );
-*/
+
 SET foreign_key_checks = 1;

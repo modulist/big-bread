@@ -310,6 +310,7 @@ class TechnologyIncentive extends AppModel {
    * @return	array
    * @todo    REMOVE IN FAVOR OF TechnologyIncentive::all()
    */
+  /* 
   public function incentives( $zip, $building_id = null, $conditions = array() ) {
     $default_conditions = array(
       'technology_group_id'       => null,
@@ -480,6 +481,7 @@ class TechnologyIncentive extends AppModel {
     
     return $incentives;
   }
+  */
   
   /**
    * Returns the geographic scope conditions for a given zip code.

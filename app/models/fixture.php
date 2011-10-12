@@ -1,25 +1,16 @@
 <?php
 
-# TODO: Change to Fixture
-class BuildingProduct extends AppModel {
-	public $name = 'BuildingProduct';
+class Fixture extends AppModel {
+	public $name = 'Fixture';
 	
-  public $belongsTo = array( 'Building', 'Product' );
+  public $belongsTo = array( 'Building', 'Technology', 'EnergySource' );
   
   public $actsAs = array(
     'AuditLog.Auditable',
   );
   
 	public $validate = array(
-		'product_id' => array(
-			'notempty' => array(
-				'rule'       => 'notEmpty',
-				'message'    => 'Product cannot be empty.',
-				'allowEmpty' => false,
-				'required'   => true,
-			),
-		),
-		'serial_number' => array(
+    'serial_number' => array(
 			'unique' => array(
 				'rule'       => 'isUnique',
 				'message'    => 'This serial number is not unique.',
@@ -28,14 +19,6 @@ class BuildingProduct extends AppModel {
         'last'       => true,
 			),
 		),
-    'purchase_price' => array(
-      'cost' => array(
-        'rule' => array( 'decimal', 2 ),
-				'message'    => 'Invalid amount.',
-        'allowEmpty' => true,
-        'required'   => false,
-      ),
-    ),
     'service_in' => array(
 			'datetime'     => array(
 				'rule'       => 'datetime',
@@ -53,4 +36,15 @@ class BuildingProduct extends AppModel {
       ),
     ),
   );
+  
+  /**
+   * Retire a piece of equpment.
+   *
+   * @param 	$id
+   * @access	public
+   */
+  public function retire( $id ) {
+    $this->Fixture->id = $id;
+    return $this->Fixture->saveField( 'service_out', date( 'Y-m-d H:i:s', time() ) );
+  }
 }

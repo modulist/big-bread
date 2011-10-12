@@ -15,8 +15,8 @@ class EnergySource extends AppModel {
 	);
 
 	public $hasMany = array(
-		'Product' => array(
-			'className' => 'Product',
+		'Fixture' => array(
+			'className' => 'Fixture',
 			'foreignKey' => 'energy_source_id',
 		),
 	);
