@@ -52,7 +52,7 @@ $(document).ready( function() {
         var $this = $(this);
         
         if( $this.val().search( /^[0-9]{5}$/ ) >= 0 ) {
-          $this.addClass( 'loading' );
+          $this.toggleClass( 'loading' );
           $.ajax({
             url: '/api/v1/zip_codes/overview/' + $this.val() + '.json',
             dataType: 'json',
@@ -83,13 +83,10 @@ $(document).ready( function() {
               }
               else {
                 alert( 'We don\'t recognize that zip code' );
-                
-                /*
-                $this.next( 'small' )
-                  .addClass( 'error' )
-                  .text( 'We don\'t recognize that zip code.' );
-                */
               }
+            },
+            complete: function( jqXHR, textStatus ) {
+              $this.toggleClass( 'loading' );
             }
           });
         }
