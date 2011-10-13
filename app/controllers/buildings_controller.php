@@ -20,19 +20,6 @@ class BuildingsController extends AppController {
   }
 
   public function beforeRender() {
-    # Generate a list of tech groups for the rebate bar
-    # TODO: REMOVE THIS
-    /*
-    $technology_groups = $this->Building->BuildingProduct->Product->Technology->TechnologyGroup->find(
-      'list',
-      array(
-        'conditions' => array( 'TechnologyGroup.rebate_bar' => 1 ),
-        'order' => array( 'TechnologyGroup.title' ),
-      )
-    );
-    $this->set( compact( 'technology_groups' ) );
-    */
-    
     # Explode the phone number if it exists in a data array to prep for form display
     if( isset( $this->data[$this->Building->Client->alias]['phone_number'] ) && is_string( $this->data[$this->Building->Client->alias]['phone_number'] ) ) {
       $this->data[$this->Building->Client->alias]['phone_number'] = $this->Format->phone_number( $this->data[$this->Building->Client->alias]['phone_number'] );
@@ -71,8 +58,59 @@ class BuildingsController extends AppController {
    *
    * @access	public
    */
-  public function equipment() {
+  public function equipment( $location_id, $fixture_id = null ) {
+    if( !empty( $this->data ) ) {
+      # TODO: DO STUFF
+    }
     
+    $fixtures = $this->Building->Fixture->find(
+      'all',
+      array(
+        'contain'    => array( 'Technology' ),
+        'conditions' => array(
+          'Fixture.building_id' => $location_id,
+          'Fixture.service_out'  => null,
+        ),
+        'fields' => array(
+          'Fixture.id',
+          'Fixture.name',
+          'Fixture.make',
+          'Fixture.model',
+          'Technology.name',
+        ),
+      )
+    );
+    
+    $location = $this->Building->find(
+      'first',
+      array(
+        'contain'    => array( 'Address' ),
+        'conditions' => array( 'Building.id' => $location_id ),
+        'fields'     => array(
+          'Building.id',
+          'Building.name',
+          'Address.address_1',
+          'Address.zip_code',
+        ),
+      )
+    );
+    
+    $location_name = !empty( $location['Building']['name'] )
+      ? $location['Building']['name']
+      : $location['Address']['address_1'];
+      
+    # Retrieve and repackage the technology dropdown options
+    $raw_tech = $this->Building->Fixture->Technology->grouped();
+    $technologies = array();
+    foreach( $raw_tech as $group ) {
+      $technologies[$group['TechnologyGroup']['title']] = array();
+      
+      foreach( $group['Technology'] as $technology ) {
+        $technologies[$group['TechnologyGroup']['title']][$technology['id']] = $technology['name'];
+      }
+    }
+      
+    $this->set( compact( 'location', 'location_name', 'technologies' ) );
   }
   
   /**

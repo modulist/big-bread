@@ -36,7 +36,7 @@ class Building extends AppModel {
 	public $hasMany = array(
     'Fixture' => array(
       'dependent' => true,
-    )
+    ),
 	);
   
   public $actsAs = array(
@@ -190,13 +190,13 @@ class Building extends AppModel {
     
     # Optionally filter for a equipment of a specific technology
     if( !empty( $technology_id ) ) {
-      $conditions['Product.technology_id'] = $technology_id;
+      $conditions['Fixture.technology_id'] = $technology_id;
     }
     
     return $this->Fixture->find(
       'all',
       array(
-        'contain'    => array( 'Technology' ),
+        'contain'    => array( 'Fixture' => array( 'Technology' ) ),
         'conditions' => $conditions,
       )
     );

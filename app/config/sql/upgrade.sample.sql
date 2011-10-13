@@ -32,10 +32,12 @@ DROP TABLE IF EXISTS fixtures;
 RENAME TABLE building_products TO fixtures;
 ALTER TABLE fixtures
   DROP FOREIGN KEY fk__building_products__products,
-  ADD energy_source_id  varchar(6)    COLLATE utf8_unicode_ci NULL AFTER product_id,
-  ADD model             varchar(255)  COLLATE utf8_unicode_ci NULL AFTER product_id,
-  ADD make              varchar(255)  COLLATE utf8_unicode_ci NULL AFTER product_id,
-  ADD technology_id     char(36)      COLLATE utf8_unicode_ci NOT NULL AFTER product_id;
+  ADD energy_source_id  varchar(6)    NULL AFTER product_id,
+  ADD model             varchar(255)  NULL AFTER product_id,
+  ADD make              varchar(255)  NULL AFTER product_id,
+  ADD name              varchar(255)  NULL AFTER product_id,
+  ADD technology_id     char(36)      NOT NULL AFTER product_id,
+  ADD year_installed    int           NULL AFTER service_in;
 
 UPDATE fixtures f, products p
    SET f.technology_id    = p.technology_id,
@@ -45,8 +47,14 @@ UPDATE fixtures f, products p
  WHERE f.product_id = p.id;
  
 DROP TABLE products;
+
+UPDATE fixtures
+   SET year_installed = YEAR(service_in);
+
 ALTER TABLE fixtures
   DROP product_id,
+  DROP service_in,
+  CHANGE year_installed service_in int NULL,
   ADD CONSTRAINT fk__fixtures__technologies FOREIGN KEY( technology_id )
     REFERENCES technologies( id )
     ON UPDATE CASCADE
