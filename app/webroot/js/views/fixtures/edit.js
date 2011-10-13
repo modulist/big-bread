@@ -1,0 +1,1 @@
+$.getScript( '/js/views/fixtures/add.js' );

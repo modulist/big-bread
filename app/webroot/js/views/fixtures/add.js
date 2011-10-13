@@ -10,5 +10,11 @@ $(document).ready( function() {
       $( '#FixtureServiceIn' ).val( ui.value );
     }
   });
-  $( '#FixtureServiceIn' ).val( $( '#slider' ).slider( 'value' ) );
+  
+  if( $( '#FixtureServiceIn' ).val().length > 0 ) {
+    $( '#slider' ).slider( 'value', $( '#FixtureServiceIn' ).val() );
+  }
+  else {
+    $( '#FixtureServiceIn' ).val( $( '#slider' ).slider( 'value' ) )
+  }
 });
