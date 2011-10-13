@@ -692,8 +692,10 @@ body.layout-default_landing #blog-link a { color: #5c998f; }
 .sample-rebate p.headline { font: 18px/1.25 'UltraRegular'; letter-spacing: .07em; color: #254a46; }
 .sample-rebate p.sample-rebate-amount { font: 48px/1.25 'UltraRegular'; letter-spacing: .1em; }
 .house-signup { width: 336px; height: 183px; margin: 0 0 0 54px; padding: 20px 0; background: url(../img/sample-rebate-inner.png) 0px 0px no-repeat; }
-.house-signup #zipcode { width: 144px; height: 34px; padding: 3px; font: 30px/1 'UltraRegular', serif; color: #546e64; letter-spacing: .1em; border: 1px solid #698666; background: #b3e6d2; text-align: center; box-shadow: none; }
-.house-signup #zipcode-submit { width: 109px !important; height: 34px !important; padding: 3px; font: 24px/1 'UltraRegular', serif; color: #000; letter-spacing: .1em; border: 1px solid #4f684f; background: #63ffec; text-align: center; box-shadow: none; }
+.house-signup div.input { display: inline; }
+.house-signup #UserRegisterForm #zipcode { width: 140px; height: 34px; padding: 3px 5px; margin-right: 0; font: 30px/1 'UltraRegular', serif; color: #546e64; letter-spacing: 0; border: 1px solid #698666; background: #b3e6d2; text-align: left; box-shadow: none; }
+.house-signup #UserRegisterForm #zipcode.loading { border-width: 2px; color: #ccc; }
+.house-signup #UserRegisterForm #zipcode-submit { width: 150px; height: 42px; padding: 3px; margin: 15px 0; font: 24px/1 'UltraRegular', serif; color: #000; letter-spacing: 0; border: 1px solid #4f684f; background: #63ffec; text-align: center; box-shadow: none; text-shadow: none; }
 
 
 .rebate-city { font-weight: bold; }

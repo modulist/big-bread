@@ -20,8 +20,8 @@
     	<li class="leaf"><?php echo $this->Html->link( 'Home', array( 'controller' => 'users', 'action' => 'dashboard' ) ) ?></li>
     	<li class="leaf"><?php echo $this->Html->link( 'Ways to Save', array( 'controller' => 'buildings', 'action' => 'ways_to_save' ) ) ?></li>
     	<li class="leaf"><?php echo $this->Html->link( 'Add a Location', array( 'controller' => 'buildings', 'action' => 'add' ) ) ?></li>
-    	<li class="leaf"><?php echo $this->Html->link( 'Add Equipment', array( 'controller' => 'buildings', 'action' => 'equipment' ) ) ?></li>
-    	<!--<li class="leaf"><?php //echo $this->Html->link( 'Tools', '#' ) ?></li>-->
+    	<!--<li class="leaf"><?php echo $this->Html->link( 'Add Equipment', array( 'controller' => 'buildings', 'action' => 'equipment' ) ) ?></li>
+    	<li class="leaf"><?php //echo $this->Html->link( 'Tools', '#' ) ?></li>-->
     </ul>
   <?php endif; ?>
 </div>

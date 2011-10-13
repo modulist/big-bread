@@ -40,7 +40,7 @@
           
           <?php echo $this->Form->create( 'User', array( 'action' => 'register', 'type' => 'get' ) ) ?>
             <?php echo $this->Form->input( 'User.zip_code', array( 'label' => false, 'id' => 'zipcode', 'default' => $this->Session->read( 'default_zip_code' ) ) ) ?>
-          <?php echo $this->Form->end( array( 'label' => __( 'Enter&rsaquo;', true ), 'div' => false, 'id' => 'zipcode-submit', 'escape' => false ) ) ?>
+          <?php echo $this->Form->end( array( 'label' => __( 'Sign up&rsaquo;', true ), 'div' => false, 'id' => 'zipcode-submit', 'escape' => false ) ) ?>
 
           <p><?php printf( __( 'Not from %s%d%s? Update your zip code above', true ), '<strong>', $this->Session->read( 'default_zip_code' ), '</strong>' ) ?></p>
         </div>  
