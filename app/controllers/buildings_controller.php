@@ -54,66 +54,6 @@ class BuildingsController extends AppController {
   }
   
   /**
-   * Displays the form to add/edit building equipment.
-   *
-   * @access	public
-   */
-  public function equipment( $location_id, $fixture_id = null ) {
-    if( !empty( $this->data ) ) {
-      # TODO: DO STUFF
-    }
-    
-    $fixtures = $this->Building->Fixture->find(
-      'all',
-      array(
-        'contain'    => array( 'Technology' ),
-        'conditions' => array(
-          'Fixture.building_id' => $location_id,
-          'Fixture.service_out'  => null,
-        ),
-        'fields' => array(
-          'Fixture.id',
-          'Fixture.name',
-          'Fixture.make',
-          'Fixture.model',
-          'Technology.name',
-        ),
-      )
-    );
-    
-    $location = $this->Building->find(
-      'first',
-      array(
-        'contain'    => array( 'Address' ),
-        'conditions' => array( 'Building.id' => $location_id ),
-        'fields'     => array(
-          'Building.id',
-          'Building.name',
-          'Address.address_1',
-          'Address.zip_code',
-        ),
-      )
-    );
-    
-    $location_name = !empty( $location['Building']['name'] )
-      ? $location['Building']['name']
-      : $location['Address']['address_1'];
-      
-    # Retrieve and repackage the technology dropdown options
-    $raw_tech = $this->Building->Fixture->Technology->grouped();
-    $technologies = array();
-    foreach( $raw_tech as $group ) {
-      $technologies[$group['TechnologyGroup']['title']] = array();
-      
-      foreach( $group['Technology'] as $technology ) {
-        $technologies[$group['TechnologyGroup']['title']][$technology['id']] = $technology['name'];
-      }
-    }
-      
-    $this->set( compact( 'location', 'location_name', 'technologies' ) );
-  }
-  
-  /**
    * Displays the ways to save content.
    *
    * @param 	$building_id	

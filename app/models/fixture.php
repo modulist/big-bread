@@ -10,6 +10,22 @@ class Fixture extends AppModel {
   );
   
 	public $validate = array(
+    'building_id' => array(
+      'notempty' => array(
+				'rule'       => array( 'notempty' ),
+				'message'    => 'Equipment must be assigned to a location.',
+				'allowEmpty' => false,
+				'required'   => true,
+      ),
+    ),
+    'technology_id' => array(
+      'notempty' => array(
+				'rule'       => array( 'notempty' ),
+				'message'    => 'Please specify the type of equipment.',
+				'allowEmpty' => false,
+				'required'   => true,
+      ),
+    ),
     'serial_number' => array(
 			'unique' => array(
 				'rule'       => 'isUnique',

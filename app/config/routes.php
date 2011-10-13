@@ -48,6 +48,7 @@ Router::parseExtensions( 'json', 'jsonp' );
   Router::connect( '/questionnaire/*', array( 'controller' => 'buildings', 'action' => 'questionnaire' ) );
   Router::connect( '/feedback/*', array( 'controller' => 'contacts', 'action' => 'index' ) );
   Router::connect( '/locations/:action/*', array( 'controller' => 'buildings', 'action' => 'index' ) );
+  Router::connect( '/equipment/:action/*', array( 'controller' => 'fixtures', 'action' => 'index' ) );
 
 /**
  * ...and connect the rest of 'Pages' controller's urls.
