@@ -65,15 +65,16 @@ class ApiV1 extends Api {
    * Retrieves featured rebate information for a zip code.
    *
    * @param   $zip_code
+   * @param   $group_savings  Whether to sum the savings total by tech group
    * @return  array
    * @access  public
    */
-  public function zip_codes_overview( $zip_code ) {
+  public function zip_codes_overview( $zip_code, $group_savings = false ) {
     $this->ZipCode = ClassRegistry::init( 'ZipCode' );
     
     $overview = array(
       'locale'           => $this->ZipCode->locale( $zip_code ),
-      'total_savings'    => $this->ZipCode->savings( $zip_code, false ),
+      'total_savings'    => $this->ZipCode->savings( $zip_code, $group_savings ),
       'featured_rebates' => $this->ZipCode->featured_rebates( $zip_code ),
     );
         

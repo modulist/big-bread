@@ -69,18 +69,20 @@ class ZipCode extends AppModel {
    * @return	mixed
    * @access	public
    */
-  public function savings( $zip_code, $grouped = true, $group_id = null ) {
+  public function savings( $zip_code, $grouped = true, $group_code = null ) {
     $savings = ClassRegistry::init( 'TechnologyGroup' )->find(
       'all',
       array(
         'contain' => false,
         'fields'  => array(
           'TechnologyGroup.id',
+          'TechnologyGroup.incentive_tech_group_id as code',
           'TechnologyGroup.name',
           'SUM( TechnologyIncentive.amount) savings',
         ),
         'group'   => array(
           'TechnologyGroup.id',
+          'TechnologyGroup.incentive_tech_group_id',
           'TechnologyGroup.name',
         ),
         'conditions' => array(
@@ -126,14 +128,15 @@ class ZipCode extends AppModel {
       )
     );
     
-    if( !$grouped && empty( $group_id ) ) {
+    if( !$grouped && empty( $group_code ) ) { # We just want the big number
       $savings = array_sum( Set::extract( '/TechnologyGroup/savings', $savings ) );
     }
     else if( $grouped ) {
-      $savings = Set::combine( $savings, '{n}.TechnologyGroup.id', '{n}.TechnologyGroup' );
-    }
-    else {
-      $savings = $savings[$group_id]['savings'];
+      $savings = Set::combine( $savings, '{n}.TechnologyGroup.code', '{n}.TechnologyGroup' );
+      
+      if( !empty( $group_code ) ) {
+        $savings = $savings[$group_code]['savings'];
+      }
     }
     
     return $savings;

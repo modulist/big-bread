@@ -54,7 +54,7 @@ $(document).ready( function() {
         if( $this.val().search( /^[0-9]{5}$/ ) >= 0 ) {
           $this.toggleClass( 'loading' );
           $.ajax({
-            url: '/api/v1/zip_codes/overview/' + $this.val() + '.json',
+            url: '/api/v1/zip_codes/overview/' + $this.val() + '/true.json',
             dataType: 'json',
             beforeSend: function( jqXHR, settings ) {
               jqXHR.setRequestHeader( 'Authorization', '1001001SOS' );  

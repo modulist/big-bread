@@ -108,7 +108,7 @@ public function beforeFilter() {
     
     $this->loadModel( 'ZipCode' );
     $zip_code         = $this->Session->read( 'default_zip_code' );
-    $total_savings    = $this->ZipCode->savings( $zip_code, false );
+    $total_savings    = $this->ZipCode->savings( $zip_code, true, 'HVAC' );
     $featured_rebates = $this->ZipCode->featured_rebates( $zip_code );
     $locale           = $this->ZipCode->locale( $zip_code );
     
