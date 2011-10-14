@@ -1,4 +1,4 @@
-<?php if( !$has_locations ): ?>
+<?php if( empty( $locations ) ): ?>
   <?php echo $this->element( '../buildings/_form', array( 'short' => true ) ) ?>
 <?php endif; ?>
 
@@ -9,45 +9,46 @@
 
 <div id="my-locations" class="grid_9">
 	<div class="clearfix">
-		<a href="#" class="add-location-button">Add a location &rsaquo;</a>
-		<h2>My locations:</h2>
+    <?php echo $this->Html->link( sprintf( __( 'Add a location %s', true ), '&rsaquo;' ), array( 'controller' => 'buildings', 'action' => 'add' ), array( 'class' => 'add-location-button', 'escape' => false ) ) ?>
+		<h2><?php __( 'My locations' ) ?>:</h2>
 	</div>
-	<div class="location-wrapper clearfix">
-		<div class="location-icon">1</div>
-		<h4>Main House</h4>
-		<div class="location-address">
-			<p>12841 SW 70th Avenue<br />
-			Miami, FL 33156</p>
-			<a href="#" class="edit-location-button">Edit</a>
-		</div>
-		<div class="location-equipment-grid grid_5">
-			<table class="location-equipment">
-				<tr class="first odd">
-					<td class="model-name"><a href="#">Kenmore washer</a></td>
-					<td class="model-number"><a href="#">110.27087601</a></td>
-					<td class="controls">
-						<a href="#" class="edit-button">edit</a>&nbsp;|&nbsp;<a href="#" class="remove-button">remove</a>
-					</td>
-				</tr>
-				<tr class="even">
-					<td class="model-name"><a href="#">Kenmore dryer</a></td>
-					<td class="model-number"><a href="#">110.67087600</a></td>
-					<td class="controls">
-						<a href="#" class="edit-button">edit</a>&nbsp;|&nbsp;<a href="#" class="remove-button">remove</a>
-					</td>
-				</tr>
-				<tr class="last odd">
-					<td class="model-name"><a href="#">Kenmore washer</a></td>
-					<td class="model-number"></td>
-					<td class="controls">
-						<a href="#" class="edit-button">edit</a>&nbsp;|&nbsp;<a href="#" class="remove-button">remove</a>
-					</td>
-				</tr>
-			</table>
-			<a class="add-equipment-button" href="#">Add equipment</a>
-		</div><!-- /location-equipment-grid -->
-	</div><!-- /location-wrapper -->
-
+  <?php foreach( $locations as $i => $location ): ?>
+    <div class="location-wrapper clearfix">
+        <div class="location-icon"><?php echo $i ?></div>
+        <h4><?php echo !empty( $location['Building']['name'] ) ? h( $location['Building']['name'] ) : h( $location['Address']['address_1'] ) ?></h4>
+        <div class="location-address">
+          <p><?php echo $this->element( 'address', array( 'address' => $location['Address'] ) ) ?></p>
+          <?php echo $this->Html->link( __( 'Edit', true ), array( 'controller' => 'buildings', 'action' => 'edit', $location['Building']['id'] ), array( 'class' => 'edit-location-button' ) ) ?>
+        </div>
+        <div class="location-equipment-grid grid_5">
+          <table class="location-equipment">
+            <tr class="first odd">
+              <td class="model-name"><a href="#">Kenmore washer</a></td>
+              <td class="model-number"><a href="#">110.27087601</a></td>
+              <td class="controls">
+                <a href="#" class="edit-button">edit</a>&nbsp;|&nbsp;<a href="#" class="remove-button">remove</a>
+              </td>
+            </tr>
+            <tr class="even">
+              <td class="model-name"><a href="#">Kenmore dryer</a></td>
+              <td class="model-number"><a href="#">110.67087600</a></td>
+              <td class="controls">
+                <a href="#" class="edit-button">edit</a>&nbsp;|&nbsp;<a href="#" class="remove-button">remove</a>
+              </td>
+            </tr>
+            <tr class="last odd">
+              <td class="model-name"><a href="#">Kenmore washer</a></td>
+              <td class="model-number"></td>
+              <td class="controls">
+                <a href="#" class="edit-button">edit</a>&nbsp;|&nbsp;<a href="#" class="remove-button">remove</a>
+              </td>
+            </tr>
+          </table>
+          
+          <?php echo $this->Html->link( __( 'Add equipment', true ), array( 'controller' => 'fixtures', 'action' => 'add', $location['Building']['id'] ), array( 'class' => 'add-equipment-button' ) ) ?>
+      </div><!-- /location-equipment-grid -->
+    </div><!-- /location-wrapper -->
+  <?php endforeach; ?>
 </div><!-- /my-locations -->
 
 

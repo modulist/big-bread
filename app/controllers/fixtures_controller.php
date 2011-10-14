@@ -43,6 +43,7 @@ class FixturesController extends AppController {
           'Fixture.model',
           'Technology.name',
         ),
+        'order' => array( 'Fixture.modified DESC' ),
       )
     );
     
@@ -109,20 +110,23 @@ class FixturesController extends AppController {
       $this->Session->setFlash( __( 'You didn\'t specify the location for which any equipment should be added.', true ), null, null, 'warning' );
       $this->redirect( $this->referer( array( 'controller' => 'users', 'action' => 'dashboard' ) ), null, true );
     }
+
+    if( !$this->Fixture->Building->belongs_to( $location['Building']['id'], $this->Auth->user( 'id' ) ) ) {
+      $this->Session->setFlash( __( 'You\'re not authorized to view that building\'s data.', true ), null, null, 'warning' );
+      $this->redirect( $this->referer( array( 'controller' => 'users', 'action' => 'dashboard' ) ), null, true );
+    }
     
     if( empty( $fixture ) ) {
       $this->Session->setFlash( __( 'Sorry, we couldn\'t find the piece of equipment you wanted to edit.', true ), null, null, 'warning' );
       $this->redirect( $this->referer( array( 'action' => 'add', $location['Building']['id'] ) ), null, true );
     }
     
-    if( !$this->Fixture->Building->belongs_to( $location['Building']['id'], $this->Auth->user( 'id' ) ) ) {
-      $this->Session->setFlash( __( 'You\'re not authorized to view that building\'s data.', true ), null, null, 'warning' );
-      $this->redirect( $this->referer( array( 'controller' => 'users', 'action' => 'dashboard' ) ), null, true );
-    }
+    $this->Fixture->id = $fixture_id;
     
     if( !empty( $this->data ) ) {
       if( $this->save( $this->data ) ) {
         $this->Session->setFlash( __( 'Your equipment has been updated.', true ), null, null, 'success' );
+        $this->redirect( array( 'action' => 'add', $location['Building']['id'] ), null, true );
       }
       else {
         $this->Session->setFlash( __( 'Sorry, we couldn\'t update this piece of equipment. Please fix the errors below.', true ), null, null, 'error' );
@@ -149,6 +153,7 @@ class FixturesController extends AppController {
           'Fixture.model',
           'Technology.name',
         ),
+        'order' => array( 'Fixture.modified DESC' ),
       )
     );
     
@@ -171,20 +176,25 @@ class FixturesController extends AppController {
     # If data was submitted, we need to retain that for display
     if( empty( $this->data ) ) {
       $this->data = $fixture;
-      $this->Fixture->set( $this->data );
     }
     
     $this->set( compact( 'action_param', 'fixtures', 'location', 'location_name', 'technologies' ) );
 	}
   
 	public function retire( $id ) {
-    throw new Exception( 'Not implemented' );
+    $location_id = $this->Fixture->field( 'building_id', array( 'Fixture.id' => $id ) );
     
-		if ($this->Fixture->delete($id)) {
-			$this->flash(__('Fixture deleted', true), array('action' => 'index'));
-		}
-		$this->flash(__('Fixture was not deleted', true), array('action' => 'index'));
-		$this->redirect(array('action' => 'index'));
+    if( !$this->Fixture->Building->belongs_to( $location_id, $this->Auth->user( 'id' ) ) ) {
+      $this->Session->setFlash( __( 'You\'re not authorized to view that building\'s data.', true ), null, null, 'warning' );
+      $this->redirect( $this->referer( array( 'controller' => 'users', 'action' => 'dashboard' ) ), null, true );
+    }
+    
+		if( $this->Fixture->retire( $id ) ) {
+      $this->Session->setFlash( __( 'The selected piece of equipment has been retired.', true ), null, null, 'success' );
+      $this->redirect( array( 'action' => 'add', $location_id ), null, true );
+    }
+		$this->flash( __( 'The selected piece of equipment could not be retired.', true) );
+		$this->redirect( array( 'action' => 'edit', $id ), null, true );
 	}
 
   /**

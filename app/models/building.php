@@ -81,9 +81,8 @@ class Building extends AppModel {
   }
   
   /**
-   * CALLBACKS
+   * CALLBACK METHODS
    */
-  
   
   /**
    * PUBLIC METHODS

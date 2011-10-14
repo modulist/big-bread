@@ -280,9 +280,9 @@ class UsersController extends AppController {
   public function dashboard( $user_id = null ) {
     $user_id = empty( $user_id ) ? $this->Auth->user( 'id' ) : $user_id;
     
-    $has_locations = $this->User->has_locations();
+    $locations = $this->User->locations( $user_id );
     
-    $this->set( compact( 'has_locations' ) );
+    $this->set( compact( 'locations' ) );
   }
   
   /**

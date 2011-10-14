@@ -12,7 +12,14 @@ class Address extends AppModel {
 	public $belongsTo = array(
     'Building'   => array( 'foreignKey' => 'foreign_key' ),
     'Contractor' => array( 'foreignKey' => 'foreign_key' ),
-    'ZipCode'    => array( 'foreignKey' => 'zip_code' ),
+    'ZipCode'    => array(
+      'foreignKey' => 'zip_code',
+      'fields'     => array(
+        'ZipCode.zip',
+        'ZipCode.city',
+        'ZipCode.state',
+      ),
+    ),
   );
   
   public $actsAs = array(

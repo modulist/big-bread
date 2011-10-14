@@ -10,35 +10,10 @@ class Fixture extends AppModel {
   );
   
 	public $validate = array(
-    'building_id' => array(
-      'notempty' => array(
-				'rule'       => array( 'notempty' ),
-				'message'    => 'Equipment must be assigned to a location.',
-				'allowEmpty' => false,
-				'required'   => true,
-      ),
-    ),
-    'technology_id' => array(
-      'notempty' => array(
-				'rule'       => array( 'notempty' ),
-				'message'    => 'Please specify the type of equipment.',
-				'allowEmpty' => false,
-				'required'   => true,
-      ),
-    ),
-    'serial_number' => array(
-			'unique' => array(
-				'rule'       => 'isUnique',
-				'message'    => 'This serial number is not unique.',
-				'allowEmpty' => true,
-				'required'   => false,
-        'last'       => true,
-			),
-		),
     'service_in' => array(
-			'datetime'     => array(
-				'rule'       => 'datetime',
-				'message'    => 'This is not a valid date.',
+			'year'     => array(
+				'rule'       => 'integer',
+				'message'    => 'Please enter a valid installation year.',
         'allowEmpty' => true,
         'required'   => false,
       ),
@@ -60,7 +35,7 @@ class Fixture extends AppModel {
    * @access	public
    */
   public function retire( $id ) {
-    $this->Fixture->id = $id;
-    return $this->Fixture->saveField( 'service_out', date( 'Y-m-d H:i:s', time() ) );
+    $this->id = $id;
+    return $this->saveField( 'service_out', date( 'Y-m-d H:i:s', time() ) );
   }
 }

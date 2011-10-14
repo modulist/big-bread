@@ -32,6 +32,8 @@ DROP TABLE IF EXISTS fixtures;
 RENAME TABLE building_products TO fixtures;
 ALTER TABLE fixtures
   DROP FOREIGN KEY fk__building_products__products,
+  DROP FOREIGN KEY fk__building_products__buildings,
+  DROP INDEX uix__building_products__serial_number,
   ADD energy_source_id  varchar(6)    NULL AFTER product_id,
   ADD model             varchar(255)  NULL AFTER product_id,
   ADD make              varchar(255)  NULL AFTER product_id,
@@ -55,6 +57,10 @@ ALTER TABLE fixtures
   DROP product_id,
   DROP service_in,
   CHANGE year_installed service_in int NULL,
+  ADD CONSTRAINT fk__fixtures__buildings FOREIGN KEY( building_id )
+    REFERENCES buildings( id )
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
   ADD CONSTRAINT fk__fixtures__technologies FOREIGN KEY( technology_id )
     REFERENCES technologies( id )
     ON UPDATE CASCADE

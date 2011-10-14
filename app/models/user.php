@@ -286,30 +286,6 @@ class User extends AppModel {
   }
   
   /**
-   * Creates a user record.
-   *
-   * @param 	$data
-   * @return	boolean
-   * @access	public
-   * @todo    KILL THIS
-   */
-  /* 
-  public function add( $data ) {
-    $user = !empty( $data[$this->alias]['email'] )
-      ? $this->known( $data[$this->alias]['email'] ) # returns the user's id
-      : false;
-    
-    if( !$user ) { # We don't know this user, create a new record
-      if( $this->save( $data[$this->alias] ) ) {
-        $user = $this->id;
-      }
-    }
-    
-    return $user;
-  }
-  */
-
-  /**
    * Determines whether a user is associated with at least one building
    * by returning the number of associated buildings.
    *
