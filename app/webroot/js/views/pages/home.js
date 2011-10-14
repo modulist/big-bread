@@ -63,6 +63,8 @@ $(document).ready( function() {
               if( data ) {
                 // Write out the total savings available for that zip code
                 $('.sample-rebate-amount span').text( '$' + $.currency( data.total_savings, { c: 0 } ) );
+                // Update the zip code display beneath the textbox
+                $('.zip-code-display').text( $this.val() );
                 // Update the row data
                 $('.rebate-city').text( data.locale.ZipCode.city + ', ' + data.locale.ZipCode.state );
                 // Update the table of featured rebates

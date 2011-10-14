@@ -26,7 +26,7 @@
     <div class="green-dot-divider">
       <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
     </div>      
-    <p><?php __( 'Big Bread can help you get quotes from contractors in your area &ndash; free of charge' ) ?></p>
+    <p><?php __( 'SaveBigBread can help you get quotes from contractors in your area &ndash; free of charge' ) ?></p>
     
     <h3><?php __( 'Redeem a rebate' ) ?></h3>
     <div class="green-dot-divider">
