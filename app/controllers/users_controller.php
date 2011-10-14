@@ -280,9 +280,36 @@ class UsersController extends AppController {
   public function dashboard( $user_id = null ) {
     $user_id = empty( $user_id ) ? $this->Auth->user( 'id' ) : $user_id;
     
-    $locations = $this->User->locations( $user_id );
+    $locations    = $this->User->locations( $user_id );
+    $location_ids = Set::extract( '/Building/id', $locations );
     
-    $this->set( compact( 'locations' ) );
+    # All of the equipment installed in this user's buildings
+    $fixtures = $this->User->Building->Fixture->find(
+      'all',
+      array(
+        'contain'    => array( 'Technology' ),
+        'conditions' => array(
+          'Fixture.building_id' => $location_ids,
+          'Fixture.service_out' => null,
+        ),
+        'fields' => array(
+          'Fixture.id',
+          'Fixture.building_id',
+          'Fixture.name',
+          'Fixture.make',
+          'Fixture.model',
+          'Technology.name',
+        ),
+        'order' => array(
+          'Fixture.building_id',
+          'Fixture.modified DESC',
+        ),
+      )
+    );
+    # Group equipment by building so we can identify it during display
+    $fixtures = Set::combine( $fixtures, '{n}.Fixture.id', '{n}', '{n}.Fixture.building_id' );
+    
+    $this->set( compact( 'fixtures', 'locations' ) );
   }
   
   /**
