@@ -99,8 +99,9 @@ class TechnologyIncentive extends AppModel {
     $conditions = array(
       'Incentive.excluded' => 0,
       'TechnologyIncentive.is_active' => 1,
-      'TechnologyGroup.display' => 1,
-      'Technology.display' => 1,
+      # TODO: REMOVE COMMENTED CODE AFTER SIGNOFF
+      # 'TechnologyGroup.display' => 1,
+      # 'Technology.display' => 1,
       'OR' => array(
         'Incentive.expiration_date' => null, 
         'Incentive.expiration_date >= ' => date( DATE_FORMAT_MYSQL ),
