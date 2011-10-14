@@ -44,7 +44,7 @@
                     <?php echo $this->Html->link( __( 'details &rsaquo;', true ), array( 'controller' => 'technology_incentives', 'action' => 'details', $rebate['TechnologyIncentive']['id'] ), array( 'class' => 'details', 'title' => 'Rebate details', 'escape' => false ) ) ?>
                   </td>
                   <td class="rebate-dates"><?php echo empty( $rebate['Incentive']['expiration_date'] ) ? __( 'while funds last', true ) : date( 'm/d/Y', strtotime( $rebate['Incentive']['expiration_date'] ) ) ?></td>
-                  <td class="rebate-amount"><?php echo $this->Number->format( $rebate['TechnologyIncentive']['amount'], array( 'places' => 0, 'before' => '$' ) ) ?></td>
+                  <td class="rebate-amount"><?php echo $this->Number->format( $rebate['TechnologyIncentive']['amount'], array( 'places' => 0, 'before' => $rebate['IncentiveAmountType']['incentive_amount_type_id'] == 'USD' ? $rebate['IncentiveAmountType']['name'] : false, 'after' => $rebate['IncentiveAmountType']['incentive_amount_type_id'] != 'USD' ? $rebate['IncentiveAmountType']['name'] : false ) ) ?></td>
                   <td class="rebate-action">
                     <?php echo $this->Html->link( __( 'GET A QUOTE &rsaquo;', true ), array( 'controller' => 'technology_incentives', 'action' => 'quote', $rebate['TechnologyIncentive']['id'] ), array( 'class' => 'quote-button', 'escape' => false ) ) ?>
                   </td>

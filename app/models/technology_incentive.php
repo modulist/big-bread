@@ -137,6 +137,9 @@ class TechnologyIncentive extends AppModel {
           'Incentive.expiration_date',
           'TechnologyIncentive.id',
           'TechnologyIncentive.amount',
+          'IncentiveAmountType.id',
+          'IncentiveAmountType.incentive_amount_type_id',
+          'IncentiveAmountType.name',
         ),
         'joins' => array(
           array(
@@ -160,6 +163,13 @@ class TechnologyIncentive extends AppModel {
             'foreignKey' => false,
             'conditions' => array( 'TechnologyIncentive.incentive_id = Incentive.id' ),
           ),
+          array(
+            'table'      => 'incentive_amount_types',
+            'alias'      => 'IncentiveAmountType',
+            'type'       => 'inner', 
+            'foreignKey' => false,
+            'conditions' => array( 'TechnologyIncentive.incentive_amount_type_id = IncentiveAmountType.id' ),
+          )
         ),
         'conditions' => $conditions,
         'order'      => $order,
