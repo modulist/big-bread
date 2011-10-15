@@ -127,11 +127,12 @@ class Building extends AppModel {
    * Retrieves the relevant incentives (rebates) for a given building.
    *
    * @param 	$zip_code
+   * @param   $technology_ids
    * @param   $conditions   Array of conditions to forward along
    * @return	array
    */
-  public function incentives( $zip_code ) {
-    return $this->Address->ZipCode->Incentive->TechnologyIncentive->all( $zip_code );
+  public function incentives( $zip_code, $technology_ids = array() ) {
+    return $this->Address->ZipCode->Incentive->TechnologyIncentive->all( $zip_code, $technology_ids );
   }
   
   /**

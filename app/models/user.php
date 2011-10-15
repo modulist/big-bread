@@ -394,20 +394,27 @@ class User extends AppModel {
   /**
    * Adds a technology to a user's watch list.
    *
-   * @param   $technology_id
+   * @param   $model        What are we watching? e.g. Technology
+   * @param   $id           Which one are we watching? The watched item's id.
    * @param   $location_id
-   * @param 	$user_id
+   * @param   $user_id
    * @return	boolean
    * @access	public
    */
-  public function watch_technology( $technology_id, $location_id = null, $user_id = null ) {
+  public function watch( $model, $id, $user_id, $location_id = null ) {
     $user_id = !empty( $user_id ) ? $user_id : self::get( 'id' );
+    $watchable = array( 'Technology' );
+    
+    # We can't add just anything to a watchlist.
+    if( !in_array( $model, WatchList::$watchable ) ) {
+      return false;
+    }
     
     $data = array(
       'user_id'     => $user_id,
+      'model'       => $model,
       'location_id' => $location_id,
-      'foreign_key' => $technology_id,
-      'model'       => 'Technology',
+      'foreign_key' => $id,
     );
     
     return $this->TechnologyWatchList->save( $data );
@@ -421,16 +428,16 @@ class User extends AppModel {
    * @return	boolean
    * @access	public
    */
-  public function unwatch_technology( $technology_id, $location_id = null, $user_id = null ) {
+  public function unwatch( $model, $id, $user_id, $location_id = null ) {
     $user_id = !empty( $user_id ) ? $user_id : self::get( 'id' );
     
     $watch_list_id = $this->TechnologyWatchList->field(
       'id',
       array(
-       'TechnologyWatchList.foreign_key' => $technology_id,
        'TechnologyWatchList.user_id'     => $user_id,
+       'TechnologyWatchList.model'       => $model,
        'TechnologyWatchList.location_id' => $location_id,
-       'TechnologyWatchList.model'       => 'Technology',
+       'TechnologyWatchList.foreign_key' => $id,
       )
     );
     

@@ -7,30 +7,12 @@
   <?php echo $this->Form->input( 'User.user_type_id', array( 'type' => 'hidden', 'value' => UserType::OWNER ) ) ?>
   <?php echo $this->Form->input( 'User.invite_code', array( 'type' => 'hidden' ) ) ?>
   <?php echo $this->Form->input( 'WatchedTechnology.selected', array( 'type' => 'hidden', 'value' => join( ',', $this->data['WatchedTechnology']['selected'] ) ) ) ?>
-  
-	<!-- my interests -->
-	<div id="my-interests" class="grid_9">
-		<h2><?php __( 'What are you interested in?' ) ?></h2>
-	  <p class="instructions">
-	  	<?php __( 'Select as many categories of rebates as you like by clicking on the stars below. You can always change this later.' ) ?>
-	  </p>
-		<div class="my-interests-grid clearfix">
-	  	<?php foreach( $watchable_technologies as $column => $groups ): ?>
-        <div class="grid_3">
-          <?php foreach( $groups as $group ): ?>
-              <h4><?php echo h( $group[0]['TechnologyGroup']['title'] ) ?></h4>
-              <ul>
-                <?php foreach( $group as $technology ): ?>
-                  <li<?php echo in_array( $technology['Technology']['id'], $this->data['WatchedTechnology']['selected'] ) ? ' class="active"' : false ?>>
-                    <?php echo $this->Html->link( h( $technology['Technology']['name'] ), '#', array( 'data-watch-technology-id' => $technology['Technology']['id'] ) ) ?>
-                  </li>
-                <?php endforeach; ?>
-              </ul>
-          <?php endforeach; ?>
-        </div>
-      <?php endforeach; ?>
-	  </div><!-- /my interests grid -->
-	</div><!-- /my interests -->
+    
+  <h2><?php __( 'What are you interested in?' ) ?></h2>
+  <p class="instructions">
+    <?php __( 'Select as many categories of rebates as you like by clicking on the stars below. You can always change this later.' ) ?>
+  </p>
+  <?php echo $this->element( '../users/_interests', array( 'watchable' => $watchable_technologies, 'watched' => $this->data['WatchedTechnology']['selected'] ) ) ?>
 
   <div id="user-registration" class="grid_9">
   	<?php echo $this->element( '../users/_form' ) ?>

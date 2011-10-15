@@ -34,9 +34,27 @@ class BuildingsController extends AppController {
   public function add() {
     if( !empty( $this->data ) ) {
       if( $this->Building->saveAll( $this->data ) ) {
-        $this->Session->setFlash( sprintf( __( '"%s" was saved.', true ), !empty( $this->data['Building']['name'] ) ? $this->data['Building']['name'] : __( 'Your location', true ) ), null, null, 'success' );
+        $this->Session->setFlash( sprintf( __( '"%s" has been saved.', true ), !empty( $this->data['Building']['name'] ) ? $this->data['Building']['name'] : __( 'Your location', true ) ), null, null, 'success' );
         
-        $this->redirect( array( 'controller' => 'users', 'action' => 'dashboard' ), null, true );
+        # If this is our first building, then we want to update the user's
+        # "default" interests to attach them to the new location.
+        if( $this->Building->Client->has_locations() === 1 ) {
+          
+          $updated = $this->Building->Client->TechnologyWatchList->updateAll(
+            array( 'TechnologyWatchList.location_id' => "'" . $this->Building->id . "'" ),
+            array(
+              'TechnologyWatchList.model'       => 'Technology',
+              'TechnologyWatchList.user_id'     => $this->Auth->user( 'id' ),
+              'TechnologyWatchList.location_id' => null,
+            )
+          );
+          
+          if( !$updated ) {
+            exit( 'NO JOY' );
+          }
+        }
+        
+        $this->redirect( array( 'controller' => 'users', 'action' => 'dashboard', $this->Building->id ), null, true );
       }
       else {
         $this->Session->setFlash( __( 'There was an error saving this location.', true ), null, null, 'validation' );

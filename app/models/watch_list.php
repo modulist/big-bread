@@ -8,9 +8,11 @@ class WatchList extends AppModel {
 		'Technology' => array(
 			'className' => 'Technology',
 			'foreignKey' => 'foreign_key',
-			'conditions' => array( 'WatchList.model' => 'Technology' ),
+			'conditions' => array( 'model' => 'Technology' ),
 		)
 	);
+  
+  static public $watchable = array( 'Technology' );
   
   /**
    * PUBLIC METHODS

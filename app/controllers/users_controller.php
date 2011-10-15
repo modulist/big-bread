@@ -159,8 +159,6 @@ class UsersController extends AppController {
     }
     
     $watchable_technologies = array_chunk( $this->User->TechnologyWatchList->Technology->grouped(), 2 );
-    
-    # new PHPDump( $watchable_technologies ); exit;
   
     $this->set( compact( 'watchable_technologies' ) );
   }
@@ -277,13 +275,49 @@ class UsersController extends AppController {
   /**
    * Displays the user dashboard.
    *
+   * @param   $location_id
+   * @param   $user_id
    * @access	public
    */
-  public function dashboard( $user_id = null ) {
-    $user_id = empty( $user_id ) ? $this->Auth->user( 'id' ) : $user_id;
+  public function dashboard( $location_id = null, $user_id = null ) {
+    $user_id        = empty( $user_id ) ? $this->Auth->user( 'id' ) : $user_id;
+    $location       = array();
+    $location_title = $this->Auth->user( 'zip_code' );
+    $zip_code       = $this->Auth->user( 'zip_code' );
     
-    $locations    = $this->User->locations( $user_id );
-    $location_ids = Set::extract( '/Building/id', $locations );
+    # Only admins can see someone else's dashboard
+    if( $this->Auth->user( 'id' ) !== $user_id && !$this->Auth->user( 'admin' ) ) {
+      $this->redirect( array( 'controller' => 'users', 'action' => 'dashboard' ), null, true );
+    }
+
+    # Default to the most recently created location
+    if( empty( $location_id ) ) {
+      $location = array_shift( $this->User->locations( $user_id, 1 ) );
+    }
+    else {
+      # The user can't display a building that doesn't belong to them
+      if( !$this->User->Building->belongs_to( $location_id, $this->Auth->user( 'id' ) ) ) {
+        $this->Session->setFlash( __( 'You\'re not authorized to view that building\'s data.', true ), null, null, 'warning' );
+        $this->redirect( $this->referer( array( 'controller' => 'users', 'action' => 'dashboard' ) ), null, true );
+      }
+      
+      $location = $this->User->Building->find(
+        'first',
+        array(
+          'contain' => array(
+            'Address' => array(
+              'ZipCode'
+            ),
+          ),
+          'conditions' => array( 'Building.id' => $location_id ),
+        )
+      );
+    }
+    
+    if( !empty( $location ) ) {
+      $location_title = !empty( $location['Building']['name'] ) ? $location['Building']['name'] : $location['Address']['address_1'];
+      $zip_code       = $location['Address']['zip_code'];
+    }
     
     # All of the equipment installed in this user's buildings
     $fixtures = $this->User->Building->Fixture->find(
@@ -291,7 +325,7 @@ class UsersController extends AppController {
       array(
         'contain'    => array( 'Technology' ),
         'conditions' => array(
-          'Fixture.building_id' => $location_ids,
+          'Fixture.building_id' => $location['Building']['id'],
           'Fixture.service_out' => null,
         ),
         'fields' => array(
@@ -303,15 +337,23 @@ class UsersController extends AppController {
           'Technology.name',
         ),
         'order' => array(
-          'Fixture.building_id',
           'Fixture.modified DESC',
         ),
       )
     );
-    # Group equipment by building so we can identify it during display
-    $fixtures = Set::combine( $fixtures, '{n}.Fixture.id', '{n}', '{n}.Fixture.building_id' );
     
-    $this->set( compact( 'fixtures', 'locations' ) );
+    # Quotes requested by this user that haven't been completed.
+    $pending_quotes = array();
+    
+    # The user's technology watchlist
+    $watchable_technologies = array_chunk( $this->User->TechnologyWatchList->Technology->grouped(), 2 );
+    $technology_watch_list = Set::extract( '/TechnologyWatchList/technology_id', $this->User->technology_watch_list( $location_id ) );
+    
+    # Rebates relevant to this location (or the default zip code), filtered by
+    # technologies the user has identified as interests.
+    $rebates = Set::combine( $this->User->Building->incentives( $zip_code, $technology_watch_list ), '{n}.TechnologyIncentive.id', '{n}', '{n}.Technology.name' );
+    
+    $this->set( compact( 'fixtures', 'location', 'location_title', 'pending_quotes', 'rebates', 'technology_watch_list', 'watchable_technologies' ) );
   }
   
   /**
@@ -324,12 +366,75 @@ class UsersController extends AppController {
   }
   
   /**
+   * Adds an item to a user's watchlist.
+   *
+   * @param   $model        What are we watching? e.g. Technology
+   * @param   $id           Which one are we watching? The watched item's id.
+   * @param   $location_id
+   * @param   $user_id
+   * @access  public
+   */
+  public function watch( $model, $id, $location_id = null, $user_id = null ) {
+    $user_id = empty( $user_id ) ? $this->Auth->user( 'id' ) : $user_id;
+    
+    # If a location is specified, ensure that the user has a stake in it.
+    if( !empty( $location_id ) ) {
+      if( !$this->User->Building->belongs_to( $location_id, $user_id ) ) {
+        if( !$this->RequestHandler->isAjax() ) {
+          $this->Session->setFlash( __( 'You\'re not authorized to access that building\'s data.', true ), null, null, 'warning' );
+          $this->redirect( $this->referer( array( 'controller' => 'users', 'action' => 'dashboard' ) ), null, true );
+        }
+      }
+    }
+    
+    if( !$this->User->watch( $model, $id, $user_id, $location_id ) ) {
+      $this->Session->setFlash( __( 'There was a problem updating your interests.', true ), null, null, 'error' );
+    }
+    
+    if( !$this->RequestHandler->isAjax() ) {
+      $this->redirect( $this->referer( array( 'action' => 'dashboard', $location_id ), null, true ) );
+    }
+  }
+  
+  /**
+   * Removes an item from a user's watchlist.
+   *
+   * @param   $model        What are we unwatching? e.g. Technology
+   * @param   $id           Which one are we unwatching? The watched item's id.
+   * @param   $location_id
+   * @param   $user_id
+   * @access  public
+   */
+  public function unwatch( $model, $id, $location_id = null, $user_id = null ) {
+    $user_id = empty( $user_id ) ? $this->Auth->user( 'id' ) : $user_id;
+    
+    # If a location is specified, ensure that the user has a stake in it.
+    if( !empty( $location_id ) ) {
+      if( !$this->User->Building->belongs_to( $location_id, $user_id ) ) {
+        if( !$this->RequestHandler->isAjax() ) {
+          $this->Session->setFlash( __( 'You\'re not authorized to access that location\'s data.', true ), null, null, 'warning' );
+          $this->redirect( $this->referer( array( 'controller' => 'users', 'action' => 'dashboard' ) ), null, true );
+        }
+      }
+    }
+    
+    if( !$this->User->unwatch( $model, $id, $user_id, $location_id ) ) {
+      $this->Session->setFlash( __( 'There was a problem updating your interests.', true ), null, null, 'error' );
+    }
+    
+    if( !$this->RequestHandler->isAjax() ) {
+      $this->redirect( $this->referer( array( 'action' => 'dashboard', $location_id ), null, true ) );
+    }
+  }
+  
+  /**
    * Dismisses an optional notice.
    *
    * @return	void
    * @access	public
    * @todo    We can probably kill this
    */
+  /* 
   public function dismiss_notice( $notice ) {
     $this->autoRender = false;
     
@@ -339,6 +444,7 @@ class UsersController extends AppController {
       $this->refresh_auth();
     }
   }
+  */
   
   /**
    * PRIVATE METHODS
