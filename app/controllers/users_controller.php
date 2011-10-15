@@ -159,6 +159,8 @@ class UsersController extends AppController {
     }
     
     $watchable_technologies = array_chunk( $this->User->TechnologyWatchList->Technology->grouped(), 2 );
+    
+    # new PHPDump( $watchable_technologies ); exit;
   
     $this->set( compact( 'watchable_technologies' ) );
   }

@@ -118,12 +118,8 @@ VALUES
   ( '4e7a5b45-387c-4ef6-81bb-22536e891b5e', 'KTCH', 'Kitchen', 'Kitchen', null, 1 ),
   ( '4e7a5b45-6054-4f0c-b939-22536e891b5e', 'LNDR', 'Laundry', 'Laundry', null, 1 );
 
-UPDATE technology_groups
-   SET rebate_bar = 0
- WHERE incentive_tech_group_id = 'APP';
-
 ALTER TABLE technology_groups
-  CHANGE rebate_bar display boolean NOT NULL DEFAULT 0,
+  DROP rebate_bar,
   ADD display_order int NULL;
   
 UPDATE technology_groups
@@ -148,12 +144,17 @@ UPDATE technology_groups
  WHERE incentive_tech_group_id = 'HW';
 
 UPDATE technology_groups
-   SET display_order = 6
- WHERE incentive_tech_group_id = 'LIGHT';
- 
+   SET title         = 'Energy Efficiency',
+       display_order = 6
+ WHERE incentive_tech_group_id = 'WHOLE';
+
 UPDATE technology_groups
-   SET display = 0
- WHERE incentive_tech_group_id IN ( 'OTH','WHOLE' ); 
+   SET display_order = null
+ WHERE incentive_tech_group_id IN ( 'OTH','LIGHT' ); 
+
+ALTER TABLE technologies
+  DROP questionnaire_product,
+  CHANGE display watchable boolean NOT NULL DEFAULT 0;
 
 UPDATE technologies
    SET technology_group_id = '4e7a5b45-387c-4ef6-81bb-22536e891b5e' -- Kitchen
@@ -162,9 +163,13 @@ UPDATE technologies
 UPDATE technologies
    SET technology_group_id = '4e7a5b45-6054-4f0c-b939-22536e891b5e' -- Laundry
  WHERE incentive_tech_id IN( 'WASH', 'DRYER' );
+
+UPDATE technologies
+   SET watchable = 1
+ WHERE incentive_tech_id IN( 'AIRSL' );
  
 UPDATE technologies
-   SET display = 0
- WHERE incentive_tech_id IN( 'AIRSL', 'CEILF', 'CHP', 'CTRL', 'DHUM', 'DRHR', 'FIREPL', 'INS', 'LCTRL', 'MAINT', 'MOTOR', 'OTHER', 'POOLP', 'PSHEAT', 'PTHST', 'PV', 'RMAC', 'SHOWER', 'SIDING', 'STEAM', 'WBLD', 'WHFAN', 'WHINS', 'WIND' );
+   SET watchable = 0
+ WHERE incentive_tech_id IN( 'CEILF', 'CHP', 'CTRL', 'DHUM', 'DRHR', 'FIREPL', 'INS', 'LAMP', 'LFIX', 'LCTRL', 'MAINT', 'MOTOR', 'OTHER', 'POOLP', 'PSHEAT', 'PTHST', 'PV', 'RMAC', 'SHOWER', 'SIDING', 'STEAM', 'WBLD', 'WHFAN', 'WHINS', 'WIND' );
 
 SET foreign_key_checks = 1;

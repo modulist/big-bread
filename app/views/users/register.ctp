@@ -15,14 +15,14 @@
 	  	<?php __( 'Select as many categories of rebates as you like by clicking on the stars below. You can always change this later.' ) ?>
 	  </p>
 		<div class="my-interests-grid clearfix">
-	  	<?php foreach( $watchable_technologies as $column => $items ): ?>
+	  	<?php foreach( $watchable_technologies as $column => $groups ): ?>
         <div class="grid_3">
-          <?php foreach( $items as $group ): ?>
-              <h4><?php echo h( $group['TechnologyGroup']['title'] ) ?></h4>
+          <?php foreach( $groups as $group ): ?>
+              <h4><?php echo h( $group[0]['TechnologyGroup']['title'] ) ?></h4>
               <ul>
-                <?php foreach( $group['Technology'] as $technology ): ?>
-                  <li<?php echo in_array( $technology['id'], $this->data['WatchedTechnology']['selected'] ) ? ' class="active"' : false ?>>
-                    <?php echo $this->Html->link( h( $technology['name'] ), '#', array( 'data-watch-technology-id' => $technology['id'] ) ) ?>
+                <?php foreach( $group as $technology ): ?>
+                  <li<?php echo in_array( $technology['Technology']['id'], $this->data['WatchedTechnology']['selected'] ) ? ' class="active"' : false ?>>
+                    <?php echo $this->Html->link( h( $technology['Technology']['name'] ), '#', array( 'data-watch-technology-id' => $technology['Technology']['id'] ) ) ?>
                   </li>
                 <?php endforeach; ?>
               </ul>

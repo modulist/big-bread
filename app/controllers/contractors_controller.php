@@ -209,7 +209,7 @@ class ContractorsController extends AppController {
       'list',
       array(
         'contain'    => false,
-        'conditions' => array( 'Technology.display' => 1 ),
+        'conditions' => array( 'Technology.watchable' => 1 ),
         'order'      => 'Technology.name',
       )
     );

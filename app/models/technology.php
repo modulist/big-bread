@@ -43,43 +43,55 @@ class Technology extends AppModel {
    */
   
   /**
-   * Returns a list of technologies to be displayed grouped by their
-   * containing TechnologyGroup.
+   * Returns a list of technology groups that have at least one watchable
+   * technology.
    *
    * @return  array
    * @access  public
    */
   public function grouped() {
-    return $this->TechnologyGroup->find(
+    $technologies = $this->TechnologyGroup->find(
       'all',
       array(
-        'contain'    => array(
-          'Technology' => array(
-            'fields' => array(
-              'Technology.id',
-              'Technology.name',
-            ),
-            'conditions' => array(
-              'Technology.display' => 1,
-            ),
-            'order' => array(
-              'Technology.name',
-            )
-          )
+        'contain' => false,
+        'conditions' => array(
+          'Technology.watchable' => 1,
         ),
-        'fields'     => array(
+        'joins'   => array(
+          array(
+            'table'      => 'technologies',
+            'alias'      => 'Technology',
+            'type'       => 'inner', 
+            'foreignKey' => false,
+            'conditions' => array( 'TechnologyGroup.id = Technology.technology_group_id' ),
+          ),
+        ),
+        'fields'  => array(
           'TechnologyGroup.id',
           'TechnologyGroup.title',
           'TechnologyGroup.display_order',
-        ),
-        'conditions' => array(
-          'TechnologyGroup.display' => 1,
+          'Technology.id',
+          'Technology.name',
         ),
         'order'   => array(
           'TechnologyGroup.display_order',
-        )
+          'Technology.name',
+        ),
       )
     );
+    
+    $grouped = array();
+    foreach( $technologies as $i => $technology ) {
+      if( !isset( $grouped[$technology['TechnologyGroup']['title']] ) ) {
+        $grouped[$technology['TechnologyGroup']['title']] = array();
+      }
+      
+      array_push( $grouped[$technology['TechnologyGroup']['title']], $technology );
+    }
+    
+    # new PHPDump( $grouped, 'Grouped', '', true );
+    
+    return $grouped;
   }
   
   /**
