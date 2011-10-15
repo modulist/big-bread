@@ -71,7 +71,6 @@ class FixturesController extends AppController {
       
     # Retrieve and repackage the technology dropdown options
     $raw_tech = $this->Fixture->Technology->grouped();
-    
     $technologies = array();
     foreach( $raw_tech as $group_title => $group ) {
       $technologies[$group_title] = array();
@@ -166,11 +165,11 @@ class FixturesController extends AppController {
     # Retrieve and repackage the technology dropdown options
     $raw_tech = $this->Fixture->Technology->grouped();
     $technologies = array();
-    foreach( $raw_tech as $group ) {
-      $technologies[$group['TechnologyGroup']['title']] = array();
+    foreach( $raw_tech as $group_title => $group ) {
+      $technologies[$group_title] = array();
       
-      foreach( $group['Technology'] as $technology ) {
-        $technologies[$group['TechnologyGroup']['title']][$technology['id']] = Inflector::singularize( $technology['name'] );
+      foreach( $group as $technology ) {
+        $technologies[$group_title][$technology['Technology']['id']] = Inflector::singularize( $technology['Technology']['title'] );
       }
     }
     

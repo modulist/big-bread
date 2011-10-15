@@ -40,7 +40,7 @@ ALTER TABLE fixtures
   ADD name              varchar(255)  NULL AFTER product_id,
   ADD technology_id     char(36)      NOT NULL AFTER product_id,
   ADD year_installed    int           NULL AFTER service_in,
-  ADD outside_unit      boolean       NOT NULL DEFAULT 0;
+  ADD outside_unit      boolean       NOT NULL DEFAULT 0 AFTER serial_number;
 
 UPDATE fixtures f, products p
    SET f.technology_id    = p.technology_id,
