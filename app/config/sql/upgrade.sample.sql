@@ -39,7 +39,8 @@ ALTER TABLE fixtures
   ADD make              varchar(255)  NULL AFTER product_id,
   ADD name              varchar(255)  NULL AFTER product_id,
   ADD technology_id     char(36)      NOT NULL AFTER product_id,
-  ADD year_installed    int           NULL AFTER service_in;
+  ADD year_installed    int           NULL AFTER service_in,
+  ADD outside_unit      boolean       NOT NULL DEFAULT 0;
 
 UPDATE fixtures f, products p
    SET f.technology_id    = p.technology_id,
@@ -77,8 +78,8 @@ CREATE TABLE watch_lists(
   id            char(36)      NOT NULL,
   user_id       char(36)      COLLATE utf8_unicode_ci NOT NULL,
   location_id   char(36)      COLLATE utf8_unicode_ci NULL, -- watch lists can be specific to a location
-  foreign_key   char(36)      COLLATE utf8_unicode_ci NOT NULL,
   model         varchar(255)  NOT NULL,
+  foreign_key   char(36)      COLLATE utf8_unicode_ci NOT NULL,
   created       datetime      NULL,
   modified      datetime      NULL,
 
@@ -154,7 +155,10 @@ UPDATE technology_groups
 
 ALTER TABLE technologies
   DROP questionnaire_product,
-  CHANGE display watchable boolean NOT NULL DEFAULT 0;
+  CHANGE display watchable boolean NOT NULL DEFAULT 0,
+  MODIFY name varchar(255) NOT NULL,
+  CHANGE dname title varchar(255) NULL,
+  MODIFY description varchar(255) NULL;
 
 UPDATE technologies
    SET technology_group_id = '4e7a5b45-387c-4ef6-81bb-22536e891b5e' -- Kitchen
@@ -171,5 +175,39 @@ UPDATE technologies
 UPDATE technologies
    SET watchable = 0
  WHERE incentive_tech_id IN( 'CEILF', 'CHP', 'CTRL', 'DHUM', 'DRHR', 'FIREPL', 'INS', 'LAMP', 'LFIX', 'LCTRL', 'MAINT', 'MOTOR', 'OTHER', 'POOLP', 'PSHEAT', 'PTHST', 'PV', 'RMAC', 'SHOWER', 'SIDING', 'STEAM', 'WBLD', 'WHFAN', 'WHINS', 'WIND' );
+
+UPDATE technologies
+   SET name = 'Dishwashers'
+ WHERE incentive_tech_id = 'DISHW';
+
+UPDATE technologies
+   SET title = name
+ WHERE watchable = 1;
+
+UPDATE technologies
+   SET title = 'Central Air Conditioners'
+ WHERE incentive_tech_id = 'CAC';
+
+UPDATE technologies
+   SET title = 'Tune-Ups',
+       watchable = 1
+ WHERE incentive_tech_id = 'MAINT';
+ 
+UPDATE technologies
+   SET watchable = 1
+ WHERE incentive_tech_id = 'INS';
+ 
+UPDATE technologies
+   SET title = 'Glass Doors'
+ WHERE incentive_tech_id = 'DOOR';
+ 
+UPDATE technologies
+   SET title = 'Roofing'
+ WHERE incentive_tech_id = 'ROOF';
+ 
+UPDATE technologies
+   SET title     = 'Audit/Home Performance',
+       watchable = 1
+ WHERE incentive_tech_id = 'WBLD';
 
 SET foreign_key_checks = 1;

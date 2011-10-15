@@ -10,7 +10,7 @@
             <ul>
               <?php foreach( $group as $technology ): ?>
                 <li<?php echo in_array( $technology['Technology']['id'], $watched ) ? ' class="active"' : false ?>>
-                  <?php echo $this->Html->link( h( $technology['Technology']['name'] ), array( 'controller' => 'users', 'action' => !in_array( $technology['Technology']['id'], $watched ) ? 'watch' : 'unwatch', 'Technology', $technology['Technology']['id'], $location_id ), array( 'data-watch-technology-id' => $technology['Technology']['id'] ) ) ?>
+                  <?php echo $this->Html->link( h( $technology['Technology']['title'] ), array( 'controller' => 'users', 'action' => !in_array( $technology['Technology']['id'], $watched ) ? 'watch' : 'unwatch', 'Technology', $technology['Technology']['id'], $location_id ), array( 'data-watch-technology-id' => $technology['Technology']['id'] ) ) ?>
                 </li>
               <?php endforeach; ?>
             </ul>

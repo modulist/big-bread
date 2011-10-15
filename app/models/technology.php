@@ -72,6 +72,7 @@ class Technology extends AppModel {
           'TechnologyGroup.display_order',
           'Technology.id',
           'Technology.name',
+          'Technology.title',
         ),
         'order'   => array(
           'TechnologyGroup.display_order',

@@ -1,19 +1,19 @@
 <div id="vertical-nav">
   <ul class="left-menu">
 		<li class="top-link">
-			<a href="#">top</a>
+      <?php echo $this->Html->link( __( 'top', true ), '#' ) ?>
 		</li>
 		<li class="">
-			<a href="#my-locations">My locations</a>
+			<?php echo $this->Html->link( __( 'My location', true ), '#my-locations' ) ?>
 		</li>
 		<li class="">
-			<a href="#my-rebates">Rebates for <br />Main House</a>
+      <?php echo $this->Html->link( __( 'Rebates', true ), '#my-rebates' ) ?>
 		</li>
 		<li class="">
-			<a href="#pending-quotes">Pending Quotes</a>
+      <?php echo $this->Html->link( __( 'Pending quotes', true ), '#pending-quotes' ) ?>
 		</li>
 		<li class="">
-			<a href="#my-interests">My Interests</a>
+      <?php echo $this->Html->link( __( 'My interests', true ), '#my-interests' ) ?>
 		</li>
   </ul>
 </div>

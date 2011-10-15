@@ -131,6 +131,7 @@ class TechnologyIncentive extends AppModel {
           'TechnologyGroup.title',
           'Technology.id',
           'Technology.name',
+          'Technology.title',
           'Technology.watchable',
           'Incentive.id',
           'Incentive.name',

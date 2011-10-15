@@ -120,7 +120,7 @@ class BuildingsController extends AppController {
       $this->redirect( $this->referer( array( 'controller' => 'users', 'action' => 'dashboard' ) ), null, true );
     }
     
-    $rebates = Set::combine( $this->Building->incentives( $zip_code ), '{n}.TechnologyIncentive.id', '{n}', '{n}.Technology.name' );
+    $rebates = Set::combine( $this->Building->incentives( $zip_code ), '{n}.TechnologyIncentive.id', '{n}', '{n}.Technology.title' );
     
     if( empty( $location ) ) {
       $rebates_for = $zip_code;

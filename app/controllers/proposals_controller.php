@@ -65,7 +65,7 @@ class ProposalsController extends AppController {
       'first',
       array(
         'contain'    => array( 'Technology', 'Incentive' ),
-        'fields'     => array( 'Technology.id', 'Technology.name', 'Incentive.id' ),
+        'fields'     => array( 'Technology.id', 'Technology.title', 'Incentive.id' ),
         'conditions' => array( 'TechnologyIncentive.id' => $technology_incentive_id ),
       )
     );

@@ -92,26 +92,36 @@ class UsersController extends AppController {
       
       # Save the user and their watchlist in a transaction. Model::saveAll()
       # does not work in this scenario.
-      $ds= $this->User->getDataSource();
+      $commit = false;
+      $ds     = $this->User->getDataSource();
       $ds->begin( $this->User );
       
       if( $this->User->save( $this->data['User'] ) ) {
-        # Build an array of TechnologyWatchList items
-        # Set property defaults for a watchlist item.
-        $tech_watchlist_defaults = array(
-          'user_id'     => $this->User->id,
-          'model'       => 'Technology',
-          'foreign_key' => null,
-        );
-        # Compile an array of TechnologyWatchList object data
-        $this->data['TechnologyWatchList'] = array();
-        foreach( $this->data['WatchedTechnology']['selected'] as $technology_id ) {
-          $tech_watch_list_item = array( 'foreign_key' => $technology_id );
+        if( !empty( $this->data['WatchedTechnology']['selected'] ) ) {
+          # Build an array of TechnologyWatchList items
+          # Set property defaults for a watchlist item.
+          $tech_watchlist_defaults = array(
+            'user_id'     => $this->User->id,
+            'model'       => 'Technology',
+            'foreign_key' => null,
+          );
+          # Compile an array of TechnologyWatchList object data
+          $this->data['TechnologyWatchList'] = array();
+          foreach( $this->data['WatchedTechnology']['selected'] as $technology_id ) {
+            $tech_watch_list_item = array( 'foreign_key' => $technology_id );
+            
+            array_push( $this->data['TechnologyWatchList'], array_merge( $tech_watchlist_defaults, $tech_watch_list_item ) );
+          }
           
-          array_push( $this->data['TechnologyWatchList'], array_merge( $tech_watchlist_defaults, $tech_watch_list_item ) );
+          if( !in_array( false, $this->User->TechnologyWatchList->saveAll( $this->data['TechnologyWatchList'], array( 'atomic' => false ) ) ) ) {
+            $commit = true;
+          }
         }
-      
-        if( !in_array( false, $this->User->TechnologyWatchList->saveAll( $this->data['TechnologyWatchList'], array( 'atomic' => false ) ) ) ) {
+        else {
+          $commit = true;
+        }
+
+        if( $commit ) {
           $this->Session->setFlash( 'Welcome to SaveBigBread. Thanks for registering.', null, null, 'success' );
           $this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
           $this->Auth->login( $this->data ); # Authenticate the new user
@@ -334,7 +344,7 @@ class UsersController extends AppController {
           'Fixture.name',
           'Fixture.make',
           'Fixture.model',
-          'Technology.name',
+          'Technology.title',
         ),
         'order' => array(
           'Fixture.modified DESC',
@@ -353,7 +363,7 @@ class UsersController extends AppController {
     # technologies the user has identified as interests.
     $rebates = empty( $technology_watch_list )
       ? array()
-      : Set::combine( $this->User->Building->incentives( $zip_code, $technology_watch_list ), '{n}.TechnologyIncentive.id', '{n}', '{n}.Technology.name' );
+      : Set::combine( $this->User->Building->incentives( $zip_code, $technology_watch_list ), '{n}.TechnologyIncentive.id', '{n}', '{n}.Technology.title' );
     
     $this->set( compact( 'fixtures', 'location', 'location_title', 'pending_quotes', 'rebates', 'technology_watch_list', 'watchable_technologies' ) );
   }
