@@ -1,7 +1,9 @@
 <?php
 
 class TechnologyIncentivesController extends AppController {
-	public $name = 'TechnologyIncentives';
+	public $name       = 'TechnologyIncentives';
+  public $components = array( 'FormatMask.Format' );
+  public $helpers    = array( 'FormatMask.Format' );
 
   /**
    * Displays the details of a given incentive.
@@ -18,10 +20,16 @@ class TechnologyIncentivesController extends AppController {
   /**
    * Displays the page to request a quote.
    *
+   * @param   $id
    * @access	public
    */
-  public function quote() {
+  public function quote( $id ) {
+    $rebate    = $this->TechnologyIncentive->get( $id );
+    $requestor = $this->Auth->user();
     
+    # new PHPDump( $rebate ); exit;
+    
+    $this->set( compact( 'rebate', 'requestor' ) );
   }
   
   /**
