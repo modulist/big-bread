@@ -351,7 +351,9 @@ class UsersController extends AppController {
     
     # Rebates relevant to this location (or the default zip code), filtered by
     # technologies the user has identified as interests.
-    $rebates = Set::combine( $this->User->Building->incentives( $zip_code, $technology_watch_list ), '{n}.TechnologyIncentive.id', '{n}', '{n}.Technology.name' );
+    $rebates = empty( $technology_watch_list )
+      ? array()
+      : Set::combine( $this->User->Building->incentives( $zip_code, $technology_watch_list ), '{n}.TechnologyIncentive.id', '{n}', '{n}.Technology.name' );
     
     $this->set( compact( 'fixtures', 'location', 'location_title', 'pending_quotes', 'rebates', 'technology_watch_list', 'watchable_technologies' ) );
   }
@@ -388,6 +390,7 @@ class UsersController extends AppController {
     }
     
     if( !$this->User->watch( $model, $id, $user_id, $location_id ) ) {
+      new PHPDump( $this->User->invalidFields() ); exit;
       $this->Session->setFlash( __( 'There was a problem updating your interests.', true ), null, null, 'error' );
     }
     

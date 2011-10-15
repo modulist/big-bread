@@ -60,7 +60,11 @@
 </div><!-- /my-locations -->
 
 <h2><?php printf( __( 'Rebates for %s', true ), $location_title ) ?></h2>
-<?php echo $this->element( '../technology_incentives/_list', array( 'rebates' => $rebates, 'watch_list' => $technology_watch_list, 'location_id' => $location['Building']['id'] ) ) ?>
+<?php if( !empty( $rebates ) ): ?>
+  <?php echo $this->element( '../technology_incentives/_list', array( 'rebates' => $rebates, 'watch_list' => $technology_watch_list, 'location_id' => $location['Building']['id'] ) ) ?>
+<?php else: ?>
+  <p><?php __( 'Wondering why you don\'t see any rebates? It\'s because you haven\'t had a chance to identify any interests for this location. Scroll down to do just that.' ) ?></p>
+<?php endif; ?>
 
 <?php if( !empty( $pending_quotes ) ): ?>
   <div id="pending-quotes" class="grid_9">

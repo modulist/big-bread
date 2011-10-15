@@ -91,7 +91,7 @@ CREATE TABLE watch_lists(
     REFERENCES technologies( id )
     ON UPDATE CASCADE
     ON DELETE CASCADE,
-  CONSTRAINT uix_watch_lists UNIQUE INDEX( user_id, foreign_key, model )
+  CONSTRAINT uix_watch_lists UNIQUE INDEX( user_id, location_id, model, foreign_key )
 ) ENGINE=InnoDB;
 
 ALTER TABLE users
