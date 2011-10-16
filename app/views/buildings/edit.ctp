@@ -7,10 +7,25 @@
   <div class="clearfix">
     <h2><?php __( 'About your location:' ) ?></h2>
   </div>
-  <?php echo $this->element( '../buildings/_basic_inputs' ) ?>
   
+  <div id="my-locations" class="grid_9">
+    <div class="location-wrapper clearfix">
+      <div class="location-icon-large"></div>
+      <div class="grid_4">
+        <?php echo $this->element( '../buildings/_basic_inputs' ) ?>
+      </div><!-- /grid-4 -->	
+    </div><!-- /location-wrapper -->
+  </div><!-- /my-locations -->
+
   <div class="clearfix">
     <h2><?php __( 'Utilities for your location:' ) ?></h2>
   </div>
-  <?php echo $this->element( '../buildings/_utility_inputs' ) ?>
+  
+  <div class="utilities-wrapper clearfix">
+    <div class="utilities-icon"></div>
+      <div class="grid_4">
+        <?php echo $this->element( '../buildings/_utility_inputs' ) ?>
+      </div><!-- /grid-4 -->
+    </div><!-- /utilities-wrapper -->
+  </div><!-- /my-utilities -->
 <?php echo $this->Form->end( __( 'Add location', true ) ) ?>

@@ -11,6 +11,7 @@
 <div id="my-locations" class="grid_9">
   <?php if( empty( $location ) ): ?>
     <h2><?php __( 'Add my first location' ) ?>:</h2>
+    <div class="location-icon-large"></div>
     
     <?php echo $this->Form->create( 'Building', array( 'url' => array( 'controller' => 'buildings', 'action' => 'add' ) ) ) ?>
       <?php echo $this->element( '../buildings/_basic_inputs' ) ?>
@@ -69,10 +70,10 @@
   <p><?php __( 'Wondering why you don\'t see any rebates? It\'s because you haven\'t had a chance to identify any interests for this location. Scroll down to do just that.' ) ?></p>
 <?php endif; ?>
 
-<?php if( !empty( $pending_quotes ) ): ?>
-  <div id="pending-quotes" class="grid_9">
-    <h2><?php printf( __( 'Pending quotes for %s', true ), $location_title ) ?></h2>
-    <table class="pending-quotes">
+<div id="pending-quotes" class="grid_9">
+  <h2><?php printf( __( 'Pending quotes for %s', true ), $location_title ) ?></h2>
+  <table class="pending-quotes">
+    <?php if( !empty( $pending_quotes ) ): ?>
       <tr class="first odd">
         <td class="quote-category">Building Shell > Windows</td>
         <td class="quote-date">1 week ago</td>
@@ -90,10 +91,14 @@
         <td class="quote-date">3 months 11 days ago</td>
         <td class="quote-status">Closed</td>
         <td class="quote-action"><a href="#" class="remove-button">remove</a></td>
-      </tr>      
-    </table>
-  </div>
-<?php endif; ?>
+      </tr>
+    <?php else: ?>
+      <tr>
+        <td><?php __( 'You haven\'t requested any quoted work.' ) ?></td>
+      </tr>
+    <?php endif; ?>
+  </table>
+</div>
 
 <div id="my-interests" class="grid_9">
 	<h2><?php printf( __( 'My interests for %s', true ), $location_title ) ?></h2>

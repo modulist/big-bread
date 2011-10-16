@@ -51,8 +51,7 @@
 
   <div class="form-field-group clearfix">
     <h4><?php __( 'Anything else?' ) ?></h4>
-    <div class="input textarea"><textarea name="data[Proposal][comments]" placeholder="Please add instructions ror when you'd like to be reached, or any comments about the job." cols="30" rows="6" id="ProposalComments"></textarea></div>
-    <div class="submit"><input type="submit" value="Get a Quote"></div> 
+    <?php echo $this->Form->input( 'Proposal.notes', array( 'type' => 'textarea', 'placeholder' => __( 'Please add any additional instructions, contact preferences or any comments about the job.', true ) ) ) ?>
   </div>
   
 <?php echo $this->Form->end( __( 'Get a Quote', true ) ) ?>
