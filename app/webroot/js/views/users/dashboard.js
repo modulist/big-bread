@@ -17,7 +17,7 @@ $(document).ready( function() {
     }
   });
   
-  $('.quote-button, .details').click( function( e ) {
+  $('.details').click( function( e ) {
     e.preventDefault();
     
     var $this = $(this);
