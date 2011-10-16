@@ -1,4 +1,5 @@
 <?php $short = isset( $short) ? $short : false ?>
+
 <?php echo $this->Form->create( 'Building', array( 'url' => array( 'controller' => 'buildings', 'action' => 'add' ) ) ) ?>
 	<div id="my-locations" class="grid_9">
 		<div class="clearfix">

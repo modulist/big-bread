@@ -1,6 +1,18 @@
 $(document).ready( function() {
   var now = new Date();
   
+  $( '#FixtureTechnologyId' ).change( function( e ) {
+    var $this = $(this);
+    var tech  = $this.find( 'option:selected' ).text();
+    
+    if( tech == 'Central Air Conditioner' || tech == 'Heat Pump' ) {
+      $( '#FixtureOutsideUnit0' ).closest( '.input.radio' ).slideDown();
+    }
+    else {
+      $( '#FixtureOutsideUnit0' ).closest( '.input.radio' ).slideUp();
+    }
+  });
+  
   $( '#slider' ).slider({
     value: 0,
     min: now.getFullYear() - 15,

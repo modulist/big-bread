@@ -74,7 +74,7 @@ class ApiV1 extends Api {
     
     $overview = array(
       'locale'           => $this->ZipCode->locale( $zip_code ),
-      'total_savings'    => $this->ZipCode->savings( $zip_code, $group_savings ),
+      'total_savings'    => $this->ZipCode->savings( $zip_code, $group_savings, 'HVAC' ),
       'featured_rebates' => $this->ZipCode->featured_rebates( $zip_code ),
     );
         
