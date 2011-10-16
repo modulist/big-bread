@@ -20,10 +20,14 @@
       
     <?php if( empty( $this->data['Building'] ) ): ?>
       <p><?php __( 'You haven\'t created a location yet, so let\'s do that now.' ) ?></p>
-      <?php echo $this->element( '../buildings/_form', array( 'plugin' => false ) ) # We have to reset the plugin context ?>
+      <?php echo $this->element( '../buildings/_basic_inputs', array( 'plugin' => false ) ) # We have to reset the plugin context ?>
     <?php else: ?>
       <?php echo $this->element( 'address', array( 'plugin' => false, 'address' => $this->data['Address'] ) ) ?>
     <?php endif; ?>
+    
+    <h4><?php __( 'Which utilities are involved?' ) ?></h4>
+    <p><?php __( 'We\'ll need your account numbers to reserve and process your utility rebates.  Please add them to your request or add them to your profile as soon as possible.' ) ?></p>
+    <?php echo $this->element( '../buildings/_utility_inputs', array( 'plugin' => false ) ) # We have to reset the plugin context ?>
   </div>
 
   <div class="form-field-group clearfix">

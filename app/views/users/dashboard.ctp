@@ -11,7 +11,10 @@
 <div id="my-locations" class="grid_9">
   <?php if( empty( $location ) ): ?>
     <h2><?php __( 'Add my first location' ) ?>:</h2>
-    <?php echo $this->element( '../buildings/_form', array( 'short' => true ) ) ?>
+    
+    <?php echo $this->Form->create( 'Building', array( 'url' => array( 'controller' => 'buildings', 'action' => 'add' ) ) ) ?>
+      <?php echo $this->element( '../buildings/_basic_inputs' ) ?>
+    <?php echo $this->Form->end( __( 'Add location', true ) ) ?>
   <?php else: ?>
     <div class="clearfix">
       <?php echo $this->Html->link( sprintf( __( 'Add a location %s', true ), '&rsaquo;' ), array( 'controller' => 'buildings', 'action' => 'add' ), array( 'class' => 'add-location-button', 'escape' => false ) ) ?>
