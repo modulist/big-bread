@@ -20,16 +20,44 @@ class TechnologyIncentivesController extends AppController {
   /**
    * Displays the page to request a quote.
    *
-   * @param   $id
+   * @param   $id           The rebate to be quoted.
+   * @param   $location_id  The location to which the quote applies.
    * @access	public
    */
-  public function quote( $id ) {
-    $rebate    = $this->TechnologyIncentive->get( $id );
-    $requestor = $this->Auth->user();
+  public function quote( $id, $location_id = null ) {
+    if( !empty( $this->data ) ){
+      
+    }
+    else {
+      $user     = $this->Auth->user();
+      $rebate   = $this->TechnologyIncentive->get( $id );
+      $location = ClassRegistry::init( 'Building' )->find(
+        'first',
+        array(
+          'contain' => array(
+            'Address' => array(
+              'ZipCode'
+            ),
+            'ElectricityProvider',
+            'GasProvider',
+            'WaterProvider',
+          ),
+          'conditions' => array( 'Building.id' => $location_id ),
+        )
+      );
+
+      $this->data = Set::merge( $rebate, $location );
+      $this->data['Requestor'] = $user[$this->Auth->getModel()->alias];
+    }
     
-    # new PHPDump( $rebate ); exit;
+    # Explode the user's phone number if it exists in a data array
+    if( isset( $this->data['Requestor']['phone_number'] ) && is_string( $this->data['Requestor']['phone_number'] ) ) {
+      $this->data['Requestor']['phone_number'] = $this->Format->phone_number( $this->data['Requestor']['phone_number'] );
+    }
     
-    $this->set( compact( 'rebate', 'requestor' ) );
+    # new PHPDump( $this->data ); exit;
+    
+    # $this->set( compact( 'location', 'rebate' ) );
   }
   
   /**

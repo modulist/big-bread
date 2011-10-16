@@ -8,11 +8,12 @@ DROP TABLE IF EXISTS questionnaires;
 DROP TABLE IF EXISTS messages;
 CREATE TABLE messages(
   id            char(36)      NOT NULL,
+  model         varchar(36)   NOT NULL, -- what generated the message?
+  foreign_key   char(36)      NOT NULL, -- which of that what generated the message?
   transport     varchar(255)  NOT NULL DEFAULT 'email',
-  type          varchar(255)  NULL,
   sender_id     char(36)      COLLATE utf8_unicode_ci NOT NULL,
   recipient_id  char(36)      COLLATE utf8_unicode_ci NOT NULL,
-  sent          boolean       NOT NULL DEFAULT 0,
+  sent          datetime      NULL,
   created       datetime      NULL,
   modified      datetime      NULL,
   
@@ -27,6 +28,11 @@ CREATE TABLE messages(
     ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+ALTER TABLE proposals
+  ADD location_id char(36) NULL AFTER technology_id,
+  ADD under_warranty boolean NOT NULL DEFAULT 0,
+  ADD permission_to_examine boolean NOT NULL DEFAULT 0;
+ 
 -- Merging products and building_products into one table: fixtures
 DROP TABLE IF EXISTS fixtures;
 RENAME TABLE building_products TO fixtures;
@@ -106,7 +112,10 @@ ALTER TABLE users
     ON UPDATE CASCADE;
 
 ALTER TABLE buildings
-  ADD name varchar(255) NULL AFTER id;
+  ADD name varchar(255) NULL AFTER id,
+  ADD electricity_provider_account varchar(255) NULL,
+  ADD gas_provider_account varchar(255) NULL,
+  ADD water_provider_account varchar(255) NULL;
 
 ALTER TABLE technologies
   ADD CONSTRAINT fk__technologies__technology_groups FOREIGN KEY( technology_group_id )

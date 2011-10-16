@@ -2,9 +2,6 @@
 
 <?php echo $this->Form->create( 'Building', array( 'url' => array( 'controller' => 'buildings', 'action' => 'add' ) ) ) ?>
 	<div id="my-locations" class="grid_9">
-		<div class="clearfix">
-			<h2><?php __( 'About your location:' ) ?></h2>
-		</div>
 		<div class="location-wrapper clearfix">
 			<div class="location-icon-large"></div>
 			<div class="grid_4">

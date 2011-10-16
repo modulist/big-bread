@@ -9,9 +9,11 @@ class Building extends AppModel {
 		),
     'ElectricityProvider' => array(
       'className' => 'Utility',
+      'fields'    => array( 'id', 'name' ),
     ),
     'GasProvider' => array(
       'className' => 'Utility',
+      'fields'    => array( 'id', 'name' ),
     ),
 		'Inspector' => array(
 			'className' => 'User',
@@ -23,6 +25,7 @@ class Building extends AppModel {
 		),
     'WaterProvider' => array(
       'className' => 'Utility',
+      'fields'    => array( 'id', 'name' ),
     ),
 	);
   public $hasOne  = array(
@@ -138,20 +141,27 @@ class Building extends AppModel {
   /**
    * Returns the address for a given building.
    *
-   * @param 	$building_id
+   * @param 	$location_id
+   * @param   $include_location Whether to include the location model data
    * @return	string
    */
-  public function address( $building_id ) {
-    $address = $this->Address->find(
+  public function address( $location_id, $include_location = false ) {
+    $address = $this->find(
       'first',
       array(
-        'contain'    => array( 'Building', 'ZipCode' ),
-        'conditions' => array( 'Building.id' => $building_id ),
+        'contain' => array(
+          'Address' => array(
+            'ZipCode'
+          ),
+        ),
+        'conditions' => array( 'Building.id' => $location_id ),
       )
     );
     
-    # The building is only included for filtering
-    unset( $address['Building'] );
+    if( !$include_location ) {
+      # The building is only included for filtering
+      unset( $address['Building'] );
+    }
     
     return $address;
   }
