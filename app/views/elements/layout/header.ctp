@@ -1,4 +1,4 @@
-<div id="logoheader">
+<div id="logoheader" class="clearfix">
   <div id="logo">
     <?php echo $this->Html->image( 'logo.png', array( 'url' => '/', 'title' => 'beta' ) ) ?>
   </div>
