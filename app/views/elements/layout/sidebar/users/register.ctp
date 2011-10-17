@@ -7,7 +7,7 @@
 			<?php echo $this->Html->link( __( 'My interests', true ), '#my-interests' ) ?>
 		</li>
 		<li class="">
-			<?php echo $this->Html->link( __( 'Create my Big Bread account', true ), '#user-registration' ) ?>
+			<?php echo $this->Html->link( __( 'Create my SaveBigBread account', true ), '#user-registration' ) ?>
 		</li>
 		<li class="">
 			<?php echo $this->Html->link( __( 'My zip code', true ), '#UserZipCode' ) ?>

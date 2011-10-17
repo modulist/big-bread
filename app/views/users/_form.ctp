@@ -7,7 +7,7 @@
  * is contractor).
  */
 ?>
-<h2><?php __( 'Now, let&#146;s create your Big Bread account:' ) ?></h2>
+<h2><?php __( 'Let&#146;s create your SaveBigBread account:' ) ?></h2>
 <div class="clearfix">
 	<div class="grid_3 first">
 		<?php echo $this->Form->input( 'User.first_name', array( 'placeholder' => 'Your first name' ) ) ?>
