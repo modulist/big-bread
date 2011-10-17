@@ -524,6 +524,10 @@ a.details-button, a.quote-button { display: inline-block; -webkit-border-radius:
 a.details-button:hover, a.quote-button:hover { text-decoration: none; background-color: #333; }
 a.details-button { background-color: #527b48; }
 a.quote-button { background-color: #ef7600; }
+.close-button-wrapper { height: 0; width: 100%; position: relative; }
+.close-button { display: block; width: 16px; height: 16px; padding: 0 0 10px 8px; margin-right: -10px; background: url(../img/close-button.png) top right no-repeat; float: right; }
+.close-button:hover { background: url(../img/close-button-hover.png) top right no-repeat; cursor: pointer; }
+.close-button:active { background: url(../img/close-button-active.png) top right no-repeat; }
 
 
 
@@ -650,7 +654,7 @@ body.layout-default_landing .login-wrapper { float: right; width: 310px; font: 1
 body.layout-default_landing .login-wrapper label { font-weight: normal; }
 body.layout-default_landing #login-trigger { display: inline; color: #16433b; }
 body.layout-default_landing #login-trigger a { background: url(../img/login-cloud.png) no-repeat; padding: 23px 20px;  }
-body.layout-default_landing #login-popup { position: absolute; z-index: 1; float: right; padding: 33px 25px 20px; border-radius: 20px; -moz-border-radius: 20px; -webkit-border-radius: 20px; background-color: #89dfdc; box-shadow: 20px 20px 20px #000; visibility: hidden; }
+body.layout-default_landing #login-popup { position: absolute; z-index: 1; float: right; padding: 15px 25px 20px; border-radius: 20px; -moz-border-radius: 20px; -webkit-border-radius: 20px; background-color: #89dfdc; box-shadow: 20px 20px 20px #000; visibility: hidden; }
 body.layout-default_landing #login-popup.active { visibility: visible; }
 #login-popup .instructions { font-size: 18px; color: #000; padding: 0 0 6px; }
 #login-popup input[type='text'] { width: 290px; border: 1px solid #466e66; background-color: #ddfffe; font: 14px 'UltraRegular', serif; color: #9bb4b1; padding: 4px 12px; }

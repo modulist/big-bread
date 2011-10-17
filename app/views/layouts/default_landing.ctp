@@ -13,7 +13,7 @@
         <?php __( 'Registered Users' ) ?>
         <div id="login-trigger"><?php echo $this->Html->link( __( 'Log in &rsaquo;', true ), '#', array( 'escape' => false ) ) ?></div>
         <div id="login-popup" class="clearfix">
-        	<a href="#" class="clode-button">close button</a>
+        	<div class="close-button-wrapper clearfix"><a class="close-button"></a></div>
           <?php echo $this->Form->create( 'User', array( 'action' => 'login', 'inputDefaults' => array( 'error' => false ) ) ) ?>
             <?php echo $this->Form->input( 'User.email', array( 'id' => 'login-token-1', 'autofocus' => 'true' ) ) ?>
             <?php echo $this->Form->input( 'User.password', array( 'id' => 'login-token-2' ) ) ?>
