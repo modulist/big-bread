@@ -51,7 +51,7 @@
 	          <div class="testimonial-quote-mark">&ldquo;</div><?php __( 'SaveBigBread ...saved my $750 rebate.' ) ?><div class="testimonial-quote-mark">&rdquo;</div>
 	        </div>
 	        <div class="testimonial-source">
-	          Owen B., Falls Church VA
+	          Owen B.
 	        </div>  
 	      </div> <!-- /item -->
 	
@@ -60,7 +60,7 @@
 	          <div class="testimonial-quote-mark">&ldquo;</div><?php __( 'SaveBigBread saved us $2,100 and made what could have been a painful process manageable.' ) ?><div class="testimonial-quote-mark">&rdquo;</div>
 	        </div>
 	        <div class="testimonial-source">
-	          Barbara B., Falls Church VA
+	          Barbara B.
 	        </div>  
 	      </div> <!-- /item -->
 	
@@ -69,7 +69,7 @@
 	          <div class="testimonial-quote-mark">&ldquo;</div><?php __( 'SaveBigBread found $1,800 as well as a qualified new contractor in one easy step.' ) ?><div class="testimonial-quote-mark">&rdquo;</div>
 	        </div>
 	        <div class="testimonial-source">
-	          Vanna P., Vienna, VA
+	          Vanna P.
 	        </div>  
 	      </div> <!-- /item -->
 	
@@ -78,7 +78,7 @@
 	          <div class="testimonial-quote-mark">&ldquo;</div><?php __( 'SaveBigBread found $800...I wouldn&#146;t have known to even ask!' ) ?><div class="testimonial-quote-mark">&rdquo;</div>
 	        </div>
 	        <div class="testimonial-source">
-	          Scott H., Ashburn, VA
+	          Scott H.
 	        </div>  
 	      </div> <!-- /item -->
 	
@@ -87,7 +87,7 @@
 	          <div class="testimonial-quote-mark">&ldquo;</div><?php __( 'Thanks for being so prompt! My husband and I were impressed!' ) ?><div class="testimonial-quote-mark">&rdquo;</div>
 	        </div>
 	        <div class="testimonial-source">
-	          Janet H. Falls Church, VA
+	          Janet H.
 	        </div>  
 	      </div> <!-- /item -->
 	    </div> <!-- /testimonials -->
