@@ -138,7 +138,7 @@ body.onecolumn #content { background: #FFFFFF; min-height:400px; padding: 50px 6
 #terms p { padding:10px 0; }
 
 /* ============================= sidebar ======================= */
-#sidebar{ position: fixed; top: 207px; margin: 0 0 0 20px; width:180px; border-top-left-radius: 20px; border-bottom-left-radius: 20px; -moz-border-top-left-radius: 20px; -moz-border-bottom-left-radius: 20px; background: #fff; padding: 0 20px 0 30px; }
+#sidebar{ position: fixed; top: 190px; margin: 0 0 0 20px; width:180px; border-top-left-radius: 20px; border-bottom-left-radius: 20px; -moz-border-top-left-radius: 20px; -moz-border-bottom-left-radius: 20px; background: #fff; padding: 0 20px 0 30px; }
 #vertical-nav { width:190px; color:#0e6e76; padding: 20px 0 0; }
 #vertical-nav ul, #questionnaire_act ul, #questionnaire_nav ul{ list-style:none; }
 #vertical-nav ul { padding: 0; margin-top: 0; }
@@ -152,8 +152,8 @@ body.onecolumn #content { background: #FFFFFF; min-height:400px; padding: 50px 6
 #vertical-nav li.top-link { font: 11px Georgia, 'Times New Roman', sans-serif; }
 #vertical-nav li.top-link a { background: url(../img/arrow-top.png) 0 5px no-repeat; color: #3f3f3f; padding: 0 0 6px 15px; }
 
-.users.register #sidebar{ top: 230px; }
-.users.dashboard #sidebar{ top: 300px; }
+.users.register #sidebar{ top: 190px; }
+/* .users.dashboard #sidebar{ top: 300px; } */
 
 #questionnaire_nav li, #questionnaire_act li { float:left; }
 #getstart { background:#fff; padding: 20px; border: 1px solid white; border-radius: 20px; -moz-border-radius: 20px;}
@@ -400,10 +400,11 @@ option { padding: 0 8px; line-height: 24px; }
 .my-interests-grid .grid_3 { margin: 0 20px 0 0;}
 .my-interests-grid h4 { padding: 10px 0 10px 10px; margin: 0 0 4px; font-size: 14px; background: url(../img/dotrule-orange-2px.png) bottom left repeat-x; letter-spacing: .1em; }
 .my-interests-grid ul { padding: 0; margin: 0 0 10px; }
-.my-interests-grid li { padding: 2px 0 2px 30px; list-style: none inside;  background: url(../img/sprite-rebate-table.png) -4px -7px no-repeat; }
-.my-interests-grid li:hover { background: url(../img/sprite-rebate-table.png) -4px -27px no-repeat rgba(143, 212, 105, 0.1); }
-.my-interests-grid li.active{ background: url(../img/sprite-rebate-table.png) -4px -47px no-repeat; }
-.my-interests-grid li.active:hover { background: url(../img/sprite-rebate-table.png) -4px -67px no-repeat rgba(143, 212, 105, 0.1); }
+.my-interests-grid li { padding: 0; list-style: none inside; }
+.my-interests-grid li a { display: block; padding: 2px 0 2px 30px; list-style: none inside;  background: url(../img/sprite-rebate-table.png) -4px -7px no-repeat; }
+.my-interests-grid li a:hover { background: url(../img/sprite-rebate-table.png) -4px -27px no-repeat rgba(143, 212, 105, 0.1); text-decoration: none; }
+.my-interests-grid li.active a{ background: url(../img/sprite-rebate-table.png) -4px -47px no-repeat; }
+.my-interests-grid li.active a:hover { background: url(../img/sprite-rebate-table.png) -4px -67px no-repeat rgba(143, 212, 105, 0.1); }
 
 #UserRegisterForm .grid_3 { margin: 0 10px 0 0; }
 #UserRegisterForm .grid_3 last { margin: 0; }
@@ -749,5 +750,3 @@ body.layout-default_landing .copyright {color: #000; font: 11px/1.125 Georgia, "
 
 
 /*=========== temporary fixes and hidden objects ==========*/
-body.users.register .main-menu,
-body.users.register #nav-links { display:none; }
