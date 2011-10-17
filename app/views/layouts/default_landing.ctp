@@ -50,9 +50,6 @@
   
   <?php echo $content_for_layout ?>
   
-  <div id="page-bottom">
-    <?php echo $this->Html->image( 'home-page-bottom.gif' ) ?>
-  </div>
   <footer>
     <?php echo $this->element( 'layout/footer' ) ?>
   </footer> <!-- #footer -->
