@@ -40,7 +40,7 @@
                   <?php array_push( $classes, $i % 2 == 0 ? 'odd' : 'even' ) # Adjusted for zero-based array ?>
                   
                   <tr class="<?php echo join( ' ', $classes ) ?>">
-                    <td class="model-name"><?php echo !empty( $fixture['Fixture']['name'] ) ? $fixture['Fixture']['name'] : Inflector::singularize( $fixture['Technology']['name'] ) ?></td>
+                    <td class="model-name"><?php echo !empty( $fixture['Fixture']['name'] ) ? $fixture['Fixture']['name'] : Inflector::singularize( $fixture['Technology']['title'] ) ?></td>
                     <td class="controls">
                       <?php echo $this->Html->link( __( 'edit', true ), array( 'controller' => 'fixtures', 'action' => 'edit', $fixture['Fixture']['id'] ), array( 'class' => 'edit-button' ) ) ?>
                       |
