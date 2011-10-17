@@ -34,13 +34,13 @@
     </div>
     <p><?php __( 'Tell us about your purchase and upload a scan of the invoice, and we&#146;ll handle the rest for you.' ) ?></p>
 
-    <div class="green-dot-divider">
+    <!--<div class="green-dot-divider">
       <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
     </div>
     
     <div id="blog-link">
       <h3><?php echo $this->Html->link( __( 'Read our blog &rsaquo;', true ), 'http://www.savebigbread.com', array( 'escape' => false ) ) ?></h3>
-    </div><!-- /#blog-link -->
+    </div>--><!-- /#blog-link -->
   </div>   <!-- /#column-middle -->
   
   <div id="column-last" class="grid_3">
