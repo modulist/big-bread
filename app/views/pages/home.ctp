@@ -19,7 +19,7 @@
 	        </tr>
 	      <?php endforeach; ?>
 	    </table>
-	    <p><?php echo $this->Html->link( __( 'Enter our site', true ), array( 'controller' => 'users', 'action' => 'register' ) ) . __( ' and find more ways to save through rebates.', true ) ?></p>
+	    <p><?php echo $this->Html->link( __( 'Sign up free', true ), array( 'controller' => 'users', 'action' => 'register' ) ) . __( ' and find more ways to save through rebates.', true ) ?></p>
 	  </div>    <!-- /#column-first -->
 	  
 	  <div id="column-middle" class="grid_3">
