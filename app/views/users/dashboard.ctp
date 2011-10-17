@@ -27,7 +27,7 @@
         <h4><?php echo !empty( $location['Building']['name'] ) ? h( $location['Building']['name'] ) : h( $location['Address']['address_1'] ) ?></h4>
         <div class="location-address">
           <p><?php echo $this->element( 'address', array( 'address' => $location['Address'] ) ) ?></p>
-          <?php echo $this->Html->link( __( 'Edit', true ), array( 'controller' => 'buildings', 'action' => 'edit', $location['Building']['id'] ), array( 'class' => 'edit-location-button' ) ) ?>
+          <a href="/locations/edit" class="edit-button">edit</a>  |  <a href="#" class="remove-button">remove</a>
         </div>
         <div class="location-equipment-grid grid_5">
           <table class="location-equipment">
