@@ -401,8 +401,9 @@ option { padding: 0 8px; line-height: 24px; }
 .my-interests-grid h4 { padding: 10px 0 10px 10px; margin: 0 0 4px; font-size: 14px; background: url(../img/dotrule-orange-2px.png) bottom left repeat-x; letter-spacing: .1em; }
 .my-interests-grid ul { padding: 0; margin: 0 0 10px; }
 .my-interests-grid li { padding: 2px 0 2px 30px; list-style: none inside;  background: url(../img/sprite-rebate-table.png) -4px -7px no-repeat; }
-.my-interests-grid li:hover { background: url(../img/sprite-rebate-table.png) -4px -27px no-repeat rgba(143, 212, 105, 0.25); }
-.my-interests-grid li.active{ background: url(../img/sprite-rebate-table.png) -4px -27px no-repeat rgba(143, 212, 105, 0.1); }
+.my-interests-grid li:hover { background: url(../img/sprite-rebate-table.png) -4px -27px no-repeat rgba(143, 212, 105, 0.1); }
+.my-interests-grid li.active{ background: url(../img/sprite-rebate-table.png) -4px -47px no-repeat; }
+.my-interests-grid li.active:hover { background: url(../img/sprite-rebate-table.png) -4px -67px no-repeat rgba(143, 212, 105, 0.1); }
 
 #UserRegisterForm .grid_3 { margin: 0 10px 0 0; }
 #UserRegisterForm .grid_3 last { margin: 0; }
@@ -547,9 +548,12 @@ table.rebate-header { border: none; }
 .rebate-header .rebate-description { width: 440px; vertical-align: top; font-size: 14px; }
 .rebate-header .rebate-description a { display: block; float: left; padding: 0 0 0 20px; }
 .rebate-header .rebate-description a:hover { text-decoration: none; color: #01DEB8; }
-.rebate-header .rebate-description a.expanded { background: url(../img/sprite-rebate-table.png) -17px -50px no-repeat; }
-.rebate-header .rebate-description a.collapsed { background: url(../img/sprite-rebate-table.png) -17px  0 no-repeat; }
-.rebate-header .rebate-description a.star { margin-left: 10px; padding: 0; width: 20px; height: 20px; background: url(../img/sprite-rebate-table.png) -12px -28px no-repeat; }
+.rebate-header .rebate-description a.expanded { background: url(../img/sprite-rebate-table.png) -17px -90px no-repeat; }
+.rebate-header .rebate-description a.collapsed { background: url(../img/sprite-rebate-table.png) -17px -110px no-repeat; }
+.rebate-header .rebate-description a.star { margin-left: 10px; padding: 0; width: 20px; height: 20px; background: url(../img/sprite-rebate-table.png) -12px -8px no-repeat; }
+.rebate-header .rebate-description a.star:hover { background: url(../img/sprite-rebate-table.png) -12px -28px no-repeat; }
+.rebate-header .rebate-description a.star.active { background: url(../img/sprite-rebate-table.png) -12px -48px no-repeat; }
+.rebate-header .rebate-description a.star.active:hover { background: url(../img/sprite-rebate-table.png) -12px -68px no-repeat; }
 .rebate-header .rebate-description span.rebate-category-title { font: 16px/1.25 "UltraRegular", serif; letter-spacing: .04em;  }
 
 table.rebate-content { margin-left: 60px; color: #666; display: none; }
