@@ -647,6 +647,7 @@ body.layout-default_landing h3 {margin-top: 0;font-size: 16px; color: #5c998f;}
 body.layout-default_landing #content-top {margin-top:30px;margin-left:0px; background: url(../img/home-content-top-background.png) top no-repeat; height: 494px; width: 1000px;}
 body.layout-default_landing #content-top-inner { background: url(../img/home-top-content-trees.png) 50px 255px no-repeat, url(../img/home-top-content-trees.png) right 255px no-repeat; }
 body.layout-default_landing .login-wrapper { float: right; width: 310px; font: 14px/1 'UltraRegular', serif; color: #308166; letter-spacing: .07em;  }
+body.layout-default_landing .login-wrapper label { font-weight: normal; }
 body.layout-default_landing #login-trigger { display: inline; color: #16433b; }
 body.layout-default_landing #login-trigger a { background: url(../img/login-cloud.png) no-repeat; padding: 23px 20px;  }
 body.layout-default_landing #login-popup { position: absolute; z-index: 1; float: right; padding: 33px 25px 20px; border-radius: 20px; -moz-border-radius: 20px; -webkit-border-radius: 20px; background-color: #89dfdc; box-shadow: 20px 20px 20px #000; visibility: hidden; }
