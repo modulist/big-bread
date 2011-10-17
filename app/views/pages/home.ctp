@@ -47,26 +47,50 @@
     <div id="testimonials">
       <div class="testimonial-item">
         <div class="testimonial-quote">
-          <div class="testimonial-quote-mark">&ldquo;</div><?php __( 'I never knew you could save this much!' ) ?><div class="testimonial-quote-mark">&rdquo;</div>
+          <div class="testimonial-quote-mark">&ldquo;</div><?php __( 'SaveBigBread ...saved my $750 rebate.' ) ?><div class="testimonial-quote-mark">&rdquo;</div>
         </div>
         <div class="testimonial-source">
-          Annette B., Washington, DC
+          Owen B., Falls Church VA
         </div>  
       </div> <!-- /item -->
-      
+
       <div class="testimonial-item">
         <div class="testimonial-quote">
-          <div class="testimonial-quote-mark">&ldquo;</div><?php __( 'Before BigBread, I&#146;d  leave so much money on the table...' ) ?><div class="testimonial-quote-mark">&rdquo;</div>
+          <div class="testimonial-quote-mark">&ldquo;</div><?php __( 'SaveBigBread saved us $2,100 and made what could have been a painful process manageable.' ) ?><div class="testimonial-quote-mark">&rdquo;</div>
         </div>
         <div class="testimonial-source">
-          Julian G., Orlando, FL
+          Barbara B., Falls Church VA
         </div>  
       </div> <!-- /item -->
+
       <div class="testimonial-item">
-        <div class="add-story"><?php __( 'Add your Big Bread story &rsaquo;' ) ?></div> 	
+        <div class="testimonial-quote">
+          <div class="testimonial-quote-mark">&ldquo;</div><?php __( 'SaveBigBread found $1,800 as well as a qualified new contractor in one easy step.' ) ?><div class="testimonial-quote-mark">&rdquo;</div>
+        </div>
+        <div class="testimonial-source">
+          Vanna P., Vienna, VA
+        </div>  
+      </div> <!-- /item -->
+
+      <div class="testimonial-item">
+        <div class="testimonial-quote">
+          <div class="testimonial-quote-mark">&ldquo;</div><?php __( 'SaveBigBread found $800...I wouldn&#146;t have known to even ask!' ) ?><div class="testimonial-quote-mark">&rdquo;</div>
+        </div>
+        <div class="testimonial-source">
+          Scott H., Ashburn, VA
+        </div>  
+      </div> <!-- /item -->
+
+      <div class="testimonial-item">
+        <div class="testimonial-quote">
+          <div class="testimonial-quote-mark">&ldquo;</div><?php __( 'Thanks for being so prompt! My husband and I were impressed!' ) ?><div class="testimonial-quote-mark">&rdquo;</div>
+        </div>
+        <div class="testimonial-source">
+          Janet H. Falls Church, VA
+        </div>  
       </div> <!-- /item -->
     </div> <!-- /testimonials -->
-    <div class="green-dot-divider">
+    <!-- <div class="green-dot-divider">
       <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
     </div>
   
@@ -85,7 +109,7 @@
         <div id="twitter" class="icon">
           <?php echo $this->Html->link( $this->Html->image( 'icon-twitter.png', array( 'alt' => 'Twitter' ) ), 'http://www.twitter.com/savebigbread', array( 'rel' => 'no-follow', 'escape' => false ) ) ?>
         </div>
-      </div> <!-- /icon-grid -->
+      </div> --> <!-- /icon-grid -->
     </div> <!-- /social media -->   
   </div> <!-- /#column-last -->
 </div> <!-- #content-bottom -->
