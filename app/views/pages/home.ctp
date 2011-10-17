@@ -110,6 +110,6 @@
           <?php echo $this->Html->link( $this->Html->image( 'icon-twitter.png', array( 'alt' => 'Twitter' ) ), 'http://www.twitter.com/savebigbread', array( 'rel' => 'no-follow', 'escape' => false ) ) ?>
         </div>
       </div> --> <!-- /icon-grid -->
-    </div> <!-- /social media -->   
+    <!--</div>--> <!-- /social media -->   
   </div> <!-- /#column-last -->
 </div> <!-- #content-bottom -->
