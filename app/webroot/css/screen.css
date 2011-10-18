@@ -672,10 +672,10 @@ body.layout-default_landing #login-popup.active { visibility: visible; }
 #login-popup input[type='text'] { width: 290px; border: 1px solid #466e66; background-color: #ddfffe; font: 14px 'UltraRegular', serif; color: #9bb4b1; padding: 4px 12px; }
 #login-popup input[type='password'] { width: 150px; border: 1px solid #466e66; background-color: #ddfffe; font: 14px 'UltraRegular', serif; color: #9bb4b1; padding: 4px 12px; }
 #login-popup input[type='submit'] { width: 90px; border: 1px solid #466e66; background-color: #7ca4a3; font: 14px 'UltraRegular', serif; color: #000; padding: 4px 12px; display: inline; }
-#login-popup .submit,
-#login-popup .cancel-link {display: inline; }
+#login-popup .submit { float: left; margin-right:  15px; }
+#login-popup .cancel-link { position: relative; top: 10px; }
 #login-popup .cancel-link,
-#login-popup .password-recovery { font: 12px Georgia, serif; color: #000; padding: 10px 0 0; }
+#login-popup .password-recovery { clear: both; font: 12px Georgia, serif; color: #000; padding: 10px 0 0; }
 #login-popup .password-recovery a { font-weight: bold; }
 
 body.layout-default_landing #content-bottom { margin: auto; padding-left: 150px; width: 850px; background: url(../img/home-page-bottom.gif) bottom no-repeat #fff; }
