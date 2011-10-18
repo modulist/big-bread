@@ -407,7 +407,16 @@ class UsersController extends AppController {
     }
     
     if( !$this->RequestHandler->isAjax() ) {
-      $this->redirect( $this->referer( array( 'action' => 'dashboard', $location_id ), null, true ) );
+      # Include the my-interests fragment for convenience
+      $referrer = $this->referer();
+      $referrer = !empty( $referrer )
+        ? Router::parse( $referrer )
+        : array( 'action' => 'dashboard', $location_id );
+      $referrer['#'] = 'my-interests';
+      
+      unset( $referrer['url']['ext'] ); # Keep ext off the query string.
+      
+      $this->redirect( $referrer, null, true );
     }
   }
   
@@ -438,7 +447,16 @@ class UsersController extends AppController {
     }
     
     if( !$this->RequestHandler->isAjax() ) {
-      $this->redirect( $this->referer( array( 'action' => 'dashboard', $location_id ), null, true ) );
+      # Include the my-interests fragment for convenience
+      $referrer = $this->referer();
+      $referrer = !empty( $referrer )
+        ? Router::parse( $referrer )
+        : array( 'action' => 'dashboard', $location_id );
+      $referrer['#'] = 'my-interests';
+      
+      unset( $referrer['url']['ext'] ); # Keep ext off the query string.
+      
+      $this->redirect( $referrer, null, true );
     }
   }
   
