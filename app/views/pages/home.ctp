@@ -1,4 +1,4 @@
-<?php $this->set( 'title_for_layout', __( 'Welcome', true ) ) ?>
+<?php $this->set( 'title_for_layout', __( 'Save Big Bread with home energy rebates.', true ) ) ?>
  
 <div id="content-bottom" class="content-bottom grid_10 clearfix">
 	<div class="content-wrapper clearfix">
