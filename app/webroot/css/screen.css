@@ -480,12 +480,12 @@ table.current-equipment { width: 100%; margin: 15px 0 15px; background: url(/img
 .popup { padding: 30px 20px; }
 .popup h2, .modal h2 { margin-top: 20px; }
 
-#ProposalRequestForm h2 { margin-top: 20px; }
-#ProposalRequestForm h4 { font-size: 14px; letter-spacing: .1em; background: url(/img/dotrule-orange-1px.png) repeat-x left bottom; padding: 0 0 10px; margin-bottom: 5px; }
-#ProposalRequestForm p { padding: 5px 0; }
-#ProposalRequestForm label { font-size: 12px; }
-#ProposalRequestForm input[type='radio'] { padding: 5px 0; margin: 4px 4px 4px 0; }
-#ProposalRequestForm input[type='submit'] { background: none #fd7e01; height: 40px; }
+#ProposalQuoteForm h2 { margin-top: 20px; }
+#ProposalQuoteForm h4 { font-size: 14px; letter-spacing: .1em; background: url(/img/dotrule-orange-1px.png) repeat-x left bottom; padding: 0 0 10px; margin-bottom: 5px; }
+#ProposalQuoteForm p { padding: 5px 0; }
+#ProposalQuoteForm label { font-size: 12px; }
+#ProposalQuoteForm input[type='radio'] { padding: 5px 0; margin: 4px 4px 4px 0; }
+#ProposalQuoteForm input[type='submit'] { background: none #fd7e01; height: 40px; }
 
 table.pending-quotes {width: 700px; font-size: 11px; color: #0c4d54; padding: 5px 0 10px; margin: 10px 0 40px; background: url(../img/dotrule-green-4px.png) top left repeat-x, url(/img/dotrule-green-4px.png) bottom left repeat-x; }
 .pending-quotes tr { vertical-align: top; background: url(/img/dotrule-orange-1px.png) top left repeat-x; }

@@ -23,6 +23,7 @@
       <?php echo $this->element( '../buildings/_basic_inputs', array( 'plugin' => false ) ) # We have to reset the plugin context ?>
     <?php else: ?>
       <?php echo $this->element( 'address', array( 'plugin' => false, 'address' => $this->data['Address'] ) ) ?>
+      <p><a href="/locations/edit">Change this address &rsaquo;</a></p>
     <?php endif; ?>
     
     <h4><?php __( 'Which utilities are involved?' ) ?></h4>
