@@ -2,7 +2,7 @@ $.getScript( '/js/jquery/jquery.currency.min.js' );
 
 $(document).ready( function() {
   // Show/hide the login form
-  $('#login-trigger a').click( function( e ) {
+  $('#login-trigger a, #login-popup .cancel-link' ).click( function( e ) {
     e.preventDefault();
     
     $('#login-popup').toggleClass( 'active' );

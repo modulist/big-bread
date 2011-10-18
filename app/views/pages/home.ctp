@@ -15,7 +15,7 @@
 	      <?php foreach( $featured_rebates as $name => $amount ): ?>
 	        <tr class="<?php echo $i++ % 2 === 0 ? 'even' : 'odd' ?>">
 	          <td class="rebate-source" title="<?php echo h( preg_replace( '/-.+$/', '', $name ) ) ?>"><?php echo h( $this->Text->truncate( preg_replace( '/\s*-.+$/', '', $name ), 25, array( 'ending' => '...', 'exact' => false ) ) ) ?></td>
-	          <td class="rebate-amount"><?php echo $this->Number->format( $amount, array( 'before' => '$', 'places' => 2 ) ) ?></td>
+	          <td class="rebate-amount"><?php echo h( $this->Number->format( $amount, array( 'before' => '$', 'places' => 2 ) ) ) ?></td>
 	        </tr>
 	      <?php endforeach; ?>
 	    </table>
@@ -39,7 +39,7 @@
 	      <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
 	    </div>
 	    
-	    <div class="signup-button"><a href="/signup">Sign up free &rsaquo;</a></div>
+	    <div class="signup-button"><?php echo $this->Html->link( __( 'Sign up free &rsaquo;', true ), array( 'controller' => 'users', 'action' => 'register' ), array( 'escape' => false ) ) ?></div>
 	
 	    <!--<div id="blog-link">
 	      <h3><?php echo $this->Html->link( __( 'Read our blog &rsaquo;', true ), 'http://www.savebigbread.com', array( 'escape' => false ) ) ?></h3>
@@ -118,8 +118,14 @@
 	</div> <!-- content-wrapper -->
   
   <div id="links" class="clearfix">
-  	<div class="contractor-link"><a href="#">For contractors&nbsp;&rsaquo;</a></div>
-  	<div class="other-link"><a href="#">Realtors&nbsp;&rsaquo;</a></div>
-  	<div class="other-link"><a href="#">Inspectors&nbsp;&rsaquo;</a></div>
+  	<div class="contractor-link">
+      <?php echo $this->Html->link( __( 'For contractors &rsaquo;', true ), array( 'controller' => 'contractors' ), array( 'escape' => false ) ) ?>
+    </div>
+  	<div class="other-link">
+      <?php echo $this->Html->link( __( 'Realtors &rsaquo;', true ), array( 'controller' => 'contractors' ), array( 'escape' => false ) ) ?>
+    </div>
+  	<div class="other-link">
+      <?php echo $this->Html->link( __( 'Inspectors &rsaquo;', true ), array( 'controller' => 'contractors' ), array( 'escape' => false ) ) ?>
+    </div>
   </div>
 </div> <!-- #content-bottom -->
