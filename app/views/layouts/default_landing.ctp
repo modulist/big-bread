@@ -11,7 +11,7 @@
     <div class="login-wrapper">
       <?php if( !$this->Session->check( 'Auth.User' ) ): ?>
         <?php __( 'Registered Users' ) ?>
-        <div id="login-trigger"><?php echo $this->Html->link( __( 'Log in &rsaquo;', true ), '#', array( 'escape' => false ) ) ?></div>
+        <div id="login-trigger"><?php echo $this->Html->link( __( 'Login &rsaquo;', true ), '#', array( 'escape' => false ) ) ?></div>
         <div id="login-popup" class="clearfix">
         	<div class="close-button-wrapper clearfix"><a class="close-button"></a></div>
           <?php echo $this->Form->create( 'User', array( 'action' => 'login', 'inputDefaults' => array( 'error' => false ) ) ) ?>

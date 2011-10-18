@@ -1,4 +1,4 @@
-<h1>Log in to SaveBigBread</h1>
+<h1><?php __( 'Login to SaveBigBread' ) ?></h1>
 
 <?php echo $this->Form->create( 'User', array ( 'action' => 'login', 'inputDefaults' => array( 'error' => false ) ) ) ?>
   <?php echo $this->Form->input( 'User.email', array( 'autofocus' => 'true' ) ) ?>
