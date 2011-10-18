@@ -64,7 +64,7 @@ class ZipCode extends AppModel {
    * @param 	$zip_code
    * @param   $grouped    Whether to itemize the total savings by
    *                      technology group or return just the sum.
-   * @param   $group_id   A technology group id if only the savings
+   * @param   $group_code A technology group id if only the savings
    *                      for a single group is desired.
    * @return	mixed
    * @access	public
@@ -147,12 +147,14 @@ class ZipCode extends AppModel {
    * group.
    *
    * @param   $zip_code
+   * @param   $group_code A technology group id if only the savings
+   *                      for a single group is desired.
    * @return  array
    * @access  public
    */
-  public function featured_rebates( $zip_code, $technology_group_id = null ) {
+  public function featured_rebates( $zip_code, $group_code = null ) {
     if( empty( $technology_group_id ) ) {
-      $technology_group_id = ClassRegistry::init( 'TechnologyGroup' )->field(
+      $group_code = ClassRegistry::init( 'TechnologyGroup' )->field(
         'id',
         array( 'TechnologyGroup.incentive_tech_group_id' => 'HVAC' )
       );
@@ -162,7 +164,7 @@ class ZipCode extends AppModel {
     $manufacturer_rebates = ClassRegistry::init( 'TechnologyIncentive' )->find(
       'all',
       array(
-        'contain' => array( 'Incentive', 'Technology' ),
+        'contain' => array( 'Incentive', 'Technology', 'IncentiveAmountType' ),
         'fields'  => array(
           'Incentive.name',
           'TechnologyIncentive.amount',
@@ -170,7 +172,8 @@ class ZipCode extends AppModel {
         'conditions' => array(
           'Incentive.excluded' => 0,
           'TechnologyIncentive.is_active' => 1,
-          'Technology.technology_group_id' => $technology_group_id,
+          'Technology.technology_group_id' => $group_code,
+          'IncentiveAmountType.incentive_amount_type_id' => 'USD',
           'Incentive.incentive_type_id' => 'MANU',
           'OR' => array(
             'Incentive.expiration_date' => null, 
@@ -184,11 +187,12 @@ class ZipCode extends AppModel {
     );
     $manufacturer_rebates = array_slice( Set::combine( $manufacturer_rebates, '{n}.Incentive.name', '{n}.TechnologyIncentive.amount' ), 0, 2 );
     
-    # Fine top 2 non-manufacturer incentives
+    
+    # Fine top 3 non-manufacturer incentives
     $non_manufacturer_rebates = ClassRegistry::init( 'TechnologyIncentive' )->find(
       'all',
       array(
-        'contain' => array( 'Incentive', 'Technology' ),
+        'contain' => array( 'Incentive', 'Technology', 'IncentiveAmountType' ),
         'fields'  => array(
           'Incentive.name',
           'TechnologyIncentive.amount',
@@ -196,7 +200,8 @@ class ZipCode extends AppModel {
         'conditions' => array(
           'Incentive.excluded' => 0,
           'TechnologyIncentive.is_active' => 1,
-          'Technology.technology_group_id' => $technology_group_id,
+          'Technology.technology_group_id' => $group_code,
+          'IncentiveAmountType.incentive_amount_type_id' => 'USD',
           'Incentive.incentive_type_id <>' => 'MANU',
           'OR' => array(
             'Incentive.expiration_date' => null, 
@@ -208,8 +213,8 @@ class ZipCode extends AppModel {
         'limit'      => 20,
       )
     );
-    
     $non_manufacturer_rebates = array_slice( Set::combine( $non_manufacturer_rebates, '{n}.Incentive.name', '{n}.TechnologyIncentive.amount' ), 0, 3 );
+    
   
     return array_merge( $manufacturer_rebates, $non_manufacturer_rebates );
   }
