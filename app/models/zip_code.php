@@ -185,8 +185,17 @@ class ZipCode extends AppModel {
         'limit'      => 20,
       )
     );
-    $manufacturer_rebates = array_slice( Set::combine( $manufacturer_rebates, '{n}.Incentive.name', '{n}.TechnologyIncentive.amount' ), 0, 2 );
-    
+    # Now grab the top 2 unique incentives
+    $top_manufacturer_rebates = array();
+    foreach( $manufacturer_rebates as $rebate ) {
+      if( !isset( $top_manufacturer_rebates[$rebate['Incentive']['name']] ) ) {
+        $top_manufacturer_rebates[$rebate['Incentive']['name']] = $rebate['TechnologyIncentive']['amount'];
+        
+        if( count( $top_manufacturer_rebates ) == 2 ) {
+          break;
+        }
+      }
+    }
     
     # Fine top 3 non-manufacturer incentives
     $non_manufacturer_rebates = ClassRegistry::init( 'TechnologyIncentive' )->find(
@@ -213,10 +222,20 @@ class ZipCode extends AppModel {
         'limit'      => 20,
       )
     );
-    $non_manufacturer_rebates = array_slice( Set::combine( $non_manufacturer_rebates, '{n}.Incentive.name', '{n}.TechnologyIncentive.amount' ), 0, 3 );
+    # Now grab the top 3 unique incentives
+    $top_non_manufacturer_rebates = array();
+    foreach( $non_manufacturer_rebates as $rebate ) {
+      if( !isset( $top_non_manufacturer_rebates[$rebate['Incentive']['name']] ) ) {
+        $top_non_manufacturer_rebates[$rebate['Incentive']['name']] = $rebate['TechnologyIncentive']['amount'];
+        
+        if( count( $top_non_manufacturer_rebates ) == 3 ) {
+          break;
+        }
+      }
+    }
     
   
-    return array_merge( $manufacturer_rebates, $non_manufacturer_rebates );
+    return array_merge( $top_manufacturer_rebates, $top_non_manufacturer_rebates );
   }
   
   /**
