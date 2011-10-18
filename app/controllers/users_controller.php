@@ -180,6 +180,8 @@ class UsersController extends AppController {
    * @access  public
    */
 	public function login() {
+    $this->layout = 'default_login';
+    
     # Logging in and authenticated
     if( !empty( $this->data ) && $this->Auth->user() ) {
       $this->User->id = $this->Auth->user( 'id' );
@@ -216,7 +218,7 @@ class UsersController extends AppController {
    * @access	public
    */
   public function forgot_password() {
-    $this->layout = 'blank';
+    $this->layout = 'default_login';
     
     if( !empty( $this->data )  ) {
       if( empty( $this->data['User']['email'] ) ) {
