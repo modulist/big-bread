@@ -84,7 +84,7 @@ Configure::write(
   )
 );
 
-Configure::write( 'Feature.contractor_registration.enabled', false );
+Configure::write( 'Feature.contractor_registration.enabled', true );
 
 Configure::write( 'email.default_recipient', 'tony@savebigbread.com' );
 Configure::write( 'email.feedback_recipient', 'feedback@savebigbread.com' );

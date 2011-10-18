@@ -9,6 +9,8 @@
     
     <?php $options = array( 'install' => sprintf( __( 'Install or replace my %s', true ), Inflector::singularize( $this->data['Technology']['title'] ) ), 'repair' => sprintf( __( 'Repair or service my %s', true ), Inflector::singularize( $this->data['Technology']['title'] ) ) ) ?>
     <?php echo $this->Form->input( 'Proposal.scope_of_work', array( 'type' => 'radio', 'options' => $options, 'default' => 'install', 'legend' => false ) ) ?>
+    
+    <p>TODO: Add warranty coverage input</p>
   </div>
   
   <div class="form-field-group clearfix">
@@ -29,30 +31,13 @@
     <h4><?php __( 'Which utilities are involved?' ) ?></h4>
     <p><?php __( 'We\'ll need your account numbers to reserve and process your utility rebates.  Please add them to your request or add them to your profile as soon as possible.' ) ?></p>
     <?php echo $this->element( '../buildings/_utility_inputs', array( 'plugin' => false ) ) # We have to reset the plugin context ?>
-  </div>
-
-  <div class="form-field-group clearfix">
-    <h4><?php __( 'Are you ready to hire?' ) ?></h4>
-    
-    <?php $options = array( 'ready' => __( 'Yes, I&#146;m ready to hire someone.', true ), 'planning' => __( 'Not Quite. I\'m estimating and budgeting.', true ) ) ?>
-    <?php echo $this->Form->input( 'Proposal.timing', array( 'type' => 'radio', 'options' => $options, 'default' => 'ready', 'legend' => false ) ) ?>
-  </div>
-  
-  <div class="form-field-group clearfix">
-    <h4><?php __( 'How soon do you need the work done?' ) ?></h4>
-    <input type="radio" name="data[Proposal][urgency]" id="ProposalUrgency" value="within a week" checked="checked">
-    <label for="ProposalTimingReady">Within 1 week</label><br />
-    <input type="radio" name="data[Proposal][urgency]" id="ProposalUrgency" value="1-2 weeks" checked="checked">
-    <label for="ProposalTimingReady">In 1 to 2 weeks</label><br />
-    <input type="radio" name="data[Proposal][urgency]" id="ProposalUrgency" value="over 3 weeks" checked="checked">
-    <label for="ProposalTimingReady">In 3 weeks or more</label><br />
-    <input type="radio" name="data[Proposal][urgency]" id="ProposalUrgency" value="flexible" checked="checked">
-    <label for="ProposalTimingReady">I&#146;m pretty flexible</label><br />
+    <p>TODO: Add account number inputs</p>
   </div>
 
   <div class="form-field-group clearfix">
     <h4><?php __( 'Anything else?' ) ?></h4>
-    <?php echo $this->Form->input( 'Proposal.notes', array( 'type' => 'textarea', 'placeholder' => __( 'Please add any additional instructions, contact preferences or any comments about the job.', true ) ) ) ?>
+    <p><?php __( 'Please add any additional instructions, contact preferences or any comments about the job.' ) ?></p>
+    <?php echo $this->Form->input( 'Proposal.notes', array( 'type' => 'textarea' ) ) ?>
   </div>
   
 <?php echo $this->Form->end( __( 'Get a Quote', true ) ) ?>
