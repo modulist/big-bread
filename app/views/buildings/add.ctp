@@ -24,9 +24,9 @@
   <div id="my-utilities">
     <div class="utilities-wrapper clearfix">
       <div class="utilities-icon"></div>
-        <div class="grid_4">
-          <?php echo $this->element( '../buildings/_utility_inputs' ) ?>
-        </div><!-- /grid-4 -->
-      </div><!-- /utilities-wrapper -->
-    </div><!-- /my-utilities -->
+      <div class="grid_4">
+        <?php echo $this->element( '../buildings/_utility_inputs' ) ?>
+      </div><!-- /grid-4 -->
+    </div><!-- /utilities-wrapper -->
+  </div><!-- /my-utilities -->
 <?php echo $this->Form->end( __( 'Add location', true ) ) ?>
