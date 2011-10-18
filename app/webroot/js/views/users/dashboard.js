@@ -23,7 +23,7 @@ $(document).ready( function() {
     var $this = $(this);
     
     $( '<div/>' ).load( $this.attr( 'href' ) ).dialog({
-      height: 'auto',
+      maxHeight: 200,
       maxWidth: 800,
       minWidth: 600,
       position: 'center',
