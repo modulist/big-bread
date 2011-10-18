@@ -530,6 +530,8 @@ a.quote-button { background-color: #ef7600; }
 .close-button { display: block; width: 16px; height: 16px; padding: 0 0 10px 8px; margin-right: -10px; background: url(../img/close-button.png) top right no-repeat; float: right; }
 .close-button:hover { background: url(../img/close-button-hover.png) top right no-repeat; cursor: pointer; }
 .close-button:active { background: url(../img/close-button-active.png) top right no-repeat; }
+.signup-button a { display: block; width: 200px; height: 22px; padding: 7px 10px; margin: 15px 0; font: 18px/1 'UltraRegular', serif; color: #fff; letter-spacing: 0; border: 1px solid #4f684f; text-align: center; box-shadow: none; text-shadow: none; background: url(../img/bk-button.png) repeat-x; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;  }
+.signup-button a:hover { background: #63ffec; text-decoration: none; }
 
 
 
