@@ -11,14 +11,14 @@
     <div class="login-wrapper">
       <?php if( !$this->Session->check( 'Auth.User' ) ): ?>
         <?php __( 'Registered Users' ) ?>
-        <div id="login-trigger"><?php echo $this->Html->link( __( 'Log in &rsaquo;', true ), '#', array( 'escape' => false ) ) ?></div>
+        <div id="login-trigger"><?php echo $this->Html->link( __( 'Login &rsaquo;', true ), '#', array( 'escape' => false ) ) ?></div>
         <div id="login-popup" class="clearfix">
         	<div class="close-button-wrapper clearfix"><a class="close-button"></a></div>
           <?php echo $this->Form->create( 'User', array( 'action' => 'login', 'inputDefaults' => array( 'error' => false ) ) ) ?>
             <?php echo $this->Form->input( 'User.email', array( 'id' => 'login-token-1', 'autofocus' => 'true' ) ) ?>
             <?php echo $this->Form->input( 'User.password', array( 'id' => 'login-token-2' ) ) ?>
-          	<a class="cancel-link" href="#">Cancel</a>
-          <?php echo $this->Form->end( __( 'Login', true ) ) ?>
+          <?php echo $this->Form->end( __( 'Login', true ), array( 'after' => 'Cancel' ) ) ?>
+          <?php echo $this->Html->link( __( 'Cancel', true ), '#', array( 'class' =>'cancel-link' ) ) ?>
 
           <div class="password-recovery">
             <?php printf( __( 'Don&#146;t have an account? %s.', true ), $this->Html->link( __( 'Sign up now for free.', true ), array( 'controller' => 'users', 'action' => 'register' ) ) ) ?>

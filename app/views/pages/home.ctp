@@ -1,4 +1,4 @@
-<?php $this->set( 'title_for_layout', __( 'Welcome', true ) ) ?>
+<?php $this->set( 'title_for_layout', __( 'Save Big Bread with home energy rebates.', true ) ) ?>
  
 <div id="content-bottom" class="content-bottom grid_10 clearfix">
 	<div class="content-wrapper clearfix">
@@ -15,7 +15,7 @@
 	      <?php foreach( $featured_rebates as $name => $amount ): ?>
 	        <tr class="<?php echo $i++ % 2 === 0 ? 'even' : 'odd' ?>">
 	          <td class="rebate-source" title="<?php echo h( preg_replace( '/-.+$/', '', $name ) ) ?>"><?php echo h( $this->Text->truncate( preg_replace( '/\s*-.+$/', '', $name ), 25, array( 'ending' => '...', 'exact' => false ) ) ) ?></td>
-	          <td class="rebate-amount"><?php echo $this->Number->format( $amount, array( 'before' => '$', 'places' => 2 ) ) ?></td>
+	          <td class="rebate-amount"><?php echo h( $this->Number->format( $amount, array( 'before' => '$', 'places' => 2 ) ) ) ?></td>
 	        </tr>
 	      <?php endforeach; ?>
 	    </table>
@@ -34,16 +34,16 @@
 	      <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
 	    </div>
 	    <p><?php __( 'Tell us about your purchase and upload a scan of the invoice, and we&#146;ll handle the rest for you.' ) ?></p>
-	    
+
 	    <div class="green-dot-divider">
 	      <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
 	    </div>
 	    
-	    <div class="signup-button"><a href="/signup">Sign up free &rsaquo;</a></div>
+	    <div class="signup-button"><?php echo $this->Html->link( __( 'Sign up free &rsaquo;', true ), array( 'controller' => 'users', 'action' => 'register' ), array( 'escape' => false ) ) ?></div>
 	
 	    <!--<div id="blog-link">
 	      <h3><?php echo $this->Html->link( __( 'Read our blog &rsaquo;', true ), 'http://www.savebigbread.com', array( 'escape' => false ) ) ?></h3>
-	    </div>--><!-- /#blog-link -->
+	    </div><!-- /#blog-link -->
 	  </div>   <!-- /#column-middle -->
 	  
 	  <div id="column-last" class="grid_3">
@@ -53,7 +53,7 @@
 	          <div class="testimonial-quote-mark">&ldquo;</div><?php __( 'SaveBigBread ...saved my $750 rebate.' ) ?><div class="testimonial-quote-mark">&rdquo;</div>
 	        </div>
 	        <div class="testimonial-source">
-	          Owen B.
+	          Owen B., Falls Church VA
 	        </div>  
 	      </div> <!-- /item -->
 	
@@ -62,7 +62,7 @@
 	          <div class="testimonial-quote-mark">&ldquo;</div><?php __( 'SaveBigBread saved us $2,100 and made what could have been a painful process manageable.' ) ?><div class="testimonial-quote-mark">&rdquo;</div>
 	        </div>
 	        <div class="testimonial-source">
-	          Barbara B.
+	          Barbara B., Falls Church VA
 	        </div>  
 	      </div> <!-- /item -->
 	
@@ -71,7 +71,7 @@
 	          <div class="testimonial-quote-mark">&ldquo;</div><?php __( 'SaveBigBread found $1,800 as well as a qualified new contractor in one easy step.' ) ?><div class="testimonial-quote-mark">&rdquo;</div>
 	        </div>
 	        <div class="testimonial-source">
-	          Vanna P.
+	          Vanna P., Vienna, VA
 	        </div>  
 	      </div> <!-- /item -->
 	
@@ -80,7 +80,7 @@
 	          <div class="testimonial-quote-mark">&ldquo;</div><?php __( 'SaveBigBread found $800...I wouldn&#146;t have known to even ask!' ) ?><div class="testimonial-quote-mark">&rdquo;</div>
 	        </div>
 	        <div class="testimonial-source">
-	          Scott H.
+	          Scott H., Ashburn, VA
 	        </div>  
 	      </div> <!-- /item -->
 	
@@ -89,7 +89,7 @@
 	          <div class="testimonial-quote-mark">&ldquo;</div><?php __( 'Thanks for being so prompt! My husband and I were impressed!' ) ?><div class="testimonial-quote-mark">&rdquo;</div>
 	        </div>
 	        <div class="testimonial-source">
-	          Janet H.
+	          Janet H. Falls Church, VA
 	        </div>  
 	      </div> <!-- /item -->
 	    </div> <!-- /testimonials -->
@@ -115,11 +115,17 @@
 	      </div> --> <!-- /icon-grid -->
 	    <!--</div>--> <!-- /social media -->   
 	  </div> <!-- /#column-last -->
-	</div> <!-- content-wrapper -->  
+	</div> <!-- content-wrapper -->
+  
   <div id="links" class="clearfix">
-  	<div class="contractor-link"><a href="#">For contractors&nbsp;&rsaquo;</a></div>
-  	<div class="other-link"><a href="#">Realtors&nbsp;&rsaquo;</a></div>
-  	<div class="other-link"><a href="#">Inspectors&nbsp;&rsaquo;</a></div>
+  	<div class="contractor-link">
+      <?php echo $this->Html->link( __( 'For contractors &rsaquo;', true ), array( 'controller' => 'contractors' ), array( 'escape' => false ) ) ?>
+    </div>
+  	<div class="other-link">
+      <?php echo $this->Html->link( __( 'Realtors &rsaquo;', true ), array( 'controller' => 'contractors' ), array( 'escape' => false ) ) ?>
+    </div>
+  	<div class="other-link">
+      <?php echo $this->Html->link( __( 'Inspectors &rsaquo;', true ), array( 'controller' => 'contractors' ), array( 'escape' => false ) ) ?>
+    </div>
   </div>
-
 </div> <!-- #content-bottom -->

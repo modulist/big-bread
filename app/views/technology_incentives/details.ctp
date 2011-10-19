@@ -1,5 +1,5 @@
 <div class="modal popup">
-	<div class="breadcrumb"><?php echo h( $rebate['Technology']['TechnologyGroup']['title'] ) ?> &gt; <?php echo h( $rebate['Technology']['name'] ) ?></div>
+	<div class="breadcrumb"><?php echo h( $rebate['Technology']['TechnologyGroup']['title'] ) ?> &gt; <?php echo h( $rebate['Technology']['title'] ) ?></div>
 	<h2><?php echo h( $rebate['Incentive']['name'] ) ?></h2>
 	
 	<table class="savings-detail-grid">
@@ -55,6 +55,22 @@
         </tr>
       <?php endforeach; ?> 
     <?php endif; ?>
-	</table><!-- /savings-detail-grid -->				
+	</table><!-- /savings-detail-grid -->
+  
+  <?php if( !empty( $rebate['Incentive']['PublicNote'] ) ): ?>
+      <?php $i = 0; ?>
+      <?php foreach( $rebate['Incentive']['PublicNote'] as $note ): ?>
+        <?php $classes = array( $i++ % 2 === 0 ? 'odd' : 'even' ) ?>
+        <?php if( $i === 1 ): ?>
+          <?php array_push( $classes, 'first' ) ?>
+        <?php endif; ?>
+        <?php if( $i === count( $rebate['Incentive']['PublicNote'] ) ): ?>
+          <?php array_push( $classes, 'last' ) ?>
+        <?php endif; ?>
+        
+        <p class="public-note <?php echo join( ' ', $classes ) ?>"><?php echo h( $note['note'] ) ?></p>
+      <?php endforeach; ?>
+  <?php endif; ?>
+  
   <a href="#" class="quote-button">GET A QUOTE &rsaquo;</a>
 </div><!-- /modal popup -->

@@ -27,7 +27,9 @@
         <h4><?php echo !empty( $location['Building']['name'] ) ? h( $location['Building']['name'] ) : h( $location['Address']['address_1'] ) ?></h4>
         <div class="location-address">
           <p><?php echo $this->element( 'address', array( 'address' => $location['Address'] ) ) ?></p>
-          <a href="/locations/edit" class="edit-button">edit</a>  |  <a href="#" class="remove-button">remove</a>
+          <?php echo $this->Html->link( __( 'edit', true ), array( 'controller' => 'buildings', 'action' => 'edit', $location['Building']['id'] ), array( 'class' => 'edit-button' ) ) ?>
+          |
+          <?php echo $this->Html->link( __( 'remove', true ), '#', array( 'class' => 'remove-button' ) ) ?>
         </div>
         <div class="location-equipment-grid grid_5">
           <table class="location-equipment">
@@ -70,35 +72,32 @@
   <p><?php __( 'Wondering why you don\'t see any rebates? It\'s because you haven\'t had a chance to identify any interests for this location. Scroll down to do just that.' ) ?></p>
 <?php endif; ?>
 
-<div id="pending-quotes" class="grid_9">
-  <h2><?php printf( __( 'Pending quotes for %s', true ), $location_title ) ?></h2>
-  <table class="pending-quotes">
-    <?php if( !empty( $pending_quotes ) ): ?>
-      <tr class="first odd">
-        <td class="quote-category">Building Shell > Windows</td>
-        <td class="quote-date">1 week ago</td>
-        <td class="quote-status">Active</td>
-        <td class="quote-action"><a href="#" class="remove-button">remove</a></td>
-      </tr>      
-      <tr class="even">
-        <td class="quote-category">Heating and Cooling > Air Conditioners</td>
-        <td class="quote-date">3 weeks 2 days ago</td>
-        <td class="quote-status">Active</td>
-        <td class="quote-action"><a href="#" class="remove-button">remove</a></td>
-      </tr>      
-      <tr class="last odd">
-        <td class="quote-category">Heating and Cooling > Air Conditioners</td>
-        <td class="quote-date">3 months 11 days ago</td>
-        <td class="quote-status">Closed</td>
-        <td class="quote-action"><a href="#" class="remove-button">remove</a></td>
-      </tr>
-    <?php else: ?>
-      <tr>
-        <td><?php __( 'You haven\'t requested any quoted work.' ) ?></td>
-      </tr>
-    <?php endif; ?>
-  </table>
-</div>
+
+<?php if( !empty( $pending_quotes ) ): ?>
+  <div id="pending-quotes" class="grid_9">
+    <h2><?php printf( __( 'Pending quotes for %s', true ), $location_title ) ?></h2>
+    <table class="pending-quotes">
+        <tr class="first odd">
+          <td class="quote-category">Building Shell > Windows</td>
+          <td class="quote-date">1 week ago</td>
+          <td class="quote-status">Active</td>
+          <td class="quote-action"><a href="#" class="remove-button">remove</a></td>
+        </tr>      
+        <tr class="even">
+          <td class="quote-category">Heating and Cooling > Air Conditioners</td>
+          <td class="quote-date">3 weeks 2 days ago</td>
+          <td class="quote-status">Active</td>
+          <td class="quote-action"><a href="#" class="remove-button">remove</a></td>
+        </tr>      
+        <tr class="last odd">
+          <td class="quote-category">Heating and Cooling > Air Conditioners</td>
+          <td class="quote-date">3 months 11 days ago</td>
+          <td class="quote-status">Closed</td>
+          <td class="quote-action"><a href="#" class="remove-button">remove</a></td>
+        </tr>
+    </table>
+  </div>  
+<?php endif; ?>
 
 <div id="my-interests" class="grid_9">
 	<h2><?php printf( __( 'My interests for %s', true ), $location_title ) ?></h2>

@@ -3,6 +3,8 @@
 
 <?php echo $this->Html->meta( 'icon' ) . "\n" ?>
 
+<?php echo $this->Html->meta( 'description', __( 'SaveBigBread is the free and easy way to save $1,000s on air conditioning and furnace replacement and getting competing quotes from contractors authorized to provide rebates.', true ) ) ?>
+
 <?php echo $this->Html->css( '960.css' ) ?>
 <?php echo $this->Html->css( 'jqueryui/themes/bigbread/jquery-ui-1.8.7.custom.css' ) ?>
 <!-- Decent looking tooltips -->

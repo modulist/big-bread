@@ -39,7 +39,6 @@ class BuildingsController extends AppController {
         # If this is our first building, then we want to update the user's
         # "default" interests to attach them to the new location.
         if( $this->Building->Client->has_locations() === 1 ) {
-          
           $updated = $this->Building->Client->TechnologyWatchList->updateAll(
             array( 'TechnologyWatchList.location_id' => "'" . $this->Building->id . "'" ),
             array(
@@ -48,10 +47,6 @@ class BuildingsController extends AppController {
               'TechnologyWatchList.location_id' => null,
             )
           );
-          
-          if( !$updated ) {
-            exit( 'NO JOY' );
-          }
         }
         
         $this->redirect( array( 'controller' => 'users', 'action' => 'dashboard', $this->Building->id ), null, true );
@@ -64,11 +59,35 @@ class BuildingsController extends AppController {
   
   /**
    * Displays the form to edit a new location/building.
-   *	
+   *
+   * @param   $location_id
    * @access	public
    */
-  public function edit() {
+  public function edit( $location_id ) {
+    if( !$this->Building->belongs_to( $location_id, $this->Auth->user( 'id' ) ) ) {
+      $this->Session->setFlash( __( 'You\'re not authorized to access that building\'s data.', true ), null, null, 'warning' );
+      $this->redirect( $this->referer( array( 'controller' => 'users', 'action' => 'dashboard' ) ), null, true );
+    }
     
+    $this->Building->id = $location_id;
+    
+    if( !empty( $this->data ) ) {
+      $this->data['Building']['id'] = $location_id;
+      
+      if( $this->Building->saveAll( $this->data ) ) {
+        $this->Session->setFlash( sprintf( __( '"%s" has been updated.', true ), !empty( $this->data['Building']['name'] ) ? $this->data['Building']['name'] : __( 'Your location', true ) ), null, null, 'success' );
+        $this->redirect( array( 'controller' => 'users', 'action' => 'dashboard', $location_id ), null, true );
+      }
+    }
+    else {
+      $this->data = $this->Building->find(
+        'first',
+        array(
+          'contain'    => array( 'Address', 'ElectricityProvider', 'GasProvider', 'WaterProvider' ),
+          'conditions' => array( 'Building.id' => $location_id ),
+        )
+      );
+    }
   }
   
   /**

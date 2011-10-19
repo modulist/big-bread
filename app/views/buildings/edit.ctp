@@ -21,11 +21,12 @@
     <h2><?php __( 'Utilities for your location:' ) ?></h2>
   </div>
   
-  <div class="utilities-wrapper clearfix">
-    <div class="utilities-icon"></div>
+  <div id="my-utilities">
+    <div class="utilities-wrapper clearfix">
+      <div class="utilities-icon"></div>
       <div class="grid_4">
         <?php echo $this->element( '../buildings/_utility_inputs' ) ?>
       </div><!-- /grid-4 -->
     </div><!-- /utilities-wrapper -->
   </div><!-- /my-utilities -->
-<?php echo $this->Form->end( __( 'Add location', true ) ) ?>
+<?php echo $this->Form->end( __( 'Update location', true ) ) ?>

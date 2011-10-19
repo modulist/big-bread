@@ -180,6 +180,8 @@ class UsersController extends AppController {
    * @access  public
    */
 	public function login() {
+    $this->layout = 'default_login';
+    
     # Logging in and authenticated
     if( !empty( $this->data ) && $this->Auth->user() ) {
       $this->User->id = $this->Auth->user( 'id' );
@@ -216,7 +218,7 @@ class UsersController extends AppController {
    * @access	public
    */
   public function forgot_password() {
-    $this->layout = 'blank';
+    $this->layout = 'default_login';
     
     if( !empty( $this->data )  ) {
       if( empty( $this->data['User']['email'] ) ) {
@@ -405,7 +407,16 @@ class UsersController extends AppController {
     }
     
     if( !$this->RequestHandler->isAjax() ) {
-      $this->redirect( $this->referer( array( 'action' => 'dashboard', $location_id ), null, true ) );
+      # Include the my-interests fragment for convenience
+      $referrer = $this->referer();
+      $referrer = !empty( $referrer )
+        ? Router::parse( $referrer )
+        : array( 'action' => 'dashboard', $location_id );
+      $referrer['#'] = 'my-interests';
+      
+      unset( $referrer['url']['ext'] ); # Keep ext off the query string.
+      
+      $this->redirect( $referrer, null, true );
     }
   }
   
@@ -436,7 +447,16 @@ class UsersController extends AppController {
     }
     
     if( !$this->RequestHandler->isAjax() ) {
-      $this->redirect( $this->referer( array( 'action' => 'dashboard', $location_id ), null, true ) );
+      # Include the my-interests fragment for convenience
+      $referrer = $this->referer();
+      $referrer = !empty( $referrer )
+        ? Router::parse( $referrer )
+        : array( 'action' => 'dashboard', $location_id );
+      $referrer['#'] = 'my-interests';
+      
+      unset( $referrer['url']['ext'] ); # Keep ext off the query string.
+      
+      $this->redirect( $referrer, null, true );
     }
   }
   

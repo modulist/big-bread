@@ -480,12 +480,12 @@ table.current-equipment { width: 100%; margin: 15px 0 15px; background: url(/img
 .popup { padding: 30px 20px; }
 .popup h2, .modal h2 { margin-top: 20px; }
 
-#ProposalRequestForm h2 { margin-top: 20px; }
-#ProposalRequestForm h4 { font-size: 14px; letter-spacing: .1em; background: url(/img/dotrule-orange-1px.png) repeat-x left bottom; padding: 0 0 10px; margin-bottom: 5px; }
-#ProposalRequestForm p { padding: 5px 0; }
-#ProposalRequestForm label { font-size: 12px; }
-#ProposalRequestForm input[type='radio'] { padding: 5px 0; margin: 4px 4px 4px 0; }
-#ProposalRequestForm input[type='submit'] { background: none #fd7e01; height: 40px; }
+#ProposalQuoteForm h2 { margin-top: 20px; }
+#ProposalQuoteForm h4 { font-size: 14px; letter-spacing: .1em; background: url(/img/dotrule-orange-1px.png) repeat-x left bottom; padding: 0 0 10px; margin-bottom: 5px; }
+#ProposalQuoteForm p { padding: 5px 0; }
+#ProposalQuoteForm label { font-size: 12px; }
+#ProposalQuoteForm input[type='radio'] { padding: 5px 0; margin: 4px 4px 4px 0; }
+#ProposalQuoteForm input[type='submit'] { background: none #fd7e01; height: 40px; }
 
 table.pending-quotes {width: 700px; font-size: 11px; color: #0c4d54; padding: 5px 0 10px; margin: 10px 0 40px; background: url(../img/dotrule-green-4px.png) top left repeat-x, url(/img/dotrule-green-4px.png) bottom left repeat-x; }
 .pending-quotes tr { vertical-align: top; background: url(/img/dotrule-orange-1px.png) top left repeat-x; }
@@ -665,16 +665,17 @@ body.layout-default_landing .login-wrapper { float: right; width: 310px; font: 1
 body.layout-default_landing .login-wrapper label { font-weight: normal; }
 body.layout-default_landing #login-trigger { display: inline; color: #16433b; }
 body.layout-default_landing #login-trigger a { background: url(../img/login-cloud.png) no-repeat; padding: 23px 20px;  }
+body.layout-default_landing #login-trigger a:hover { background: url(../img/login-cloud-hover.png) no-repeat; text-decoration: none;  }
 body.layout-default_landing #login-popup { position: absolute; z-index: 1; float: right; padding: 15px 25px 20px; border-radius: 20px; -moz-border-radius: 20px; -webkit-border-radius: 20px; background-color: #89dfdc; box-shadow: 20px 20px 20px #000; visibility: hidden; }
 body.layout-default_landing #login-popup.active { visibility: visible; }
 #login-popup .instructions { font-size: 18px; color: #000; padding: 0 0 6px; }
 #login-popup input[type='text'] { width: 290px; border: 1px solid #466e66; background-color: #ddfffe; font: 14px 'UltraRegular', serif; color: #9bb4b1; padding: 4px 12px; }
 #login-popup input[type='password'] { width: 150px; border: 1px solid #466e66; background-color: #ddfffe; font: 14px 'UltraRegular', serif; color: #9bb4b1; padding: 4px 12px; }
 #login-popup input[type='submit'] { width: 90px; border: 1px solid #466e66; background-color: #7ca4a3; font: 14px 'UltraRegular', serif; color: #000; padding: 4px 12px; display: inline; }
-#login-popup .submit,
-#login-popup .cancel-link {display: inline; }
+#login-popup .submit { float: left; margin-right:  15px; }
+#login-popup .cancel-link { position: relative; top: 10px; }
 #login-popup .cancel-link,
-#login-popup .password-recovery { font: 12px Georgia, serif; color: #000; padding: 10px 0 0; }
+#login-popup .password-recovery { clear: both; font: 12px Georgia, serif; color: #000; padding: 10px 0 0; }
 #login-popup .password-recovery a { font-weight: bold; }
 
 body.layout-default_landing #content-bottom { margin: auto; padding-left: 150px; width: 850px; background: url(../img/home-page-bottom.gif) bottom no-repeat #fff; }
