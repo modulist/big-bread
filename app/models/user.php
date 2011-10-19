@@ -312,23 +312,33 @@ class User extends AppModel {
   }
   
   /**
+   * Alias for has_locations. Available for semantic purposes only.
+   *
+   * @param   $user_id
+   * @return  integer
+   * @access  public
+   */
+  public function location_count( $user_id = null ) {
+    return $this->has_locations( $user_id );
+  }
+  
+  /**
    * Retrieves the buildings associated with a given user.
    *
    * @param 	$user_id
    * @param   $limit
    * @return	array
    */
-  public function locations( $user_id = null, $limit = null ) {
-    $user_id    = !empty( $user_id ) ? $user_id : self::get( 'id' );
-    $conditions = User::admin( $user_id )
-      ? false
-      : array(
-        'OR' => array(
-          'Building.client_id'    => $user_id,
-          'Building.realtor_id'   => $user_id,
-          'Building.inspector_id' => $user_id,
-        )
+  public function locations( $user_id = null, $limit = null, $conditions = array() ) {
+    $user_id = !empty( $user_id ) ? $user_id : self::get( 'id' );
+    
+    if( !User::admin( $user_id ) ) {
+      $conditions['OR'] = array(
+        'Building.client_id'    => $user_id,
+        'Building.realtor_id'   => $user_id,
+        'Building.inspector_id' => $user_id,
       );
+    }
     
     /** TODO: include only fields we need */
     return $this->Building->find(

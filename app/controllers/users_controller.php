@@ -331,7 +331,10 @@ class UsersController extends AppController {
       $zip_code       = $location['Address']['zip_code'];
     }
     
-    # All of the equipment installed in this user's buildings
+    # Other locations that the user will be able to switch to
+    $other_locations = $this->User->locations( null, null, array( 'Building.id <> ' => $location['Building']['id'] ) );
+    
+    # All of the equipment installed in the current location
     $fixtures = $this->User->Building->Fixture->find(
       'all',
       array(
@@ -367,7 +370,7 @@ class UsersController extends AppController {
       ? array()
       : Set::combine( $this->User->Building->incentives( $zip_code, $technology_watch_list ), '{n}.TechnologyIncentive.id', '{n}', '{n}.Technology.title' );
     
-    $this->set( compact( 'fixtures', 'location', 'location_title', 'pending_quotes', 'rebates', 'technology_watch_list', 'watchable_technologies' ) );
+    $this->set( compact( 'fixtures', 'location', 'location_title', 'other_locations', 'pending_quotes', 'rebates', 'technology_watch_list', 'watchable_technologies' ) );
   }
   
   /**
