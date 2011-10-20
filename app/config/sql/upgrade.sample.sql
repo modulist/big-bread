@@ -160,7 +160,11 @@ UPDATE technology_groups
 
 UPDATE technology_groups
    SET display_order = null
- WHERE incentive_tech_group_id IN ( 'OTH','LIGHT' ); 
+ WHERE incentive_tech_group_id IN ( 'OTH','LIGHT' );
+ 
+UPDATE technology_groups
+   SET display_order = 99
+ WHERE display_order IS NULL;
 
 ALTER TABLE technologies
   DROP questionnaire_product,
