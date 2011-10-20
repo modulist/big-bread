@@ -2,6 +2,7 @@
   <table class="rebates-watch-list">
     <tbody>
       <?php $i = 0; ?>
+      <?php $group = null ?>
       <?php foreach( $rebates as $tech_name => $tech_rebates ): ?>
         <?php $tech_id = array_shift( Set::extract( '/Technology/id[:first]', $tech_rebates ) ) ?>
         <?php if( $i++ == 0 ): ?>
@@ -11,6 +12,10 @@
         <?php else: ?>
           <?php $class = false ?>
         <?php endif; ?>
+        
+        <tr class="group-name">
+          <td><?php echo array_shift( Set::extract( '/TechnologyGroup/title', $tech_rebates ) ) ?></td>
+        </tr>
         <tr class="rebate-category-row<?php echo $class ?>">
           <td class="rebate-category">
             <table class="rebate-header">
