@@ -1,4 +1,5 @@
 <?php $display_grouped = isset( $display_grouped ) ? $display_grouped : false ?>
+
 <div id="my-rebates" class="grid_9">
   <table class="rebates-watch-list">
     <tbody>
