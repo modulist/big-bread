@@ -1,10 +1,12 @@
-<div id="my-rebates">
+<div id="my-rebates" class="grid_9">
   <table class="rebates-watch-list">
     <tbody>
       <?php $i = 0; ?>
       <?php $group = null ?>
       <?php foreach( $rebates as $tech_name => $tech_rebates ): ?>
-        <?php $tech_id = array_shift( Set::extract( '/Technology/id[:first]', $tech_rebates ) ) ?>
+        <?php $tech_group = array_shift( Set::extract( '/TechnologyGroup/title', $tech_rebates ) ) ?>
+        <?php $tech_id    = array_shift( Set::extract( '/Technology/id[:first]', $tech_rebates ) ) ?>
+        
         <?php if( $i++ == 0 ): ?>
           <?php $class = ' first' ?>
         <?php elseif( $i == count( $rebates ) ): ?>
@@ -13,9 +15,13 @@
           <?php $class = false ?>
         <?php endif; ?>
         
-        <tr class="group-name">
-          <td><?php echo array_shift( Set::extract( '/TechnologyGroup/title', $tech_rebates ) ) ?></td>
-        </tr>
+        <?php if( $tech_group != $group ): ?>
+          <tr class="group-name">
+            <td><?php echo $tech_group ?></td>
+          </tr>
+          
+          <?php $group = $tech_group ?>
+        <?php endif; ?>
         <tr class="rebate-category-row<?php echo $class ?>">
           <td class="rebate-category">
             <table class="rebate-header">
