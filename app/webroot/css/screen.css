@@ -442,7 +442,13 @@ table.location-equipment { width: 350px; margin: 0 0 15px; }
 .location-equipment td { padding: 2px 5px; }
 .location-equipment td.model-name { width: 40%; }
 .location-equipment td.controls { width: 20%; font-size: 11px; letter-spacing: .06em; }
+a.location-switcher { width: 200px; display: block; background-color: #4c96b6; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; text-align: center; margin: 10px 0 0; padding: 3px 15px; }
+a.location-switcher:hover { background-color: #3b7e9a; text-decoration: none; }
 
+ul.other-location-list { display: none  }
+ul.other-location-list.active { display: block; position: absolute; z-index: 100; list-style: none;  text-transform: capitalize; margin: 0; padding: 0; background-color: rgba(255,255,255,.92); border: 1px solid #ccc; box-shadow: 5px 5px 7px rgba(0,0,0,.35)  }
+ul.other-location-list li { padding: 3px 10px;  }
+ul.other-location-list li:hover { background-color: #4c96b6; color: white;  }
 table.current-equipment { width: 100%; margin: 15px 0 15px; background: url(/img/dotrule-orange-2px.png) top repeat-x; }
 .current-equipment-icon {float:left; background: url(/img/equipment-current-icon.png) no-repeat; width: 67px; height: 71px;margin-right: 10px;}
 .current-equipment-title {font: 14px/1.2 'UltraRegular', Georgia, serif; color: #0c4d54;vertical-align: bottom;margin-top: 40px;}

@@ -113,9 +113,9 @@ ALTER TABLE users
 
 ALTER TABLE buildings
   ADD name varchar(255) NULL AFTER id,
-  ADD electricity_provider_account varchar(255) NULL,
-  ADD gas_provider_account varchar(255) NULL,
-  ADD water_provider_account varchar(255) NULL;
+  ADD electricity_provider_account varchar(255) NULL AFTER electricity_provider_id,
+  ADD gas_provider_account varchar(255) NULL AFTER gas_provider_id,
+  ADD water_provider_account varchar(255) NULL AFTER water_provider_id;
 
 ALTER TABLE technologies
   ADD CONSTRAINT fk__technologies__technology_groups FOREIGN KEY( technology_group_id )
