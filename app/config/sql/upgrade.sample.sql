@@ -187,7 +187,7 @@ UPDATE technologies
  
 UPDATE technologies
    SET watchable = 0
- WHERE incentive_tech_id IN( 'CEILF', 'CHP', 'CTRL', 'DHUM', 'DRHR', 'FIREPL', 'INS', 'LAMP', 'LFIX', 'LCTRL', 'MAINT', 'MOTOR', 'OTHER', 'POOLP', 'PSHEAT', 'PTHST', 'PV', 'RMAC', 'SHOWER', 'SIDING', 'STEAM', 'WBLD', 'WHFAN', 'WHINS', 'WIND' );
+ WHERE incentive_tech_id IN( 'CEILF', 'CHP', 'CTRL', 'DHUM', 'DRHR', 'FIREPL', 'INS', 'LAMP', 'LFIX', 'LCTRL', 'MAINT', 'MOTOR', 'OTHER', 'POOLP', 'PSHEAT', 'PTHST', 'PV', 'RMAC', 'SHOWER', 'SIDING', 'SPHEAT', 'STEAM', 'WBLD', 'WHFAN', 'WHINS', 'WIND' );
 
 UPDATE technologies
    SET name = 'Dishwashers'
