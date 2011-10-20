@@ -30,12 +30,68 @@ class ProposalsController extends AppController {
    */
   
   /**
+   * Displays the page to request a quote.
+   *
+   * @param   $id           The rebate to be quoted.
+   * @param   $location_id  The location to which the quote applies.
+   * @access	public
+   */
+  public function quote( $id, $location_id = null ) {
+    $rebate   = $this->Proposal->Technology->TechnologyIncentive->get( $id );
+    $location = ClassRegistry::init( 'Building' )->find(
+      'first',
+      array(
+        'contain' => array(
+          'Address' => array(
+            'ZipCode'
+          ),
+          'ElectricityProvider',
+          'GasProvider',
+          'WaterProvider',
+        ),
+        'conditions' => array( 'Building.id' => $location_id ),
+      )
+    );
+    
+    if( !empty( $this->data ) ){
+      $this->Proposal->Requestor->id = $this->Auth->user( 'id' );
+      $this->Proposal->Requestor->Building->id = $this->data['Building']['id'];
+      if( $this->Proposal->Requestor->saveField( 'phone_number', $this->data['Requestor']['phone_number'] ) && $this->Proposal->Requestor->Building->saveAll( $this->data ) ) {
+        # Save off the proposal and message record.
+      }
+      
+      new PHPDump( $this->data ); exit;
+    }
+    else {
+      $user     = $this->Auth->user();
+
+      $this->data = Set::merge( $rebate, $location );
+      $this->data['Requestor'] = $user[$this->Auth->getModel()->alias];
+    }
+    
+    # new PHPDump( $this->data ); exit;
+    
+    $this->set( compact( 'location', 'rebate' ) );
+  }
+  
+  /**
+   * Displays the UI to begin the process of redeeming a rebate.
+   *
+   * @param 	$TBD
+   * @access	public
+   */
+  public function redeem() {
+    
+  }
+  
+  /**
    * Displays the request form.
    *
    * @param   $building_id
    * @param 	$technology_incentive_id
    * @access	public
    */
+  /* 
   public function request( $building_id = null, $technology_incentive_id = null ) {
     $this->layout    = 'blank';
     
@@ -99,6 +155,7 @@ class ProposalsController extends AppController {
     
     $this->set( 'technology', Inflector::singularize( $tech_incentive['Technology']['name'] ) );
   }
+  */
   
   /**
    * Sends a proposal request
@@ -106,6 +163,7 @@ class ProposalsController extends AppController {
    * @param   $requestor  Requesting user data array
    * @access	public
    */
+  /* 
   public function send_request( $requestor = null ) {
     # We could get to TechnologyIncentive through associations, but
     # it's a long chain. This way feels cleaner.
@@ -175,4 +233,5 @@ class ProposalsController extends AppController {
       $this->redirect( array( 'action' => 'request' ) );
     }
   }
+  */
 }

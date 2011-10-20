@@ -52,7 +52,7 @@ class Building extends AppModel {
         'rule'       => 'notEmpty',
         'message'    => 'Give this location a name.',
         'allowEmpty' => false,
-        'required'   => true,
+        'required'   => false,
       ),
     ),
     'client_id'  => array(
@@ -60,7 +60,7 @@ class Building extends AppModel {
         'rule'       => 'notEmpty',
         'message'    => 'A building must be created on behalf of a client.',
         'allowEmpty' => false,
-        'required'   => true,
+        'required'   => false,
       )
     ),
   );
