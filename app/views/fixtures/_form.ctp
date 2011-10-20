@@ -1,5 +1,5 @@
 
-  <div id="my-equipment" class="grid_9">
+  <div id="my-equipment">
     <div class="clearfix">
       <h2><?php printf( __( '%s equipment at %s', true ), ucwords( $this->action ), h( $location_name ) ) ?>:</h2>
     </div>

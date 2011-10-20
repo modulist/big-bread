@@ -1,4 +1,4 @@
-<div id="my-locations" class="grid_9">
+<div id="my-locations">
 	<div class="clearfix">
     <?php echo $this->Html->link( __( 'Add a location &rsaquo;', true ), '#', array( 'class' => 'add-location-button', 'escape' => false ) ) ?>
 		<h2><?php printf( __( 'Rebates for %s' ), 'Main House' ) ?></h2>

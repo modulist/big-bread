@@ -1,4 +1,4 @@
-<div id="messages" class="grid_9">
+<div id="messages">
   <?php if( empty( $location ) ): ?>
     <h1><?php __( 'Congratulations!' ) ?></h1>
     <p><?php __( 'You now have a SaveBigBread profile. Scroll down to see what sorts of rebates you can find.' ) ?></p>
@@ -8,7 +8,7 @@
   <?php endif; ?>
 </div><!-- /#messages -->
 
-<div id="my-locations" class="grid_9">
+<div id="my-locations">
   <?php if( empty( $location ) ): ?>
     <h2><?php __( 'Add my first location' ) ?>:</h2>
     <div class="location-icon-large"></div>
@@ -17,6 +17,7 @@
       <?php echo $this->element( '../buildings/_basic_inputs' ) ?>
     <?php echo $this->Form->end( __( 'Add location', true ) ) ?>
   <?php else: ?>
+      <h2><?php __( 'My location' ) ?>:</h2>
     <div class="clearfix">
       <?php if( count( $other_locations ) > 0 ): ?>
         <?php echo $this->Html->link( __( 'Switch to a different location:', true ), '#', array( 'class' => 'location-switcher', 'data-current' => h( $location['Building']['id'] ) ) ) ?>
@@ -35,7 +36,6 @@
         </ul>
       <?php endif; ?>
       <?php echo $this->Html->link( sprintf( __( 'Add a location %s', true ), '&rsaquo;' ), array( 'controller' => 'buildings', 'action' => 'add' ), array( 'class' => 'add-location-button', 'escape' => false ) ) ?>
-      <h2><?php __( 'My location' ) ?>:</h2>
     </div>
     
     <div class="location-wrapper clearfix">

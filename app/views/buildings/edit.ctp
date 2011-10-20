@@ -1,4 +1,4 @@
-<div id="messages" class="grid_9">
+<div id="messages">
 	<h1><?php __( 'Edit a location' ) ?></h1>
 	<p><?php __( 'to save on major home improvement projects, or simply when replacing an appliance.' ) ?></p>
 </div><!-- /#messages -->
@@ -8,7 +8,7 @@
     <h2><?php __( 'About your location:' ) ?></h2>
   </div>
   
-  <div id="my-locations" class="grid_9">
+  <div id="my-locations">
     <div class="location-wrapper clearfix">
       <div class="location-icon-large"></div>
       <div class="grid_4">

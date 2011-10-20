@@ -1,7 +1,7 @@
 <?php $location_id = isset( $location_id ) ? $location_id : false ?>
 
 <!-- my interests -->
-<div id="my-interests" class="grid_9">
+<div id="my-interests">
   <div class="my-interests-grid clearfix">
     <?php foreach( $watchable as $column => $groups ): ?>
       <div class="grid_3">

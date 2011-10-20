@@ -1,4 +1,4 @@
-<div id="my-rebates" class="grid_9">
+<div id="my-rebates">
   <table class="rebates-watch-list">
     <tbody>
       <?php $i = 0; ?>

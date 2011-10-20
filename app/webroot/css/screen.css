@@ -375,8 +375,7 @@ option { padding: 0 8px; line-height: 24px; }
 }
 
 /* ============================= user messages ======================= */
-#messages { margin-top: 40px; padding: 10px 0 20px 120px; background: url(../img/handyman.png) 15px top no-repeat, url(../img/dotrule-green-4px.png) bottom left repeat-x; min-height: 105px; }
-#messages.grid_9 { padding: 10px 0 20px 120px; width: 580px; }
+#messages { margin-top: 40px; padding: 10px 0 20px 120px; background: url(../img/handyman.png) 15px top no-repeat, url(../img/dotrule-green-4px.png) bottom left repeat-x; min-height: 105px; width: 580px; }
 #messages p { font: 18px/24px Georgia, sans-serif; color: #57550f;}
 
 /* Contractor registration bits */
@@ -442,7 +441,7 @@ table.location-equipment { width: 350px; margin: 0 0 15px; }
 .location-equipment td { padding: 2px 5px; }
 .location-equipment td.model-name { width: 40%; }
 .location-equipment td.controls { width: 20%; font-size: 11px; letter-spacing: .06em; }
-a.location-switcher { width: 200px; display: block; background-color: #4c96b6; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; text-align: center; margin: 10px 0 0; padding: 3px 15px; }
+a.location-switcher { width: 200px; display: block; background-color: #4c96b6; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; text-align: center; margin: 10px 0 0; padding: 3px 15px; float: left; }
 a.location-switcher:hover { background-color: #3b7e9a; text-decoration: none; }
 
 ul.other-location-list { display: none  }
@@ -518,7 +517,7 @@ a.button {
   float: left; padding: 13px 15px; }
 .intro button,
 .intro a.button { font-size: 14px; margin-bottom: 10px; text-decoration: none; }
-.add-location-button { background-color: #4ac092; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; text-align: center; margin: 62px 0 0; padding: 3px 15px; float: right; }
+.add-location-button { background-color: #4ac092; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; text-align: center; margin: 10px 0 0; padding: 3px 15px; float: right; }
 .edit-location-button { display: block; width: 48px; background: url(/img/bk-blue-popup.png) 42px -10px no-repeat #4c96b6; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; margin: 10px 0 0; padding: 4px 10px;  }
 .add-equipment-button { background-color: #4c96b6; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; text-align: center; margin: 10px 0 0; padding: 3px 15px; }
 .edit-location-button:hover,

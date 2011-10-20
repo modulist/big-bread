@@ -1,4 +1,4 @@
-<div id="messages" class="grid_9">
+<div id="messages">
 	<h1><?php __( 'Let&#146;s find rebates in your area' ) ?></h1>
 	<p><?php __( 'First, you&#146;ll have to help us out by letting us know what kinds of rebates you&#146;re interested in.' ) ?></p>
 </div>
@@ -14,7 +14,7 @@
   </p>
   <?php echo $this->element( '../users/_interests', array( 'watchable' => $watchable_technologies, 'watched' => $this->data['WatchedTechnology']['selected'] ) ) ?>
 
-  <div id="user-registration" class="grid_9">
+  <div id="user-registration">
   	<?php echo $this->element( '../users/_form' ) ?>
   </div>
 
