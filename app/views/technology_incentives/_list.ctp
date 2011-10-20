@@ -1,10 +1,11 @@
+<?php $display_grouped = isset( $display_grouped ) ? $display_grouped : false ?>
 <div id="my-rebates" class="grid_9">
   <table class="rebates-watch-list">
     <tbody>
       <?php $i = 0; ?>
       <?php $group = null ?>
       <?php foreach( $rebates as $tech_name => $tech_rebates ): ?>
-        <?php $tech_group = array_shift( Set::extract( '/TechnologyGroup/title', $tech_rebates ) ) ?>
+        <?php $tech_group = $display_grouped ? array_shift( Set::extract( '/TechnologyGroup/title', $tech_rebates ) ) : false ?>
         <?php $tech_id    = array_shift( Set::extract( '/Technology/id[:first]', $tech_rebates ) ) ?>
         
         <?php if( $i++ == 0 ): ?>
