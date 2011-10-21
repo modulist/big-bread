@@ -368,7 +368,7 @@ class UsersController extends AppController {
     # technologies the user has identified as interests.
     $rebates = empty( $technology_watch_list )
       ? array()
-      : Set::combine( $this->User->Building->incentives( $zip_code, $technology_watch_list ), '{n}.TechnologyIncentive.id', '{n}', '{n}.Technology.title' );
+      : Set::combine( $this->User->Building->incentives( $zip_code ), '{n}.TechnologyIncentive.id', '{n}', '{n}.Technology.title' );
     
     $this->set( compact( 'fixtures', 'location', 'location_title', 'other_locations', 'pending_quotes', 'rebates', 'technology_watch_list', 'watchable_technologies' ) );
   }
@@ -410,16 +410,11 @@ class UsersController extends AppController {
     }
     
     if( !$this->RequestHandler->isAjax() ) {
-      # Include the my-interests fragment for convenience
-      $referrer = $this->referer();
-      $referrer = !empty( $referrer )
-        ? Router::parse( $referrer )
-        : array( 'action' => 'dashboard', $location_id );
-      $referrer['#'] = 'my-interests';
-      
-      unset( $referrer['url']['ext'] ); # Keep ext off the query string.
-      
-      $this->redirect( $referrer, null, true );
+      $this->redirect( $this->referer( array( 'action' => 'dashboard', $location_id ) ), null, true );
+    }
+    else {
+      # We don't really need to do anything, but we do need to not throw a 404.
+      $this->autoRender = false;
     }
   }
   
@@ -450,37 +445,13 @@ class UsersController extends AppController {
     }
     
     if( !$this->RequestHandler->isAjax() ) {
-      # Include the my-interests fragment for convenience
-      $referrer = $this->referer();
-      $referrer = !empty( $referrer )
-        ? Router::parse( $referrer )
-        : array( 'action' => 'dashboard', $location_id );
-      $referrer['#'] = 'my-interests';
-      
-      unset( $referrer['url']['ext'] ); # Keep ext off the query string.
-      
-      $this->redirect( $referrer, null, true );
+      $this->redirect( $this->referer( array( 'action' => 'dashboard', $location_id ) ), null, true );
+    }
+    else {
+      # We don't really need to do anything, but we do need to not throw a 404.
+      $this->autoRender = false;
     }
   }
-  
-  /**
-   * Dismisses an optional notice.
-   *
-   * @return	void
-   * @access	public
-   * @todo    We can probably kill this
-   */
-  /* 
-  public function dismiss_notice( $notice ) {
-    $this->autoRender = false;
-    
-    $this->User->id = $this->Auth->user( 'id' );
-    if( $this->User->saveField( 'show_' . $notice, 0 ) ) {
-      # Update the session value
-      $this->refresh_auth();
-    }
-  }
-  */
   
   /**
    * PRIVATE METHODS

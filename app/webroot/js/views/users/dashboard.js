@@ -1,4 +1,10 @@
 $(document).ready( function() {
+  $( '.location-switcher' ).click( function( e ) {
+    e.preventDefault();
+    
+    $( this + ', .other-location-list' ).toggleClass( 'active' );
+  });
+  
   $('.rebate-description .toggle').click( function( e ) {
     e.preventDefault();
     
@@ -35,9 +41,49 @@ $(document).ready( function() {
     });
   });
   
-  $( '.location-switcher' ).click( function( e ) {
+  $( '#my-interests a, .rebate-category-row .star' ).click( function( e ) {
     e.preventDefault();
     
-    $( this + ', .other-location-list' ).toggleClass( 'active' );
+    var $this          = $(this);
+    var tech_id        = $this.attr( 'data-technology-id' );
+    var $interest      = $( '#my-interests a[data-technology-id=' + tech_id + ']' );
+    var $tech_row      = $( '.rebate-category-row[data-technology-id=' + tech_id + ']' );
+    var $tech_row_star = $tech_row.find( '.star' );
+    var action         = $this.attr( 'href' ).match( /(?:un)?watch/ );
+    
+    $.ajax({
+      url: $this.attr( 'href' ),
+      type: 'GET',
+      success: function( data, status, jqXHR ) {
+        $interest.parent().toggleClass( 'active' );
+        
+        if( action == 'unwatch' ) {
+          var new_url = $this.attr( 'href' ).replace( /unwatch/, 'watch' );
+          
+          // Adjust the URL in both places
+          $interest.attr( 'href', new_url );
+          $tech_row_star.attr( 'href', new_url );
+          // Hide the rebate group
+          $tech_row.slideUp();
+          // Deactivate the star
+          $tech_row_star
+            .removeClass( 'active' )
+            .attr( 'title', $tech_row_star.attr( 'title' ).replace( / remove /, ' add ' ) ) ;
+        }
+        else {
+          var new_url = $this.attr( 'href' ).replace( /watch/, 'unwatch' );
+          
+          // Adjust the URL in both places
+          $interest.attr( 'href', new_url );
+          $tech_row_star.attr( 'href', new_url );
+          // Activate the star
+          $tech_row_star
+            .addClass( 'active' )
+            .attr( 'title', $tech_row_star.attr( 'title' ).replace( / add /, ' remove ' ) );
+          // Show the rebate group
+          $tech_row.slideDown();
+        }
+      }
+    });
   });
 });
