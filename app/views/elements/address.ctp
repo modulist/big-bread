@@ -3,5 +3,5 @@
   <?php if( !empty( $address['address_2'] ) ): ?>
     <?php echo h( $address['address_2'] ) ?><br />
   <?php endif; ?>
-  <?php printf( '%s, %s %s', h( $address['ZipCode']['city'] ), h( $address['ZipCode']['state'] ), h( $address['zip_code'] ) ) ?>
+  <?php printf( '%s, %s <span class="zip-code">%s</span>', h( $address['ZipCode']['city'] ), h( $address['ZipCode']['state'] ), h( $address['zip_code'] ) ) ?>
 </div>

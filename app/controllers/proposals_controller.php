@@ -52,15 +52,42 @@ class ProposalsController extends AppController {
         'conditions' => array( 'Building.id' => $location_id ),
       )
     );
-    
+
+    # Update a few validation rules that are specific to this context
+    $this->Proposal->Requestor->validate['phone_number']['notempty'] = array(
+      'rule'       => 'notEmpty',
+      'message'    => 'Please enter a phone number so can can contact you with any questions about the work.',
+      'allowEmpty' => false,
+      'required'   => true,
+    );
+    foreach( array( 'Electricity', 'Gas', 'Water' ) as $model ) {
+      $this->Proposal->Requestor->Building->{$model . 'Provider'}->validate = array();
+    }
+
     if( !empty( $this->data ) ){
       $this->Proposal->Requestor->id = $this->Auth->user( 'id' );
       $this->Proposal->Requestor->Building->id = $this->data['Building']['id'];
-      if( $this->Proposal->Requestor->saveField( 'phone_number', $this->data['Requestor']['phone_number'] ) && $this->Proposal->Requestor->Building->saveAll( $this->data ) ) {
-        # Save off the proposal and message record.
+      
+      # Compile our validation errors from each separate
+      $validationErrors = array();
+      if( !$this->Proposal->Requestor->validates( array( 'fieldList' => array_keys( $this->data['Requestor'] ) ) ) ) {
+        $validationErrors['Requestor'] = $this->Proposal->Requestor->validationErrors;
+      }
+      if( !$this->Proposal->Requestor->Building->saveAll( $this->data ) ) {
+        $validationErrors = Set::merge( $validationErrors, $this->Proposal->Requestor->Building->validationErrors );
       }
       
-      new PHPDump( $this->data ); exit;
+      if( empty( $validationErrors ) ) {
+        # TODO: Build and save the proposal data
+        # TODO: Build and save the message data
+        # TODO: Send message via SendGrid?
+      }
+      else {
+        # Write the complete list of validation errors to the view
+        $this->set( compact( 'validationErrors' ) );
+      }
+      
+      $this->data = Set::merge( $rebate, $location, $this->data );
     }
     else {
       $user     = $this->Auth->user();
