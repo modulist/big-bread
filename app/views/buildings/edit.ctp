@@ -3,6 +3,8 @@
 	<p><?php __( 'to save on major home improvement projects, or simply when replacing an appliance.' ) ?></p>
 </div><!-- /#messages -->
 
+<?php new PHPDump( $this->data, 'Data', '', true ); ?>
+
 <?php echo $this->Form->create( 'Building', array( 'url' => array( 'controller' => 'buildings', 'action' => 'edit' ) ) ) ?>
   <div class="clearfix">
     <h2><?php __( 'About your location:' ) ?></h2>

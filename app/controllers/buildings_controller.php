@@ -32,6 +32,15 @@ class BuildingsController extends AppController {
    * @access	public
    */
   public function add() {
+    foreach( array( 'Electricity', 'Gas', 'Water' ) as $utility ) {
+      $this->Building->{$utility . 'Provider'}->validate = array();
+      
+      # Don't save anything if the value is empty
+      if( isset( $this->data[$utility . 'Provider'] ) && empty( $this->data[$utility . 'Provider']['name'] ) ) {
+        unset( $this->data[$utility . 'Provider'] );
+      }
+    }
+    
     if( !empty( $this->data ) ) {
       if( $this->Building->saveAll( $this->data ) ) {
         $this->Session->setFlash( sprintf( __( '"%s" has been saved.', true ), !empty( $this->data['Building']['name'] ) ? $this->data['Building']['name'] : __( 'Your location', true ) ), null, null, 'success' );
@@ -67,6 +76,23 @@ class BuildingsController extends AppController {
     if( !$this->Building->belongs_to( $location_id, $this->Auth->user( 'id' ) ) ) {
       $this->Session->setFlash( __( 'You\'re not authorized to access that building\'s data.', true ), null, null, 'warning' );
       $this->redirect( $this->referer( array( 'controller' => 'users', 'action' => 'dashboard' ) ), null, true );
+    }
+    
+    # In this context, utility data isn't required
+    foreach( array( 'Electricity', 'Gas', 'Water' ) as $utility ) {
+      $this->Building->{$utility . 'Provider'}->validate = array();
+      
+      # That said, if they'e emptied a value that already exists, we just want
+      # to remove that utility's association with this building; not update the
+      # utility itself.
+      if( isset( $this->data[$utility . 'Provider'] ) && empty( $this->data[$utility . 'Provider']['name'] ) ) {
+        $this->data['Building'][strtolower( $utility ) . '_provider_id'] = null;
+        unset( $this->data[$utility . 'Provider'] );
+      }
+    }
+    
+    if( !empty( $this->data ) ) {
+      # new PHPDump( $this->data ); exit;
     }
     
     $this->Building->id = $location_id;
