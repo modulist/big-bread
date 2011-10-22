@@ -33,33 +33,7 @@
           <?php echo $this->Html->link( __( 'remove', true ), '#', array( 'class' => 'remove-button' ) ) ?>
         </div>
         <div class="location-equipment-grid grid_5">
-          <table class="location-equipment">
-            <?php if( !empty( $fixtures ) ): ?>
-                <?php foreach( $fixtures as $i => $fixture ): ?>
-                  <?php $classes = $i == 0 ? array( 'first' ) : array() ?>
-                  <?php if( $i == count( $fixtures ) - 1 ): ?>
-                    <?php array_push( $classes, 'last' ) ?>
-                  <?php endif; ?>
-                  <?php array_push( $classes, $i % 2 == 0 ? 'odd' : 'even' ) # Adjusted for zero-based array ?>
-                  
-                  <tr class="<?php echo join( ' ', $classes ) ?>">
-                    <td class="model-name"><?php echo !empty( $fixture['Fixture']['name'] ) ? $fixture['Fixture']['name'] : Inflector::singularize( $fixture['Technology']['title'] ) ?></td>
-                    <td class="controls">
-                      <?php echo $this->Html->link( __( 'edit', true ), array( 'controller' => 'fixtures', 'action' => 'edit', $fixture['Fixture']['id'] ), array( 'class' => 'edit-button' ) ) ?>
-                      |
-                      <?php echo $this->Html->link( __( 'remove', true ), array( 'controller' => 'fixtures', 'action' => 'retire', $fixture['Fixture']['id'] ), array( 'class' => 'remove-button' ) ) ?>
-                    </td>
-                  </tr>
-                  
-                  <?php $i++ ?>
-                <?php endforeach; ?>
-            <?php else: ?>
-              <tr>
-                <td><?php __( 'No equipment has been added.' ) ?></td>
-              </tr>
-            <?php endif; ?>
-          </table>
-          
+          <?php echo $this->element( '../fixtures/_list', array( 'plugin' => false, 'fixtures' => $fixtures ) ) ?>
           <?php echo $this->Html->link( __( 'Add equipment', true ), array( 'controller' => 'fixtures', 'action' => 'add', $location['Building']['id'] ), array( 'class' => 'add-equipment-button' ) ) ?>
       </div><!-- /location-equipment-grid -->
     </div><!-- /location-wrapper -->

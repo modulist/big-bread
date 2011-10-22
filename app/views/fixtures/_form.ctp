@@ -38,26 +38,8 @@
           <div class="current-equipment-icon"></div>
           <div class="current-equipment-title"><?php printf( __( 'Equipment for %s', true ), h( $location_name ) ) ?></div>
         </div>
-        <table class="current-equipment">
-          <?php if( !empty( $fixtures ) ): ?>
-            <?php foreach( $fixtures as $i => $fixture) : ?>
-              <tr class="<?php echo $i % 2 == 0 ? 'even' : 'odd' ?>">
-                <td class="model-name">
-                  <?php echo !empty( $fixture['Fixture']['name'] ) ? h( $fixture['Fixture']['name'] ) : h( Inflector::singularize( $fixture['Technology']['title'] ) ) ?>
-                </td>
-                <td class="controls">
-                  <?php echo $this->Html->link( __( 'edit', true ), array( 'action' => 'edit', $fixture['Fixture']['id'] ), array( 'class' => 'edit-button' ) ) ?>
-                  |
-                  <?php echo $this->Html->link( __( 'remove', true ), array( 'action' => 'retire', $fixture['Fixture']['id'] ), array( 'class' => 'remove-button' ) ) ?>
-                </td>
-              </tr>
-            <?php endforeach; ?>
-          <?php else: ?>
-            <tr>
-              <td><?php __( 'No equipment has been added.' ) ?></td>
-            </tr>
-          <?php endif; ?>
-        </table>
+
+        <?php echo $this->element( '../fixtures/_list', array( 'plugin' => false, 'fixtures' => $fixtures ) ) ?>
       </div><!-- /location-equipment-grid -->
     </div><!-- /location-wrapper -->
       
