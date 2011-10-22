@@ -2,6 +2,21 @@
 	<div class="breadcrumb"><?php echo h( $rebate['Technology']['TechnologyGroup']['title'] ) ?> &gt; <?php echo h( $rebate['Technology']['title'] ) ?></div>
 	<h2><?php echo h( $rebate['Incentive']['name'] ) ?></h2>
 	
+  <?php if( !empty( $rebate['Incentive']['AdditionalIncentiveNote'] ) ): ?>
+      <?php $i = 0; ?>
+      <?php foreach( $rebate['Incentive']['AdditionalIncentiveNote'] as $note ): ?>
+        <?php $classes = array( $i++ % 2 === 0 ? 'odd' : 'even' ) ?>
+        <?php if( $i === 1 ): ?>
+          <?php array_push( $classes, 'first' ) ?>
+        <?php endif; ?>
+        <?php if( $i === count( $rebate['Incentive']['AdditionalIncentiveNote'] ) ): ?>
+          <?php array_push( $classes, 'last' ) ?>
+        <?php endif; ?>
+        
+        <p class="public-note <?php echo join( ' ', $classes ) ?>"><?php echo h( $note['note'] ) ?></p>
+      <?php endforeach; ?>
+  <?php endif; ?>
+  
 	<table class="savings-detail-grid">
 		<thead class="first">
 			<th class="valid first"><?php __( 'Valid until' ) ?></th>
