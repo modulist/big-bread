@@ -60,8 +60,17 @@ class ProposalsController extends AppController {
       'allowEmpty' => false,
       'required'   => true,
     );
-    foreach( array( 'Electricity', 'Gas', 'Water' ) as $model ) {
-      $this->Proposal->Requestor->Building->{$model . 'Provider'}->validate = array();
+    # In this context, utility data isn't required
+    foreach( array( 'Electricity', 'Gas', 'Water' ) as $utility ) {
+      $this->Proposal->Requestor->Building->{$utility . 'Provider'}->validate = array();
+      
+      # That said, if they'e emptied a value that already exists, we just want
+      # to remove that utility's association with this building; not update the
+      # utility itself.
+      if( isset( $this->data[$utility . 'Provider'] ) && empty( $this->data[$utility . 'Provider']['name'] ) ) {
+        $this->data['Building'][strtolower( $utility ) . '_provider_id'] = null;
+        unset( $this->data[$utility . 'Provider'] );
+      }
     }
 
     if( !empty( $this->data ) ){
@@ -73,30 +82,51 @@ class ProposalsController extends AppController {
       if( !$this->Proposal->Requestor->validates( array( 'fieldList' => array_keys( $this->data['Requestor'] ) ) ) ) {
         $validationErrors['Requestor'] = $this->Proposal->Requestor->validationErrors;
       }
-      if( !$this->Proposal->Requestor->Building->saveAll( $this->data ) ) {
+      if( !$this->Proposal->Requestor->Building->saveAll( $this->data, array( 'validate' => 'only' ) ) ) {
         $validationErrors = Set::merge( $validationErrors, $this->Proposal->Requestor->Building->validationErrors );
       }
       
+      $this->data = Set::merge( $rebate, $location, $this->data );
+      
       if( empty( $validationErrors ) ) {
-        # TODO: Build and save the proposal data
-        # TODO: Build and save the message data
-        # TODO: Send message via SendGrid?
+        $this->Proposal->Requestor->saveField( 'phone_number', $this->data['Requestor']['phone_number'] );
+        $this->Proposal->Requestor->Building->saveAll( $this->data, array( 'validate' => false ) ); # This was validated above
+        
+        $this->data['Proposal']['user_id']                 = $this->Auth->user( 'id' );
+        $this->data['Proposal']['technology_incentive_id'] = $this->data['TechnologyIncentive']['id'];
+        $this->data['Proposal']['location_id']             = $this->data['Building']['id'];
+        
+        if( $this->Proposal->save( $this->data['Proposal'] ) ) {
+          # TODO: Pull the contractors the messages needs to be sent to
+          # TODO: Create a message record for each contractor
+          $message = array(
+            'model'        => 'Proposal',
+            'foreign_key'  => $this->Proposal->id,
+            'sender_id'    => $this->Auth->user( 'id' ),
+            'recipient_id' => $this->Auth->user( 'id' ),
+          );
+          
+          $this->Proposal->Message->save( $message );
+          
+          # TODO: Send message via SendGrid?
+          new PHPDump( $this->data, 'Saved' ); exit;
+        }
+        else {
+          $this->Session->setFlash( 'There was a problem generating your proposal', null, null, 'error' );
+        }
       }
       else {
+        new PHPDump( $validationErrors ); exit;
         # Write the complete list of validation errors to the view
         $this->set( compact( 'validationErrors' ) );
       }
-      
-      $this->data = Set::merge( $rebate, $location, $this->data );
     }
     else {
-      $user     = $this->Auth->user();
+      $user = $this->Auth->user();
 
       $this->data = Set::merge( $rebate, $location );
       $this->data['Requestor'] = $user[$this->Auth->getModel()->alias];
     }
-    
-    # new PHPDump( $this->data ); exit;
     
     $this->set( compact( 'location', 'rebate' ) );
   }

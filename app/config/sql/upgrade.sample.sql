@@ -29,9 +29,27 @@ CREATE TABLE messages(
 ) ENGINE=InnoDB;
 
 ALTER TABLE proposals
+  DROP timing,
+  DROP urgency,
   ADD location_id char(36) NULL AFTER technology_id,
-  ADD under_warranty boolean NOT NULL DEFAULT 0,
-  ADD permission_to_examine boolean NOT NULL DEFAULT 0;
+  ADD permission_to_examine boolean NOT NULL DEFAULT 0 AFTER scope_of_work,
+  ADD under_warranty boolean NOT NULL DEFAULT 0 AFTER scope_of_work,
+  ADD technology_incentive_id bigint(20) NULL AFTER user_id,
+  DROP FOREIGN KEY fk__proposals__incentive,
+  DROP FOREIGN KEY fk__proposals__technologies,
+  ADD CONSTRAINT fk__proposals__technology_incentives FOREIGN KEY( technology_incentive_id )
+    REFERENCES technology_incentives( id )
+      ON UPDATE CASCADE
+      ON DELETE NO ACTION;
+ 
+UPDATE proposals p, technology_incentives ti
+   SET p.technology_incentive_id = ti.id
+ WHERE ti.technology_id = p.technology_id
+       AND ti.incentive_id = p.incentive_id;
+       
+ALTER TABLE proposals
+  DROP incentive_id,
+  DROP technology_id;
  
 -- Merging products and building_products into one table: fixtures
 DROP TABLE IF EXISTS fixtures;
@@ -222,5 +240,5 @@ UPDATE technologies
    SET title     = 'Audit/Home Performance',
        watchable = 1
  WHERE incentive_tech_id = 'WBLD';
-
+ 
 SET foreign_key_checks = 1;
