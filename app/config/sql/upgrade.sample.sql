@@ -7,15 +7,15 @@ DROP TABLE IF EXISTS questionnaires;
 
 DROP TABLE IF EXISTS messages;
 CREATE TABLE messages(
-  id            char(36)      NOT NULL,
-  model         varchar(36)   NOT NULL, -- what generated the message?
-  foreign_key   char(36)      NOT NULL, -- which of that what generated the message?
-  transport     varchar(255)  NOT NULL DEFAULT 'email',
-  sender_id     char(36)      COLLATE utf8_unicode_ci NOT NULL,
-  recipient_id  char(36)      COLLATE utf8_unicode_ci NOT NULL,
-  sent          datetime      NULL,
-  created       datetime      NULL,
-  modified      datetime      NULL,
+  id                  char(36)      NOT NULL,
+  message_template_id char(36)      NOT NULL,
+  model         varchar(36)         NOT NULL, -- what generated the message?
+  foreign_key   char(36)            NOT NULL, -- which of that what generated the message?
+  sender_id     char(36)            COLLATE utf8_unicode_ci NOT NULL,
+  recipient_id  char(36)            COLLATE utf8_unicode_ci NOT NULL,
+  sent          datetime            NULL,
+  created       datetime            NULL,
+  modified      datetime            NULL,
   
   PRIMARY KEY( id ),
   CONSTRAINT fk__messages__senders FOREIGN KEY( sender_id )
@@ -26,6 +26,17 @@ CREATE TABLE messages(
     REFERENCES users( id )
     ON UPDATE CASCADE
     ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS message_templates;
+CREATE TABLE message_templates(
+  id          char(36)      NOT NULL,
+  code        varchar(255)  NOT NULL,
+  type        varchar(255)  NOT NULL DEFAULT 'EMAIL',
+  body_text   text          NOT NULL,
+  html_text   text          NOT NULL,
+  
+  PRIMARY KEY( id ),
 ) ENGINE=InnoDB;
 
 ALTER TABLE proposals
