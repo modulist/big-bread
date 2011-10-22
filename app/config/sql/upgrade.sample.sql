@@ -213,7 +213,7 @@ UPDATE technologies
 
 UPDATE technologies
    SET title = name
- WHERE watchable = 1;
+ WHERE title IS NULL;
 
 UPDATE technologies
    SET title = 'Central Air Conditioners'

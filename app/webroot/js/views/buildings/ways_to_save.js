@@ -37,27 +37,37 @@ $(document).ready( function() {
   
   $('.star').click( function( e ) {
     e.preventDefault();
-    
-    var $this    = $(this);
-    var base_url = '/api/v1/users/';
-    var url      = $this.hasClass( 'active' )
-      ? base_url + 'unwatch_technology/'
-      : base_url + 'watch_technology/';
-    
-    url += $this.attr( 'data-user-id' ) + '/' + $this.attr( 'data-technology-id' ) + ( $this.attr( 'data-location-id' ) ? '/' + $this.attr( 'data-location-id' ) : '' );
-    url += '.json';
+
+    var $this          = $(this);
+    var tech_id        = $this.attr( 'data-technology-id' );
+    var $tech_row      = $( '.rebate-category-row[data-technology-id=' + tech_id + ']' );
+    var $tech_row_star = $tech_row.find( '.star' );
+    var action         = $this.attr( 'href' ).match( /(?:un)?watch/ );
     
     $.ajax({
-      url: url,
-      type: 'POST',
-      beforeSend: function( jqXHR, settings ) {
-        jqXHR.setRequestHeader( 'Authorization', '1001001SOS' );  
-      },
+      url: $this.attr( 'href' ),
+      type: 'GET',
       success: function( data, status, jqXHR ) {
-        $this.toggleClass( 'active' );
-      },
-      error: function( e, jqXHR, settings, thrownError ) {
-        alert( 'Sorry, we were unable to modify your interests at this time.' );
+        if( action == 'unwatch' ) {
+          var new_url = $this.attr( 'href' ).replace( /unwatch/, 'watch' );
+          
+          // Adjust the URL in both places
+          $tech_row_star.attr( 'href', new_url );
+          // Deactivate the star
+          $tech_row_star
+            .removeClass( 'active' )
+            .attr( 'title', $tech_row_star.attr( 'title' ).replace( / remove /, ' add ' ) ) ;
+        }
+        else {
+          var new_url = $this.attr( 'href' ).replace( /watch/, 'unwatch' );
+          
+          // Adjust the URL in both places
+          $tech_row_star.attr( 'href', new_url );
+          // Activate the star
+          $tech_row_star
+            .addClass( 'active' )
+            .attr( 'title', $tech_row_star.attr( 'title' ).replace( / add /, ' remove ' ) );
+        }
       }
     });
   });
