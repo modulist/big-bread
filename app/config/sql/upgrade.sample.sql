@@ -9,15 +9,20 @@ DROP TABLE IF EXISTS messages;
 CREATE TABLE messages(
   id                  char(36)      NOT NULL,
   message_template_id char(36)      NOT NULL,
-  model         varchar(36)         NOT NULL, -- what generated the message?
-  foreign_key   char(36)            NOT NULL, -- which of that what generated the message?
-  sender_id     char(36)            COLLATE utf8_unicode_ci NOT NULL,
-  recipient_id  char(36)            COLLATE utf8_unicode_ci NOT NULL,
-  sent          datetime            NULL,
-  created       datetime            NULL,
-  modified      datetime            NULL,
+  model               varchar(255)  NOT NULL, -- what generated the message?
+  foreign_key         char(36)      NOT NULL, -- which of that what generated the message?
+  sender_id           char(36)      COLLATE utf8_unicode_ci NULL, -- null if system is sender
+  recipient_id        char(36)      COLLATE utf8_unicode_ci NOT NULL,
+  replacements        text          NULL, -- JSON encoded string of variable replacement values
+  sent                datetime      NULL,
+  created             datetime      NOT NULL,
+  modified            datetime      NOT NULL,
   
   PRIMARY KEY( id ),
+  CONSTRAINT fk__messages__message_templates FOREIGN KEY( message_template_id )
+    REFERENCES message_templates( id )
+      ON UPDATE CASCADE
+      ON DELETE NO ACTION,
   CONSTRAINT fk__messages__senders FOREIGN KEY( sender_id )
     REFERENCES users( id )
     ON UPDATE CASCADE
@@ -33,11 +38,34 @@ CREATE TABLE message_templates(
   id          char(36)      NOT NULL,
   code        varchar(255)  NOT NULL,
   type        varchar(255)  NOT NULL DEFAULT 'EMAIL',
+  subject     varchar(255)  NULL,
   body_text   text          NOT NULL,
-  html_text   text          NOT NULL,
+  body_html   text          NOT NULL,
+  created     datetime      NOT NULL,
+  modified    datetime      NOT NULL,
   
-  PRIMARY KEY( id ),
+  PRIMARY KEY( id )
 ) ENGINE=InnoDB;
+
+INSERT INTO message_templates( id, code, subject, body_text, body_html, created, modified )
+VALUES
+  ( UUID(), 'new_user', 'Thanks for registering to Save Big Bread at SaveBigBread.com',
+    'Hi, %Recipient.first_name%. Welcome to SaveBigBread.com - your free and easy way to save on home improvement. Saving money is hard so we want to make it a virtual no-brainer to find rebates that apply to you, connect you with contractors authorized by program sponsors and finish the paperwork that gets you a check. 
+
+Please send me an email if you need any help or if you have an idea on how we can improve our service. We''re always looking for a better way to make Saving Big Bread easier.
+
+Regards,
+Tony Maull, President 
+
+P.S. I''d appreciate it if you would pass us along to your friends if you think they would like to Save Big Bread with you.',
+    '<p>Hi, %Recipient.first_name%. Welcome to SaveBigBread.com - your free and easy way to save on home improvement. Saving money is hard so we want to make it a virtual no-brainer to find rebates that apply to you, connect you with contractors authorized by program sponsors and finish the paperwork that gets you a check. </p>
+<p>Please send me an email if you need any help or if you have an idea on how we can improve our service. We''re always looking for a better way to make Saving Big Bread easier.</p>
+<p>Regards,<br />
+Tony Maull, President </p>
+<p>P.S. I''d appreciate it if you would pass us along to your friends if you think they would like to Save Big Bread with you.</p>',
+    NOW(), NOW()
+  )
+;
 
 ALTER TABLE proposals
   DROP timing,

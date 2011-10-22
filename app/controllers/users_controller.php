@@ -87,7 +87,7 @@ class UsersController extends AppController {
       # @see User::identical()
       $this->data['User']['confirm_password'] = $this->Auth->password( $this->data['User']['confirm_password'] );
       
-      # Get the selected watchlist items in a format we can work with
+      # Massage the selected watchlist items into a format we can work with.
       $this->data['WatchedTechnology']['selected'] = array_filter( explode( ',', $this->data['WatchedTechnology']['selected'] ) );
       
       # Save the user and their watchlist in a transaction. Model::saveAll()
@@ -105,6 +105,7 @@ class UsersController extends AppController {
             'model'       => 'Technology',
             'foreign_key' => null,
           );
+          
           # Compile an array of TechnologyWatchList object data
           $this->data['TechnologyWatchList'] = array();
           foreach( $this->data['WatchedTechnology']['selected'] as $technology_id ) {
@@ -120,6 +121,10 @@ class UsersController extends AppController {
         else {
           $commit = true;
         }
+        
+        # Save a message record for later delivery
+        $replacements = array( 'Recipient.first_name' => $this->data['User']['first_name'] );
+        $commit = $this->User->Message->queue( MessageTemplate::TYPE_NEW_USER, 'User', $this->User->id, null, $this->User->id, $replacements );
 
         if( $commit ) {
           $this->Session->setFlash( 'Welcome to SaveBigBread. Thanks for registering.', null, null, 'success' );

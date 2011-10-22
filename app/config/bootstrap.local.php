@@ -61,4 +61,4 @@ Configure::write( 'Env.name', 'Localhost' );
 Configure::write( 'Env.code', 'LCL' );
 Configure::write( 'Env.domain', 'bigbread (local)' );
 
-Configure::write( 'email.redirect_all_email_to', 'rob@robwilkerson.org' );
+Configure::write( 'email.redirect_to', 'rob@robwilkerson.org' );
