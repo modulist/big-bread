@@ -1,6 +1,6 @@
 $(document).ready( function() {
   // Build a set of values that will become the technology watch list
-  $('a[data-watch-technology-id]').click( function( e ) {
+  $('a[data-technology-id]').click( function( e ) {
     e.preventDefault();
     
     var $this                 = $(this);
