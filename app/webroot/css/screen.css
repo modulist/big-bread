@@ -551,6 +551,7 @@ td.rebate-dates { width: 100px; font-size: 11px; }
 td.rebate-amount { width: 60px; text-align: right; font: 16px/1.25 "UltraRegular", serif; letter-spacing: .1em; color: #156873; }
 td.rebate-total { width: 130px; font: 14px/1.25 "UltraRegular", serif; color: #156873; }
 td.rebate-action { width: 110px; padding-left: 20px; }
+tr.group-name td { font: 18px/1.125 "UltraRegular", serif; letter-spacing: .1em; color: #156873; padding-top: 30px; }
 
 table.rebate-header { border: none; }
 .rebate-category-row { background: url(../img/dotrule-orange-2px.png) bottom left repeat-x; }
@@ -564,7 +565,7 @@ table.rebate-header { border: none; }
 .rebate-header .rebate-description a.star:hover { background: url(../img/sprite-rebate-table.png) -12px -28px no-repeat; }
 .rebate-header .rebate-description a.star.active { background: url(../img/sprite-rebate-table.png) -12px -48px no-repeat; }
 .rebate-header .rebate-description a.star.active:hover { background: url(../img/sprite-rebate-table.png) -12px -68px no-repeat; }
-.rebate-header .rebate-description span.rebate-category-title { font: 16px/1.25 "UltraRegular", serif; letter-spacing: .04em;  }
+.rebate-header .rebate-description span.rebate-category-title { font: 14px/1.25 "UltraRegular", serif; letter-spacing: .04em;  }
 
 table.rebate-content { margin-left: 60px; color: #666; display: none; }
 .rebate-content tr { background: url(../img/dotrule-orange-1px.png) top left repeat-x; }
