@@ -13,7 +13,7 @@
     <h2><?php __( 'Add my first location' ) ?>:</h2>
     <div class="location-icon-large"></div>
     
-    <?php echo $this->Form->create( 'Building', array( 'url' => array( 'controller' => 'buildings', 'action' => 'add' ) ) ) ?>
+    <?php echo $this->Form->create( 'Building', array( 'url' => array( 'controller' => 'buildings', 'action' => 'add' ), 'class' => 'clearfix' ) ) ?>
       <?php echo $this->element( '../buildings/_basic_inputs' ) ?>
     <?php echo $this->Form->end( __( 'Add location', true ) ) ?>
   <?php else: ?>
