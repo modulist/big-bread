@@ -600,6 +600,42 @@ table.rebate-content { margin-left: 60px; color: #666; display: none; }
 .rebate-content td.rebate-amount { color: #666; padding-right: 15px; }
 
 
+table.pending-quotes-header { border: none; }
+.pending-quotes-category-row { background: url(../img/dotrule-orange-2px.png) top left repeat-x }
+.pending-quotes-category-row:last-child { background: url(../img/dotrule-orange-2px.png) top left repeat-x, url(../img/dotrule-orange-2px.png) bottom left repeat-x; }
+.pending-quotes-header td { padding: 5px; }
+.pending-quotes-header .quote-category { width: 380px; vertical-align: top; font-size: 14px; }
+.pending-quotes-header .quote-category a { display: block; float: left; padding: 0 0 0 20px; }
+.pending-quotes-header .quote-category a:hover { text-decoration: none; filter: alpha(opacity=50); -moz-opacity:0.5; -khtml-opacity: 0.5; opacity: 0.5; text-decoration:none; }
+.pending-quotes-header .quote-category a.expanded { background: url(../img/sprite-rebate-table.png) -17px -90px no-repeat; }
+.pending-quotes-header .quote-category a.collapsed { background: url(../img/sprite-rebate-table.png) -17px -110px no-repeat; }
+.pending-quotes-header .quote-category a.star { margin-left: 10px; padding: 0; width: 20px; height: 20px; background: url(../img/sprite-rebate-table.png) -12px -8px no-repeat; }
+.pending-quotes-header .quote-category a.star:hover { background: url(../img/sprite-rebate-table.png) -12px -28px no-repeat; }
+.pending-quotes-header .quote-category a.star.active { background: url(../img/sprite-rebate-table.png) -12px -48px no-repeat; }
+.pending-quotes-header .quote-category a.star.active:hover { background: url(../img/sprite-rebate-table.png) -12px -68px no-repeat; }
+.pending-quotes-header .quote-category span.quote-category-title { font: 14px/1.25 "UltraRegular", serif; letter-spacing: .04em;  }
+
+table.pending-quotes-content { margin-left: 60px; color: #666; display: none; }
+.pending-quotes-content tr { background: url(../img/dotrule-orange-1px.png) top left repeat-x; }
+.pending-quotes-content tr.odd { background-color: rgba(143, 212, 105, 0.1)/*#f4fbf0*/; border: none; }
+.pending-quotes-content tr.even { background-color: transparent;  }
+.pending-quotes-content tr.last { margin-bottom: 2px;  }
+.pending-quotes-content tr:hover,
+.pending-quotes-content tr.odd:hover,
+.pending-quotes-content tr.even:hover { background-color: #fff /* rgba(143, 212, 105, 0.1)*/; } 
+.pending-quotes-content td { padding: 5px;  }
+.pending-quotes-content .pending-quotes-description { width: 270px; }
+.pending-quotes-content .pending-quotes-description a { font-weight: bold; }
+.pending-quotes-content .pending-quotes-description a.get-a-quote { font-weight: normal; color: orange; }
+.pending-quotes-content .pending-quotes-description a.details { display: block; font-weight: normal; color: #666; font-size: 11px; }
+.pending-quotes-content td.pending-quotes-amount { color: #666; padding-right: 15px; }
+
+td.quote-date { width: 100px; font-size: 11px; }
+td.quote-amount { width: 80px; text-align: right; font: 16px/1.25 "UltraRegular", serif; letter-spacing: .1em; color: #156873; }
+td.quote-total { width: 130px; font: 14px/1.25 "UltraRegular", serif; color: #156873; }
+td.quote-action { width: 110px; padding-left: 20px; }
+
+
 /* ============================= savings details ======================= */
 table.savings-detail-grid { width: 100%; background: url(../img/dotrule-orange-1px.png) bottom repeat-x; margin: 0 0 20px; }
 .savings-detail-grid tbody tr { background: url(../img/dotrule-orange-1px.png) top repeat-x; }

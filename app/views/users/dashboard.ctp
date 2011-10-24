@@ -51,25 +51,83 @@
 <?php //if( !empty( $pending_quotes ) ): ?>
   <div id="pending-quotes" class="grid_9">
     <h2><?php printf( __( 'Pending quotes for %s', true ), $location_title ) ?></h2>
-    <table class="pending-quotes">
-        <tr class="first odd">
-          <td class="quote-category">Building Shell > Windows</td>
-          <td class="quote-date">1 week ago</td>
-          <td class="quote-status">Active</td>
-          <td class="quote-action"><a href="#" class="remove-button">remove</a></td>
-        </tr>      
-        <tr class="even">
-          <td class="quote-category">Heating and Cooling > Air Conditioners</td>
-          <td class="quote-date">3 weeks 2 days ago</td>
-          <td class="quote-status">Active</td>
-          <td class="quote-action"><a href="#" class="remove-button">remove</a></td>
-        </tr>      
-        <tr class="last odd">
-          <td class="quote-category">Heating and Cooling > Air Conditioners</td>
-          <td class="quote-date">3 months 11 days ago</td>
-          <td class="quote-status">Closed</td>
-          <td class="quote-action"><a href="#" class="remove-button">remove</a></td>
-        </tr>
+    <table class="pending quotes-list">
+    	<tr class="pending-quotes-category-row first">
+    		<td class="pending-quotes-category">
+			    <table class="pending-quotes-header">
+			      <tr class="">
+			        <td class="quote-category"><a href="#" class="toggle collapsed"><span class="quote-category-title">Windows</span></a>&nbsp;(3)</td>
+			        <td class="quote-date">1 week ago</td>
+			        <td class="quote-status">Active</td>
+			        <td class="quote-action"><a href="#" class="remove-button">remove</a></td>
+			      </tr> 
+			    </table>     
+			    <table class="pending-quotes-content">
+			      <tr>
+			      	<td class="contractor">Acme Air</td>
+			        <td class="quote-date">1 week ago</td>
+			        <td class="quote-status">Active</td>
+			        <td class="quote-action"><a href="#" class="remove-button">remove</a></td>
+			      </tr>
+			      <tr>
+			      	<td class="contractor">Metropolitan Climate Control</td>
+			        <td class="quote-date">1 week ago</td>
+			        <td class="quote-status">Active</td>
+			        <td class="quote-action"><a href="#" class="remove-button">remove</a></td>
+			      </tr>
+			      <tr>
+			      	<td class="contractor">Reliable Comfort Corps</td>
+			        <td class="quote-date">1 week ago</td>
+			        <td class="quote-status">Active</td>
+			        <td class="quote-action"><a href="#" class="remove-button">remove</a></td>
+			      </tr>
+			    </table>    		
+    		</td>
+    	</tr>
+    	<tr class="pending-quotes-category-row">
+    		<td class="pending-quotes-category">
+			    <table class="pending-quotes-header">
+			      <tr class="even">
+			        <td class="quote-category"><a href="#" class="toggle expanded"><span class="quote-category-title">Air Conditioners</span></a>&nbsp;(3)</td>
+			        <td class="quote-date">3 weeks 2 days ago</td>
+			        <td class="quote-status">Active</td>
+			        <td class="quote-action"><a href="#" class="remove-button">remove</a></td>
+			      </tr>      
+			    </table>     
+			    <table class="pending-quotes-content">
+			      <tr>
+			      	<td class="contractor">Acme Air</td>
+			        <td class="quote-date">1 week ago</td>
+			        <td class="quote-status">Active</td>
+			        <td class="quote-action"><a href="#" class="remove-button">remove</a></td>
+			      </tr>
+			      <tr>
+			      	<td class="contractor">Metropolitan Climate Control</td>
+			        <td class="quote-date">1 week ago</td>
+			        <td class="quote-status">Active</td>
+			        <td class="quote-action"><a href="#" class="remove-button">remove</a></td>
+			      </tr>
+			      <tr>
+			      	<td class="contractor">Reliable Comfort Corps</td>
+			        <td class="quote-date">1 week ago</td>
+			        <td class="quote-status">Active</td>
+			        <td class="quote-action"><a href="#" class="remove-button">remove</a></td>
+			      </tr>
+			    </table>
+    		</td>
+    	</tr>
+    	<tr class="pending-quotes-category-row last">
+    		<td class="pending-quotes-category">
+			    <table class="pending-quotes-header">
+			      <tr class="last odd">
+			        <td class="quote-category"><a href="#" class="toggle collapsed"><span class="quote-category-title">Air Conditioners</span></a>&nbsp;(1)</td>
+			        <td class="quote-date">3 months 11 days ago</td>
+			        <td class="quote-status">Closed</td>
+			        <td class="quote-action"><a href="#" class="remove-button">remove</a></td>
+			      </tr>
+			    </table>    		
+    		</td>
+    	</tr>
     </table>
   </div>  
 <?php //endif; ?>
