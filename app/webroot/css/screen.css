@@ -422,8 +422,8 @@ option { padding: 0 8px; line-height: 24px; }
 
 /* ============================= Dashboard elements ======================= */
 
-#my-locations { font-size: 14px; padding-right: 0; }
-#my-utilities { font-size: 14px; padding-right: 0; margin-top:20px; margin-bottom: 40px; background: url(/img/dotrule-green-4px.png) top left repeat-x, url(/img/dotrule-green-4px.png) bottom left repeat-x;}
+#my-locations { font-size: 14px; padding-left:10px; padding-right: 0; }
+#my-utilities { font-size: 14px; padding-left:10px; padding-right: 0; margin-top:20px; margin-bottom: 40px; background: url(/img/dotrule-green-4px.png) top left repeat-x, url(/img/dotrule-green-4px.png) bottom left repeat-x;}
 #my-equipment { font-size: 14px; padding-right: 0; }
 
 #my-locations h2, #my-utilities h2 { margin: 20px 0 0; }
@@ -469,6 +469,13 @@ table.current-equipment { width: 100%; margin: 15px 0 15px; background: url(/img
 #BuildingEditForm .AddLocationState select { width: 180px; height: 24px;}
 #BuildingEditForm .AddLocationZip { width: 100px; float: left; margin: 0 10px 0 0; }
 #BuildingEditForm .AddLocationZip input { width: 100px; margin: 4px 10px 0 0; }
+
+#BuildingDashboardForm { float: left; }
+#BuildingDashboardForm input[type='text'] { width: 300px; }
+#BuildingDashboardForm input#AddressAddress2 { width: 220px; }
+#BuildingDashboardForm input#AddressZipCode { width: 70px; float: right; }
+
+
 #EquipmentAddForm input[type='text'] { width: 300px; }
 #EquipmentAddForm select { width: 300px; }
 #EquipmentAddForm textarea { width: 300px; height:150px; } 

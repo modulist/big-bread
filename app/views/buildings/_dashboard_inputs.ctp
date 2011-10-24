@@ -4,4 +4,5 @@
 <?php echo $this->Form->input( 'Address.address_1', array( 'placeholder' => __( 'Street Address', true ) ) ) ?>
 <?php echo $this->Form->input( 'Address.address_2', array( 'placeholder' => __( 'Apartment, Suite, etc.', true ) ) ) ?>
 <?php echo $this->Form->input( 'Address.zip_code', array( 'placeholder' => __( 'Zip Code', true ), 'after' => sprintf( __( '%sWe\'ll find your city and state for you.%s', true ), '<small>', '</small>' ) ) ) ?>
+<?php echo ( __( 'We\'ll find your city and state for you.' )) ?>
 

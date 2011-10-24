@@ -8,7 +8,7 @@
   <?php endif; ?>
 </div><!-- /#messages -->
 
-<div id="my-locations">
+<div id="my-locations" class="clearfix">
   <?php if( empty( $location ) ): ?>
     <h2><?php __( 'Add my first location' ) ?>:</h2>
     <div class="location-icon-large"></div>
