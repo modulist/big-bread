@@ -173,7 +173,7 @@ body.onecolumn #content { background: #FFFFFF; min-height:400px; padding: 50px 6
 #address-panel-nav .next { float: right; }
 
 /* ============================= content ===================== */
-#content, #content.grid_9 { width: 700px; margin: 0 0 0 240px; padding: 0 20px; background: #fff; border-radius: 20px; -moz-border-radius: 20px; -webkit-border-radius: 20px; }
+#content, #content.grid_9 { width: 700px; margin: 0 0 0 240px; padding: 0 20px 30px; background: #fff; border-radius: 20px; -moz-border-radius: 20px; -webkit-border-radius: 20px; }
 .grid_9 .grid_9 { margin-left: 0; margin-right: 0; padding-left: 10px; padding-right: 10px; width: 680px; }
 .grid_9 .grid_9 .grid_3 { width: 210px; }
 
@@ -396,6 +396,7 @@ option { padding: 0 8px; line-height: 24px; }
 /* ============================= User signup ======================= */
 #my-interests { }
 .my-interests-grid { font-size: 14px; color: #0c4d54; padding: 5px 0 30px; margin: 10px -10px 0; background: url(../img/dotrule-green-4px.png) bottom left repeat-x; }
+body.dashboard .my-interests-grid { background: none; }
 .my-interests-grid .grid_3 { margin: 0 20px 0 0;}
 .my-interests-grid h4 { padding: 10px 0 10px 10px; margin: 0 0 4px; font-size: 14px; background: url(../img/dotrule-orange-2px.png) bottom left repeat-x; letter-spacing: .1em; }
 .my-interests-grid ul { padding: 0; margin: 0 0 10px; }
@@ -551,22 +552,24 @@ a.quote-button { background-color: #ef7600; }
 table.rebates-watch-list { width: 700px; border: none; padding: 5px 0 10px; background: url(../img/dotrule-green-4px.png) top left repeat-x, url(../img/dotrule-green-4px.png) bottom left repeat-x; }
 .rebates-watch-list tr:hover,
 .rebates-watch-list tr.odd:hover,
-.rebates-watch-list tr.even:hover { background-color: #fff /* rgba(143, 212, 105, 0.1)*/; } 
+.rebates-watch-list tr.even:hover { background-color:  rgba(143, 212, 105, 0.15); } 
 .rebates-watch-list td { font: 12px/1.2 Georgia, "Times New Roman", Times, serif; }
 
 td.rebate-dates { width: 100px; font-size: 11px; }
 td.rebate-amount { width: 80px; text-align: right; font: 16px/1.25 "UltraRegular", serif; letter-spacing: .1em; color: #156873; }
 td.rebate-total { width: 130px; font: 14px/1.25 "UltraRegular", serif; color: #156873; }
 td.rebate-action { width: 110px; padding-left: 20px; }
-tr.group-name td { font: 18px/1.125 "UltraRegular", serif; letter-spacing: .1em; color: #156873; padding-top: 30px; }
+tr.group-name td { font: 18px/1.125 "UltraRegular", serif; letter-spacing: .1em; color: #156873; padding: 30px 1px 4px; background: url(../img/dotrule-orange-2px.png) top left repeat-x }
+tr.group-name td:first-child { background: none; }
 
 table.rebate-header { border: none; }
-.rebate-category-row { background: url(../img/dotrule-orange-2px.png) bottom left repeat-x; }
+.rebate-category-row { background: url(../img/dotrule-orange-2px.png) top left repeat-x }
 .rebate-category-row.last { background: none; }
 .rebate-header td { padding: 5px; }
 .rebate-header .rebate-description { width: 440px; vertical-align: top; font-size: 14px; }
 .rebate-header .rebate-description a { display: block; float: left; padding: 0 0 0 20px; }
-.rebate-header .rebate-description a:hover { text-decoration: none; filter: alpha(opacity=50); -moz-opacity:0.5; -khtml-opacity: 0.5; opacity: 0.5; text-decoration:none; }.rebate-header .rebate-description a.expanded { background: url(../img/sprite-rebate-table.png) -17px -90px no-repeat; }
+.rebate-header .rebate-description a:hover { text-decoration: none; filter: alpha(opacity=50); -moz-opacity:0.5; -khtml-opacity: 0.5; opacity: 0.5; text-decoration:none; }
+.rebate-header .rebate-description a.expanded { background: url(../img/sprite-rebate-table.png) -17px -90px no-repeat; }
 .rebate-header .rebate-description a.collapsed { background: url(../img/sprite-rebate-table.png) -17px -110px no-repeat; }
 .rebate-header .rebate-description a.star { margin-left: 10px; padding: 0; width: 20px; height: 20px; background: url(../img/sprite-rebate-table.png) -12px -8px no-repeat; }
 .rebate-header .rebate-description a.star:hover { background: url(../img/sprite-rebate-table.png) -12px -28px no-repeat; }
