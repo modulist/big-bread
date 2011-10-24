@@ -123,7 +123,7 @@ class UsersController extends AppController {
         }
         
         # Save a message record for later delivery
-        $replacements = array( 'Recipient.first_name' => $this->data['User']['first_name'] );
+        $replacements = array( 'recipient_first_name' => $this->data['User']['first_name'] );
         $commit = $this->User->Message->queue( MessageTemplate::TYPE_NEW_USER, 'User', $this->User->id, null, $this->User->id, $replacements );
 
         if( $commit ) {

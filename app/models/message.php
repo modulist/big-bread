@@ -37,10 +37,10 @@ class Message extends AppModel {
 			 * relevant text fields.
 			 */
 			if( !empty( $result['MessageTemplate'] ) ) {
-				$replaceable_fields = array( 'subject', 'body_text', 'body_html' );
+				$replaceable_fields = array( 'subject' );
 
 				foreach( $replaceable_fields as $field ) {
-					preg_match_all( '/%((\w+)\.([^%]+))%/', $result['MessageTemplate'][$field], $matches, PREG_SET_ORDER );
+					preg_match_all( '/%([^%]+)%/', $result['MessageTemplate'][$field], $matches, PREG_SET_ORDER );
           
 					foreach( $matches as $match ) {
 						$results[$i]['MessageTemplate'][$field] = $this->replace(
@@ -66,19 +66,8 @@ class Message extends AppModel {
   private function replace( $haystack, $match, $replacements ) {
     $subject  = $match[0];
     $variable = $match[1];
-    $model    = $match[2];
-    $property = $match[3];
     
-    switch( strtoupper ( $model ) ) {
-      case 'CONFIG':
-        return str_replace( $subject, Configure::read( $property ), $haystack );
-
-      case 'CUSTOM':
-        return str_replace( $subject, $keys[$property], $haystack );
-
-      default:
-        return str_replace( $subject, $replacements[$variable], $haystack );
-    }
+    return str_replace( $subject, $replacements[$variable], $haystack );
   }
   
   /**

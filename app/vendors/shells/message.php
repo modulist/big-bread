@@ -73,9 +73,25 @@ class MessageShell extends Shell {
       'template' => $message['MessageTemplate']['code'],
     );
     
-    $this->Email->set( 'body_text', $message['MessageTemplate']['body_text'] );
-    $this->Email->set( 'body_html', $message['MessageTemplate']['body_html'] );
+    $this->set_variables( json_decode( $message['Message']['replacements'], true ) );
     
     return $this->Email->send( $settings ); 
+  }
+  
+  /**
+   * PRIVATE METHODS
+   */
+  
+  /**
+   * Sets replacement values for the view.
+   *
+   * @param   array $replacements
+   * @return  void
+   * @access  private
+   */
+  private function set_variables( $replacements ) {
+    foreach( $replacements as $key => $value ) {
+      $this->Email->set( $key, $value );
+    }
   }
 } 
