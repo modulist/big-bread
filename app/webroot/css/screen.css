@@ -39,10 +39,10 @@ p { margin:0; padding:0; }
 p a { font-weight: bold; }
 
 h1, #infohead { font: 30px/1.125 'BirraStout'; color:#0c4d54; font-weight:normal; margin: 0 0 10px 0; padding:0; line-height:1em; }
-h2 { font: 24px/1.125 'UltraRegular'; color:#0c4d54; font-weight: normal; margin: 1.75em 0 0.25em; letter-spacing: .07em; }
+h2 { font: 21px/1.125 'UltraRegular'; color:#0c4d54; font-weight: normal; margin: 1.75em 0 0.25em; letter-spacing: .07em; }
 aside h2 { font-size: 14px; }
-h3 { font: 21px/1.125 'UltraRegular'; color:#0c4d54; font-weight: normal; margin: 1.75em 0 0.25em; letter-spacing: .07em }
-h4 { font: 18px/1.125 'UltraRegular'; color:#0c4d54; font-weight: normal; margin: 1.75em 0 0.25em; letter-spacing: .07em }
+h3 { font: 18px/1.125 'UltraRegular'; color:#0c4d54; font-weight: normal; margin: 1.75em 0 0.25em; letter-spacing: .07em }
+h4 { font: 14px/1.125 'UltraRegular'; color:#0c4d54; font-weight: normal; margin: 1.75em 0 0.25em; letter-spacing: .07em }
 h1 a, h2 a, h3 a, h4 a { color: #3d7e65  }
 
 h5 { font: 16px/1.125 Arial, Helvetica, sans-serif; font-weight: bold; margin: 2em 0 0.25em; }
