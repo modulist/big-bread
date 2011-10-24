@@ -52,71 +52,92 @@ class ProposalsController extends AppController {
         'conditions' => array( 'Building.id' => $location_id ),
       )
     );
-
+    
     # Update a few validation rules that are specific to this context
-    $this->Proposal->Requestor->validate['phone_number']['notempty'] = array(
-      'rule'       => 'notEmpty',
-      'message'    => 'Please enter a phone number so can can contact you with any questions about the work.',
-      'allowEmpty' => false,
-      'required'   => true,
+    $this->Proposal->Requestor->validate = Set::merge(
+      $this->Proposal->Requestor->validate,
+      array(
+        'phone_number' => array(
+          'notempty' => array(
+            'rule'       => 'notEmpty',
+            'message'    => 'Please enter a phone number so can can contact you with any questions about the work.',
+            'allowEmpty' => false,
+            'required'   => true,
+            'last'       => true,
+          ),
+          'usphone' => array(
+            'allowEmpty' => false,
+            'required'   => true,
+          ),
+        )
+      )
     );
-    # In this context, utility data isn't required
-    foreach( array( 'Electricity', 'Gas', 'Water' ) as $utility ) {
-      $this->Proposal->Requestor->Building->{$utility . 'Provider'}->validate = array();
-      
-      # That said, if they'e emptied a value that already exists, we just want
-      # to remove that utility's association with this building; not update the
-      # utility itself.
-      if( isset( $this->data[$utility . 'Provider'] ) && empty( $this->data[$utility . 'Provider']['name'] ) ) {
-        $this->data['Building'][strtolower( $utility ) . '_provider_id'] = null;
-        unset( $this->data[$utility . 'Provider'] );
-      }
-    }
 
     if( !empty( $this->data ) ){
       $this->Proposal->Requestor->id = $this->Auth->user( 'id' );
       $this->Proposal->Requestor->Building->id = $this->data['Building']['id'];
       
+      # In this context, utility data isn't required.
+      foreach( array( 'Electricity', 'Gas', 'Water' ) as $utility ) {
+        $this->Proposal->Requestor->Building->{$utility . 'Provider'}->validate = array();
+        
+        # That said, if they'e emptied a value that already exists, we just want
+        # to remove that utility's association with this building; not update the
+        # utility itself.
+        if( isset( $this->data[$utility . 'Provider'] ) && empty( $this->data[$utility . 'Provider']['name'] ) ) {
+          $this->data['Building'][strtolower( $utility ) . '_provider_id'] = null;
+          unset( $this->data[$utility . 'Provider'] );
+        }
+      }
+      
       # Compile our validation errors from each separate
       $validationErrors = array();
-      if( !$this->Proposal->Requestor->validates( array( 'fieldList' => array_keys( $this->data['Requestor'] ) ) ) ) {
+      
+      $this->Proposal->Requestor->set( $this->data['Requestor'] );
+      if( !$this->Proposal->Requestor->validates( array( 'fieldList' => array( 'phone_number' ) ) ) ) {
         $validationErrors['Requestor'] = $this->Proposal->Requestor->validationErrors;
       }
       if( !$this->Proposal->Requestor->Building->saveAll( $this->data, array( 'validate' => 'only' ) ) ) {
-        $validationErrors = Set::merge( $validationErrors, $this->Proposal->Requestor->Building->validationErrors );
+        $validationErrors = array_merge( $validationErrors, $this->Proposal->Requestor->Building->validationErrors );
       }
-      
-      $this->data = Set::merge( $rebate, $location, $this->data );
       
       if( empty( $validationErrors ) ) {
         $this->Proposal->Requestor->saveField( 'phone_number', $this->data['Requestor']['phone_number'] );
         $this->Proposal->Requestor->Building->saveAll( $this->data, array( 'validate' => false ) ); # This was validated above
+          
+        # With basic validation done...get everything in one place
+        $this->data = Set::merge( $rebate, $location, $this->data );
         
         $this->data['Proposal']['user_id']                 = $this->Auth->user( 'id' );
         $this->data['Proposal']['technology_incentive_id'] = $this->data['TechnologyIncentive']['id'];
         $this->data['Proposal']['location_id']             = $this->data['Building']['id'];
         
         if( $this->Proposal->save( $this->data['Proposal'] ) ) {
-          # TODO: Pull the contractors the messages needs to be sent to
-          # TODO: Create a message record for each contractor
-          $message = array(
-            'model'        => 'Proposal',
-            'foreign_key'  => $this->Proposal->id,
-            'sender_id'    => $this->Auth->user( 'id' ),
-            'recipient_id' => $this->Auth->user( 'id' ),
+          # TODO: Retrieve the set of qualified contractors and iterate
+          # -- Generate a message record for each contractor recipient
+          $replacements = array(
+            'Proposal.scope_of_work' => $this->data['Proposal']['scope_of_work'] == 'install'
+              ? sprintf( __( 'Install or replace my %s', true ), $this->data['Technology']['title'] )
+              : sprintf( __( 'Repair or service my %s', true ), $this->data['Technology']['title'] ),
+            'Location.address_1' => $this->data['Address']['address_1'],
+            'Location.address_2' => $this->data['Address']['address_2'],
+            'Location.city'      => $this->data['Address']['ZipCode']['city'],
+            'Location.state'     => $this->data['Address']['ZipCode']['state'],
+            'Location.zip_code'  => $this->data['Address']['zip_code'],
+            'Sender.phone_number' => $this->Format->phone_number( $this->data['Requestor']['phone_number'] ),
+            'Sender.email'        => $this->Auth->user( 'email' ),
           );
           
-          $this->Proposal->Message->save( $message );
-          
-          # TODO: Send message via SendGrid?
-          new PHPDump( $this->data, 'Saved' ); exit;
+          $this->Proposal->Message->queue( MessageTemplate::TYPE_PROPOSAL, 'Proposal', $this->Proposal->id, $this->Auth->user( 'id' ), '<recipient_id>', $replacements );
+          exit( 'queued' );
+          $this->Session->setFlash( 'Your request for a quote has been delivered.', null, null, 'success' );
+          $this->redirect( array( 'controller' => 'users', 'action' => 'dashboard', $this->data['Building']['id'] ), null, true );
         }
         else {
           $this->Session->setFlash( 'There was a problem generating your proposal', null, null, 'error' );
         }
       }
       else {
-        new PHPDump( $validationErrors ); exit;
         # Write the complete list of validation errors to the view
         $this->set( compact( 'validationErrors' ) );
       }

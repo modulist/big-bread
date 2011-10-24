@@ -64,6 +64,81 @@ P.S. I''d appreciate it if you would pass us along to your friends if you think 
 Tony Maull, President </p>
 <p>P.S. I''d appreciate it if you would pass us along to your friends if you think they would like to Save Big Bread with you.</p>',
     NOW(), NOW()
+  ),
+  (
+    UUID(), 'proposal_request', '%Sender.full_name% requests a quote from a qualified contractor.',
+    'Please contact me to prepare an estimate for the following services:
+    
+Scope of Work
+-------------------------------------------------------------------------------
+%Proposal.scope_of_work%
+
+Contact Information
+-------------------------------------------------------------------------------
+%Location.address_1%
+%Location.address_2%
+%Location.city%, %Location.state% %Location.zip_code%
+
+%Sender.phone_number%
+%Sender.email%
+
+Contractor is responsible for reserving rebate funds with the program sponsor.
+
+%Proposal.under_warranty%
+%Proposal.permission_to_examine%
+
+Existing Equipment
+-------------------------------------------------------------------------------
+%Fixture.existing%
+
+Customer Notes
+-------------------------------------------------------------------------------
+%Proposal.notes%
+
+Quoted Incentive
+-------------------------------------------------------------------------------
+%TechnologyIncentive.details%
+
+Stacked Incentives
+-------------------------------------------------------------------------------
+%TechnologyIncentive.stack%
+    ',
+    '<h1>Please contact me to prepare an estimate for the following services:</h1>
+    
+<h2>Scope of Work</h2>
+<hr />
+<p>%Proposal.scope_of_work%</p>
+
+<h2>Contact Information</h2>
+<hr />
+<p>%Location.address_1%<br />
+%Location.address_2%<br />
+%Location.city%, %Location.state% %Location.zip_code%</p>
+
+<p>%Sender.phone_number%<br />
+%Sender.email%</p>
+
+<p>Contractor is responsible for reserving rebate funds with the program sponsor.</p>
+
+<p>%Proposal.under_warranty%<br />
+%Proposal.permission_to_examine%</p>
+
+<h2>Existing Equipment</h2>
+<hr />
+%Fixture.existing%
+
+<h2>Customer Notes</h2>
+<hr />
+<p>%Proposal.notes%</p>
+
+<h2>Quoted Incentive</h2>
+<hr />
+%TechnologyIncentive.details%
+
+<h2>Stacked Incentives</h2>
+<hr />
+%TechnologyIncentive.stack%',
+    NOW(), NOW()
   )
 ;
 
