@@ -40,7 +40,7 @@
   <?php endif; ?>
 </div><!-- /my-locations -->
 
-<h2><?php printf( __( 'Rebates for %s', true ), $location_title ) ?></h2>
+<h2 class="my-rebates"><?php printf( __( 'Rebates for %s', true ), $location_title ) ?></h2>
 <?php if( !empty( $rebates ) ): ?>
   <?php echo $this->element( '../technology_incentives/_list', array( 'rebates' => $rebates, 'watch_list' => $technology_watch_list, 'location_id' => $location['Building']['id'] ) ) ?>
 <?php else: ?>
@@ -48,7 +48,7 @@
 <?php endif; ?>
 
 
-<?php if( !empty( $pending_quotes ) ): ?>
+<?php //if( !empty( $pending_quotes ) ): ?>
   <div id="pending-quotes" class="grid_9">
     <h2><?php printf( __( 'Pending quotes for %s', true ), $location_title ) ?></h2>
     <table class="pending-quotes">
@@ -72,7 +72,7 @@
         </tr>
     </table>
   </div>  
-<?php endif; ?>
+<?php //endif; ?>
 
 <div id="my-interests" class="grid_9">
 	<h2><?php printf( __( 'My interests for %s', true ), $location_title ) ?></h2>
