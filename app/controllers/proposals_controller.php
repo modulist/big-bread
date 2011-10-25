@@ -35,6 +35,7 @@ class ProposalsController extends AppController {
    * @param   $id           The rebate to be quoted.
    * @param   $location_id  The location to which the quote applies.
    * @access	public
+   * @todo    rename to "request". proposals/quote makes no sense.
    */
   public function quote( $id, $location_id = null ) {
     $rebate   = $this->Proposal->Technology->TechnologyIncentive->get( $id );
@@ -115,10 +116,17 @@ class ProposalsController extends AppController {
         if( $this->Proposal->save( $this->data['Proposal'] ) ) {
           # TODO: Retrieve the set of qualified contractors and iterate
           # -- Generate a message record for each contractor recipient
-          # TODO: Pull existing equipment for this technology in this location
-          # TODO: Pull related rebates
-          
-          # new PHPDump( $this->data ); exit;
+          $stackable_rebates = $this->Proposal->Technology->TechnologyIncentive->related( $this->data['TechnologyIncentive'], $this->data['Address']['zip_code'], $this->data['Incentive']['equipment_manufacturer_id'] );
+          $fixtures = $this->Proposal->Technology->Fixture->find(
+            'all',
+            array(
+              'contain'    => false,
+              'conditions' => array(
+                'Fixture.building_id'   => $this->data['Building']['id'],
+                'Fixture.technology_id' => $this->data['Technology']['id']
+              ),
+            )
+          );
           
           $replacements = array(
             'sender_full_name' => sprintf( '%s %s', $this->data['User']['first_name'], $this->data['User']['last_name'] ),
@@ -130,6 +138,7 @@ class ProposalsController extends AppController {
               'permission_to_examine' => $this->data['Proposal']['permission_to_examine'],
               'notes' => $this->data['Proposal']['notes'],
             ),
+            'fixtures' => $fixtures,
             'location' => array(
               'address_1' => $this->data['Address']['address_1'],
               'address_2' => $this->data['Address']['address_2'],
@@ -147,8 +156,14 @@ class ProposalsController extends AppController {
               'amount_type' => array(
                 'code'   => $this->data['IncentiveAmountType']['incentive_amount_type_id'],
                 'symbol' => $this->data['IncentiveAmountType']['name'],
-              )
+              ),
+              'expiration_date' => $this->data['Incentive']['expiration_date'],
+              'energy_source' => Set::extract( '/EnergySource/name', $this->data ),
+              'options' => Set::extract( '/TechnologyOption/name', $this->data ),
+              'terms' => $this->data['TechnologyTerm'],
             ),
+            'stackable_rebates' => $stackable_rebates,
+            'technology' => $this->data['Technology'],
           );
           
           # TODO: change the recipient id

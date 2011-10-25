@@ -232,7 +232,7 @@ class TechnologyIncentive extends AppModel {
     
     $technology_join_conditions = array(
       'TechnologyIncentive.technology_id = Technology.id',
-      'TechnologyIncentive.technology_id' => $technology_incentive['Technology']['id'],
+      'TechnologyIncentive.technology_id ' => $technology_incentive['technology_id'],
     );
      
     $related = $this->find(
@@ -290,7 +290,7 @@ class TechnologyIncentive extends AppModel {
           'IncentiveAmountType.name',
         ),
         'conditions' => array(
-          'NOT' => array( 'TechnologyIncentive.id' => $technology_incentive['TechnologyIncentive']['id'] ),
+          'NOT' => array( 'TechnologyIncentive.id' => $technology_incentive['id'] ),
           'Incentive.excluded' => 0,
           'TechnologyIncentive.is_active' => 1,
           'OR' => self::geo_scope_conditions( $zip_code ),
