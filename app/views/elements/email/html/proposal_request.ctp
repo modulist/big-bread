@@ -1,4 +1,46 @@
+<p><?php __( 'Please contact me to prepare an estimate for the following services:' ) ?></p>
+    
+<p><strong><?php __( 'Scope of Work' ) ?></strong></p>
+<hr />
+<p><?php echo h( $proposal['scope_of_work'] ) ?></p>
 
+<p><strong><?php __( 'Contact Information' ) ?></strong></p>
+<hr />
+<div>
+  <?php echo h( $location['address_1'] ) ?><br />
+  <?php if( !empty( $location['address_2'] ) ): ?>
+    <?php echo h( $location['address_2'] ) ?><br />
+  <?php endif; ?>
+  <?php printf( '%s, %s, %s', h( $location['city'] ), h( $location['state'] ), h( $location['zip_code'] ) ) ?>
+</div>
+
+<p>
+  <?php echo h( $sender['phone_number'] ) ?><br />
+  <?php echo h( $sender['email'] ) ?>
+</p>
+
+<p><?php __( 'Contractor is responsible for reserving rebate funds with the program sponsor.' ) ?></p>
+
+<p><?php printf( __( 'This work %s covered by a warranty.', true ), $proposal['under_warranty'] ? __( 'is', true ) : __( 'is not', true ) ) ?></p>
+<p><?php printf( __( 'You %s permission to examine the equipment.', true ), $proposal['permission_to_examine'] ? 'have' : 'do not have' ) ?></p>
+
+<p><strong><?php __( 'Existing Equipment' ) ?></strong></p>
+<hr />
+<p>%Fixture.existing%</p>
+
+<p><strong><?php __( 'Customer Notes' ) ?></strong></p>
+<hr />
+<p><?php echo !empty( $proposal['notes'] ) ? h( $proposal['notes'] ) : __( 'None provided.', true ) ?></p>
+
+<p><strong><?php __( 'Quoted Incentive' ) ?></strong></p>
+<hr />
+<?php printf( '%s (%s%s%s)', h( $rebate['name'] ), $rebate['amount_type']['code'] == 'USD' ? $rebate['amount_type']['symbol'] : false, $rebate['amount'], $rebate['amount_type']['code'] != 'USD' ? $rebate['amount_type']['symbol'] : false ) ?>
+
+<p><strong><?php __( 'Stacked Incentives' ) ?></strong></p>
+<hr />
+<p>%TechnologyIncentive.stack%</p>
+
+<?php /*  ?>
 <p><?php __( 'Please contact me to prepare an estimate for the following services:' ) ?></p>
 
 <?php
@@ -200,3 +242,5 @@ switch( $proposal['urgency'] ) {
   </p>
   <hr style="visibility: hidden" />
 <?php endforeach; ?>
+
+<?php */ ?>

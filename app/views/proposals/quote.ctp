@@ -12,7 +12,11 @@
     <?php echo $this->Form->input( 'Proposal.scope_of_work', array( 'type' => 'radio', 'options' => $options, 'default' => 'install', 'legend' => false ) ) ?>
     
     <h4><?php __( 'Will this work be covered by a warranty?' ) ?></h4>
-    <?php echo $this->Form->input( 'Proposal.under_warranty', array( 'type' => 'radio', 'options' => array( 'No', 'Yes' ), 'default' => 1, 'legend' => false ) ) ?>
+    <?php echo $this->Form->input( 'Proposal.under_warranty', array( 'type' => 'radio', 'options' => array( 1 => 'Yes', 0 => 'No' ), 'default' => 1, 'legend' => false ) ) ?>
+    
+    <h4><?php __( 'Mind if we take a look?' ) ?></h4>
+    <p><?php __( 'We need your permission to inspect your existing equipment.' ) ?></p>
+    <?php echo $this->Form->input( 'Proposal.permission_to_examine', array( 'type' => 'radio', 'options' => array( 1 => 'Yes', 0 => 'No' ), 'default' => 1, 'legend' => false ) ) ?>
   </div>
   
   <div class="form-field-group clearfix">

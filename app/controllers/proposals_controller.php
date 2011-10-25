@@ -115,21 +115,45 @@ class ProposalsController extends AppController {
         if( $this->Proposal->save( $this->data['Proposal'] ) ) {
           # TODO: Retrieve the set of qualified contractors and iterate
           # -- Generate a message record for each contractor recipient
+          # TODO: Pull existing equipment for this technology in this location
+          # TODO: Pull related rebates
+          
+          # new PHPDump( $this->data ); exit;
+          
           $replacements = array(
-            'Proposal.scope_of_work' => $this->data['Proposal']['scope_of_work'] == 'install'
-              ? sprintf( __( 'Install or replace my %s', true ), $this->data['Technology']['title'] )
-              : sprintf( __( 'Repair or service my %s', true ), $this->data['Technology']['title'] ),
-            'Location.address_1' => $this->data['Address']['address_1'],
-            'Location.address_2' => $this->data['Address']['address_2'],
-            'Location.city'      => $this->data['Address']['ZipCode']['city'],
-            'Location.state'     => $this->data['Address']['ZipCode']['state'],
-            'Location.zip_code'  => $this->data['Address']['zip_code'],
-            'Sender.phone_number' => $this->Format->phone_number( $this->data['Requestor']['phone_number'] ),
-            'Sender.email'        => $this->Auth->user( 'email' ),
+            'sender_full_name' => sprintf( '%s %s', $this->data['User']['first_name'], $this->data['User']['last_name'] ),
+            'proposal' => array(
+              'scope_of_work' => $this->data['Proposal']['scope_of_work'] == 'install'
+                ? sprintf( __( 'Install or replace my %s.', true ), strtolower( Inflector::singularize( $this->data['Technology']['title'] ) ) )
+                : sprintf( __( 'Repair or service my %s.', true ), strtolower( Inflector::singularize( $this->data['Technology']['title'] ) ) ),
+              'under_warranty' => $this->data['Proposal']['under_warranty'],
+              'permission_to_examine' => $this->data['Proposal']['permission_to_examine'],
+              'notes' => $this->data['Proposal']['notes'],
+            ),
+            'location' => array(
+              'address_1' => $this->data['Address']['address_1'],
+              'address_2' => $this->data['Address']['address_2'],
+              'city'      => $this->data['Address']['ZipCode']['city'],
+              'state'     => $this->data['Address']['ZipCode']['state'],
+              'zip_code'  => $this->data['Address']['zip_code'],
+            ),
+            'sender' => array(
+              'phone_number' => $this->data['Requestor']['phone_number'],
+              'email'        => $this->Auth->user( 'email' ),
+            ),
+            'rebate' => array(
+              'amount' => $this->data['TechnologyIncentive']['amount'],
+              'name'   => $this->data['Incentive']['name'],
+              'amount_type' => array(
+                'code'   => $this->data['IncentiveAmountType']['incentive_amount_type_id'],
+                'symbol' => $this->data['IncentiveAmountType']['name'],
+              )
+            ),
           );
           
-          $this->Proposal->Message->queue( MessageTemplate::TYPE_PROPOSAL, 'Proposal', $this->Proposal->id, $this->Auth->user( 'id' ), '<recipient_id>', $replacements );
-          exit( 'queued' );
+          # TODO: change the recipient id
+          $this->Proposal->Message->queue( MessageTemplate::TYPE_PROPOSAL, 'Proposal', $this->Proposal->id, $this->Auth->user( 'id' ), $this->Auth->user( 'id' ), $replacements );
+           
           $this->Session->setFlash( 'Your request for a quote has been delivered.', null, null, 'success' );
           $this->redirect( array( 'controller' => 'users', 'action' => 'dashboard', $this->data['Building']['id'] ), null, true );
         }
