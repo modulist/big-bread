@@ -543,7 +543,8 @@ a.button {
 .choose-button {float:left; background: url(/img/button-choose.png) no-repeat; width:118px; height: 22px; margin-top: 12px;}
 .choose-button p {font: 11px/1 Georgia, serif; color: #fff; padding: 5px; vertical-align: middle;}
 
-a.remove-button { color: #c00; }
+a.edit-button { background: url(../img/sprite-rebate-table.png) -15px -128px no-repeat; padding-left: 15px; }
+a.remove-button { background: url(../img/sprite-rebate-table.png) -15px -147px no-repeat; padding-left: 17px; color: #c00; }
 
 a.details-button, a.quote-button { display: inline-block; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; color: #fff; padding: 3px 5px 3px 9px; margin-bottom: 2px; }
 a.details-button:hover, a.quote-button:hover { text-decoration: none; background-color: #333; }
