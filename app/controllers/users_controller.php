@@ -410,7 +410,6 @@ class UsersController extends AppController {
     }
     
     if( !$this->User->watch( $model, $id, $user_id, $location_id ) ) {
-      new PHPDump( $this->User->invalidFields() ); exit;
       $this->Session->setFlash( __( 'There was a problem updating your interests.', true ), null, null, 'error' );
     }
     

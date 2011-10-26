@@ -51,6 +51,9 @@ class MessageShell extends Shell {
           $this->Message->id = $message['Message']['id'];
           $this->Message->saveField( 'sent', date( DATETIME_FORMAT_MYSQL ) );
         }
+        else {
+          $this->out( 'Send failed. No reason was provided.' );
+        }
       }
       else {
         $this->out( 'Unable to send a(n) ' . strtolower( $message['MessageTemplate']['type'] ) . ' message.' );

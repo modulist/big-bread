@@ -39,8 +39,6 @@ CREATE TABLE message_templates(
   code        varchar(255)  NOT NULL,
   type        varchar(255)  NOT NULL DEFAULT 'EMAIL',
   subject     varchar(255)  NULL,
-  body_text   text          NOT NULL,
-  body_html   text          NOT NULL,
   created     datetime      NOT NULL,
   modified    datetime      NOT NULL,
   
@@ -49,97 +47,8 @@ CREATE TABLE message_templates(
 
 INSERT INTO message_templates( id, code, subject, body_text, body_html, created, modified )
 VALUES
-  ( UUID(), 'new_user', 'Thanks for registering to Save Big Bread at SaveBigBread.com',
-    'Hi, %Recipient.first_name%. Welcome to SaveBigBread.com - your free and easy way to save on home improvement. Saving money is hard so we want to make it a virtual no-brainer to find rebates that apply to you, connect you with contractors authorized by program sponsors and finish the paperwork that gets you a check. 
-
-Please send me an email if you need any help or if you have an idea on how we can improve our service. We''re always looking for a better way to make Saving Big Bread easier.
-
-Regards,
-Tony Maull, President 
-
-P.S. I''d appreciate it if you would pass us along to your friends if you think they would like to Save Big Bread with you.',
-    '<p>Hi, %Recipient.first_name%. Welcome to SaveBigBread.com - your free and easy way to save on home improvement. Saving money is hard so we want to make it a virtual no-brainer to find rebates that apply to you, connect you with contractors authorized by program sponsors and finish the paperwork that gets you a check. </p>
-<p>Please send me an email if you need any help or if you have an idea on how we can improve our service. We''re always looking for a better way to make Saving Big Bread easier.</p>
-<p>Regards,<br />
-Tony Maull, President </p>
-<p>P.S. I''d appreciate it if you would pass us along to your friends if you think they would like to Save Big Bread with you.</p>',
-    NOW(), NOW()
-  ),
-  (
-    UUID(), 'proposal_request', '%Sender.full_name% requests a quote from a qualified contractor.',
-    'Please contact me to prepare an estimate for the following services:
-    
-Scope of Work
--------------------------------------------------------------------------------
-%Proposal.scope_of_work%
-
-Contact Information
--------------------------------------------------------------------------------
-%Location.address_1%
-%Location.address_2%
-%Location.city%, %Location.state% %Location.zip_code%
-
-%Sender.phone_number%
-%Sender.email%
-
-Contractor is responsible for reserving rebate funds with the program sponsor.
-
-%Proposal.under_warranty%
-%Proposal.permission_to_examine%
-
-Existing Equipment
--------------------------------------------------------------------------------
-%Fixture.existing%
-
-Customer Notes
--------------------------------------------------------------------------------
-%Proposal.notes%
-
-Quoted Incentive
--------------------------------------------------------------------------------
-%TechnologyIncentive.details%
-
-Stacked Incentives
--------------------------------------------------------------------------------
-%TechnologyIncentive.stack%
-    ',
-    '<h1>Please contact me to prepare an estimate for the following services:</h1>
-    
-<h2>Scope of Work</h2>
-<hr />
-<p>%Proposal.scope_of_work%</p>
-
-<h2>Contact Information</h2>
-<hr />
-<p>%Location.address_1%<br />
-%Location.address_2%<br />
-%Location.city%, %Location.state% %Location.zip_code%</p>
-
-<p>%Sender.phone_number%<br />
-%Sender.email%</p>
-
-<p>Contractor is responsible for reserving rebate funds with the program sponsor.</p>
-
-<p>%Proposal.under_warranty%<br />
-%Proposal.permission_to_examine%</p>
-
-<h2>Existing Equipment</h2>
-<hr />
-%Fixture.existing%
-
-<h2>Customer Notes</h2>
-<hr />
-<p>%Proposal.notes%</p>
-
-<h2>Quoted Incentive</h2>
-<hr />
-%TechnologyIncentive.details%
-
-<h2>Stacked Incentives</h2>
-<hr />
-%TechnologyIncentive.stack%',
-    NOW(), NOW()
-  )
+  ( UUID(), 'new_user', 'Thanks for registering to Save Big Bread at SaveBigBread.com', NOW(), NOW() ),
+  ( UUID(), 'proposal_request', '%Sender.full_name% requests a quote from a qualified contractor.', NOW(), NOW() )
 ;
 
 ALTER TABLE proposals
