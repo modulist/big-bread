@@ -429,16 +429,17 @@ body.dashboard .my-interests-grid { background: none; }
 /* ============================= Dashboard elements ======================= */
 
 #my-locations { font-size: 14px; padding-left:10px; padding-right: 0; }
-#my-utilities { font-size: 14px; padding-left:10px; padding-right: 0; margin-top:20px; margin-bottom: 40px; background: url(/img/dotrule-green-4px.png) top left repeat-x, url(/img/dotrule-green-4px.png) bottom left repeat-x;}
+#my-utilities { font-size: 14px; padding: 5px 0 0 10px; margin: 0 0 40px; background: url(/img/dotrule-green-4px.png) top left repeat-x, url(/img/dotrule-green-4px.png) bottom left repeat-x;}
 #my-equipment { font-size: 14px; padding-right: 0; }
 
 #my-locations h2, #my-utilities h2 { margin: 20px 0 0; }
-#my-locations h4 { margin: 0 10px 10px 110px; font-size: 14px; background: url(/img/dotrule-orange-2px.png) bottom repeat-x; padding: 0 0 10px; }
+#my-locations h4 { margin: 0 10px 10px 110px; font-size: 16px; text-transform: capitalize; background: url(/img/dotrule-orange-2px.png) bottom repeat-x; padding: 0 0 10px; }
 .location-wrapper, .utilities-wrapper, .equipment-wrapper { margin-top: 20px; }
 .location-icon { float:left; background: url(/img/icon-location.png) no-repeat; width: 87px; height: 45px; font: 14px/1 'BirraStout', serif; color: #0c4d54; text-align: center; padding: 23px 12px 0 0; letter-spacing: -.2em; margin-right:20px; }
 .location-icon-large { float:left; background: url(/img/icon-locations-lg.png) no-repeat; width: 127px; height: 90px; font: 14px/1 'BirraStout', serif; color: #0c4d54; text-align: center; padding: 23px 12px 0 0; letter-spacing: -.2em; margin-right:10px; }
 .utilities-icon { float:left; background: url(/img/icon-utilities.png) no-repeat; width: 127px; height: 90px; font: 14px/1 'BirraStout', serif; color: #0c4d54; text-align: center; padding: 23px 12px 0 0; letter-spacing: -.2em; margin-right:10px; }
-.location-address { float: left; width: 170px; margin: 0 10px; }
+.location-address { text-transform: capitalize; line-height: 20px; float: left; width: 190px; margin: 1px 10px 0 0; }
+.location-address .add-edit { text-transform: none; margin: 10px 0 0; }
 .location-address p { font-weight: bold; color: #548287; line-height: 18px; }
 
 table.location-equipment { width: 350px; margin: 0 0 15px; }
@@ -447,14 +448,17 @@ table.location-equipment { width: 350px; margin: 0 0 15px; }
 .location-equipment td { padding: 2px 5px; }
 .location-equipment td.model-name { width: 40%; }
 .location-equipment td.controls { width: 20%; font-size: 11px; letter-spacing: .06em; }
-a.location-switcher { width: 200px; display: block; background-color: #4c96b6; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; text-align: center; margin: 10px 0 0; padding: 3px 15px; float: left; }
+.location-switch-wrapper { position: relative; right: 10px; top: 5px; float: right }
+a.location-switcher { width: 150px; display: block; background-color: #4c96b6; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; text-align: center; margin: 10px 0 0; padding: 3px 15px; float: left; }
 a.location-switcher:hover { background-color: #3b7e9a; text-decoration: none; }
 
 ul.other-location-list { display: none  }
-ul.other-location-list.active { display: block; position: absolute; z-index: 100; list-style: none;  text-transform: capitalize; margin: 0; padding: 0; background-color: rgba(255,255,255,.92); border: 1px solid #ccc; box-shadow: 5px 5px 7px rgba(0,0,0,.35)  }
+ul.other-location-list.active { display: block; position: absolute; z-index: 100; width: 200px; list-style: none;  text-transform: capitalize; margin: 0; padding: 0; background-color: rgba(255,255,255,.92); border: 1px solid #ccc; box-shadow: 5px 5px 7px rgba(0,0,0,.35)  }
 ul.other-location-list li { padding: 3px 10px;  }
 ul.other-location-list li:hover { background-color: #4c96b6; color: white;  }
-table.current-equipment { width: 100%; margin: 0 0 15px; /*background: url(/img/dotrule-orange-2px.png) top repeat-x;*/ }
+ul.other-location-list li a:hover { color: white; text-decoration: none; }
+table.current-equipment { width: 100%; padding: 0 0 15px; margin: 0 0 15px; background: url(/img/dotrule-orange-2px.png) bottom repeat-x; }
+table.current-equipment td { padding: 3px 10px; }
 .current-equipment-icon {float:left; background: url(/img/equipment-current-icon.png) no-repeat; width: 67px; height: 71px;margin-right: 10px;}
 .current-equipment-title {font: 14px/1.2 'UltraRegular', Georgia, serif; color: #0c4d54;vertical-align: bottom;margin-top: 40px;}
 .add-equipment-grid.grid_3 { width: 220; margin-right:20px; float:right; vertical-align: top;}
@@ -530,9 +534,10 @@ a.button {
   float: left; padding: 13px 15px; }
 .intro button,
 .intro a.button { font-size: 14px; margin-bottom: 10px; text-decoration: none; }
-.add-location-button { background-color: #4ac092; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; text-align: center; margin: 10px 0 0; padding: 3px 15px; float: right; }
+.add-location-button { height: 17px; background-color: #4ac092; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; text-align: center; margin: 0 0 0 15px; padding: 3px 15px;  }
+.add-location-button:hover { background-color: #1e9055; text-decoration: none; }
 .edit-location-button { display: block; width: 48px; background: url(/img/bk-blue-popup.png) 42px -10px no-repeat #4c96b6; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; margin: 10px 0 0; padding: 4px 10px;  }
-.add-equipment-button { background-color: #4c96b6; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; text-align: center; margin: 10px 0 0; padding: 3px 15px; }
+.add-equipment-button { height: 17px; background-color: #4c96b6; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; text-align: center; margin: 0; padding: 3px 15px; }
 .edit-location-button:hover,
 .add-equipment-button:hover { background-color: #3b7e9a; text-decoration: none; }
 .choose-button {float:left; background: url(/img/button-choose.png) no-repeat; width:118px; height: 22px; margin-top: 12px;}
