@@ -18,23 +18,25 @@
     <?php echo $this->Form->end( __( 'Add location', true ) ) ?>
   <?php else: ?>
       <h2><?php __( 'My location' ) ?>:</h2>
-    <div class="clearfix">
+    <div class="location-switch-wrapper clearfix">
       <?php echo $this->element( '../buildings/_location_switcher', array( 'locations' => $other_locations ) ) ?>
-      <?php echo $this->Html->link( sprintf( __( 'Add a location %s', true ), '&rsaquo;' ), array( 'controller' => 'buildings', 'action' => 'add' ), array( 'class' => 'add-location-button', 'escape' => false ) ) ?>
     </div>
     
     <div class="location-wrapper clearfix">
         <div class="location-icon"><?php # echo $i ?>1</div>
         <h4><?php echo !empty( $location['Building']['name'] ) ? h( $location['Building']['name'] ) : h( $location['Address']['address_1'] ) ?></h4>
         <div class="location-address">
-          <p><?php echo $this->element( 'address', array( 'address' => $location['Address'] ) ) ?></p>
-          <?php echo $this->Html->link( __( 'edit', true ), array( 'controller' => 'buildings', 'action' => 'edit', h( $location['Building']['id'] ) ), array( 'class' => 'edit-button' ) ) ?>
+          <?php echo $this->element( 'address', array( 'address' => $location['Address'] ) ) ?>
+          <div class="add-edit clearfix"><?php echo $this->Html->link( __( 'edit', true ), array( 'controller' => 'buildings', 'action' => 'edit', h( $location['Building']['id'] ) ), array( 'class' => 'edit-button' ) ) ?>
           |
-          <?php echo $this->Html->link( __( 'remove', true ), '#', array( 'class' => 'remove-button' ) ) ?>
+          <?php echo $this->Html->link( __( 'remove', true ), '#', array( 'class' => 'remove-button' ) ) ?></div>
         </div>
         <div class="location-equipment-grid grid_5">
           <?php echo $this->element( '../fixtures/_list', array( 'plugin' => false, 'fixtures' => $fixtures ) ) ?>
           <?php echo $this->Html->link( __( 'Add equipment', true ), array( 'controller' => 'fixtures', 'action' => 'add', $location['Building']['id'] ), array( 'class' => 'add-equipment-button' ) ) ?>
+          <!-- add a location button -->
+          <?php echo $this->Html->link( sprintf( __( 'Add a location %s', true ), '&rsaquo;' ), array( 'controller' => 'buildings', 'action' => 'add' ), array( 'class' => 'add-location-button', 'escape' => false ) ) ?>
+
       </div><!-- /location-equipment-grid -->
     </div><!-- /location-wrapper -->
   <?php endif; ?>
@@ -44,7 +46,7 @@
 <?php if( !empty( $rebates ) ): ?>
   <?php echo $this->element( '../technology_incentives/_list', array( 'rebates' => $rebates, 'watch_list' => $technology_watch_list, 'location_id' => $location['Building']['id'] ) ) ?>
 <?php else: ?>
-  <p><?php __( 'Wondering why you don\'t see any rebates? It\'s because you haven\'t had a chance to identify any interests for this location. Scroll down to do just that.' ) ?></p>
+  <p style="margin-left: 10px"><?php __( 'Wondering why you don\'t see any rebates? It\'s because you haven\'t had a chance to identify any interests for this location. Scroll down to do just that.' ) ?></p>
 <?php endif; ?>
 
 
