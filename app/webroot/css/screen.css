@@ -448,8 +448,9 @@ table.location-equipment { width: 350px; margin: 0 0 15px; }
 .location-equipment td { padding: 2px 5px; }
 .location-equipment td.model-name { width: 40%; }
 .location-equipment td.controls { width: 20%; font-size: 11px; letter-spacing: .06em; }
-.equipment-tag { position: relative; top: 300px; right: 40px; }
+.equipment-tag { position: relative; top: 300px; right: 40px; height: 0; }
 .equipment-tag img { width: 270px; }
+.equipment-tag small { width: 220px; left: 40px; }
 .location-switch-wrapper { position: relative; right: 10px; top: 5px; float: right }
 a.location-switcher { width: 150px; display: block; background-color: #4c96b6; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; text-align: center; margin: 10px 0 0; padding: 3px 15px; float: left; }
 a.location-switcher:hover { background-color: #3b7e9a; text-decoration: none; }

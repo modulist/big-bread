@@ -36,7 +36,10 @@
         <?php echo $this->Form->end( sprintf( __( 'Add to %s', true ), $location_name ) ) ?>
       </div><!-- /location-equipment-->	
         
-      <div class="equipment-tag grid_3"><img src="/img/sticker-sm.jpg" alt="sample equipment tag" /></div>
+      <div class="equipment-tag grid_3">
+      	<img src="/img/sticker-sm.jpg" alt="sample equipment tag" />
+    		<small>Do not open the cabinet of any equipment while the unit is in operation or if it creates a safety issue or violates a warranty requirement.</small>
+    	</div>
 
       <div class="add-equipment-grid grid_3">
         <div class="clearfix">
