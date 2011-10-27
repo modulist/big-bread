@@ -5,9 +5,9 @@
   <div id="nav-links">
     <ul id="menu">
       <?php if( $this->Session->check( 'Auth.User' ) ): ?>
-        <li class="first last"><?php echo $this->Html->link( 'Log out', array( 'controller' => 'users', 'action' => 'logout' ) ) ?></li>
+        <li class="first last"><?php echo $this->Html->link( 'Logout', array( 'controller' => 'users', 'action' => 'logout' ) ) ?></li>
       <?php else: ?>
-        <li class="first"><?php echo $this->Html->link( 'Log in', array( 'controller' => 'users', 'action' => 'login' ) ) ?></li>
+        <li class="first"><?php echo $this->Html->link( 'Login', array( 'controller' => 'users', 'action' => 'login' ) ) ?></li>
         <li class="last"><?php echo $this->Html->link( 'Sign up', array( 'controller' => 'users', 'action' => 'register' ) ) ?></li>
       <?php endif; ?>
     </ul>
