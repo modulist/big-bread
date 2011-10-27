@@ -4,7 +4,7 @@ $(document).ready( function() {
     e.preventDefault();
     
     var $this                 = $(this);
-    var selected_id           = $this.attr( 'data-watch-technology-id' );
+    var selected_id           = $this.attr( 'data-technology-id' );
     var technology_watch_list = $('#WatchedTechnologySelected').val().split( ',' );
     
     $this.parent().toggleClass( 'active' );

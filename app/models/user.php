@@ -27,6 +27,11 @@ class User extends AppModel {
       'foreignKey' => 'client_id',
       'dependent'  => true,
     ),
+    'Message' => array(
+      'className'   => 'Message',
+      'foreignKey' => 'foreign_key',
+      'conditions'  => array( 'Message.model' => 'User' ),
+    ),
     'Property' => array(
       'className'  => 'Building',
       'foreignKey' => 'realtor_id',
