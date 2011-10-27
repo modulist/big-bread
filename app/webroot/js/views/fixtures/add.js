@@ -3,6 +3,12 @@ $.getScript( '/js/views/buildings/_location_switcher.js' );
 $(document).ready( function() {
   var now = new Date();
   
+  $( '.tooltip' ).tipsy({
+    gravity: 'w',
+    trigger: 'focus',
+    fade: true
+  });
+  
   $( '#FixtureTechnologyId' ).change( function( e ) {
     var $this = $(this);
     var tech  = $this.find( 'option:selected' ).text();
