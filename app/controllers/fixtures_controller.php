@@ -60,6 +60,8 @@ class FixturesController extends AppController {
         ),
       )
     );
+    # Other locations that the user will be able to switch to
+    $other_locations = $this->User->locations( null, null, array( 'Building.id <> ' => $location['Building']['id'] ) );
     
     # Passed along in the form's action
     $action_param = $location['Building']['id'];
@@ -80,7 +82,7 @@ class FixturesController extends AppController {
       }
     }
       
-    $this->set( compact( 'action_param', 'fixtures', 'location', 'location_name', 'technologies' ) );
+    $this->set( compact( 'action_param', 'fixtures', 'location', 'location_name', 'other_locations', 'technologies' ) );
 	}
 
 	public function edit( $fixture_id ) {

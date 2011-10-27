@@ -2,8 +2,8 @@
   <div id="my-equipment">
     <div class="clearfix">
       <h2><?php printf( __( '%s equipment at %s', true ), ucwords( $this->action ), h( $location_name ) ) ?>:</h2>
-      <div class="location-switch-wrapper clearfix">location-switcher
-      	<?php //echo $this->element( '../buildings/_location_switcher', array( 'locations' => $other_locations ) ) ?>
+      <div class="location-switch-wrapper clearfix">
+      	<?php echo $this->element( '../buildings/_location_switcher', array( 'locations' => $other_locations ) ) ?>
 	    </div><!-- /location-switcher -->
     </div>
     
