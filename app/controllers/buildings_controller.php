@@ -12,6 +12,8 @@ class BuildingsController extends AppController {
   public function beforeFilter() {
     parent::beforeFilter();
     
+    $this->Auth->allow( 'highlights' );
+    
     # TODO: Move this to a component callback?
     # Squash the phone number if it exists in a data array to prep for save
     if( !empty( $this->data[$this->Building->Client->alias]['phone_number'] ) && is_array( $this->data[$this->Building->Client->alias]['phone_number'] ) ) {
@@ -23,6 +25,29 @@ class BuildingsController extends AppController {
     # Explode the phone number if it exists in a data array to prep for form display
     if( isset( $this->data[$this->Building->Client->alias]['phone_number'] ) && is_string( $this->data[$this->Building->Client->alias]['phone_number'] ) ) {
       $this->data[$this->Building->Client->alias]['phone_number'] = $this->Format->phone_number( $this->data[$this->Building->Client->alias]['phone_number'] );
+    }
+  }
+  
+  /**
+   * The savings highlights for a given zip code.
+   *
+   * @param   $zip_code
+   * @param   $group_savings  Whether to sum the savings total by tech group
+   * @return  array
+   * @access  public
+   */
+  public function highlights( $zip_code, $group_savings = false ) {
+    $overview = array(
+      'locale'           => $this->Building->Address->ZipCode->locale( $zip_code ),
+      'total_savings'    => $this->Building->Address->ZipCode->savings( $zip_code, $group_savings, 'HVAC' ),
+      'featured_rebates' => $this->Building->Address->ZipCode->featured_rebates( $zip_code ),
+    );
+    
+    if( $this->RequestHandler->isAjax() ) {
+      $this->autoRender = false;
+      $this->RequestHandler->setContent( 'json', 'application/json' );
+      echo json_encode( $overview );
+      exit();
     }
   }
   

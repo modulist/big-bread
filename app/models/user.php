@@ -27,10 +27,6 @@ class User extends AppModel {
       'foreignKey' => 'client_id',
       'dependent'  => true,
     ),
-    'Message' => array(
-      'foreign_key' => 'foreign_key',
-      'conditions'  => array( 'Message.model' => 'User' ),
-    ),
     'Property' => array(
       'className'  => 'Building',
       'foreignKey' => 'realtor_id',
@@ -38,6 +34,16 @@ class User extends AppModel {
     ),
     'Proposal' => array(
       'dependent' => true,
+    ),
+    'ReceivedMessage' => array(
+      'className'   => 'Message',
+      'foreignKey' => 'recipient_id',
+      'conditions'  => array( 'ReceivedMessage.model' => 'User' ),
+    ),
+    'SentMessage' => array(
+      'className'   => 'Message',
+      'foreignKey' => 'sender_id',
+      'conditions'  => array( 'SentMessage.model' => 'User' ),
     ),
     'TechnologyWatchList' => array(
       'className'  => 'WatchList',
@@ -454,25 +460,6 @@ class User extends AppModel {
     );
     
     return $this->TechnologyWatchList->delete( $watch_list_id );
-  }
-  
-  /**
-   * Retrieves the incentives relevant to a given user's list of
-   * watched technologies.
-   *
-   * @param 	$user_id
-   * @return	array
-   * @access	public
-   */
-  public function rebates( $user_id = null, $limit = null ) {
-    $user_id = !empty( $user_id ) ? $user_id : self::get( 'id' );
-    
-    # TODO: implement.
-    throw new Exception( 'User::watched_technologies() has not be implemented.' );
-  
-    # Pull technology IDs in user's TechnologyWatchList
-    # Which location or locations are we interested in?
-    # Call TechnologyIncentive->all() to get rebates
   }
   
   /**

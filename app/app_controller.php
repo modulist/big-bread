@@ -43,6 +43,11 @@ class AppController extends Controller {
    * CALLBACKS
    */
   
+  /**
+   * CakePHP beforeFilter callback.
+   *
+   * @access  public
+   */
   public function beforeFilter() {
     if( !$this->RequestHandler->isAjax() ) { # Don't mess w/ ajax requests (same origin policy)
       # Force expected actions to https, others away from it.
@@ -124,6 +129,11 @@ class AppController extends Controller {
     }
   }
 
+  /**
+   * CakePHP beforeRender callback.
+   *
+   * @access  public
+   */
   public function beforeRender() {
     /**
      * TODO: Move this to a component for clarity?
@@ -155,6 +165,23 @@ class AppController extends Controller {
       if( isset( $this->data[$this->Auth->getModel()->alias]['confirm_password'] ) ) {
         $this->data[$this->Auth->getModel()->alias]['confirm_password'] = '';
       }
+    }
+  }
+  
+  /**
+   * CakePHP afterFilter callback
+   *
+   * @access  public
+   */
+  public function afterFilter() {
+    # When authentication is performed solely to connect to the API, we want to
+    # be sure that we logout when the request is fulfilled. This isn't an issue
+    # for external API use, but internally we call the API via ajax and we don't
+    # want an anonymous API call to authenticate as the system and remain
+    # authenticated.
+    if( $this->Session->check( 'Auth.type' ) ) {
+      $this->Session->destroy();
+      $this->Auth->logout();
     }
   }
   
@@ -248,6 +275,7 @@ class AppController extends Controller {
         $auth_user = $this->Auth->user();
         if( empty( $auth_user ) ) {
           if( $this->Auth->login( $user['User']['id'] ) ) { # No existing user, API user authenticates
+            $this->Session->write( 'Auth.type', 'API' );
             $this->User->id = $user['User']['id'];
             $this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
             
