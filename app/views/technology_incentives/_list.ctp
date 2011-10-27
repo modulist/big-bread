@@ -7,7 +7,7 @@
       <?php $i = 0; ?>
       <?php $group = null ?>
       <?php foreach( $rebates as $tech_name => $tech_rebates ): ?>
-        <?php $tech_group  = $display_grouped ? array_shift( $tech_groups ) : false ?>
+        <?php $tech_group  = $display_grouped ? array_shift( Set::extract( '/TechnologyGroup/title', $tech_rebates ) ) : false ?>
         <?php $tech_id     = array_shift( Set::extract( '/Technology/id[:first]', $tech_rebates ) ) ?>
         <?php $watched     = in_array( $tech_id, $watch_list ) ?>
         
