@@ -61,7 +61,7 @@ class FixturesController extends AppController {
       )
     );
     # Other locations that the user will be able to switch to
-    $other_locations = $this->User->locations( null, null, array( 'Building.id <> ' => $location['Building']['id'] ) );
+    $other_locations = $this->Fixture->Building->Client->locations( null, null, array( 'Building.id <> ' => $location['Building']['id'] ) );
     
     # Passed along in the form's action
     $action_param = $location['Building']['id'];

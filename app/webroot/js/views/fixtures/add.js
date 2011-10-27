@@ -1,3 +1,5 @@
+$.getScript( '/js/views/buildings/_location_switcher.js' );
+
 $(document).ready( function() {
   var now = new Date();
   

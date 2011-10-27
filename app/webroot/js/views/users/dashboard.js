@@ -1,10 +1,6 @@
+$.getScript( '/js/views/buildings/_location_switcher.js' );
+
 $(document).ready( function() {
-  $( '.location-switcher' ).click( function( e ) {
-    e.preventDefault();
-    
-    $( this + ', .other-location-list' ).toggleClass( 'active' );
-  });
-  
   $('.rebate-description .toggle').click( function( e ) {
     e.preventDefault();
     
