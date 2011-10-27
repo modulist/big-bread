@@ -7,7 +7,7 @@
         <td class="model-name">
           <?php echo !empty( $fixture['Fixture']['name'] ) ? h( $fixture['Fixture']['name'] ) : h( Inflector::singularize( $fixture['Technology']['title'] ) ) ?>
         </td>
-        <td class="controls">
+        <td class="add-edit">
           <?php echo $this->Html->link( __( 'edit', true ), array( 'action' => 'edit', $fixture['Fixture']['id'] ), array( 'class' => 'edit-button' ) ) ?>
           |
           <?php echo $this->Html->link( __( 'remove', true ), array( 'action' => 'retire', $fixture['Fixture']['id'] ), array( 'class' => 'remove-button' ) ) ?>
