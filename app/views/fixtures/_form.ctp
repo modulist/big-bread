@@ -2,6 +2,9 @@
   <div id="my-equipment">
     <div class="clearfix">
       <h2><?php printf( __( '%s equipment at %s', true ), ucwords( $this->action ), h( $location_name ) ) ?>:</h2>
+      <div class="location-switch-wrapper clearfix">location-switcher
+      	<?php //echo $this->element( '../buildings/_location_switcher', array( 'locations' => $other_locations ) ) ?>
+	    </div><!-- /location-switcher -->
     </div>
     
     <div class="equipment-wrapper clearfix">
@@ -20,7 +23,7 @@
             <?php echo $this->Form->input( 'Fixture.name' ) ?>
             <?php echo $this->Form->input( 'Fixture.make' ) ?>
             <?php echo $this->Form->input( 'Fixture.model', array( 'label' => __( 'Model (from equipment tag)', true ) ) ) ?>
-            <?php echo $this->Form->input( 'Fixture.serial_number', array( 'label' => __( 'Serial Number (from equipment tag)', true ) ) ) ?>
+            <?php echo $this->Form->input( 'Fixture.serial_number', array( 'label' => __( 'Serial Number', true ) ) ) ?>
             <?php echo $this->Form->input( 'Fixture.outside_unit', array( 'type' => 'radio', 'options' => array( __( 'Inside unit', true ), __( 'Outside unit', true ) ), 'default' => 0, 'legend' => __( 'Unit location (for dual unit fixtures)', true ), 'div' => array( 'class' => 'input radio hidden' ) ) ) ?>
             <?php echo $this->Form->input( 'Fixture.purchase_price', array( 'placeholder' => '1200.00', 'after' => '<small>' . __( 'Provide the purchase price net of manufacturer and contractor discounts. Do not deduct utility rebates and tax credits from the total.', true ) . '</small>' ) ) ?>
             <?php echo $this->Form->input( 'Fixture.service_in', array( 'type' => 'text', 'label' => __( 'Year Installed', true ), 'between' => '<div id="slider"></div>' ) ) ?>
@@ -33,6 +36,8 @@
         <?php echo $this->Form->end( sprintf( __( 'Add to %s', true ), $location_name ) ) ?>
       </div><!-- /location-equipment-->	
         
+      <div class="equipment-tag grid_3"><img src="/img/sticker-sm.jpg" alt="sample equipment tag" /></div>
+
       <div class="add-equipment-grid grid_3">
         <div class="clearfix">
           <div class="current-equipment-icon"></div>
@@ -41,6 +46,7 @@
 
         <?php echo $this->element( '../fixtures/_list', array( 'plugin' => false, 'fixtures' => $fixtures ) ) ?>
       </div><!-- /location-equipment-grid -->
+      
     </div><!-- /location-wrapper -->
       
   </div><!-- /my-equipment -->
