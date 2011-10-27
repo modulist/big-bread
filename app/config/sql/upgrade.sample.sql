@@ -45,10 +45,11 @@ CREATE TABLE message_templates(
   PRIMARY KEY( id )
 ) ENGINE=InnoDB;
 
-INSERT INTO message_templates( id, code, subject, body_text, body_html, created, modified )
+INSERT INTO message_templates( id, code, subject, created, modified )
 VALUES
   ( UUID(), 'new_user', 'Thanks for registering to Save Big Bread at SaveBigBread.com', NOW(), NOW() ),
-  ( UUID(), 'proposal_request', '%Sender.full_name% requests a quote from a qualified contractor.', NOW(), NOW() )
+  ( UUID(), 'proposal_request', '%Sender.full_name% requests a quote from a qualified contractor.', NOW(), NOW() ),
+  ( UUID(), 'forgot_password', 'Forgot your SaveBigBread.com password, did you?', NOW(), NOW() )
 ;
 
 ALTER TABLE proposals

@@ -1,7 +1,11 @@
 <?php
 
-App::import('Core', 'Controller'); 
-App::import('Component', 'Email'); 
+App::import( 'Core', array( 'Router', 'Controller' ) ); # Required for $this->Html->link() in email views
+App::import( 'Component', 'Email' );
+
+include( CONFIGS . 'routes.php' );
+define( 'FULL_BASE_URL', 'http://www.savebigbread.com' );
+
 class EmailTask extends Shell { 
   public $Controller; # Controller class
   public $Email;      # EmailComponent

@@ -85,14 +85,12 @@ class User extends AppModel {
 				'message'    => 'Email address is invalid.',
 				'allowEmpty' => false,
 				'required'   => true,
-        'last'       => true,
 			),
 			'unique' => array(
 				'rule'       => 'isUnique',
 				'message'    => 'This email address is already in use.',
 				'allowEmpty' => false,
 				'required'   => true,
-        'last'       => true,
 			),
 		),
 		'password' => array(

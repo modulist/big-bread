@@ -1,5 +1,5 @@
-<p>A little birdy told us that you forgot your password. Well, we've reset it for you. Just access the site using the link below and enter a new password to restore your access to SaveBigBread.com</p>
+<p><?php __( 'A little birdy told us that you forgot your password. Well, we\'ve reset it for you. Just access the site using the link below and enter a new password to restore your access to SaveBigBread.com' ) ?></p>
 
 <p><?php echo $this->Html->url( array( 'controller' => 'users', 'action' => 'invite', $invite_code ), true ) ?></p>
 
-<p>If you didn't request this change, <?php echo $this->Html->link( __( 'please let us know', true ), $this->Html->url( '/contact', true ) ) ?>.</p>
+<p><?php printf( __( 'If you didn\'t request this change, %s.', true ), $this->Html->link( __( 'please let us know', true ), array( 'controller' => 'contacts' )  ) ) ?></p>

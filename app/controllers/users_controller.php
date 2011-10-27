@@ -226,16 +226,22 @@ class UsersController extends AppController {
     $this->layout = 'default_login';
     
     if( !empty( $this->data )  ) {
+      # Override email validation so that only the rules we want get validated
+      # But save off the relevant messages first.
+      $empty_msg   = $this->User->validate['email']['notempty']['message'];
+      $invalid_msg = $this->User->validate['email']['email']['message'];
+      $this->User->validate['email'] = array(); 
+      
       if( empty( $this->data['User']['email'] ) ) {
-        $this->User->invalidate( 'email', 'notempty' );
+        $this->User->invalidate( 'email', $empty_msg );
       }
       else if( !Validation::email( $this->data['User']['email'] ) ) {
-        $this->User->invalidate( 'email', 'email' );
+        $this->User->invalidate( 'email', $invalid_msg );
       }
       else {
         $user_id = $this->User->known( $this->data['User']['email'] );
         
-        if( $user_id ) {
+        if( !empty( $user_id ) ) {
           $this->User->id = $user_id;
           
           # Get or generate and invite code
@@ -244,32 +250,14 @@ class UsersController extends AppController {
             $invite_code = User::generate_invite_code();
             $this->User->saveField( 'invite_code', $invite_code );
           }
-          
           $this->User->saveField( 'password', null );
-   
-          # @see AppController::__construct() for common settings
-          $this->SwiftMailer->sendAs   = 'both'; 
-          $this->SwiftMailer->from     = Configure::read( 'email.do_not_reply_address' ); 
-          $this->SwiftMailer->fromName = 'SaveBigBread.com';
-          $this->SwiftMailer->to       = Configure::read( 'email.redirect_all_email_to' )
-            ? Configure::read( 'email.redirect_all_email_to' )
-            : $this->data['User']['email'];
           
+          # Queue up the message
+          $replacements = array( 'invite_code' => $invite_code );
+          $this->User->Message->queue( MessageTemplate::TYPE_FORGOT_PASSWORD, 'User', $this->User->id, null, $this->User->id, $replacements );
           
-          # set variables to template as usual 
-          $this->set( 'invite_code', $invite_code ); 
-           
-          try {
-            if( !$this->SwiftMailer->send( 'forgot_password', 'Your SaveBigBread.com password has been reset', 'native' ) ) {
-              foreach($this->SwiftMailer->postErrors as $failed_send_to) { 
-                $this->log( 'Failed to send forgot password email to ' . $failed_send_to ); 
-              }
-            }
-            $this->Session->setFlash( 'Your password has been reset. Please check your email for instructions.', null, null, 'success' );
-          } 
-          catch( Exception $e ) {
-            $this->log( 'Failed to send email: ' . $e->getMessage() ); 
-          }
+          # Go back where we came from. Help is on the way.
+          $this->redirect( $this->referer( array( 'controller' => 'pages', 'action' => 'home' ) ), null, true );
         }
         else {
           $this->User->invalidate( 'email', 'No user is registered with this email address.' );

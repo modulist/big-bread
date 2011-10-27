@@ -21,7 +21,8 @@
           <?php echo $this->Html->link( __( 'Cancel', true ), '#', array( 'class' =>'cancel-link' ) ) ?>
 
           <div class="password-recovery">
-            <?php printf( __( 'Don&#146;t have an account? %s.', true ), $this->Html->link( __( 'Sign up now for free.', true ), array( 'controller' => 'users', 'action' => 'register' ) ) ) ?>
+            <?php printf( __( 'Don&#146;t have an account? %s.', true ), $this->Html->link( __( 'Sign up now for free', true ), array( 'controller' => 'users', 'action' => 'register' ) ) ) ?>
+            <?php echo $this->Html->link( __( 'Oops, I forgot my password', true ), array( 'controller' => 'users', 'action' => 'forgot_password' ) ) ?>
           </div>
         </div>
       <?php else: ?>
