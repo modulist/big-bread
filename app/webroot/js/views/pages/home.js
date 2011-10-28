@@ -54,7 +54,7 @@ $(document).ready( function() {
         if( $this.val().search( /^[0-9]{5}$/ ) >= 0 ) {
           $this.toggleClass( 'loading' );
           $.ajax({
-            url: '/api/v1/zip_codes/overview/' + $this.val() + '/true.json',
+            url: '/api/v1/zip_codes/highlights/' + $this.val() + '/true.json',
             dataType: 'json',
             beforeSend: function( jqXHR, settings ) {
               jqXHR.setRequestHeader( 'Authorization', '1001001SOS' );  
@@ -69,15 +69,27 @@ $(document).ready( function() {
                 $('.rebate-city').text( data.locale.ZipCode.city + ', ' + data.locale.ZipCode.state );
                 // Update the table of featured rebates
                 $('.rebates-preview').slideUp( function() {
-                  var $this = $(this);
+                  var $this   = $(this);
+                  var $tbody  = $(this).find( 'tbody' );
+                  
+                  // Remove existing content
+                  $tbody.find( 'tr' ).remove();
                   
                   var i = 0;
                   for( var rebate in data.featured_rebates ) {
-                    var $row = $('tr:nth-child(' + ++i + ')');
-                    var sponsor_name = rebate.replace( /\s*-.+$/, '' );
-                    
-                    $('td:first', $row).text( sponsor_name.length > 25 ? sponsor_name.substring( 0, 20 ) + '...' : sponsor_name );
-                    $('td:last', $row).text( '$' + $.currency( data.featured_rebates[rebate], { c: 0 } ) );
+	                var sponsor_name = rebate.replace( /\s*-.+$/, '' );
+	                
+	                $tbody.append( 
+		           	  '<tr class="' + ( ++i % 2 === 0 ? 'even' : 'odd' ) + '">' +
+		           	  '<td class="rebate-source"></td>' +
+		           	  '<td class="rebate-amount"></td>' +
+		           	  '</tr>' 
+		           	);
+		           	
+		           	$('tr:last td:first', $tbody)
+		           		.attr( 'title', sponsor_name )
+		           		.text( sponsor_name.length > 25 ? sponsor_name.substring( 0, 20 ) + '...' : sponsor_name );
+                    $('tr:last td:last', $tbody).text( '$' + $.currency( data.featured_rebates[rebate], { c: 0 } ) );
                   }
                 })
                 .delay( 1000 )
@@ -86,6 +98,9 @@ $(document).ready( function() {
               else {
                 alert( 'We don\'t recognize that zip code' );
               }
+            },
+            error: function( jqXHR, textStatus ) {
+              alert( 'Sorry, we don\'t have any data for the ' + $this.val() + ' zip code.' );
             },
             complete: function( jqXHR, textStatus ) {
               $this.toggleClass( 'loading' );

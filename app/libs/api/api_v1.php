@@ -69,8 +69,13 @@ class ApiV1 extends Api {
    * @return  array
    * @access  public
    */
-  public function zip_codes_overview( $zip_code, $group_savings = false ) {
+  public function zip_codes_highlights( $zip_code, $group_savings = false ) {
     $this->ZipCode = ClassRegistry::init( 'ZipCode' );
+    
+    if( !$this->ZipCode->find( 'count', array( 'conditions' => array( 'ZipCode.zip' => $zip_code ) ) ) ) {
+      header( 'Not Found', true, 404 );
+      return false;
+    }
     
     $overview = array(
       'locale'           => $this->ZipCode->locale( $zip_code ),

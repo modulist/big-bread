@@ -1,9 +1,9 @@
 <?php
 
 class ZipCode extends AppModel {
-	public $name       = 'ZipCode';
-	public $useTable   = 'us_zipcode';
-	public $primaryKey = 'zip';
+public $name       = 'ZipCode';
+public $useTable   = 'us_zipcode';
+public $primaryKey = 'zip';
 
   public $hasMany = array(
 		'ZipCodeIncentive' => array(
@@ -185,6 +185,7 @@ class ZipCode extends AppModel {
         'limit'      => 20,
       )
     );
+    
     # Now grab the top 2 unique incentives
     $top_manufacturer_rebates = array();
     foreach( $manufacturer_rebates as $rebate ) {
@@ -222,6 +223,7 @@ class ZipCode extends AppModel {
         'limit'      => 20,
       )
     );
+    
     # Now grab the top 3 unique incentives
     $top_non_manufacturer_rebates = array();
     foreach( $non_manufacturer_rebates as $rebate ) {

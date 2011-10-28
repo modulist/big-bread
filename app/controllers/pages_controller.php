@@ -124,7 +124,12 @@ public function beforeFilter() {
   public function test() {
     $this->autoRender = false;
     
-    $this->loadModel( 'TechnologyIncentive' );
-    new PHPDump( $this->TechnologyIncentive->all( '21224', array( 'c48c7270-6f7f-11e0-be41-80593d270cc9', 'c48c6d7a-6f7f-11e0-be41-80593d270cc9' ), true) ); # Dishwasher, AC
+    $this->loadModel( 'ZipCode' );
+    $zip_code         = 11202;
+    $total_savings    = $this->ZipCode->savings( $zip_code, true, 'HVAC' );
+    $featured_rebates = $this->ZipCode->featured_rebates( $zip_code );
+    $locale           = $this->ZipCode->locale( $zip_code );
+    
+    new PHPDump( compact( 'total_savings', 'featured_rebates', 'locale' ) );
   }
 }
