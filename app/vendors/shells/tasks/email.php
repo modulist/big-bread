@@ -1,19 +1,27 @@
 <?php
 
-App::import( 'Core', array( 'Router', 'Controller' ) ); # Required for $this->Html->link() in email views
-App::import( 'Component', 'Email' );
-App::import( 'Core', 'HttpSocket' );
+App::import(
+  'Core',
+  array(
+    'Router',     # Required for $this->Html->link() in email views
+    'Controller'  # Renders the email content
+  )
+); 
+App::import( 'Component', 'Email' ); # Not used for sending, but for rendering.
+App::import( 'Core', 'HttpSocket' ); # Used to engage the SendGrid web api
 
 include( CONFIGS . 'routes.php' );
 define( 'FULL_BASE_URL', 'http://www.savebigbread.com' );
 
 class EmailTask extends Shell { 
   public $Controller; # Controller class
-  public $View;
   public $Email;      # EmailComponent
-  public $HttpSocket;
+  public $HttpSocket; # HttpSocket utility
   
-  public $defaults = array(
+  # Settings cover info sent to the SendGrid via the Web API as well as
+  # general email component and/or SMTP options should the method of delivery
+  # ever change.
+  public $settings = array(
       'environment'      => null,
       'to'               => null,
       'toname'           => null,
@@ -44,7 +52,6 @@ class EmailTask extends Shell {
    */
   public function initialize() { 
     $this->Controller = new Controller();
-    $this->View       = new View( $this->Controller );
     $this->Email      = new EmailComponent( null );
     $this->HttpSocket = new HttpSocket();
     
@@ -52,7 +59,9 @@ class EmailTask extends Shell {
   } 
 
   /** 
-   * Send an email useing the EmailComponent 
+   * Send an email. Currently uses the EmailComponent to render email content
+   * and the SendGrid Web API to send, but could easily transition to send via
+   * the component as well.
    * 
    * @param   array $settings 
    * @return  boolean 
@@ -60,33 +69,41 @@ class EmailTask extends Shell {
   public function send( $settings = array() ) { 
     $this->settings( $settings );
     
+    # BEGIN: Send the email via the SendGrid Web API
+    
+    # Render text content
     $this->Email->_set( array( 'sendAs' => 'text' ) );
     $text = implode( "\r\n", $this->Email->_render( array() ) );
     
+    # Render HTML content
     $this->Email->_set( array( 'sendAs' => 'html' ) );
     $html = implode( "\r\n", $this->Email->_render( array() ) );
     
-    $params = array(
-      'api_user'  => $this->defaults['smtpOptions']['username'],
-      'api_key'   => $this->defaults['smtpOptions']['password'],
+    # Set SendGrid parameters
+    $sendgrid = array(
+      'api_user'  => $this->settings['smtpOptions']['username'],
+      'api_key'   => $this->settings['smtpOptions']['password'],
       # Set the category to environment_name_of_template (e.g. dev_new_user)
-      'x-smtpapi' => json_encode( array( 'category' => sprintf( '%s_%s', $this->defaults['smtpOptions']['client'], $this->defaults['template'] ) ) ),
-      'to'        => $this->defaults['to'],
-      'toname'    => $this->defaults['toname'],
-      'from'      => $this->defaults['from'],
-      'fromname'  => $this->defaults['fromname'],
-      'subject'   => $this->defaults['from'],
+      'x-smtpapi' => json_encode( array( 'category' => sprintf( '%s_%s', $this->settings['smtpOptions']['client'], $this->settings['template'] ) ) ),
+      'to'        => $this->settings['to'],
+      'toname'    => $this->settings['toname'],
+      'from'      => $this->settings['from'],
+      'fromname'  => $this->settings['fromname'],
+      'subject'   => $this->settings['from'],
       'html'      => $html,
       'text'      => $text,
     );
     
-    $results = json_decode( $this->HttpSocket->post( 'http://sendgrid.com/api/mail.send.json', $params ), true );
+    $results = json_decode( $this->HttpSocket->post( 'http://sendgrid.com/api/mail.send.json', $sendgrid ), true );
     
     if( $results['message'] != 'success' ) {
       $this->log( '{EmailTask::send} Failed to send email: ' . json_encode( $results ), LOG_ERR );
     }
     
     return $results['message'] == 'success';
+    
+    # Uncomment the return below to use the Email component for sending.
+    # return $this->Email->send();
   } 
 
   /** 
@@ -108,7 +125,6 @@ class EmailTask extends Shell {
    * @param array $settings 
    */ 
     public function settings( $settings = array() ) {
-      # $this->defaults = array_filter( array_merge( $this->defaults, $settings ) );
-      $this->Email->_set( $this->defaults = array_filter( array_merge( $this->defaults, $settings ) )   ); 
+      $this->Email->_set( $this->settings = array_filter( array_merge( $this->settings, $settings ) )   ); 
     } 
 } 
