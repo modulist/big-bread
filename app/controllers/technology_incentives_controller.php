@@ -15,6 +15,8 @@ class TechnologyIncentivesController extends AppController {
   public function details( $id, $location_id = null ) {
     $rebate = $this->TechnologyIncentive->get( $id );
     
+    new PHPDump( $rebate, 'rebates', '', true );
+    
     $this->set( compact( 'location_id', 'rebate' ) );
   }
 }

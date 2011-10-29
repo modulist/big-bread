@@ -29,7 +29,8 @@
         <?php if( !empty( $rebate['TechnologyOption'] ) ): ?>
           <ul>
             <?php foreach( $rebate['TechnologyOption'] as $option ): ?>
-              <li><?php echo h( $option['name'] ) ?></li>
+              <?php $explanation = !empty( $option['GlossaryTerm']['definition'] ) ? h( $option['GlossaryTerm']['definition'] ) : false ?>
+              <li<?php echo !empty( $explanation ) ? ' class="tooltip" title="' . $explanation . '"' : false ?>><?php echo h( $option['name'] ) ?></li>
             <?php endforeach; ?>
           </ul>
         <?php else: ?>
@@ -48,8 +49,11 @@
         <th class="conditions last" colspan="2"><?php __( 'Conditions' ) ?></th>
       </thead>
       <?php foreach( $rebate['TechnologyTerm'] as $term ): ?>
+        <?php $explanation = !empty( $term['GlossaryTerm']['definition'] ) ? h( $term['GlossaryTerm']['definition'] ) : false ?>
         <tr>
-          <td class="terms first"><?php echo h( $term['name'] ) ?></td>
+          <td class="terms first">
+            <span<?php echo !empty( $explanation ) ? ' class="tooltip" title="' . $explanation . '"' : false ?>><?php echo h( $term['name'] ) ?></span>
+          </td>
           <td class="conditions last" colspan="2">
             <?php if( !empty( $term['field1_name'] ) || !empty( $term['field2_name'] ) || !empty( $term['field3_name'] )  ): ?>
               <ul>

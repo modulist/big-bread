@@ -1,3 +1,5 @@
+$.getScript( '/js/views/technology_incentives/details.js' );
+
 $(document).ready( function() {
   $('.rebate-description .toggle').click( function( e ) {
     e.preventDefault();

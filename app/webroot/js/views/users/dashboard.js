@@ -1,4 +1,5 @@
 $.getScript( '/js/views/buildings/_location_switcher.js' );
+$.getScript( '/js/views/technology_incentives/details.js' );
 
 $(document).ready( function() {
   $('.rebate-description .toggle').click( function( e ) {

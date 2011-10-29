@@ -59,10 +59,10 @@ class TechnologyIncentive extends AppModel {
           'IncentiveAmountType',
           'Technology' => array(
             'TechnologyGroup',
+            'GlossaryTerm',
           ),
-          'TechnologyOption',
-          'TechnologyTerm',
-          'Technology',
+          'TechnologyOption' => array( 'GlossaryTerm' ),
+          'TechnologyTerm' => array( 'GlossaryTerm' ),
         ),
         'conditions' => array(
           'TechnologyIncentive.id' => $id,
