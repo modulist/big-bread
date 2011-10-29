@@ -70,9 +70,15 @@ header { background:url(../img/header-background.png) top no-repeat; height:137p
 body.layout-default_landing #logo { width: 360px; margin: 40px 0 0 60px; position: inherit; }
 .main-menu { margin: -20px 0 0 270px; font-size: 14px; }
 .main-menu ul.menu li a { border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; padding: 8px 15px;  }
-.main-menu li a.active { background-color: #fff; }
+/* .main-menu li a.active { background-color: #fff; } */
 .main-menu li a:hover { background-color: rgba(255,255,255,0.5); text-decoration: none; }
 .main-menu li a:active { background-color: rgba(255,255,255,0.85); text-decoration: none; }
+
+/* ============================= activating main menu items ============================= */
+.layout-default.users.dashboard .main-menu a.home,
+.layout-default.buildings.ways_to_save .main-menu a.ways-to-save,
+.layout-default.buildings.add .main-menu a.location,
+.layout-default.users.edit .main-menu a.profile { background-color: #fff }
 
 ul.menu { height:28px; list-style: none; padding: 0; float: left; }
 ul.menu li { float:left; }
