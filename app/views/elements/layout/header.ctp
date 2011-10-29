@@ -20,7 +20,7 @@
     	<li class="leaf"><?php echo $this->Html->link( 'Home', array( 'controller' => 'users', 'action' => 'dashboard' ), array( 'class' => 'home' ) ) ?></li>
     	<li class="leaf"><?php echo $this->Html->link( 'Ways to Save', array( 'controller' => 'buildings', 'action' => 'ways_to_save' ), array( 'class' => 'ways-to-save' ) ) ?></li>
     	<li class="leaf"><?php echo $this->Html->link( 'Add a Location', array( 'controller' => 'buildings', 'action' => 'add' ), array( 'class' => 'location' ) ) ?></li>
-    	<li class="leaf"><?php echo $this->Html->link( 'My Profile', array( 'controller' => 'users', 'action' => 'edit' ), array( 'class' => 'profile' ) ) ?></li>
+    	<li class="leaf"><?php echo $this->Html->link( 'My Profile', array( 'controller' => 'users', 'action' => 'register', $this->Session->read( 'Auth.User.id' ) ), array( 'class' => 'profile' ) ) ?></li>
     </ul>
   <?php endif; ?>
 </div>
