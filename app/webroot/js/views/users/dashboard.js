@@ -60,7 +60,14 @@ $(document).ready( function() {
           $interest.attr( 'href', new_url );
           $tech_row_star.attr( 'href', new_url );
           // Hide the rebate group
-          $tech_row.slideUp();
+          $tech_row.slideUp( function() {
+              if( $( '.rebates-watch-list .rebate-category-row:visible' ).length == 0 ) {
+                $( '.message-empty-watchlist' ).slideDown();
+              }
+              else {
+                $( '.message-empty-watchlist' ).slideUp();
+              }
+          });
           // Deactivate the star
           $tech_row_star
             .removeClass( 'active' )
@@ -77,7 +84,14 @@ $(document).ready( function() {
             .addClass( 'active' )
             .attr( 'title', $tech_row_star.attr( 'title' ).replace( / add /, ' remove ' ) );
           // Show the rebate group
-          $tech_row.slideDown();
+          $tech_row.slideDown( function() {
+              if( $( '.rebates-watch-list .rebate-category-row:visible' ).length == 0 ) {
+                $( '.message-empty-watchlist' ).slideDown();
+              }
+              else {
+                $( '.message-empty-watchlist' ).slideUp();
+              }
+          });
         }
       }
     });

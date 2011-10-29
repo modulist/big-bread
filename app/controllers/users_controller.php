@@ -359,9 +359,7 @@ class UsersController extends AppController {
     
     # Rebates relevant to this location (or the default zip code), filtered by
     # technologies the user has identified as interests.
-    $rebates = empty( $technology_watch_list )
-      ? array()
-      : Set::combine( $this->User->Building->incentives( $zip_code ), '{n}.TechnologyIncentive.id', '{n}', '{n}.Technology.title' );
+    $rebates = Set::combine( $this->User->Building->incentives( $zip_code ), '{n}.TechnologyIncentive.id', '{n}', '{n}.Technology.title' );
     
     $this->set( compact( 'fixtures', 'location', 'location_title', 'other_locations', 'pending_quotes', 'rebates', 'technology_watch_list', 'watchable_technologies' ) );
   }
