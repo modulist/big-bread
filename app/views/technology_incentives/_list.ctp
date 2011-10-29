@@ -39,8 +39,16 @@
                   
                   <?php echo $this->Html->link( '', array( 'controller' => 'users', 'action' => !in_array( $tech_id, $watch_list ) ? 'watch' : 'unwatch', 'Technology', $tech_id, $location_id ), array( 'class' => sprintf( 'star %s', $watched ? 'active' : false ), 'title' => sprintf( __( 'Click to %s this interest', true ), $watched ? 'remove' : 'add' ), 'data-technology-id' => $tech_id ) ) ?>
                 </td>
-                <td class="rebate-amount"><?php echo $this->Number->format( array_sum( Set::extract( '/IncentiveAmountType[incentive_amount_type_id=USD]/../TechnologyIncentive/amount', $tech_rebates ) ), array( 'places' => 0, 'before' => '$' ) ) ?></td>
-                <td class="rebate-total"><?php __( 'total' ) ?></td>
+                <td class="rebate-amount">
+                  <?php $amount  = array_sum( Set::extract( '/IncentiveAmountType[incentive_amount_type_id=USD]/../TechnologyIncentive/amount', $tech_rebates ) ); ?>
+                  <?php $percent = max( Set::extract( '/IncentiveAmountType[incentive_amount_type_id=PERC]/../TechnologyIncentive/amount', $tech_rebates ) ) ?>
+                  
+                  <?php if( $amount > 0 ): ?>
+                    <?php printf( '%s %s', $this->Number->format( $amount, array( 'places' => 0, 'before' => '$' ) ), __( 'total', true ) ) ?>
+                  <?php else: ?>
+                    <?php printf( '%s %s', __( 'Up to', true ), $this->Number->format( $percent, array( 'places' => 0, 'after' => '%' ) ) ) ?>
+                  <?php endif; ?>
+                </td>
               </tr>
             </table>
         
