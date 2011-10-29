@@ -9,11 +9,11 @@ DROP TABLE IF EXISTS messages;
 CREATE TABLE messages(
   id                  char(36)      NOT NULL,
   message_template_id char(36)      NOT NULL,
-  model               varchar(255)  NOT NULL, -- what generated the message?
-  foreign_key         char(36)      NOT NULL, -- which of that what generated the message?
-  sender_id           char(36)      COLLATE utf8_unicode_ci NULL, -- null if system is sender
-  recipient_id        char(36)      COLLATE utf8_unicode_ci NOT NULL,
-  replacements        text          NULL, -- JSON encoded string of variable replacement values
+  model               varchar(255)  NULL, -- what generated the message? 
+  foreign_key         char(36)      NULL, -- which of that what generated the message?
+  sender_id           char(36)      COLLATE utf8_unicode_ci NULL COMMENT 'A null sender indicates a message from the system (e.g. new user email)', -- null if system is sender
+  recipient_id        char(36)      COLLATE utf8_unicode_ci NULL COMMENT 'A null recipient indicates a message to the system (e.g. feedback)', -- null if sent to system
+  replacements        text          NULL COMMENT 'JSON encoded string of variable replacement values',
   sent                datetime      NULL,
   created             datetime      NOT NULL,
   modified            datetime      NOT NULL,
@@ -36,7 +36,7 @@ CREATE TABLE messages(
 DROP TABLE IF EXISTS message_templates;
 CREATE TABLE message_templates(
   id          char(36)      NOT NULL,
-  code        varchar(255)  NOT NULL,
+  template    varchar(255)  NOT NULL,
   type        varchar(255)  NOT NULL DEFAULT 'EMAIL',
   subject     varchar(255)  NULL,
   created     datetime      NOT NULL,
@@ -45,11 +45,12 @@ CREATE TABLE message_templates(
   PRIMARY KEY( id )
 ) ENGINE=InnoDB;
 
-INSERT INTO message_templates( id, code, subject, created, modified )
+INSERT INTO message_templates( id, template, subject, created, modified )
 VALUES
   ( UUID(), 'new_user', '%recipient_first_name%, thanks for registering to Save Big Bread on SaveBigBread.com', NOW(), NOW() ),
   ( UUID(), 'proposal_request', '%Sender.full_name% requests a quote from a qualified contractor.', NOW(), NOW() ),
-  ( UUID(), 'forgot_password', 'Forgot your SaveBigBread.com password, did you?', NOW(), NOW() )
+  ( UUID(), 'forgot_password', 'Forgot your SaveBigBread.com password, did you?', NOW(), NOW() ),
+  ( UUID(), 'feedback', 'Feedback from a user at SaveBigBread.com', NOW(), NOW() )
 ;
 
 ALTER TABLE proposals
@@ -264,5 +265,9 @@ UPDATE technologies
    SET title     = 'Audit/Home Performance',
        watchable = 1
  WHERE incentive_tech_id = 'WBLD';
+ 
+UPDATE user_types
+   SET selectable = 1
+ WHERE code = 'CNTRCT';
  
 SET foreign_key_checks = 1;

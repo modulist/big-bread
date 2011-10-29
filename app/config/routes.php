@@ -46,7 +46,7 @@ Router::parseExtensions( 'json', 'jsonp' );
   Router::connect( '/logout/*', array( 'controller' => 'users', 'action' => 'logout' ) );
   Router::connect( '/profile/*', array( 'controller' => 'users', 'action' => 'edit' ) );
   Router::connect( '/questionnaire/*', array( 'controller' => 'buildings', 'action' => 'questionnaire' ) );
-  Router::connect( '/feedback/*', array( 'controller' => 'contacts', 'action' => 'index' ) );
+  Router::connect( '/feedback/*', array( 'controller' => 'messages', 'action' => 'feedback' ) );
   Router::connect( '/locations/:action/*', array( 'controller' => 'buildings', 'action' => 'index' ) );
   Router::connect( '/equipment/:action/*', array( 'controller' => 'fixtures', 'action' => 'index' ) );
 

@@ -77,7 +77,7 @@ class Message extends AppModel {
   /**
    * Writes a message to the "queue".
    *
-   * @param   string  $template_code  Send the code for usability
+   * @param   string  $template     Send the code for usability
    * @param   string  $model
    * @param   uuid    $foreign_key
    * @param   uuid    $sender_id
@@ -86,9 +86,9 @@ class Message extends AppModel {
    * @return  boolean
    * @access  public
    */
-  public function queue( $template_code, $model, $foreign_key, $sender_id, $recipient_id, $replacements ) {
+  public function queue( $template, $model, $foreign_key, $sender_id, $recipient_id, $replacements ) {
     $queued       = true;
-    $template_id  = $this->MessageTemplate->field( 'id', array( 'MessageTemplate.code' => $template_code ) );
+    $template_id  = $this->MessageTemplate->field( 'id', array( 'MessageTemplate.template' => $template ) );
     
     if( !empty( $template_id ) ) {
       $message = array(

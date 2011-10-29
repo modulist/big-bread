@@ -90,8 +90,8 @@ class EmailTask extends Shell {
       'from'      => $this->settings['from'],
       'fromname'  => $this->settings['fromname'],
       'subject'   => $this->settings['from'],
-      'html'      => $html,
-      'text'      => $text,
+      'html'      => trim( $html ),
+      'text'      => trim( $text ),
     );
     
     $results = json_decode( $this->HttpSocket->post( 'http://sendgrid.com/api/mail.send.json', $sendgrid ), true );
@@ -101,6 +101,8 @@ class EmailTask extends Shell {
     }
     
     return $results['message'] == 'success';
+    
+    # BEGIN: Send the email via SMTP
     
     # Uncomment the return below to use the Email component for sending.
     # return $this->Email->send();

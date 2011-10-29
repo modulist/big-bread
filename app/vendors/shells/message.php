@@ -69,14 +69,21 @@ class MessageShell extends Shell {
    * @access  public
    */
   public function send_email( $message ) {
+    $to = !empty( $message['Recipient']['id'] )
+      ? h( $message['Recipient']['email'] )
+      : Configure::read( 'email.do_not_reply_address' );
+    $to_name = !empty( $message['Recipient']['id'] )
+      ? h( $message['Recipient']['full_name'] )
+      : 'SaveBigBread.com';
+    
     $settings = array(
       'environment' => Configure::read( 'Env.code' ),
-      'to'          => Configure::read( 'email.redirect_to' ) ? Configure::read( 'email.redirect_to' ) : h( $message['Recipient']['email'] ),
-      'toname'      => h( $message['Recipient']['full_name'] ),
+      'to'          => Configure::read( 'email.redirect_to' ) ? Configure::read( 'email.redirect_to' ) : $to,
+      'toname'      => $to_name,
       'from'        => !empty( $message['Sender']['id'] ) ? $message['Sender']['email'] : Configure::read( 'email.do_not_reply_address' ),
       'fromname'    => !empty( $message['Sender']['id'] ) ? h( $message['Sender']['full_name'] ) : 'SaveBigBread.com',
       'subject'     => h( $message['MessageTemplate']['subject'] ),
-      'template'    => $message['MessageTemplate']['code'],
+      'template'    => $message['MessageTemplate']['template'],
     );
     
     $this->set_variables( json_decode( $message['Message']['replacements'], true ) );
