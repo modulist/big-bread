@@ -71,9 +71,11 @@ class UsersController extends AppController {
   }
 
   /**
-   * Allows a user to register.
+   * Allows a user to register. If the user is invited, a user type and id will
+   * be passed because basic info has already been entered.
    *
-   * @param   $user_id
+   * @param   mixed $user_type
+   * @param   uuid  $user_id
    * @param   $invite
    * @access  public
    */
@@ -81,6 +83,9 @@ class UsersController extends AppController {
     # Handle a submitted registration
     if( !empty( $this->data ) ) {
       $this->User->id = $user_id;
+      
+      # Override any user type with whatever came in from the form
+      $user_type_id = $this->data['User']['user_type_id'];
 
       # The password value is hashed automagically. We need to hash the
       # confirmation value manually for validation.
@@ -114,7 +119,7 @@ class UsersController extends AppController {
             array_push( $this->data['TechnologyWatchList'], array_merge( $tech_watchlist_defaults, $tech_watch_list_item ) );
           }
           
-          if( !in_array( false, $this->User->TechnologyWatchList->saveAll( $this->data['TechnologyWatchList'], array( 'atomic' => false ) ) ) ) {
+          if( !in_array( false, Set::flatten( $this->User->TechnologyWatchList->saveAll( $this->data['TechnologyWatchList'], array( 'atomic' => false ) ) ) ) ) {
             $commit = true;
           }
         }
@@ -168,6 +173,11 @@ class UsersController extends AppController {
         $this->Session->write( 'default_zip_code', $this->params['url']['zip_code'] );
       }
     }
+
+    # "Guess" the user type
+    $user_type_id = !empty( $this->params['user_type'] )
+      ? UserType::id( $this->params['user_type'] )
+      : UserType::id( 'OWNER' );
     
     if( !isset( $this->data['WatchedTechnology']['selected'] ) ) {
       $this->data['WatchedTechnology']['selected'] = array();
@@ -175,7 +185,7 @@ class UsersController extends AppController {
     
     $watchable_technologies = array_chunk( $this->User->TechnologyWatchList->Technology->grouped(), 2 );
   
-    $this->set( compact( 'watchable_technologies' ) );
+    $this->set( compact( 'user_type_id', 'watchable_technologies' ) );
   }
 
   /**
