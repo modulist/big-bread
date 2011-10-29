@@ -50,12 +50,12 @@
                 <tr class="first <?php echo $j++ % 2 === 0 ? 'even' : 'odd' ?>">
                   <td class="rebate-description">
                     <?php echo h( $rebate['Incentive']['name'] ) ?>
-                    <?php echo $this->Html->link( __( 'details &rsaquo;', true ), array( 'controller' => 'technology_incentives', 'action' => 'details', h( $rebate['TechnologyIncentive']['id'] ) ), array( 'class' => 'details', 'title' => 'Rebate details', 'escape' => false ) ) ?>
+                    <?php echo $this->Html->link( __( 'details &rsaquo;', true ), array( 'controller' => 'technology_incentives', 'action' => 'details', h( $rebate['TechnologyIncentive']['id'] ), h( $location_id ) ), array( 'class' => 'details', 'title' => 'Rebate details', 'escape' => false ) ) ?>
                   </td>
                   <td class="rebate-dates"><?php echo empty( $rebate['Incentive']['expiration_date'] ) ? __( 'while funds last', true ) : date( 'm/d/Y', strtotime( $rebate['Incentive']['expiration_date'] ) ) ?></td>
                   <td class="rebate-amount"><?php echo $this->Number->format( $rebate['TechnologyIncentive']['amount'], array( 'places' => 0, 'before' => $rebate['IncentiveAmountType']['incentive_amount_type_id'] == 'USD' ? h( $rebate['IncentiveAmountType']['name'] ) : false, 'after' => $rebate['IncentiveAmountType']['incentive_amount_type_id'] != 'USD' ? h( $rebate['IncentiveAmountType']['name'] ) : false ) ) ?></td>
                   <td class="rebate-action">
-                    <?php echo $this->Html->link( __( 'GET A QUOTE &rsaquo;', true ), array( 'controller' => 'proposals', 'action' => 'quote', h( $rebate['TechnologyIncentive']['id'] ), h( $location_id ) ), array( 'class' => 'quote-button', 'escape' => false ) ) ?>
+                    <?php echo $this->Html->link( __( 'Get a Quote &rsaquo;', true ), array( 'controller' => 'proposals', 'action' => 'quote', h( $rebate['TechnologyIncentive']['id'] ), h( $location_id ) ), array( 'class' => 'quote-button', 'escape' => false ) ) ?>
                   </td>
                 </tr>
               <?php endforeach; ?>

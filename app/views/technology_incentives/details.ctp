@@ -87,5 +87,6 @@
       <?php endforeach; ?>
   <?php endif; ?>
   
-  <a href="#" class="quote-button">GET A QUOTE &rsaquo;</a>
+  <?php echo $this->Html->link( __( 'Get a Quote &rsaquo;', true ), array( 'controller' => 'proposals', 'action' => 'quote', h( $rebate['TechnologyIncentive']['id'] ), $location_id ), array( 'class' => 'quote-button', 'escape' => false ) ) ?>
+  <?php echo $this->Html->link( 'Download the rebate form', $rebate['TechnologyIncentive']['rebate_link'] ) ?>
 </div><!-- /modal popup -->

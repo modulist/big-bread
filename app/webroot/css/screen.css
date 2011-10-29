@@ -552,7 +552,7 @@ a.remove-button { background: url(../img/sprite-rebate-table.png) -15px -147px n
 a.details-button, a.quote-button { display: inline-block; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; color: #fff; padding: 3px 5px 3px 9px; margin-bottom: 2px; }
 a.details-button:hover, a.quote-button:hover { text-decoration: none; background-color: #333; }
 a.details-button { background-color: #527b48; }
-a.quote-button { background-color: #ef7600; }
+a.quote-button { background-color: #ef7600; text-transform: uppercase; }
 .close-button-wrapper { height: 0; width: 100%; position: relative; }
 .close-button { display: block; width: 16px; height: 16px; padding: 0 0 10px 8px; margin-right: -10px; background: url(../img/close-button.png) top right no-repeat; float: right; }
 .close-button:hover { background: url(../img/close-button-hover.png) top right no-repeat; cursor: pointer; }

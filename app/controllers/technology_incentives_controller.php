@@ -8,12 +8,13 @@ class TechnologyIncentivesController extends AppController {
   /**
    * Displays the details of a given incentive.
    *
-   * @param   $id
+   * @param   uuid  $id
+   * @param   uuid  $location_id  Used by the "get a quote" link.
    * @access	public
    */
-  public function details( $id ) {
+  public function details( $id, $location_id = null ) {
     $rebate = $this->TechnologyIncentive->get( $id );
     
-    $this->set( compact( 'rebate' ) );
+    $this->set( compact( 'location_id', 'rebate' ) );
   }
 }
