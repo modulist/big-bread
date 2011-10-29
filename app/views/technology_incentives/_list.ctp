@@ -46,7 +46,7 @@
                   <?php if( array_sum( $amounts ) > 0 ): ?>
                     <?php printf( '%s %s', $this->Number->format( array_sum( $amounts ), array( 'places' => 0, 'before' => '$' ) ), __( 'total', true ) ) ?>
                   <?php else: ?>
-                    <?php printf( '%s %s', __( 'Up to', true ), $this->Number->format( max( $percents ), array( 'places' => 0, 'after' => '%' ) ) ) ?>
+                    <?php printf( '%s %s', __( 'Up to', true ), $this->Number->format( max( $percents ), array( 'places' => 0, 'before' => false, 'after' => '%' ) ) ) ?>
                   <?php endif; ?>
                 </td>
               </tr>
