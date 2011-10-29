@@ -276,19 +276,6 @@ class User extends AppModel {
   }
   
   /**
-   * Determines whether a given user holds a "client" role.
-   *
-   * @param 	$user_id
-   * @return	boolean
-   * @access	public
-   */
-  static public function client( $user_id ) {
-    $user_type_id = ClassRegistry::init( 'User' )->field( 'User.user_type_id', array( 'User.id' => $user_id ) );
-    
-    return in_array( $user_type_id, array( UserType::OWNER, UserType::BUYER ) );
-  }
-
-  /**
    * Generates an invite code
    *
    * @return	string

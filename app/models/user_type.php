@@ -17,13 +17,13 @@ class UserType extends AppModel {
   }
   
   /**
-   * Returns the user type id for a given name.
+   * Returns the user type id for a given code.
    *
    * @param 	string $user_type
    * @return	uuid
    * @access	public
    */
   static public function id( $user_type ) {
-    return ClassRegistry::init( 'UserType' )->field( 'id', array( 'UserType.name' => $user_type ) );
+    return ClassRegistry::init( 'UserType' )->field( 'id', array( 'UserType.code' => $user_type ) );
   }
 }

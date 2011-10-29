@@ -69,7 +69,7 @@ class ContractorsController extends AppController {
         $this->data['User']['confirm_password'] = $this->Auth->password( $this->data['User']['confirm_password'] );        
       }
       
-      $this->data['User']['user_type_id'] = UserType::CONTRACTOR;
+      $this->data['User']['user_type_id'] = UserType::id( 'CNTRCT' );
       
       # debug( $this->data ); exit;
       

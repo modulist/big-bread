@@ -130,14 +130,14 @@ class ApiV1 extends Api {
     # Adjust the friendly user type to the appropriate UUID
     switch( strtolower( trim( $data['User']['user_type'] ) ) ) {
       case 'owner':
-        $data['User']['user_type_id'] = UserType::OWNER;
+        $data['User']['user_type_id'] = UserType::id( 'OWNER' );
         break;
       case 'buyer':
-        $data['User']['user_type_id'] = UserType::BUYER;
+        $data['User']['user_type_id'] = UserType::id( 'BUYER' );
       case 'inspector':
-        $data['User']['user_type_id'] = UserType::REALTOR;
+        $data['User']['user_type_id'] = UserType::id( 'REALTR' );
       case 'inspector':
-        $data['User']['user_type_id'] = UserType::INSPECTOR;
+        $data['User']['user_type_id'] = UserType::id( 'INSPCT' );
       default:
         # TODO: 40X error
         break;
