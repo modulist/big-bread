@@ -18,7 +18,7 @@ class MessageShell extends Shell {
         'timeout'  => 30,
         'username' => Configure::read( 'email.sendgrid_username' ),
         'password' => Configure::read( 'email.sendgrid_password' ),
-        'client'   => 'savebigbread.com',
+        'client'   => strtolower( Configure::read( 'Env.code' ) ),
       ),
     )); 
   } 
@@ -70,10 +70,13 @@ class MessageShell extends Shell {
    */
   public function send_email( $message ) {
     $settings = array(
-      'to'       => sprintf( '%s <%s>', h( $message['Recipient']['full_name'] ), Configure::read( 'email.redirect_to' ) ? Configure::read( 'email.redirect_to' ) : h( $message['Recipient']['email'] ) ),
-      'from'     => sprintf( '%s <%s>', !empty( $message['Sender']['id'] ) ? h( $message['Sender']['full_name'] ) : 'SaveBigBread.com', !empty( $message['Sender']['id'] ) ? $message['Sender']['email'] : Configure::read( 'email.do_not_reply_address' ) ),
-      'subject'  => h( $message['MessageTemplate']['subject'] ),
-      'template' => $message['MessageTemplate']['code'],
+      'environment' => Configure::read( 'Env.code' ),
+      'to'          => Configure::read( 'email.redirect_to' ) ? Configure::read( 'email.redirect_to' ) : h( $message['Recipient']['email'] ),
+      'toname'      => h( $message['Recipient']['full_name'] ),
+      'from'        => !empty( $message['Sender']['id'] ) ? $message['Sender']['email'] : Configure::read( 'email.do_not_reply_address' ),
+      'fromname'    => !empty( $message['Sender']['id'] ) ? h( $message['Sender']['full_name'] ) : 'SaveBigBread.com',
+      'subject'     => h( $message['MessageTemplate']['subject'] ),
+      'template'    => $message['MessageTemplate']['code'],
     );
     
     $this->set_variables( json_decode( $message['Message']['replacements'], true ) );
