@@ -5,6 +5,37 @@ class UserType extends AppModel {
 
 	public $hasMany = array( 'User' );
   
+  public static $lookup = array();
+  public static $reverse_lookup = array();
+  
+  /**
+   * Constructor.
+   */
+  public function __construct( $id = false, $table = null, $ds = null ) {
+    parent::__construct( $id, $table, $ds );
+    
+    # Populate the static types array for easy access
+    $types = $this->find(
+      'list',
+      array(
+        'contain'    => false,
+        'conditions' => array( 'UserType.selectable' => 1 ),
+      )
+    );
+    foreach( $types as $id => $name ) {
+      self::$lookup[$id] = strtoupper( $name );
+      self::$reverse_lookup[strtoupper( $name )] = $id;
+    }
+    
+    # new PHPDump( self::$lookup );
+    # new PHPDump( self::$reverse_lookup ); exit;
+  }
+  
+  
+  /**
+   * PUBLIC METHODS
+   */
+  
   /**
    * Returns the user type name for a given id.
    *

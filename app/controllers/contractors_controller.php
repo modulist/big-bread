@@ -69,7 +69,7 @@ class ContractorsController extends AppController {
         $this->data['User']['confirm_password'] = $this->Auth->password( $this->data['User']['confirm_password'] );        
       }
       
-      $this->data['User']['user_type_id'] = UserType::id( 'CNTRCT' );
+      $this->data['User']['user_type_id'] = UserType::$reverse_lookup['CONTRACTOR'];
       
       # debug( $this->data ); exit;
       

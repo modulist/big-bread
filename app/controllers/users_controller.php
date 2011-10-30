@@ -176,8 +176,8 @@ class UsersController extends AppController {
 
     # "Guess" the user type
     $user_type_id = !empty( $this->params['user_type'] )
-      ? UserType::id( $this->params['user_type'] )
-      : UserType::id( 'OWNER' );
+      ? UserType::$reverse_lookup[$this->params['user_type']]
+      : UserType::$reverse_lookup['HOMEOWNER'];
     
     if( !isset( $this->data['WatchedTechnology']['selected'] ) ) {
       $this->data['WatchedTechnology']['selected'] = array();
