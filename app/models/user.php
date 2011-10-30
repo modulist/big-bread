@@ -123,7 +123,6 @@ class User extends AppModel {
 				'message'    => 'Zip code must be a valid US postal code.',
 				'allowEmpty' => false,
 				'required'   => true,
-        'last'       => true,
 			),
       'known' => array(
         'rule'    => array( 'known_zip_code' ), 
@@ -136,14 +135,6 @@ class User extends AppModel {
 				'message'    => 'Phone number is invalid.',
 				'allowEmpty' => true,
 				'required'   => false,
-			),
-		),
-		'user_type_id' => array(
-			'notempty' => array(
-				'rule'       => 'notEmpty',
-				'message'    => 'Primary role cannot be empty.',
-				'allowEmpty' => false,
-				'required'   => true,
 			),
 		),
 	);
