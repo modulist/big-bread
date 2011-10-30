@@ -270,4 +270,11 @@ UPDATE user_types
    SET selectable = 1
  WHERE code = 'CNTRCT';
  
+ALTER TABLE contractors
+  ADD licensed boolean NOT NULL DEFAULT 0 COMMENT 'Whether the contractor possesses all required state and local licenses.' AFTER better_business_bureau_listed,
+  ADD felony_charges boolean NOT NULL DEFAULT 0 COMMENT 'Whether the contractor has any criminal or sex offender charges or convictions in his/her history.' AFTER better_business_bureau_listed,
+  ADD filings_current boolean NOT NULL DEFAULT 0 COMMENT 'Whether the contractor is current in all of his/her state filings.' AFTER better_business_bureau_listed,
+  ADD bankruptcy_filings boolean NOT NULL DEFAULT 0 COMMENT 'Whether the contractor has filed for bankruptcy or has any judgements or liens against him/her.' AFTER better_business_bureau_listed
+;
+ 
 SET foreign_key_checks = 1;
