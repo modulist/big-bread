@@ -40,7 +40,7 @@ $(document).ready( function() {
   
   // Various treatments of the zipcode input
   $('#zipcode')
-    //.autotab_filter( 'number' )
+    .autotab({ format: 'numeric' })
     .focus( function( e ) {
       $(this).addClass( 'active' );
     })

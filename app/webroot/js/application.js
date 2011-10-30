@@ -34,7 +34,7 @@ $(document).ready( function() {
   
   // Depends on the jQuery autotab plugin
   // http://www.mathachew.com/sandbox/jquery-autotab/
-  $( '.phonenumber input' ).autotab_magic().autotab_filter( 'number' );
+  $( '.phonenumber input' ).autotab_magic().autotab_filter( 'numeric' );
   
   /**
    * Set the datepicker date format, where applicable.
