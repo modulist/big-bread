@@ -266,6 +266,10 @@ UPDATE technologies
        watchable = 1
  WHERE incentive_tech_id = 'WBLD';
  
+UPDATE technologies
+   SET title = 'Heat Pumps'
+ WHERE incentive_tech_id = 'HP';
+ 
 UPDATE user_types
    SET selectable = 1
  WHERE code = 'CNTRCT';
