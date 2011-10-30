@@ -56,6 +56,7 @@ Configure::write( 'Cache.disable', false );
 Configure::write( 'Env.name', 'Development' );
 Configure::write( 'Env.code', 'DEV' );
 Configure::write( 'Env.domain', 'dev.bigbread.net' );
+Configure::write( 'Env.full_base_url', 'http://dev.bigbread.net' );
 
 Configure::write( 'email.redirect_to', 'rob@savebigbread.com' );
 

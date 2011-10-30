@@ -56,6 +56,7 @@
 Configure::write( 'Env.name', 'Staging' );
 Configure::write( 'Env.code', 'STG' );
 Configure::write( 'Env.domain', 'stage.bigbread.net' );
+Configure::write( 'Env.full_base_url', 'http://stage.bigbread.net' );
       
 Configure::write( 'email.redirect_all_email_to', 'wamaull@federatedpower.com' );
 
