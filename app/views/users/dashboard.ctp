@@ -1,10 +1,16 @@
 <div id="messages">
   <?php if( empty( $location ) ): ?>
     <h1><?php __( 'Congratulations!' ) ?></h1>
-    <p><?php __( 'You now have a SaveBigBread profile. Scroll down to see what sorts of rebates you can find.' ) ?></p>
+    <p><?php printf( __( 'You now have a SaveBigBread profile. Scroll down to see what sorts of rebates you can find%s.', true ), User::agent() ? __( ' for your client', true ) : false ) ?></p>
   <?php else: ?>
     <h1><?php __( 'Let&#146;s find rebates in your area' ) ?></h1>
-    <p><?php __( 'First, you&#146;ll have to help us out by letting us know what kinds of rebates you&#146;re interested in.' ) ?></p>
+    <p>
+      <?php if( !User::agent() ): ?>
+        <?php __( 'First, you&#146;ll have to help us out by letting us know what kinds of rebates you&#146;re interested in.' ) ?>
+      <?php else: ?>
+        <?php __( 'First, you&#146;ll have to help us out by letting us know what kinds of rebates may interest your clients.' ) ?>
+      <?php endif; ?>
+    </p>
   <?php endif; ?>
 </div><!-- /#messages -->
 
@@ -193,7 +199,11 @@
 <div id="my-interests" class="grid_9">
 	<h2><?php printf( __( 'My interests for %s', true ), $location_title ) ?></h2>
   <p class="instructions">
-  	<?php __( 'Select as many categories of rebates as you like by clicking on the stars below.' ) ?>
+    <?php if( !User::agent() ): ?>
+      <?php __( 'Select as many categories of rebates as you like by clicking on the stars below.' ) ?>
+    <?php else: ?>
+      <?php __( 'Select the categories that you believe your client should consider.' ) ?>
+    <?php endif; ?>
   </p>
 	
   <?php echo $this->element( '../users/_interests', array( 'watchable' => $watchable_technologies, 'watched' => $technology_watch_list, 'location_id' => !empty( $location ) ? $location['Building']['id'] : false ) ) ?>

@@ -271,8 +271,26 @@ class User extends AppModel {
    * @return	boolean
    * @access	public
    */
-  static public function admin( $user_id ) {
+  static public function admin( $user_id = null ) {
+    $user_id = !empty( $user_id ) ? $user_id : self::get( 'id' );
+    
     return ClassRegistry::init( 'User' )->field( 'User.admin', array( 'User.id' => $user_id ) );
+  }
+  
+  /**
+   * Whether the user is an agent (contractor, realtor, inspector). An agent is
+   * any user associated with a location as a non owner or potential owner.
+   *
+   * @param   uuid $user_id
+   * @return  boolean
+   * @access  public
+   */
+  static public function agent( $user_id = null ) {
+    $user_type_id = !empty( $user_id )
+      ? $this->field( 'User.user_type_id', array( 'User.id' => $user_id ) )
+      : self::get( 'user_type_id' );
+    
+    return !in_array( $user_type_id, array( UserType::$reverse_lookup['HOMEOWNER'], UserType::$reverse_lookup['BUYER'] ) );
   }
   
   /**
