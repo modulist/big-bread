@@ -1,5 +1,8 @@
-<?php __( 'A little birdy told us that you forgot your password. Well, we\'ve reset it for you. Just access the site using the link below and enter a new password to restore your access to SaveBigBread.com' ) ?>
+<?php printf( __( 'Hello, %s:', true ), $user['first_name'] ) ?> 
 
-<?php echo $this->Html->url( array( 'controller' => 'users', 'action' => 'invite', $invite_code ), true ) ?>
+<?php printf( __( 'To reset your password for the account with the username %s please visit %s. Once there you will be able to change your password.', true ), $user['email'], $this->Html->url( array( 'controller' => 'users', 'action' => 'invite', $invite_code ), true ) ) ?> 
 
-<?php printf( __( 'If you didn\'t request this change, %s.', true ), $this->Html->link( __( 'please let us know', true ), array( 'controller' => 'contacts' )  ) ) ?>
+<?php printf( __( ' If you didn\'t request this change, please let us know through our customer service form available at %s.', true ), $this->Html->url( array( 'controller' => 'messages', 'action' => 'feedback' ), true ) ) ?> 
+
+<?php __( 'Mahalo,' ) ?> 
+<?php __( 'The SaveBigBread Crew' ) ?> 

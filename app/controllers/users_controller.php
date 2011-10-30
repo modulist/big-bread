@@ -262,12 +262,32 @@ class UsersController extends AppController {
           }
           $this->User->saveField( 'password', null );
           
-          # Queue up the message
-          $replacements = array( 'invite_code' => $invite_code );
-          $this->User->Message->queue( MessageTemplate::TYPE_FORGOT_PASSWORD, 'User', $this->User->id, null, $this->User->id, $replacements );
+          $user = $this->User->find(
+            'first',
+            array(
+              'contain'    => false,
+              'conditions' => array( 'User.id' => $user_id ),
+              'fields'     => array(
+                'User.first_name',
+                'User.email',
+              )
+            )
+          );
           
-          # Go back where we came from. Help is on the way.
-          $this->redirect( $this->referer( array( 'controller' => 'pages', 'action' => 'home' ) ), null, true );
+          # Queue up the message
+          $replacements = array(
+            'user'        => $user['User'],
+            'invite_code' => $invite_code,
+          );
+          if( $this->User->Message->queue( MessageTemplate::TYPE_FORGOT_PASSWORD, 'User', $this->User->id, null, $this->User->id, $replacements ) ) {
+            $this->Session->setFlash( 'An email with instructions on how to reset your password has been sent. If you do not receive it within a few minutes, check your spam folder.', null, null, 'success' );
+          
+            # Go back where we came from. Help is on the way.
+            $this->redirect( array( 'controller' => 'users', 'action' => 'login' ), null, true );
+          }
+          else {
+            $this->Session->setFlash( 'Our apologies, but we seem to be having some trouble handling your request. Please try again shortly.', null, null, 'error' );
+          }
         }
         else {
           $this->User->invalidate( 'email', 'No user is registered with this email address.' );

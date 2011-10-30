@@ -11,7 +11,7 @@ App::import( 'Component', 'Email' ); # Not used for sending, but for rendering.
 App::import( 'Core', 'HttpSocket' ); # Used to engage the SendGrid web api
 
 include( CONFIGS . 'routes.php' );
-define( 'FULL_BASE_URL', 'http://www.savebigbread.com' );
+define( 'FULL_BASE_URL', Configure::read( 'Env.full_base_url' ) );
 
 class EmailTask extends Shell { 
   public $Controller; # Controller class
@@ -89,7 +89,7 @@ class EmailTask extends Shell {
       'toname'    => $this->settings['toname'],
       'from'      => $this->settings['from'],
       'fromname'  => $this->settings['fromname'],
-      'subject'   => $this->settings['from'],
+      'subject'   => $this->settings['subject'],
       'html'      => trim( $html ),
       'text'      => trim( $text ),
     );

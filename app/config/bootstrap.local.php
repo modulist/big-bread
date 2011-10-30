@@ -60,5 +60,6 @@ if( !defined( 'STDIN' ) && function_exists( 'ini_set' ) ) {
 Configure::write( 'Env.name', 'Localhost' );
 Configure::write( 'Env.code', 'LCL' );
 Configure::write( 'Env.domain', 'bigbread (local)' );
+Configure::write( 'Env.full_base_url', 'http://bigbread.dev' );
 
 Configure::write( 'email.redirect_to', 'rob@robwilkerson.org' );

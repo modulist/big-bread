@@ -49,7 +49,7 @@ INSERT INTO message_templates( id, template, subject, created, modified )
 VALUES
   ( UUID(), 'new_user', '%recipient_first_name%, thanks for registering to Save Big Bread on SaveBigBread.com', NOW(), NOW() ),
   ( UUID(), 'proposal_request', '%Sender.full_name% requests a quote from a qualified contractor.', NOW(), NOW() ),
-  ( UUID(), 'forgot_password', 'Forgot your SaveBigBread.com password, did you?', NOW(), NOW() ),
+  ( UUID(), 'forgot_password', 'Reset your SaveBigBread.com password', NOW(), NOW() ),
   ( UUID(), 'feedback', 'Feedback from a user at SaveBigBread.com', NOW(), NOW() )
 ;
 

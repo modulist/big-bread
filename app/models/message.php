@@ -106,6 +106,10 @@ class Message extends AppModel {
       $queued = false;
     }
     
+    if( !$queued ) {
+      $this->log( '{Message::queue} Error queuing message: ' . json_encode( $this->invalidFields() ), LOG_ERR );
+    }
+    
     return $queued;
   }
 }
