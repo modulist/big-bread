@@ -34,8 +34,8 @@
         <div class="location-address">
           <?php echo $this->element( 'address', array( 'address' => $location['Address'] ) ) ?>
           <div class="add-edit clearfix"><?php echo $this->Html->link( __( 'edit', true ), array( 'controller' => 'buildings', 'action' => 'edit', h( $location['Building']['id'] ) ), array( 'class' => 'edit-button' ) ) ?>
-          |
-          <?php echo $this->Html->link( __( 'remove', true ), '#', array( 'class' => 'remove-button' ) ) ?></div>
+          <?php /* ?>| <?php echo $this->Html->link( __( 'remove', true ), '#', array( 'class' => 'remove-button' ) ) ?><?php */ ?>
+          </div>
         </div>
         <div class="location-equipment-grid grid_5">
           <?php echo $this->element( '../fixtures/_list', array( 'plugin' => false, 'fixtures' => $fixtures ) ) ?>

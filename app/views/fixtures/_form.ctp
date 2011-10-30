@@ -30,9 +30,11 @@
             <?php echo $this->Form->input( 'Fixture.notes' ) ?>          
           </div><!-- /grid-4 -->
           
+          <?php /* ?>
           <h4><?php __( 'Attach a file' ) ?></h4>
           <p class="small"><?php __( 'You can attach invoices, a product manual, or anything else.' ) ?></p>
           <div class="choose-button"><p><?php __( 'Choose a file' ) ?></p></div>
+          <?php */ ?>
         <?php echo $this->Form->end( sprintf( __( 'Add to %s', true ), $location_name ) ) ?>
       </div><!-- /location-equipment-->	
         

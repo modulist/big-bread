@@ -134,6 +134,8 @@ class FixturesController extends AppController {
         $this->Session->setFlash( __( 'Sorry, we couldn\'t update this piece of equipment. Please fix the errors below.', true ), null, null, 'error' );
       }
     }
+    # Other locations that the user will be able to switch to
+    $other_locations = $this->Fixture->Building->Client->locations( null, null, array( 'Building.id <> ' => $location['Building']['id'] ) );
     
     # Passed along in the form's action
     $action_param = $fixture['Fixture']['id'];
@@ -180,7 +182,7 @@ class FixturesController extends AppController {
       $this->data = $fixture;
     }
     
-    $this->set( compact( 'action_param', 'fixtures', 'location', 'location_name', 'technologies' ) );
+    $this->set( compact( 'action_param', 'fixtures', 'location', 'location_name', 'other_locations', 'technologies' ) );
 	}
   
 	public function retire( $id ) {
@@ -193,7 +195,7 @@ class FixturesController extends AppController {
     
 		if( $this->Fixture->retire( $id ) ) {
       $this->Session->setFlash( __( 'The selected piece of equipment has been retired.', true ), null, null, 'success' );
-      $this->redirect( array( 'action' => 'add', $location_id ), null, true );
+      $this->redirect( $this->referer( array( 'action' => 'add', $location_id ) ), null, true );
     }
 		$this->flash( __( 'The selected piece of equipment could not be retired.', true) );
 		$this->redirect( array( 'action' => 'edit', $id ), null, true );
