@@ -122,7 +122,7 @@ class User extends AppModel {
 				'rule'       => array( 'postal', null, 'us' ),
 				'message'    => 'Zip code must be a valid US postal code.',
 				'allowEmpty' => false,
-				'required'   => true,
+				'required'   => false,
 			),
       'known' => array(
         'rule'    => array( 'known_zip_code' ), 
@@ -167,12 +167,10 @@ class User extends AppModel {
    */
   public function beforeValidate() {
     if( !empty( $this->data ) ) {
-      /**
-       * An empty password value is never empty. The auth module hashes the
-       * empty value and that fools the validation rule. This is bad. We
-       * want to know an empty password when we see one and throw it out, so
-       * we have to make that adjustment manually.
-       */
+      # An empty password value is never empty. The auth module hashes the
+      # empty value and that fools the validation rule. This is bad. We
+      # want to know an empty password when we see one and throw it out, so
+      # we have to make that adjustment manually.
       $empty_password = Security::hash( '', null, true );
       
       if( isset( $this->data[$this->alias]['password'] ) && $this->data[$this->alias]['password'] == $empty_password ) {

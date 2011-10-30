@@ -28,7 +28,7 @@
 	</div>
 </div>
 
-<?php if( $this->name != 'Contractors' ): ?>
+<?php if( $this->name != 'Contractors' && !in_array( $user_type_id, array( UserType::$reverse_lookup['REALTOR'], UserType::$reverse_lookup['INSPECTOR'] ) ) ): ?>
   <div class="clearfix">
     <div class="grid_3 first zip-code">
       <?php echo $this->Form->input( 'User.zip_code', array( 'default' => $this->Session->read( 'default_zip_code' ) ) ) ?>
