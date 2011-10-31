@@ -3,7 +3,8 @@
 <div id="content-bottom" class="content-bottom grid_10 clearfix">
 	<div class="content-wrapper clearfix">
 	  <div id="column-first" class="grid_3">
-	    <h3><?php __( '*Here&#146;s how it works:' ) ?></h3>
+	    <h3 class="title"><?php __( '*Here&#146;s how it works:' ) ?></h3>
+	    <h3><?php __( '1. Find Savings' ) ?></h3>
 	    <div class="green-dot-divider">
 	      <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
 	    </div>     
@@ -23,17 +24,39 @@
 	  </div>    <!-- /#column-first -->
 	  
 	  <div id="column-middle" class="grid_3">
-	    <h3><?php __( 'Find a contractor' ) ?></h3>
+	    <h3><?php __( '2. Find a contractor' ) ?></h3>
 	    <div class="green-dot-divider">
 	      <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
 	    </div>      
 	    <p><?php __( 'SaveBigBread can help you get quotes from contractors in your area &ndash; free of charge' ) ?></p>
 	    
-	    <h3><?php __( 'Redeem a rebate' ) ?></h3>
+	    <h3><?php __( '3. Redeem a rebate' ) ?></h3>
 	    <div class="green-dot-divider">
 	      <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
 	    </div>
 	    <p><?php __( 'Tell us about your purchase and upload a scan of the invoice, and we&#146;ll handle the rest for you.' ) ?></p>
+
+	    <div class="green-dot-divider">
+	      <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
+	    </div>
+	  
+	    <div id="social-media">
+	      <div id="microphone">
+	        <?php echo $this->Html->image( 'home-microphone-icon.png' ) ?>
+	      </div>
+	      <h3><?php __( 'Talk us up!' ) ?></h3>
+	      <div class="icon-grid">
+	        <div id="google-plus" class="icon">
+	          <?php echo $this->Html->link( $this->Html->image( 'icon-google-plus.png', array( 'alt' => 'Google Plus' ) ), 'http://google.com/plus', array( 'rel' => 'no-follow', 'escape' => false ) ) ?>
+	        </div>
+	        <div id="facebook" class="icon">
+	          <?php echo $this->Html->link( $this->Html->image( 'icon-facebook.png', array( 'alt' => 'Facebook' ) ), 'http://www.facebook.com', array( 'rel' => 'no-follow', 'escape' => false ) ) ?>
+	        </div>
+	        <div id="twitter" class="icon">
+	          <?php echo $this->Html->link( $this->Html->image( 'icon-twitter.png', array( 'alt' => 'Twitter' ) ), 'http://www.twitter.com/savebigbread', array( 'rel' => 'no-follow', 'escape' => false ) ) ?>
+	        </div>
+	      </div> <!-- /icon-grid -->
+	    </div> <!-- /social media -->   
 
 	    <div class="green-dot-divider">
 	      <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
@@ -93,27 +116,6 @@
 	        </div>  
 	      </div> <!-- /item -->
 	    </div> <!-- /testimonials -->
-	    <!-- <div class="green-dot-divider">
-	      <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
-	    </div>
-	  
-	    <div id="social-media">
-	      <div id="microphone">
-	        <?php echo $this->Html->image( 'home-microphone-icon.png' ) ?>
-	      </div>
-	      <h3><?php __( 'Talk us up!' ) ?></h3>
-	      <div class="icon-grid">
-	        <div id="google-plus" class="icon">
-	          <?php echo $this->Html->link( $this->Html->image( 'icon-google-plus.png', array( 'alt' => 'Google Plus' ) ), 'http://google.com/plus', array( 'rel' => 'no-follow', 'escape' => false ) ) ?>
-	        </div>
-	        <div id="facebook" class="icon">
-	          <?php echo $this->Html->link( $this->Html->image( 'icon-facebook.png', array( 'alt' => 'Facebook' ) ), 'http://www.facebook.com', array( 'rel' => 'no-follow', 'escape' => false ) ) ?>
-	        </div>
-	        <div id="twitter" class="icon">
-	          <?php echo $this->Html->link( $this->Html->image( 'icon-twitter.png', array( 'alt' => 'Twitter' ) ), 'http://www.twitter.com/savebigbread', array( 'rel' => 'no-follow', 'escape' => false ) ) ?>
-	        </div>
-	      </div> --> <!-- /icon-grid -->
-	    <!--</div>--> <!-- /social media -->   
 	  </div> <!-- /#column-last -->
 	</div> <!-- content-wrapper -->
   

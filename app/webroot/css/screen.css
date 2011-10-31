@@ -184,7 +184,7 @@ body.onecolumn #content { background: #FFFFFF; min-height:400px; padding: 50px 6
 #address-panel-nav .next { float: right; }
 
 /* ============================= content ===================== */
-#content, #content.grid_9 { width: 700px; margin: 0 0 0 240px; padding: 0 20px 30px; background: #fff; border-radius: 20px; -moz-border-radius: 20px; -webkit-border-radius: 20px; }
+#content, #content.grid_9 { width: 700px; margin: 0 0 0 240px; padding: 40px 20px 30px; background: #fff; border-radius: 20px; -moz-border-radius: 20px; -webkit-border-radius: 20px; }
 .grid_9 .grid_9 { margin-left: 0; margin-right: 0; padding-left: 10px; padding-right: 10px; width: 680px; }
 .grid_9 .grid_9 .grid_3 { width: 210px; }
 
@@ -386,7 +386,7 @@ option { padding: 0 8px; line-height: 24px; }
 }
 
 /* ============================= user messages ======================= */
-#messages { margin-top: 40px; padding: 10px 0 20px 120px; background: url(../img/handyman.png) 15px top no-repeat, url(../img/dotrule-green-4px.png) bottom left repeat-x; min-height: 105px; width: 580px; }
+#messages { padding: 10px 0 20px 120px; background: url(../img/handyman.png) 15px top no-repeat, url(../img/dotrule-green-4px.png) bottom left repeat-x; min-height: 105px; width: 580px; }
 #messages p { font: 18px/24px Georgia, sans-serif; color: #57550f;}
 
 /* Contractor registration bits */
@@ -462,7 +462,7 @@ a.location-switcher { width: 150px; display: block; background-color: #4c96b6; b
 a.location-switcher:hover { background-color: #3b7e9a; text-decoration: none; }
 
 ul.other-location-list { display: none  }
-ul.other-location-list.active { display: block; position: absolute; z-index: 100; width: 200px; list-style: none;  text-transform: capitalize; margin: 0; padding: 0; background-color: rgba(255,255,255,.92); border: 1px solid #ccc; box-shadow: 5px 5px 7px rgba(0,0,0,.35)  }
+ul.other-location-list.active { display: block; position: absolute; top: 31px; z-index: 100; width: 200px; list-style: none;  text-transform: capitalize; margin: 0; padding: 0; background-color: rgba(255,255,255,.92); border: 1px solid #ccc; box-shadow: 5px 5px 7px rgba(0,0,0,.35)  }
 ul.other-location-list li { padding: 3px 10px;  }
 ul.other-location-list li:hover { background-color: #4c96b6; color: white;  }
 ul.other-location-list li a:hover { color: white; text-decoration: none; }
@@ -598,6 +598,7 @@ table.rebate-header { border: none; }
 .rebate-header .rebate-description a.star.active { background: url(../img/sprite-rebate-table.png) -12px -48px no-repeat; }
 .rebate-header .rebate-description a.star.active:hover { background: url(../img/sprite-rebate-table.png) -12px -68px no-repeat; }
 .rebate-header .rebate-description span.rebate-category-title { font: 14px/1.25 "UltraRegular", serif; letter-spacing: .04em;  }
+.rebate-header .rebate-amount { width: 138px;  }
 
 table.rebate-content { margin-left: 60px; color: #666; display: none; }
 .rebate-content tr { background: url(../img/dotrule-orange-1px.png) top left repeat-x; }
@@ -732,7 +733,8 @@ table.savings-detail-grid { width: 100%; background: url(../img/dotrule-orange-1
 /* ============================= homepage ====================== */
 body.layout-default_landing { }
 body.layout-default_landing h2 {margin-top: 0;}
-body.layout-default_landing h3 {margin-top: 0;font-size: 16px; color: #5c998f;}
+body.layout-default_landing h3 {margin-top: 0;font-size: 16px; color: #156873;}
+body.layout-default_landing h3.title {margin-bottom: 10px; font-size: 16px; color: #5c998f; letter-spacing: 0;}
 body.layout-default_landing #content-top {margin-top:30px;margin-left:0px; background: url(../img/home-content-top-background.png) top no-repeat; height: 494px; width: 1000px;}
 body.layout-default_landing #content-top-inner { background: url(../img/home-top-content-trees.png) 50px 255px no-repeat, url(../img/home-top-content-trees.png) right 255px no-repeat; }
 body.layout-default_landing .login-wrapper { float: right; width: 310px; font: 14px/1 'UltraRegular', serif; color: #308166; letter-spacing: .07em;  }
@@ -751,6 +753,7 @@ body.layout-default_landing #login-popup.active { visibility: visible; }
 #login-popup .cancel-link,
 #login-popup .password-recovery { clear: both; font: 12px Georgia, serif; color: #000; padding: 10px 0 0; }
 #login-popup .password-recovery a { font-weight: bold; }
+#login-popup .password-recovery a.forgot-password { display: block; }
 
 body.layout-default_landing #content-bottom { margin: auto; padding-left: 150px; width: 850px; background: url(../img/home-page-bottom.gif) bottom no-repeat #fff; }
 body.layout-default_landing #links { margin-left: -54px; font: 14px/1.125 'UltraRegular', sans-serif; color: #10607f; letter-spacing: .1em; height: 92px; }
