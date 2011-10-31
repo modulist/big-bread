@@ -660,6 +660,7 @@ table.savings-detail-grid { width: 100%; background: url(../img/dotrule-orange-1
 .savings-detail-grid tbody tr { background: url(../img/dotrule-orange-1px.png) top repeat-x; }
 .savings-detail-grid th { font: 14px/1.125 'UltraRegular', serif; letter-spacing: .1em; color: #0c4d54; text-align: left; padding: 30px 5px 6px; }
 .savings-detail-grid td { font-size: 12px; width: 33%; padding: 10px 5px; }
+.savings-detail-grid ul { margin: 0; padding: 0; }
 
 
 /* ============================= Join ======================= */
