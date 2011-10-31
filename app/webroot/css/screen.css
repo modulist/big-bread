@@ -548,8 +548,9 @@ a.button {
 .add-location-button { height: 17px; background-color: #4ac092; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; text-align: center; margin: 0 0 0 15px; padding: 3px 15px;  }
 .add-location-button:hover { background-color: #1e9055; text-decoration: none; }
 .edit-location-button { display: block; width: 48px; background: url(/img/bk-blue-popup.png) 42px -10px no-repeat #4c96b6; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; margin: 10px 0 0; padding: 4px 10px;  }
-.add-equipment-button { height: 17px; background-color: #4c96b6; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; text-align: center; margin: 0; padding: 3px 15px; }
-.edit-location-button:hover,
+.add-equipment-button, a.download-button { height: 17px; background-color: #4c96b6; border-radius: 2px; -moz-border-radius: 2px; -webkit-border-radius: 2px; color: #fff; text-align: center; margin: 0; padding: 3px 15px; }
+.edit-location-button:hover, 
+.download-button:hover,
 .add-equipment-button:hover { background-color: #3b7e9a; text-decoration: none; }
 .choose-button {float:left; background: url(/img/button-choose.png) no-repeat; width:118px; height: 22px; margin-top: 12px;}
 .choose-button p {font: 11px/1 Georgia, serif; color: #fff; padding: 5px; vertical-align: middle;}
@@ -656,12 +657,17 @@ td.quote-action { width: 110px; padding-left: 20px; }
 
 /* ============================= savings details ======================= */
 h2.rebate-title { float: left; margin: 0; width: 400px; letter-spacing: 0; }
-.modal.popup .rebate-amount { float: left; margin-left: 15px; width: 115px; font: 30px/1 "UltraRegular", serif; color: #558388; text-align: right; }
+.savings-detail .rebate-amount { float: left; margin-left: 15px; width: 115px; font: 30px/1 "UltraRegular", serif; color: #558388; text-align: right; }
 table.savings-detail-grid { width: 100%; background: url(../img/dotrule-orange-1px.png) bottom repeat-x; margin: 0 0 20px; }
 .savings-detail-grid tbody tr { background: url(../img/dotrule-orange-1px.png) top repeat-x; }
 .savings-detail-grid th { font: 14px/1.125 'UltraRegular', serif; letter-spacing: .1em; color: #0c4d54; text-align: left; padding: 30px 5px 6px; }
 .savings-detail-grid td { font-size: 12px; width: 33%; padding: 10px 5px; }
 .savings-detail-grid ul { margin: 0; padding: 0; }
+.savings-detail .public-note { padding-bottom: 10px; }
+/*.savings-detail .public-note.first { background: url(../img/dotrule-orange-1px.png) top repeat-x; padding-top: 15px; }*/
+.savings-detail .public-note.last { background: url(../img/dotrule-orange-1px.png) bottom repeat-x; padding-bottom: 15px; }
+.savings-detail .detail-buttons { padding-top: 10px }
+
 
 
 /* ============================= Join ======================= */
