@@ -9,4 +9,4 @@
   <?php __( 'Tony Maull, President' ) ?>
 </p>
 
-<p><?php __( 'P.S. Your friends and family would owe you big time if you turned them on to the savings in Save Big Bread.  Bank a favor and sign them up.' ) ?></p>
+<p><?php __( 'P.S. Your friends and family would owe you big time if you were to tell them about SaveBigBread.  Bank the favor and share the love.' ) ?></p>
