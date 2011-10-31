@@ -38,6 +38,28 @@
 	    <div class="green-dot-divider">
 	      <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
 	    </div>
+	  
+	    <div id="social-media">
+	      <div id="microphone">
+	        <?php echo $this->Html->image( 'home-microphone-icon.png' ) ?>
+	      </div>
+	      <h3><?php __( 'Talk us up!' ) ?></h3>
+	      <div class="icon-grid">
+	        <div id="google-plus" class="icon">
+	          <?php echo $this->Html->link( $this->Html->image( 'icon-google-plus.png', array( 'alt' => 'Google Plus' ) ), 'http://google.com/plus', array( 'rel' => 'no-follow', 'escape' => false ) ) ?>
+	        </div>
+	        <div id="facebook" class="icon">
+	          <?php echo $this->Html->link( $this->Html->image( 'icon-facebook.png', array( 'alt' => 'Facebook' ) ), 'http://www.facebook.com', array( 'rel' => 'no-follow', 'escape' => false ) ) ?>
+	        </div>
+	        <div id="twitter" class="icon">
+	          <?php echo $this->Html->link( $this->Html->image( 'icon-twitter.png', array( 'alt' => 'Twitter' ) ), 'http://www.twitter.com/savebigbread', array( 'rel' => 'no-follow', 'escape' => false ) ) ?>
+	        </div>
+	      </div> <!-- /icon-grid -->
+	    </div> <!-- /social media -->   
+
+	    <div class="green-dot-divider">
+	      <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
+	    </div>
 	    
 	    <div class="signup-button"><?php echo $this->Html->link( __( 'Sign up free &rsaquo;', true ), array( 'controller' => 'users', 'action' => 'register' ), array( 'escape' => false ) ) ?></div>
 	
@@ -93,27 +115,6 @@
 	        </div>  
 	      </div> <!-- /item -->
 	    </div> <!-- /testimonials -->
-	    <!-- <div class="green-dot-divider">
-	      <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
-	    </div>
-	  
-	    <div id="social-media">
-	      <div id="microphone">
-	        <?php echo $this->Html->image( 'home-microphone-icon.png' ) ?>
-	      </div>
-	      <h3><?php __( 'Talk us up!' ) ?></h3>
-	      <div class="icon-grid">
-	        <div id="google-plus" class="icon">
-	          <?php echo $this->Html->link( $this->Html->image( 'icon-google-plus.png', array( 'alt' => 'Google Plus' ) ), 'http://google.com/plus', array( 'rel' => 'no-follow', 'escape' => false ) ) ?>
-	        </div>
-	        <div id="facebook" class="icon">
-	          <?php echo $this->Html->link( $this->Html->image( 'icon-facebook.png', array( 'alt' => 'Facebook' ) ), 'http://www.facebook.com', array( 'rel' => 'no-follow', 'escape' => false ) ) ?>
-	        </div>
-	        <div id="twitter" class="icon">
-	          <?php echo $this->Html->link( $this->Html->image( 'icon-twitter.png', array( 'alt' => 'Twitter' ) ), 'http://www.twitter.com/savebigbread', array( 'rel' => 'no-follow', 'escape' => false ) ) ?>
-	        </div>
-	      </div> --> <!-- /icon-grid -->
-	    <!--</div>--> <!-- /social media -->   
 	  </div> <!-- /#column-last -->
 	</div> <!-- content-wrapper -->
   
