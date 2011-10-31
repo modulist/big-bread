@@ -100,7 +100,7 @@ ul.menu li a { float:left; font-weight: bold; color: #3f3f3f; padding: 4px 15px;
 
 /* ============================= page_content ======================= */
 #page_content { background: #8fd469; padding: 0; }
-body.layout-default-login #page_content { background: #8fd469; padding: 100px 0; }
+body.layout-default-login #page_content { background: url(../img/bk-login-page.png) no-repeat top center #8fd469; padding: 100px 0; }
 body.onecolumn #page_content { background-color: transparent; padding:0; }
 #bodyheader { border-bottom:solid 1px #333; background:#91C32E;   height:128px; }
 #bodyheaderhead { float: left;width:135px; height:44px; background:url(../img/MyEquipment.png) no-repeat 2px 0;padding:84px 0px 0 0px;text-align:center; }
@@ -109,7 +109,7 @@ body.onecolumn #page_content { background-color: transparent; padding:0; }
 #bodyheader li a, #savings li a { color:#3D7700; font-weight:bold; padding:0; margin:0; }
 #bodyheader li a:hover, #savings li a:hover { text-decoration:none; }
 #bodyheader li p { text-align: center; padding: 0; margin:0; }
-#bodymain { background:#8fd469; /*padding-top: 30px;*/ }
+#bodymain { /*background:#8fd469; padding-top: 30px;*/ }
 body.onecolumn #bodymain { background:#8fd469; padding: 30px 20px 20px 20px; }
 body.onecolumn #content { background: #FFFFFF; min-height:400px; padding: 50px 60px 60px 60px; float:none; width:auto;border: 1px solid white; border-radius: 20px; -moz-border-radius: 20px; }
 
