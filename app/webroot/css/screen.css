@@ -339,6 +339,7 @@ footer { clear: both; background: url(../img/footer-background.png) top no-repea
 footer a { color: #01deb8;  }
 footer .footer-inner { color: #383737; background: url(../img/footer-blk.png) 0px 20px no-repeat; min-height: 173px; width: 1000px; padding: 80px 0 0 150px; }
 footer .footer-menu { color: #01deb8; padding: 4px 0; }
+body.layout-default-login footer {background: url(../img/footer-background-login.png) top no-repeat; }
 #footerright { width:0px; float: right; padding:20px 0 0 0; }
 #footerright img { margin-left: 10px; }
 
