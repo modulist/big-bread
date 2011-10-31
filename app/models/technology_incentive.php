@@ -122,7 +122,11 @@ class TechnologyIncentive extends AppModel {
     $incentives = $this->find(
       'all',
       array(
-        'contain' => false,
+        'contain' => array(
+          'TechnologyOption' => array(
+            'fields' => array( 'TechnologyOption.name' ),
+          ),  
+        ),
         'fields'  => array(
           'TechnologyGroup.id',
           'TechnologyGroup.title',
