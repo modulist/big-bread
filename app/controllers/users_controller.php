@@ -74,7 +74,6 @@ class UsersController extends AppController {
    * Allows a user to register. If the user is invited, a user type and id will
    * be passed because basic info has already been entered.
    *
-   * @param   mixed $user_type
    * @param   uuid  $user_id
    * @param   $invite
    * @access  public
@@ -132,7 +131,7 @@ class UsersController extends AppController {
         $commit = $this->User->Message->queue( MessageTemplate::TYPE_NEW_USER, 'User', $this->User->id, null, $this->User->id, $replacements );
 
         if( $commit ) {
-          $this->Session->setFlash( 'Welcome to SaveBigBread. Thanks for registering.', null, null, 'success' );
+          $this->Session->setFlash( sprintf( __( 'Welcome to SaveBigBread, %s. Thanks for registering.', true ), $this->data['User']['first_name'] ), null, null, 'success' );
           $this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
           $this->Auth->login( $this->data ); # Authenticate the new user
           
@@ -142,7 +141,7 @@ class UsersController extends AppController {
       }
       
       $ds->rollback( $this->User );
-      $this->Session->setFlash( 'There\'s a problem with your registration. Please correct the errors below.', null, null, 'validation' );
+      $this->Session->setFlash( __( 'There\'s a problem with your registration. Please correct the errors below.', true ), null, null, 'validation' );
       
       # If the save fails, set the user id so that the form is rendered
       # for editing, if applicable
@@ -187,7 +186,84 @@ class UsersController extends AppController {
   
     $this->set( compact( 'user_type_id', 'watchable_technologies' ) );
   }
+  
+  /**
+   * Displays the form to register a new realtor. This is an alias to shared
+   * functionality in agent_register().
+   *
+   * @access  public
+   */
+  public function realtor_register() {
+    $user_type_id = UserType::$reverse_lookup['REALTOR'];
+    
+    $this->setAction( 'agent_register', $user_type_id );
+  }
 
+  /**
+   * Displays the form to register a new inspector. This is an alias to shared
+   * functionality in agent_register().
+   *
+   * @access  public
+   */
+  public function inspector_register() {
+    $user_type_id = UserType::$reverse_lookup['INSPECTOR'];
+    
+    $this->setAction( 'agent_register', $user_type_id );
+  }
+  
+  /**
+   * Aggregates the functionality to register an agent.
+   *
+   * @param   $user_type_id
+   * @access  public
+   */
+  public function agent_register( $user_type_id ) {
+    if( !empty( $this->data ) ) {
+      $this->data['User']['user_type_id'] = $user_type_id;
+      
+      # The password value is hashed automagically. We need to hash the
+      # confirmation value manually for validation.
+      # @see User::identical()
+      $this->data['User']['confirm_password'] = Security::hash( $this->data['User']['confirm_password'], null, true );
+      
+      if( $this->User->save( $this->data['User'] ) ) {
+        $message_vars = array( 'recipient_first_name' => $this->data['User']['first_name'] );
+        $this->User->Message->queue( MessageTemplate::TYPE_NEW_USER, 'User', $this->User->id, null, $this->User->id, $message_vars );
+        
+        $this->complete_registration();
+      }
+      else {
+        $this->Session->setFlash( __( 'There\'s a problem with your registration. Please correct the errors below.', true ), null, null, 'validation' );
+        
+        # If the save fails, blank the password values
+        $this->data['User']['password'] = '';
+        $this->data['User']['confirm_password'] = '';
+      }
+    }
+    
+    $headline = UserType::$lookup[$user_type_id] == 'REALTOR'
+      ? __( 'Rebates help close sales', true )
+      : __( 'Be a solution hero with huge rebates from SaveBigBread', true );
+    $intro = UserType::$lookup[$user_type_id] == 'REALTOR'
+      ? __( 'Don\'t let a demand for home repair concessions derail a sale.  Help purchasers feel more confident that there are ways to manage their home repair costs and sellers know that there are replacement $s that don\'t have to come from them.  Everyone wins when they signup on SaveBigBread.', true )
+      : __( 'Let your competition be the problem guy while you unearth thousands in savings for your clients and be the solution guy.  You\'ll more than offset your fee and create customer awe when you unearth repairs and bring big rebates to the table.  Be the hero and help your client SaveBigBread.', true );
+    
+    $this->set( compact( 'headline', 'intro', 'user_type_id' ) );
+  } 
+  
+  /**
+   * Aggregates the functionality required to complete the registration process.
+   *
+   * @access  private
+   */
+  private function complete_registration() {
+    $this->Session->setFlash( sprintf( __( 'Welcome to SaveBigBread, %s. Thanks for registering.', true ), $this->data['User']['first_name'] ), null, null, 'success' );
+    $this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
+    $this->Auth->login( $this->data ); # Authenticate the new user
+    
+    $this->redirect( $this->Auth->redirect(), null, true );
+  }
+  
   /**
    * Does just what it says it does.
    *
@@ -400,7 +476,22 @@ class UsersController extends AppController {
    * @access	public
    */
   public function edit() {
-  
+
+    
+    if( !empty( $this->data ) ) {
+    
+    }
+    else {
+      $this->data = $this->User->find(
+        'first',
+        array(
+          'contain'    => false,
+          'conditions' => array( 'User.id' => $this->Auth->user( 'id' ) ),
+        )
+      );
+      
+      $this->User->set( $this->data );
+    }
   }
   
   /**

@@ -1,13 +1,10 @@
-<?php
-/**
- * Defines the inputs shared across multiple user-registration screens.
- * This partial does not include all properties of a User because the
- * user_type property is displayed specially on the registration screen
- * and is not required at all for contractors (we know their user type
- * is contractor).
- */
-?>
-<h2><?php __( 'Let&#146;s create your SaveBigBread account:' ) ?></h2>
+<?php $show_zip_code = isset( $show_zip_code ) ? $show_zip_code : true ?>
+<?php $title = isset( $title ) ? $title : __( 'Let&#146;s create your SaveBigBread account:' ) ?>
+
+<?php if( $title ): ?>
+  <h2><?php $title ?></h2>
+<?php endif; ?>
+
 <div class="clearfix">
 	<div class="grid_3 first">
 		<?php echo $this->Form->input( 'User.first_name' ) ?>
@@ -28,7 +25,7 @@
 	</div>
 </div>
 
-<?php if( $this->name != 'Contractors' && !in_array( $user_type_id, array( UserType::$reverse_lookup['REALTOR'], UserType::$reverse_lookup['INSPECTOR'] ) ) ): ?>
+<?php if( $show_zip_code ): ?>
   <div class="clearfix">
     <div class="grid_3 first zip-code">
       <?php echo $this->Form->input( 'User.zip_code', array( 'default' => $this->Session->read( 'default_zip_code' ) ) ) ?>
