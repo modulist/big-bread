@@ -557,8 +557,9 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 .ui-dialog .ui-dialog-titlebar { padding: 0.7em 1em 0.6em 1em; position: relative; border: none; background: none;  }
 .ui-dialog .ui-dialog-title { float: left; margin: .1em 16px .2em 20px; font: 14px Georgia, serif; font-weight: bold; color: #0c4d54; } 
 .ui-dialog .ui-dialog-titlebar-close { position: absolute; right: .8em; top: 55%; width: 16px; margin: -10px 0 0 0; padding: 0; height: 16px; }
-.ui-dialog .ui-dialog-titlebar-close span { display: block; margin: 1px; background: url(images/icon_sprite.png) 0 -16px no-repeat; }
-.ui-dialog .ui-dialog-titlebar-close:hover span { background-position: -16px -16px; }
+.ui-dialog .ui-dialog-titlebar-close span { display: block; margin: 1px; background: url(/img/close-button.png) 0 0px no-repeat; }
+.ui-dialog .ui-dialog-titlebar-close:hover span { background: url(/img/close-button-hover.png) 0 0px no-repeat; }
+.ui-dialog .ui-dialog-titlebar-close:active span { background: url(/img/close-button-active.png) 0 0px no-repeat; }
 .ui-dialog .ui-dialog-titlebar-close:hover, .ui-dialog .ui-dialog-titlebar-close:focus { padding: 0; border: 0; }
 .ui-dialog .ui-dialog-content { position: relative; border: 0; padding: .5em 1em; background: none; overflow: auto; zoom: 1; }
 .ui-dialog .ui-dialog-buttonpane { text-align: left; border-width: 1px 0 0 0; background-image: none; margin: .5em 0 0 0; padding: .3em 1em .5em .4em; }
