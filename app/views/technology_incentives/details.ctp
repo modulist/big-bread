@@ -1,5 +1,4 @@
 <div class="modal popup">
-	<div class="breadcrumb"><?php echo h( $rebate['Technology']['TechnologyGroup']['title'] ) ?> &gt; <?php echo h( $rebate['Technology']['title'] ) ?></div>
 	<div class="clearfix">
 		<h2 class="rebate-title"><?php echo h( $rebate['Incentive']['name'] ) ?></h2>
   	<div class="rebate-amount"><?php echo $this->Number->format( $rebate['TechnologyIncentive']['amount'], array( 'places' => 0, 'before' => $rebate['IncentiveAmountType']['incentive_amount_type_id'] == 'USD' ? h( $rebate['IncentiveAmountType']['name'] ) : false, 'after' => $rebate['IncentiveAmountType']['incentive_amount_type_id'] != 'USD' ? h( $rebate['IncentiveAmountType']['name'] ) : false ) ) ?></div>

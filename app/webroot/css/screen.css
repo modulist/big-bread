@@ -510,7 +510,6 @@ table.current-equipment td { padding: 3px 10px; }
 #EquipmentEditForm input[type='submit'] {width: 220px; line-height: 210%;margin-bottom: 30px;margin-top: 20px;}
 
 /* ============================= get a quote ======================= */
-.breadcrumb { font: 14px/1.25 Georgia, serif; font-weight: bold; color: #0c4d54; }
 .popup { padding: 0 20px 30px; }
 .popup h2, .modal h2 { margin-top: 20px; }
 
