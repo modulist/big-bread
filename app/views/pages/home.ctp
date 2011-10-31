@@ -3,7 +3,8 @@
 <div id="content-bottom" class="content-bottom grid_10 clearfix">
 	<div class="content-wrapper clearfix">
 	  <div id="column-first" class="grid_3">
-	    <h3><?php __( '*Here&#146;s how it works:' ) ?></h3>
+	    <h3 class="title"><?php __( '*Here&#146;s how it works:' ) ?></h3>
+	    <h3><?php __( '1. Find Savings' ) ?></h3>
 	    <div class="green-dot-divider">
 	      <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
 	    </div>     
@@ -23,13 +24,13 @@
 	  </div>    <!-- /#column-first -->
 	  
 	  <div id="column-middle" class="grid_3">
-	    <h3><?php __( 'Find a contractor' ) ?></h3>
+	    <h3><?php __( '2. Find a contractor' ) ?></h3>
 	    <div class="green-dot-divider">
 	      <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
 	    </div>      
 	    <p><?php __( 'SaveBigBread can help you get quotes from contractors in your area &ndash; free of charge' ) ?></p>
 	    
-	    <h3><?php __( 'Redeem a rebate' ) ?></h3>
+	    <h3><?php __( '3. Redeem a rebate' ) ?></h3>
 	    <div class="green-dot-divider">
 	      <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
 	    </div>
