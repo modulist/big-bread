@@ -4,7 +4,7 @@
   <?php echo $this->element( 'layout/head_content' ) ?>
 </head>
 
-<body class="layout-default <?php echo Inflector::underscore( $this->name ) . ' ' . Inflector::underscore( $this->action ) ?><?php echo $this->Session->check( 'Auth.User' ) ? ' authenticated' : false ?>">
+<body class="layout-default layout-default-login <?php echo Inflector::underscore( $this->name ) . ' ' . Inflector::underscore( $this->action ) ?><?php echo $this->Session->check( 'Auth.User' ) ? ' authenticated' : false ?>">
   
 <div id="wrapper" class="container_12">
   <header class="clearfix">
@@ -20,7 +20,7 @@
         <?php endif; ?>
       </aside> <!-- #sidebar -->
       
-      <div id="content" class="grid_9 clearfix">
+      <div id="content" class="grid_6 clearfix">
         <?php echo $this->element( 'layout/flash_messages' ) ?>
         
         <?php echo $content_for_layout ?>
