@@ -184,7 +184,7 @@ body.onecolumn #content { background: #FFFFFF; min-height:400px; padding: 50px 6
 #address-panel-nav .next { float: right; }
 
 /* ============================= content ===================== */
-#content, #content.grid_9 { width: 700px; margin: 0 0 0 240px; padding: 0 20px 30px; background: #fff; border-radius: 20px; -moz-border-radius: 20px; -webkit-border-radius: 20px; }
+#content, #content.grid_9 { width: 700px; margin: 0 0 0 240px; padding: 40px 20px 30px; background: #fff; border-radius: 20px; -moz-border-radius: 20px; -webkit-border-radius: 20px; }
 .grid_9 .grid_9 { margin-left: 0; margin-right: 0; padding-left: 10px; padding-right: 10px; width: 680px; }
 .grid_9 .grid_9 .grid_3 { width: 210px; }
 
@@ -386,7 +386,7 @@ option { padding: 0 8px; line-height: 24px; }
 }
 
 /* ============================= user messages ======================= */
-#messages { margin-top: 40px; padding: 10px 0 20px 120px; background: url(../img/handyman.png) 15px top no-repeat, url(../img/dotrule-green-4px.png) bottom left repeat-x; min-height: 105px; width: 580px; }
+#messages { padding: 10px 0 20px 120px; background: url(../img/handyman.png) 15px top no-repeat, url(../img/dotrule-green-4px.png) bottom left repeat-x; min-height: 105px; width: 580px; }
 #messages p { font: 18px/24px Georgia, sans-serif; color: #57550f;}
 
 /* Contractor registration bits */
