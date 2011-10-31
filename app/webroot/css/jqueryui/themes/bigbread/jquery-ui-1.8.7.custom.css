@@ -339,7 +339,7 @@
 .ui-corner-bottom { -moz-border-radius-bottomleft: 3px; -webkit-border-bottom-left-radius: 3px; border-bottom-left-radius: 3px; -moz-border-radius-bottomright: 3px; -webkit-border-bottom-right-radius: 3px; border-bottom-right-radius: 3px; }
 .ui-corner-right {  -moz-border-radius-topright: 3px; -webkit-border-top-right-radius: 3px; border-top-right-radius: 3px; -moz-border-radius-bottomright: 3px; -webkit-border-bottom-right-radius: 3px; border-bottom-right-radius: 3px; }
 .ui-corner-left { -moz-border-radius-topleft: 3px; -webkit-border-top-left-radius: 3px; border-top-left-radius: 3px; -moz-border-radius-bottomleft: 3px; -webkit-border-bottom-left-radius: 3px; border-bottom-left-radius: 3px; }
-.ui-corner-all { -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; }
+.ui-corner-all { -moz-border-radius: 20px; -webkit-border-radius: 20px; border-radius: 20px; }
 
 /* Overlays */
 .ui-widget-overlay { background: #262b33; opacity: .70;filter:Alpha(Opacity=70); }
@@ -554,8 +554,8 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 	-webkit-box-shadow: 0 2px 12px rgba(0,0,0,0.6);
 	-moz-box-shadow: 0 2px 12px rgba(0,0,0,0.6);
 }
-.ui-dialog .ui-dialog-titlebar { padding: 0.7em 1em 0.6em 1em; position: relative; border: none; border-bottom: 1px solid #979797; -moz-border-radius: 0; -webkit-border-radius: 0; border-radius: 0;  }
-.ui-dialog .ui-dialog-title { float: left; margin: .1em 16px .2em 0; font-size: 14px; text-shadow: 0 1px 0 rgba(255,255,255,0.5); } 
+.ui-dialog .ui-dialog-titlebar { padding: 0.7em 1em 0.6em 1em; position: relative; border: none; background: none;  }
+.ui-dialog .ui-dialog-title { float: left; margin: .1em 16px .2em 20px; font: 14px Georgia, serif; font-weight: bold; color: #0c4d54; } 
 .ui-dialog .ui-dialog-titlebar-close { position: absolute; right: .8em; top: 55%; width: 16px; margin: -10px 0 0 0; padding: 0; height: 16px; }
 .ui-dialog .ui-dialog-titlebar-close span { display: block; margin: 1px; background: url(images/icon_sprite.png) 0 -16px no-repeat; }
 .ui-dialog .ui-dialog-titlebar-close:hover span { background-position: -16px -16px; }
