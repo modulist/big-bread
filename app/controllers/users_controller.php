@@ -43,6 +43,10 @@ class UsersController extends AppController {
    * @access	public
    */
   public function invite() {
+    if( $this->Session->check( 'Auth.User' ) ) {
+      $this->redirect( array( 'action' => 'dashboard' ) );
+    }
+    
     $invite_code = $this->params['invite_code'];
     
     $user = $this->User->find(
@@ -79,6 +83,10 @@ class UsersController extends AppController {
    * @access  public
    */
   public function register( $user_id = null ) {
+    if( $this->Session->check( 'Auth.User' ) ) {
+      $this->redirect( array( 'action' => 'dashboard' ) );
+    }
+    
     # Handle a submitted registration
     if( !empty( $this->data ) ) {
       $this->User->id = $user_id;
@@ -218,6 +226,10 @@ class UsersController extends AppController {
    * @access  public
    */
   public function agent_register( $user_type_id ) {
+    if( $this->Session->check( 'Auth.User' ) ) {
+      $this->redirect( array( 'action' => 'dashboard' ) );
+    }
+    
     if( !empty( $this->data ) ) {
       $this->data['User']['user_type_id'] = $user_type_id;
       
@@ -271,6 +283,10 @@ class UsersController extends AppController {
    * @access  public
    */
 	public function login() {
+    if( $this->Session->check( 'Auth.User' ) ) {
+      $this->redirect( array( 'action' => 'dashboard' ) );
+    }
+    
     $this->layout = 'default_login';
     
     # Logging in and authenticated
@@ -309,6 +325,10 @@ class UsersController extends AppController {
    * @access	public
    */
   public function forgot_password() {
+    if( $this->Session->check( 'Auth.User' ) ) {
+      $this->redirect( array( 'action' => 'dashboard' ) );
+    }
+    
     $this->layout = 'default_login';
     
     if( !empty( $this->data )  ) {
