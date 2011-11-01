@@ -16,7 +16,9 @@ class UsersController extends AppController {
     $this->Auth->deny(
       'dashboard',
       'dismiss_notice', # TODO: Kill this action?
-      'edit'
+      'edit',
+      'unwatch',
+      'watch'
     );
     
     # TODO: Move this to a component callback?
@@ -340,19 +342,6 @@ class UsersController extends AppController {
   } 
   
   /**
-   * Aggregates the functionality required to complete the registration process.
-   *
-   * @access  private
-   */
-  private function complete_registration() {
-    $this->Session->setFlash( sprintf( __( 'Welcome to SaveBigBread, %s. Thanks for registering.', true ), $this->data['User']['first_name'] ), null, null, 'success' );
-    $this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
-    $this->Auth->login( $this->data ); # Authenticate the new user
-    
-    $this->redirect( $this->Auth->redirect(), null, true );
-  }
-  
-  /**
    * Does just what it says it does.
    *
    * @return  void
@@ -662,4 +651,16 @@ class UsersController extends AppController {
    * PRIVATE METHODS
    */
   
+  /**
+   * Aggregates the functionality required to complete the registration process.
+   *
+   * @access  private
+   */
+  private function complete_registration() {
+    $this->Session->setFlash( sprintf( __( 'Welcome to SaveBigBread, %s. Thanks for registering.', true ), $this->data['User']['first_name'] ), null, null, 'success' );
+    $this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
+    $this->Auth->login( $this->data ); # Authenticate the new user
+    
+    $this->redirect( $this->Auth->redirect(), null, true );
+  }
 }
