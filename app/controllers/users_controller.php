@@ -48,8 +48,7 @@ class UsersController extends AppController {
     }
     
     $invite_code = $this->params['invite_code'];
-    
-    $user = $this->User->find(
+    $user        = $this->User->find(
       'first',
       array(
         'contain'    => false,
@@ -72,6 +71,83 @@ class UsersController extends AppController {
     }
     
     $this->redirect( array( 'action' => 'register' ), null, true );
+  }
+
+  /**
+   * Displays the interface that allows a user to reset their password.
+   *
+   * @access  public
+   */
+  public function reset_password() {
+    if( $this->Session->check( 'Auth.User' ) ) {
+      $this->redirect( array( 'action' => 'dashboard' ) );
+    }
+    
+    if( !empty( $this->data ) ) { # Do the reset
+      $this->User->id = $this->data['User']['id'];
+      
+      # Massage the password data to get everything encrypted
+      $empty_password = empty( $this->data['User']['password'] );
+      $this->data['User']['password'] = $this->Auth->password( $this->data['User']['password'] );
+      $this->data['User']['confirm_password'] = $this->Auth->password( $this->data['User']['confirm_password'] );
+      
+      $user = $this->User->find(
+        'first',
+        array(
+          'contain'    => false,
+          'conditions' => array(
+            'User.id' => $this->data['User']['id'],
+          )
+        )
+      );
+      
+      # Setting everything will leverage existing validation.
+      $this->data['User'] = Set::merge( $user['User'], $this->data['User'] );
+      $this->User->set( $this->data['User'] );
+      
+      # Empty passwords are not validated by default when editing.
+      if( !$empty_password && $this->User->save( $this->data, array( 'fieldList' => array( 'password' ) ) ) ) {
+        $this->Session->setFlash( 'Your password has been reset. Let us know if you have any problems logging in.', null, null, 'success' );
+        $this->redirect( array( 'action' => 'login' ) );
+      }
+      else {
+        if( $empty_password ) {
+          $this->User->validationErrors['password'] = $this->User->validate['password']['notempty']['message'];
+        }
+        
+        # Clear the password so the field displays empty
+        $this->data['User']['password'] = $this->data['User']['confirm_password'] = '';
+      }
+    }
+    else { # Load the reset password form
+      $invite_code = $this->params['invite_code'];
+      $user        = $this->User->find(
+        'first',
+        array(
+          'contain'    => false,
+          'fields'     => array( 'User.id', 'User.email', 'User.password' ),
+          'conditions' => array( 'User.invite_code' => $invite_code ),
+        )
+      );
+      
+      if( empty( $user ) ) { # Unrecognized invite code
+        $this->Session->setFlash( 'We don\'t recognize that token. Please click on the link in the email you were sent.', null, null, 'error' );
+        $this->redirect( array( 'action' => 'register' ), null, true );
+      }
+      else { # Invited user found
+        if( !empty( $user['User']['password'] ) ) { # Invited user has already registered
+          $this->Session->setFlash( 'It looks like you\'ve already reset your password. Please login.', null, null, 'error' );
+          $this->redirect( array( 'action' => 'login' ), null, true );
+        }
+      }
+      $this->User->validate = array();
+      $this->data = $user;
+      $this->User->set( $user );
+    }
+    
+    $invite_code = $this->params['invite_code'];
+    
+    $this->set( compact( 'invite_code' ) );
   }
 
   /**
@@ -391,7 +467,7 @@ class UsersController extends AppController {
       }
     }
   }
-	
+  
   /**
    * Does just what it says it does.
    *
@@ -496,8 +572,6 @@ class UsersController extends AppController {
    * @access	public
    */
   public function edit() {
-
-    
     if( !empty( $this->data ) ) {
     
     }

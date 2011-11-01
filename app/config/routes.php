@@ -41,6 +41,7 @@ Router::parseExtensions( 'json', 'jsonp' );
  
  /** Aliases */
   Router::connect( '/invite/:invite_code', array( 'controller' => 'users', 'action' => 'invite', array( 'invite_code' => '[a-fA-F0-9]{32}' ) ) );
+  Router::connect( '/reset_password/:invite_code', array( 'controller' => 'users', 'action' => 'reset_password', array( 'invite_code' => '[a-fA-F0-9]{32}' ) ) );
   Router::connect( '/signup/*', array( 'controller' => 'users', 'action' => 'register' ) );
   Router::connect( '/inspectors/signup/*', array( 'controller' => 'users', 'action' => 'register', 'prefix' => 'inspector' ) );
   Router::connect( '/realtors/signup/*', array( 'controller' => 'users', 'action' => 'register', 'prefix' => 'realtor' ) );
@@ -60,6 +61,7 @@ Router::parseExtensions( 'json', 'jsonp' );
 
 /**
  * Variants that should never get used...but might.
+ * TODO: These do get used. Why isn't reverse routing picking up the alias?
  */
   Router::connect( '/users/invite/:invite_code', array( 'controller' => 'users', 'action' => 'invite', array( 'invite_code' => '[a-fA-F0-9]{32}' ) ) );
-  
+  Router::connect( '/users/reset_password/:invite_code', array( 'controller' => 'users', 'action' => 'reset_password', array( 'invite_code' => '[a-fA-F0-9]{32}' ) ) );

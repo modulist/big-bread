@@ -76,6 +76,9 @@ Configure::write(
     'Users' => array(
       'login',
       'register',
+      'realtor_register',
+      'inspector_register',
+      'reset_password',
     ),
     'Contractors' => array(
       'index',
