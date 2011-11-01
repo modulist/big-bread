@@ -95,6 +95,6 @@
   
   <div class="detail-buttons clearfix">
 	  <?php echo $this->Html->link( __( 'Get a Quote &rsaquo;', true ), array( 'controller' => 'proposals', 'action' => 'quote', h( $rebate['TechnologyIncentive']['id'] ), $location_id ), array( 'class' => 'quote-button', 'escape' => false ) ) ?>
-	  <?php echo $this->Html->link( 'Download the rebate form', $rebate['TechnologyIncentive']['rebate_link'], array( 'class' => 'download-button') ) ?>
+	  <?php echo $this->Html->link( 'Download the rebate form', $rebate['TechnologyIncentive']['rebate_link'], array( 'class' => 'download-button', 'rel' => 'nofollow', 'target' => '_blank' ) ) ?>
   </div>
 </div><!-- /modal popup -->
