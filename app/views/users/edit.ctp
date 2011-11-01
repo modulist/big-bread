@@ -1,6 +1,6 @@
 <div id="messages">
 	<h1><?php __( 'Update your profile' ) ?></h1>
-	<p><?php __ ( 'Go ahead, it don\'t cost nothin\'' ) ?></p>
+	<p><?php __( 'We\'ll keep you posted on how to SaveBigBread.' ) ?></p>
 </div>
 
 <?php echo $this->Form->create( 'User', array( 'id' => 'UserRegisterForm' ) ) ?>
