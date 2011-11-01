@@ -81,8 +81,10 @@ class MessagesController extends AppController {
       
       if( $this->Message->Sender->validates( $this->data ) ) {
         # Pull the friendly user type value
-        $this->data['Sender']['user_type'] = $this->Message->Sender->UserType->field( 'name', array( 'UserType.id' => $this->data['Sender']['user_type_id'] ) );
-        
+        $this->data['Sender']['user_type'] = strlen( $this->data['Sender']['user_type_id'] ) == 36
+          ? $this->Message->Sender->UserType->field( 'name', array( 'UserType.id' => $this->data['Sender']['user_type_id'] ) )
+          : $this->data['Sender']['user_type_id'];
+          
         $this->data['Sender'] = Set::merge( $this->Auth->user(), $this->data['Sender'] );
         
         $replacements = array(
@@ -127,6 +129,7 @@ class MessagesController extends AppController {
         'order'  => 'UserType.name',
       )
     );
+    $userTypes['Other'] = 'Other';
     
     $this->set( compact( 'userTypes' ) );
   }
