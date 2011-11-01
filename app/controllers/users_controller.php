@@ -317,8 +317,19 @@ class UsersController extends AppController {
       $this->data['User']['confirm_password'] = Security::hash( $this->data['User']['confirm_password'], null, true );
       
       if( $this->User->save( $this->data['User'] ) ) {
+        if( $user_type_id == UserType::$reverse_lookup['REALTOR'] ) {
+          $template = MessageTemplate::TYPE_NEW_REALTOR;
+        }
+        elseif( $user_type_id == UserType::$reverse_lookup['INSPECTOR'] ) {
+          $template = MessageTemplate::TYPE_NEW_REALTOR;
+        }
+        else {
+          $template = MessageTemplate::TYPE_NEW_USER;
+        }
+        
+        # TODO: if agent(), template is NEW_REALTOR or NEW_INSPECTOR
         $message_vars = array( 'recipient_first_name' => $this->data['User']['first_name'] );
-        $this->User->Message->queue( MessageTemplate::TYPE_NEW_USER, 'User', $this->User->id, null, $this->User->id, $message_vars );
+        $this->User->Message->queue( $template, 'User', $this->User->id, null, $this->User->id, $message_vars );
         
         $this->complete_registration();
       }

@@ -126,10 +126,10 @@
       </div>
     <?php endif; ?>
   	<div class="other-link">
-      <?php echo $this->Html->link( __( 'Inspectors &rsaquo;', true ), '/inspectors/signup', array( 'escape' => false ) ) ?>
+      <?php echo $this->Html->link( __( 'Inspectors &rsaquo;', true ), array( 'controller' => 'users', 'action' => 'register', 'inspector' => true ), array( 'escape' => false ) ) ?>
     </div>
   	<div class="other-link">
-      <?php echo $this->Html->link( __( 'Realtors &rsaquo;', true ), '/realtors/signup', array( 'escape' => false ) ) ?>
+      <?php echo $this->Html->link( __( 'Realtors &rsaquo;', true ), array( 'controller' => 'users', 'action' => 'register', 'realtor' => true ), array( 'escape' => false ) ) ?>
     </div>
   </div>
 </div> <!-- #content-bottom -->
