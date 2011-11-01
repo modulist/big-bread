@@ -120,9 +120,11 @@
 	</div> <!-- content-wrapper -->
   
   <div id="links" class="clearfix">
-  	<div class="contractor-link">
-      <?php echo $this->Html->link( __( 'For contractors &rsaquo;', true ), array( 'controller' => 'contractors' ), array( 'escape' => false ) ) ?>
-    </div>
+    <?php if( Configure::read( 'Feature.contractor_registration.enabled' ) ): ?>
+      <div class="contractor-link">
+        <?php echo $this->Html->link( __( 'For contractors &rsaquo;', true ), array( 'controller' => 'contractors' ), array( 'escape' => false ) ) ?>
+      </div>
+    <?php endif; ?>
   	<div class="other-link">
       <?php echo $this->Html->link( __( 'Realtors &rsaquo;', true ), '/realtors/signup', array( 'escape' => false ) ) ?>
     </div>

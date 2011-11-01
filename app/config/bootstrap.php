@@ -87,7 +87,7 @@ Configure::write(
   )
 );
 
-Configure::write( 'Feature.contractor_registration.enabled', true );
+Configure::write( 'Feature.contractor_registration.enabled', false );
 
 Configure::write( 'email.sendgrid_username', 'tony@savebigbread.com' );
 Configure::write( 'email.sendgrid_password', 'savebigbread0511' );
