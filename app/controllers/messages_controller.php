@@ -94,7 +94,7 @@ class MessagesController extends AppController {
         
         # Queue up the message
         if( $this->Message->queue( MessageTemplate::TYPE_FEEDBACK, 'User', $this->Auth->user( 'id' ), $this->Auth->user( 'id' ), null, $replacements ) ) {
-          $this->Session->setFlash( 'Your feedback has been collected. Thank you for taking the time to let us know what you think.', null, null, 'success' );
+          $this->Session->setFlash( 'Thank you for taking the time to send us your feedback. Our Customer Service will contact you as soon as possible.', null, null, 'success' );
         }
         else {
           $this->Session->setFlash( 'An error occurred while saving your feeback. Please try again later.', null, null, 'error' );
