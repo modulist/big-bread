@@ -1,16 +1,26 @@
 <div id="messages">
-  <?php if( empty( $location ) ): ?>
-    <h1><?php __( 'Congratulations!' ) ?></h1>
-    <p><?php printf( __( 'You now have a SaveBigBread profile. Scroll down to see what sorts of rebates you can find%s.', true ), User::agent() ? __( ' for your client', true ) : false ) ?></p>
+  <?php if( empty( $location ) ): # User has not entered a location ?>
+    <?php if( $this->Session->read( 'Auth.User.user_type_id' ) == UserType::$reverse_lookup['REALTOR'] ): ?>
+      <h1><?php __( 'Rebates help close sales' ) ?></h1>
+      <p><?php __( 'You\'re about to provide another reason why your client will refer you. Inform your client of thousands of $ in savings that will make their home ownership experience more affordable and increase the value of their home. ' ) ?></p>
+    <?php elseif( $this->Session->read( 'Auth.User.user_type_id' ) == UserType::$reverse_lookup['INSPECTOR'] ): ?>
+      <h1><?php __( 'Be a solution hero with huge rebates from SaveBigBread' ) ?></h1>
+      <p><?php __( 'Let your competition be the problem guy while you\'re the solution guy. You\'ll more than offset your fee and create customer awe when you bring big rebates to the table. Be the hero and help your client SaveBigBread.' ) ?></p>
+    <?php else: # Home owner/buyer greeting ?>
+      <h1><?php __( 'Congratulations!' ) ?></h1>
+      <p><?php __( 'Over 60% of US adults are not even aware of the variety of improvement incentives out there. Share the savings with your first client and see how they appreciate someone who helps them save thousands of $s.' ) ?></p>
+    <?php endif; ?>
   <?php else: ?>
-    <h1><?php __( 'Let&#146;s find rebates in your area' ) ?></h1>
-    <p>
-      <?php if( !User::agent() ): ?>
-        <?php __( 'First, you&#146;ll have to help us out by letting us know what kinds of rebates you&#146;re interested in.' ) ?>
-      <?php else: ?>
-        <?php __( 'First, you&#146;ll have to help us out by letting us know what kinds of rebates may interest your clients.' ) ?>
-      <?php endif; ?>
-    </p>
+    <?php if( $this->Session->read( 'Auth.User.user_type_id' ) == UserType::$reverse_lookup['REALTOR'] ): ?>
+      <h1><?php __( '' ) ?></h1>
+      <p><?php __( 'Welcome back and keep the savings pumping for your clients. The more they come back to SaveBigBread, the more they\'ll remember it was you that brought it to their attention and another reason they owe you a referral.' ) ?></p>
+    <?php elseif( $this->Session->read( 'Auth.User.user_type_id' ) == UserType::$reverse_lookup['INSPECTOR'] ): ?>
+      <h1><?php __( 'Be a solution hero with huge rebates from SaveBigBread' ) ?></h1>
+      <p><?php __( 'Welcome back and keep the savings pumping for your clients. The more they come back to SaveBigBread, the more they\'ll remember it was you that brought it to their attention and another reason they owe you a referral.' ) ?></p>
+    <?php else: ?>
+      <h1><?php __( 'Let&#146;s find rebates in your area' ) ?></h1>
+      <p><?php __( 'First, you&#146;ll have to help us out by letting us know what kinds of rebates may interest your clients.' ) ?></p>
+    <?php endif; ?>
   <?php endif; ?>
 </div><!-- /#messages -->
 
