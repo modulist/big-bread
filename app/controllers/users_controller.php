@@ -321,7 +321,7 @@ class UsersController extends AppController {
           $template = MessageTemplate::TYPE_NEW_REALTOR;
         }
         elseif( $user_type_id == UserType::$reverse_lookup['INSPECTOR'] ) {
-          $template = MessageTemplate::TYPE_NEW_REALTOR;
+          $template = MessageTemplate::TYPE_NEW_INSPECTOR;
         }
         else {
           $template = MessageTemplate::TYPE_NEW_USER;
