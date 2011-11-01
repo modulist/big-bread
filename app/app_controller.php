@@ -93,7 +93,7 @@ class AppController extends Controller {
         
         $default_zip_code = strlen( preg_replace( '/[^\d]/', '', $response['zipCode'] ) ) > 0
           ? preg_replace( '/[^\d]/', '', $response['zipCode'] )
-          : '43560';
+          : '02127';
       }
       else {
         $default_zip_code = $user[$this->Auth->getModel()->alias]['zip_code'];
