@@ -59,40 +59,44 @@ $(document).ready( function() {
           
           // Adjust the URL in both places
           $interest.attr( 'href', new_url );
-          $tech_row_star.attr( 'href', new_url );
-          // Hide the rebate group
-          $tech_row.slideUp( function() {
-              if( $( '.rebates-watch-list .rebate-category-row:visible' ).length == 0 ) {
-                $( '.message-empty-watchlist' ).slideDown();
-              }
-              else {
-                $( '.message-empty-watchlist' ).slideUp();
-              }
-          });
-          // Deactivate the star
-          $tech_row_star
-            .removeClass( 'active' )
-            .attr( 'title', $tech_row_star.attr( 'title' ).replace( / remove /, ' add ' ) ) ;
+          if( $tech_row.length > 0 ) { // Agents won't see rebates
+            $tech_row_star.attr( 'href', new_url );
+            // Hide the rebate group
+            $tech_row.slideUp( function() {
+                if( $( '.rebates-watch-list .rebate-category-row:visible' ).length == 0 ) {
+                  $( '.message-empty-watchlist' ).slideDown();
+                }
+                else {
+                  $( '.message-empty-watchlist' ).slideUp();
+                }
+            });
+            // Deactivate the star
+            $tech_row_star
+              .removeClass( 'active' )
+              .attr( 'title', $tech_row_star.attr( 'title' ).replace( / remove /, ' add ' ) ) ;
+          }
         }
         else {
           var new_url = $this.attr( 'href' ).replace( /watch/, 'unwatch' );
           
           // Adjust the URL in both places
           $interest.attr( 'href', new_url );
-          $tech_row_star.attr( 'href', new_url );
-          // Activate the star
-          $tech_row_star
-            .addClass( 'active' )
-            .attr( 'title', $tech_row_star.attr( 'title' ).replace( / add /, ' remove ' ) );
-          // Show the rebate group
-          $tech_row.slideDown( function() {
-              if( $( '.rebates-watch-list .rebate-category-row:visible' ).length == 0 ) {
-                $( '.message-empty-watchlist' ).slideDown();
-              }
-              else {
-                $( '.message-empty-watchlist' ).slideUp();
-              }
-          });
+          if( $tech_row.length > 0 ) {
+            $tech_row_star.attr( 'href', new_url );
+            // Activate the star
+            $tech_row_star
+              .addClass( 'active' )
+              .attr( 'title', $tech_row_star.attr( 'title' ).replace( / add /, ' remove ' ) );
+            // Show the rebate group
+            $tech_row.slideDown( function() {
+                if( $( '.rebates-watch-list .rebate-category-row:visible' ).length == 0 ) {
+                  $( '.message-empty-watchlist' ).slideDown();
+                }
+                else {
+                  $( '.message-empty-watchlist' ).slideUp();
+                }
+            });
+          }
         }
       }
     });

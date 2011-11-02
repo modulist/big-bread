@@ -217,10 +217,7 @@ class UsersController extends AppController {
         $commit = $this->User->Message->queue( MessageTemplate::TYPE_NEW_USER, 'User', $this->User->id, null, $this->User->id, $replacements );
 
         if( $commit ) {
-          $this->Session->setFlash( sprintf( __( 'Welcome to SaveBigBread, %s. Thanks for registering.', true ), $this->data['User']['first_name'] ), null, null, 'success' );
-          $this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
-          $this->Auth->login( $this->data ); # Authenticate the new user
-          
+          $this->complete_registration();
           $ds->commit( $this->User );
           $this->redirect( $this->Auth->redirect(), null, true );
         }
@@ -331,6 +328,7 @@ class UsersController extends AppController {
         $this->User->Message->queue( $template, 'User', $this->User->id, null, $this->User->id, $message_vars );
         
         $this->complete_registration();
+        $this->redirect( array( 'controller' => 'users', 'action' => 'dashboard' ), null, true );
       }
       else {
         $this->Session->setFlash( __( 'There\'s a problem with your registration. Please correct the errors below.', true ), null, null, 'validation' );
@@ -671,6 +669,5 @@ class UsersController extends AppController {
     $this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
     $this->Auth->login( $this->data ); # Authenticate the new user
     
-    $this->redirect( $this->Auth->redirect(), null, true );
   }
 }

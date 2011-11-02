@@ -26,7 +26,7 @@
 
 <div id="my-locations" class="clearfix">
   <?php if( empty( $location ) ): ?>
-    <h2><?php __( 'Add my first location' ) ?>:</h2>
+    <h2><?php echo !User::agent() ? __( 'Add my first location', true ) : __( 'Add a location', true ) ?>:</h2>
     <div class="location-icon-large"></div>
     
     <?php echo $this->Form->create( 'Building', array( 'url' => array( 'controller' => 'buildings', 'action' => 'add' ), 'class' => 'clearfix' ) ) ?>
@@ -61,12 +61,12 @@
   <?php endif; ?>
 </div><!-- /my-locations -->
 
-<?php if( !User::agent() ): ?>
+<?php if( !User::agent() ): # Pending quotes aren't useful for agents ?>
   <h2 class="my-rebates"><?php printf( __( 'Rebates for %s', true ), $location_title ) ?></h2>
   <?php if( empty( $technology_watch_list ) ): ?>
     <p class="message-empty-watchlist" style="margin-left: 10px"><?php __( 'Wondering why you don\'t see any rebates? It\'s because you haven\'t had a chance to identify any interests for this location. Scroll down to do just that.' ) ?></p>
   <?php endif; ?>
-
+  
   <?php echo $this->element( '../technology_incentives/_list', array( 'rebates' => $rebates, 'watch_list' => $technology_watch_list, 'location_id' => $location['Building']['id'] ) ) ?>
 
   <?php //if( !empty( $pending_quotes ) ): ?>
@@ -208,17 +208,17 @@
       </div>
     </form>  
   <?php //endif; ?>
-  
-  <div id="my-interests" class="grid_9">
-    <h2><?php printf( __( 'My interests for %s', true ), $location_title ) ?></h2>
-    <p class="instructions">
-      <?php if( !User::agent() ): ?>
-        <?php __( 'Select as many categories of rebates as you like by clicking on the stars below.' ) ?>
-      <?php else: ?>
-        <?php __( 'Select the categories that you believe your client should consider.' ) ?>
-      <?php endif; ?>
-    </p>
-    
-    <?php echo $this->element( '../users/_interests', array( 'watchable' => $watchable_technologies, 'watched' => $technology_watch_list, 'location_id' => !empty( $location ) ? $location['Building']['id'] : false ) ) ?>
-  </div>
 <?php endif; ?>
+  
+<div id="my-interests" class="grid_9">
+  <h2><?php printf( User::agent() ? __( 'Potential interests for my client', true ) : __( 'My interests for %s', true ), $location_title ) ?></h2>
+  <p class="instructions">
+    <?php if( !User::agent() ): ?>
+      <?php __( 'Select as many categories of rebates as you like by clicking on the stars below.' ) ?>
+    <?php else: ?>
+      <?php __( 'Select the categories that you believe your client should consider.' ) ?>
+    <?php endif; ?>
+  </p>
+  
+  <?php echo $this->element( '../users/_interests', array( 'watchable' => $watchable_technologies, 'watched' => $technology_watch_list, 'location_id' => !empty( $location ) ? $location['Building']['id'] : false ) ) ?>
+</div>

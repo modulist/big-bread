@@ -100,14 +100,30 @@ class BuildingsController extends AppController {
             )
           );
         }
-        
-        if( User::agent() && $new_client ) {
-          $message_vars = array(
-            'recipient_first_name' => $this->data['Client']['first_name'],
-            'sender_name'          => sprintf( '%s %s', $this->Auth->user( 'first_name' ), $this->Auth->user( 'last_name' ) ),
-            'invite_code'          => $this->data['Client']['invite_code'],
+        elseif( User::agent() && $this->Auth->user( 'id' ) != $this->Building->Client->id ) { # We need to transfer the realtor-selected interests to the client
+          $updated = $this->Building->Client->TechnologyWatchList->updateAll(
+            array(
+              'TechnologyWatchList.user_id'     => "'" . $this->Building->Client->id . "'",
+              'TechnologyWatchList.location_id' => "'" . $this->Building->id . "'" ),
+            array(
+              'TechnologyWatchList.model'       => 'Technology',
+              'TechnologyWatchList.user_id'     => $this->Auth->user( 'id' ),
+              'TechnologyWatchList.location_id' => null,
+            )
           );
-          $this->Building->Client->Message->queue( MessageTemplate::TYPE_INVITE, 'User', $this->Auth->user( 'id' ), null, $this->Building->Client->id, $message_vars );
+        }
+        
+        if( User::agent() ) {
+          if( $new_client ) { # Invite the new user
+            $message_vars = array(
+              'recipient_first_name' => $this->data['Client']['first_name'],
+              'sender_name'          => sprintf( '%s %s', $this->Auth->user( 'first_name' ), $this->Auth->user( 'last_name' ) ),
+              'invite_code'          => $this->data['Client']['invite_code'],
+            );
+            $this->Building->Client->Message->queue( MessageTemplate::TYPE_INVITE, 'User', $this->Auth->user( 'id' ), null, $this->Building->Client->id, $message_vars );
+          }
+          
+          # TODO: Send the synopsis email to the agent
         }
         
         $this->redirect( array( 'controller' => 'users', 'action' => 'dashboard', $this->Building->id ), null, true );
