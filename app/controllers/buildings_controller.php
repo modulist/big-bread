@@ -109,9 +109,6 @@ class BuildingsController extends AppController {
           );
           $this->Building->Client->Message->queue( MessageTemplate::TYPE_INVITE, 'User', $this->Auth->user( 'id' ), null, $this->Building->Client->id, $message_vars );
         }
-        else {
-          exit( 'not a new client' );
-        }
         
         $this->redirect( array( 'controller' => 'users', 'action' => 'dashboard', $this->Building->id ), null, true );
       }
