@@ -12,6 +12,9 @@
     <div class="location-wrapper clearfix">
       <div class="location-icon-large"></div>
       <div class="grid_4">
+        <?php if( User::agent() ): ?>
+          <?php echo $this->element( '../buildings/_client_inputs' ) ?>
+        <?php endif; ?>
         <?php echo $this->element( '../buildings/_basic_inputs' ) ?>
       </div><!-- /grid-4 -->	
     </div><!-- /location-wrapper -->

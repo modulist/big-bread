@@ -57,22 +57,40 @@ class BuildingsController extends AppController {
    * @access	public
    */
   public function add() {
-    foreach( array( 'Electricity', 'Gas', 'Water' ) as $utility ) {
-      $this->Building->{$utility . 'Provider'}->validate = array();
-      
-      # Don't save anything if the value is empty
-      if( isset( $this->data[$utility . 'Provider'] ) && empty( $this->data[$utility . 'Provider']['name'] ) ) {
-        unset( $this->data[$utility . 'Provider'] );
-      }
-    }
-    
     if( !empty( $this->data ) ) {
+      # Process utility information
+      foreach( array( 'Electricity', 'Gas', 'Water' ) as $utility ) {
+        $this->Building->{$utility . 'Provider'}->validate = array();
+        
+        # Don't save anything if the value is empty
+        if( isset( $this->data[$utility . 'Provider'] ) && empty( $this->data[$utility . 'Provider']['name'] ) ) {
+          unset( $this->data[$utility . 'Provider'] );
+        }
+      }
+      
+      # If the user is an agent, client data should be attached      
+      if( User::agent() ) {
+        $user_id = $this->Building->Client->known( $this->data['Client']['email'] );
+        
+        # If the client is in our system, just attach him/her as the client for
+        # this particular location.
+        if( !empty( $user_id ) ) {
+          $new_client = false;
+          $this->data['Building']['client_id'] = $user_id;
+          unset( $this->data['Client'] );
+        }
+        else {
+          $this->data['Client']['invite_code'] = User::generate_invite_code();
+          $new_client = true;
+        }
+      }
+      
       if( $this->Building->saveAll( $this->data ) ) {
         $this->Session->setFlash( sprintf( __( '"%s" has been saved.', true ), !empty( $this->data['Building']['name'] ) ? $this->data['Building']['name'] : __( 'Your location', true ) ), null, null, 'success' );
         
         # If this is our first building, then we want to update the user's
         # "default" interests to attach them to the new location.
-        if( $this->Building->Client->has_locations() === 1 ) {
+        if( !User::agent() && $this->Building->Client->has_locations() === 1 ) {
           $updated = $this->Building->Client->TechnologyWatchList->updateAll(
             array( 'TechnologyWatchList.location_id' => "'" . $this->Building->id . "'" ),
             array(
@@ -83,10 +101,24 @@ class BuildingsController extends AppController {
           );
         }
         
+        if( User::agent() && $new_client ) {
+          $message_vars = array(
+            'recipient_first_name' => $this->data['Client']['first_name'],
+            'sender_name'          => sprintf( '%s %s', $this->Auth->user( 'first_name' ), $this->Auth->user( 'last_name' ) ),
+            'invite_code'          => $this->data['Client']['invite_code'],
+          );
+          $this->Building->Client->Message->queue( MessageTemplate::TYPE_INVITE, 'User', $this->Auth->user( 'id' ), null, $this->Building->Client->id, $message_vars );
+        }
+        else {
+          exit( 'not a new client' );
+        }
+        
         $this->redirect( array( 'controller' => 'users', 'action' => 'dashboard', $this->Building->id ), null, true );
       }
       else {
         $this->Session->setFlash( __( 'There was an error saving this location.', true ), null, null, 'validation' );
+        new PHPDump( $this->data );        
+        new PHPDump( $this->Building->invalidFields() ); exit;
       }
     }
   }

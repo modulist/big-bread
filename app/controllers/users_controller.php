@@ -327,7 +327,6 @@ class UsersController extends AppController {
           $template = MessageTemplate::TYPE_NEW_USER;
         }
         
-        # TODO: if agent(), template is NEW_REALTOR or NEW_INSPECTOR
         $message_vars = array( 'recipient_first_name' => $this->data['User']['first_name'] );
         $this->User->Message->queue( $template, 'User', $this->User->id, null, $this->User->id, $message_vars );
         

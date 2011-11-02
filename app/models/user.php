@@ -465,14 +465,10 @@ class User extends AppModel {
    * Determines whether a user already exists (is known) based on an
    * email address (a unique key).
    *
-   * @param 	$email
+   * @param 	string  $email
    * @return	uuid    The user identifier
    */
   public function known( $email ) {
-    /**
-     * TODO: When soft deletable, how do we handle existence? Can't
-     * login if deleted, can't create a new profile with the same email.
-     */
     $user = $this->find(
       'first',
       array(

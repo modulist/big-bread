@@ -55,14 +55,6 @@ class Building extends AppModel {
         'required'   => false,
       ),
     ),
-    'client_id'  => array(
-      'notEmpty' => array(
-        'rule'       => 'notEmpty',
-        'message'    => 'A building must be created on behalf of a client.',
-        'allowEmpty' => false,
-        'required'   => false,
-      )
-    ),
   );
   
   /**

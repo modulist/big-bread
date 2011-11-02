@@ -1,8 +1,8 @@
 <?php $show_zip_code = isset( $show_zip_code ) ? $show_zip_code : true ?>
-<?php $title = isset( $title ) ? $title : __( 'Let&#146;s create your SaveBigBread account:' ) ?>
+<?php $title = isset( $title ) ? $title : __( 'Let&#146;s create your SaveBigBread account:', true ) ?>
 
 <?php if( $title ): ?>
-  <h2><?php $title ?></h2>
+  <h2><?php echo $title ?></h2>
 <?php endif; ?>
 
 <div class="clearfix">

@@ -1,7 +1,13 @@
-<?php printf( __( 'Hi, and welcome to SaveBigBread.com. %s has completed a home survey and is inviting you to view the results.', true ), $this->Session->read( 'Auth.User.first_name' ) ) ?>
+<?php printf( __( 'Hi, %s:', true ), $recipient_first_name ) ?> 
 
-<?php __( 'You\'re one step away from saving hundreds of dollars on the repair of your home.  Please click on the enclosed link so you can register and get access to the savings we have waiting for you.  Whether you set up your account now or later, you\'ll need to get to us by clicking this link.' ) ?>
+<?php printf( __( '%s has filled out your profile and identified $1,000s in savings for you.  You\'ll need to click on this link to get to the account that\'s been set up for you.', true ), $sender_name ) ?> 
 
-<?php __( 'We\'re looking forward to your visit.' ) ?>
+<?php __( 'SaveBigBread is the free and easy way to save on home improvement. We\'ve collected government, utility and manufacturer home improvement savings in one spot. We help you identify savings that are applicable to you, connect you with contractors authorized by program sponsors and help you fill out the paperwork that gets you for check.' ) ?> 
 
-<?php echo $this->Html->url( '/invite/' . $invite_code, true ) ?>
+<?php __( 'Save Big and Go Home - what\'s not to like?' ) ?> 
+
+<?php echo $this->Html->url( '/invite/' . $invite_code, true ) ?> 
+
+<?php __( 'Regards,' ) ?> 
+<?php __( 'Tony Maull,' ) ?> 
+<?php __( 'CEO and President' ) ?> 
