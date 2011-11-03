@@ -116,6 +116,7 @@ class BuildingsController extends AppController {
         if( User::agent() ) {
           if( $new_client ) { # Invite the new user
             $client = array( 'Client' => $this->data['Client'] );
+                
             $message_vars = array(
               'recipient_first_name' => $this->data['Client']['first_name'],
               'sender_name'          => sprintf( '%s %s', $this->Auth->user( 'first_name' ), $this->Auth->user( 'last_name' ) ),
@@ -134,13 +135,18 @@ class BuildingsController extends AppController {
             );
           }
           
+          # Pull the client's watch list
+          $technology_watch_list = Set::extract( '/TechnologyWatchList/technology_id', $this->Building->Client->technology_watch_list( $this->Building->id, $this->Building->Client->id ) );
+  
+          # Pull the rebates relevant for the zip code and defined interests          
+          $rebates = Set::combine( $this->Building->incentives( $this->data['Address']['zip_code'], $technology_watch_list ), '{n}.TechnologyIncentive.id', '{n}', '{n}.Technology.title' );
+
           $message_vars = array(
             'client_name' => sprintf( '%s %s', $client['Client']['first_name'], $client['Client']['last_name'] ),
             'recipient_first_name' => $this->Auth->user( 'first_name' ),
+            'rebates' => $rebates,
           );
-          if( !$this->Building->Realtor->Message->queue( MessageTemplate::TYPE_CLIENT_REBATES, 'Building', $this->Building->id, null, $this->Auth->user( 'id' ), $message_vars ) ) {
-            new PHPDump( $this->Building->Realtor->Message->validationErrors, 'NOT QUEUED' ); exit;
-          }
+          $this->Building->Realtor->Message->queue( MessageTemplate::TYPE_CLIENT_REBATES, 'Building', $this->Building->id, null, $this->Auth->user( 'id' ), $message_vars );
         }
         
         $this->redirect( array( 'controller' => 'users', 'action' => 'dashboard', $this->Building->id ), null, true );
