@@ -23,7 +23,7 @@ $(document).ready( function() {
   
   $( '#slider' ).slider({
     value: 0,
-    min: now.getFullYear() - 15,
+    min: now.getFullYear() - 30,
     max: now.getFullYear(),
     step: 1,
     slide: function( event, ui ) {
