@@ -10,6 +10,6 @@
 
 <p>
   <?php __( 'Regards,' ) ?><br />
-  <?php __( 'Tony Maull,' ) ?><br />
+  <?php __( 'Tony Maull' ) ?><br />
   <?php __( 'CEO and President' ) ?><br /> 
 </p>

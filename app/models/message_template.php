@@ -10,6 +10,7 @@ class MessageTemplate extends AppModel {
   const TYPE_NEW_INSPECTOR   = 'new_inspector';
   const TYPE_FEEDBACK        = 'feedback';
   const TYPE_INVITE          = 'invite';
+  const TYPE_CLIENT_REBATES  = 'client_rebates';
   const TYPE_PROPOSAL        = 'proposal_request';
   const TYPE_FORGOT_PASSWORD = 'forgot_password';
 }

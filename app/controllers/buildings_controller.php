@@ -115,15 +115,32 @@ class BuildingsController extends AppController {
         
         if( User::agent() ) {
           if( $new_client ) { # Invite the new user
+            $client = array( 'Client' => $this->data['Client'] );
             $message_vars = array(
               'recipient_first_name' => $this->data['Client']['first_name'],
               'sender_name'          => sprintf( '%s %s', $this->Auth->user( 'first_name' ), $this->Auth->user( 'last_name' ) ),
               'invite_code'          => $this->data['Client']['invite_code'],
             );
-            $this->Building->Client->Message->queue( MessageTemplate::TYPE_INVITE, 'User', $this->Auth->user( 'id' ), null, $this->Building->Client->id, $message_vars );
+            $this->Building->Client->Message->queue( MessageTemplate::TYPE_INVITE, 'Building', $this->Building->id, null, $this->Building->Client->id, $message_vars );
+          }
+          else {
+            # Pull the client data so we can use it in the email below
+            $client = $this->Building->Client->find(
+              'first',
+              array(
+                'contain'    => false,
+                'conditions' => array( 'Client.id' => $user_id ),
+              )
+            );
           }
           
-          # TODO: Send the synopsis email to the agent
+          $message_vars = array(
+            'client_name' => sprintf( '%s %s', $client['Client']['first_name'], $client['Client']['last_name'] ),
+            'recipient_first_name' => $this->Auth->user( 'first_name' ),
+          );
+          if( !$this->Building->Realtor->Message->queue( MessageTemplate::TYPE_CLIENT_REBATES, 'Building', $this->Building->id, null, $this->Auth->user( 'id' ), $message_vars ) ) {
+            new PHPDump( $this->Building->Realtor->Message->validationErrors, 'NOT QUEUED' ); exit;
+          }
         }
         
         $this->redirect( array( 'controller' => 'users', 'action' => 'dashboard', $this->Building->id ), null, true );

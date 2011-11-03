@@ -9,5 +9,5 @@
 <?php echo $this->Html->url( '/invite/' . $invite_code, true ) ?> 
 
 <?php __( 'Regards,' ) ?> 
-<?php __( 'Tony Maull,' ) ?> 
+<?php __( 'Tony Maull' ) ?> 
 <?php __( 'CEO and President' ) ?> 

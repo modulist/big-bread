@@ -53,7 +53,8 @@ VALUES
   ( UUID(), 'invite', '%recipient_first_name% wants you to save $1,000s on SaveBigBread', NOW(), NOW() ),
   ( UUID(), 'proposal_request', '%Sender.full_name% requests a quote from a qualified contractor', NOW(), NOW() ),
   ( UUID(), 'forgot_password', 'Reset your SaveBigBread.com password', NOW(), NOW() ),
-  ( UUID(), 'feedback', 'Feedback from a user at SaveBigBread.com', NOW(), NOW() )
+  ( UUID(), 'feedback', 'Feedback from a user at SaveBigBread.com', NOW(), NOW() ),
+  ( UUID(), 'client_rebates', 'Selected rebates for your client %client_name%.', NOW(), NOW() )
 ;
 
 ALTER TABLE proposals
