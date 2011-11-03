@@ -8,9 +8,9 @@
       <p><?php __( 'Let your competition be the problem guy while you\'re the solution guy. You\'ll more than offset your fee and create customer awe when you bring big rebates to the table. Be the hero and help your client SaveBigBread.' ) ?></p>
     <?php else: # Home owner/buyer greeting ?>
       <h1><?php __( 'Congratulations!' ) ?></h1>
-      <p><?php __( 'Over 60% of US adults are not even aware of the variety of improvement incentives out there. Share the savings with your first client and see how they appreciate someone who helps them save thousands of $s.' ) ?></p>
+      <p><?php __( 'We\'ve collected a few of the rebates you selected under My Rebates.  If you want to view everything, look at the Ways to Save section.  You can personalize your list even further if you add a property.  We\'ll assign your list of interests to that location.' ) ?></p>
     <?php endif; ?>
-  <?php else: ?>
+  <?php else: # User has a location ?>
     <?php if( $this->Session->read( 'Auth.User.user_type_id' ) == UserType::$reverse_lookup['REALTOR'] ): ?>
       <h1><?php __( '' ) ?></h1>
       <p><?php __( 'Welcome back and keep the savings pumping for your clients. The more they come back to SaveBigBread, the more they\'ll remember it was you that brought it to their attention and another reason they owe you a referral.' ) ?></p>
@@ -19,7 +19,7 @@
       <p><?php __( 'Welcome back and keep the savings pumping for your clients. The more they come back to SaveBigBread, the more they\'ll remember it was you that brought it to their attention and another reason they owe you a referral.' ) ?></p>
     <?php else: ?>
       <h1><?php __( 'Let&#146;s find rebates in your area' ) ?></h1>
-      <p><?php __( 'First, you&#146;ll have to help us out by letting us know what kinds of rebates may interest your clients.' ) ?></p>
+      <p><?php __( 'There\'s so much to do and so much to save!' ) ?></p>
     <?php endif; ?>
   <?php endif; # empty( $location ) ?>
 </div><!-- /#messages -->
