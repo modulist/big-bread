@@ -59,9 +59,7 @@
                   <td class="rebate-description">
                     <?php echo h( $rebate['Incentive']['name'] ) ?>
                     <?php if( !empty( $rebate['TechnologyOption'] ) ): ?>
-                      <?php $equipment = Set::extract( '/TechnologyOption/name', $rebate ) ?>
-                      <?php sort( $equipment ) ?>
-                      <div><?php printf( __( 'Equipment: %s', true ), join( ', ', $equipment ) ) ?></div>
+                      <div><?php printf( __( 'Equipment: %s', true ), join( ', ', Set::extract( '/TechnologyOption/name', $rebate ) ) ) ?></div>
                     <?php endif; ?>
                     <?php echo $this->Html->link( __( 'details &rsaquo;', true ), array( 'controller' => 'technology_incentives', 'action' => 'details', h( $rebate['TechnologyIncentive']['id'] ), h( $location_id ) ), array( 'class' => 'details', 'title' => sprintf( '%s > %s', $rebate['TechnologyGroup']['title'], $rebate['Technology']['title'] ), 'escape' => false ) ) ?>
                   </td>

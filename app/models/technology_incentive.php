@@ -22,18 +22,21 @@ class TechnologyIncentive extends AppModel {
       'joinTable'             => 'incentive_tech_energy',
       'foreignKey'            => 'technology_incentive_id',
       'associationForeignKey' => 'incentive_tech_energy_type_id',
+      'order'                 => 'EnergySource.name'
     ),
     'TechnologyOption' => array(
       'className'             => 'TechnologyOption',
       'joinTable'             => 'incentive_tech_option',
       'foreignKey'            => 'technology_incentive_id',
       'associationForeignKey' => 'incentive_tech_option_type_id',
+      'order'                 => 'TechnologyOption.name'
     ),
     'TechnologyTerm' => array(
       'className'             => 'TechnologyTerm',
       'joinTable'             => 'incentive_tech_term',
       'foreignKey'            => 'technology_incentive_id',
       'associationForeignKey' => 'incentive_tech_term_type_id',
+      'order'                 => 'TechnologyTerm.name'
     )
   );
   
