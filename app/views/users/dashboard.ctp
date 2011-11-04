@@ -36,26 +36,25 @@
       <?php echo $this->element( '../buildings/_basic_inputs' ) ?>
     <?php echo $this->Form->end( __( 'Add location', true ) ) ?>
   <?php else: ?>
-      <h2><?php __( 'My location' ) ?>:</h2>
+    <h2><?php __( 'My location' ) ?>:</h2>
     <div class="location-switch-wrapper clearfix">
       <?php echo $this->element( '../buildings/_location_switcher', array( 'locations' => $other_locations ) ) ?>
     </div>
     
     <div class="location-wrapper clearfix">
-        <div class="location-icon"><?php # echo $i ?>1</div>
-        <h4><?php echo !empty( $location['Building']['name'] ) ? h( $location['Building']['name'] ) : h( $location['Address']['address_1'] ) ?></h4>
-        <div class="location-address">
-          <?php echo $this->element( 'address', array( 'address' => $location['Address'] ) ) ?>
-          <div class="add-edit clearfix"><?php echo $this->Html->link( __( 'edit', true ), array( 'controller' => 'buildings', 'action' => 'edit', h( $location['Building']['id'] ) ), array( 'class' => 'edit-button' ) ) ?>
-          <?php /* ?>| <?php echo $this->Html->link( __( 'remove', true ), '#', array( 'class' => 'remove-button' ) ) ?><?php */ ?>
-          </div>
+      <div class="location-icon"><?php # echo $i ?>1</div>
+      <h4><?php echo !empty( $location['Building']['name'] ) ? h( $location['Building']['name'] ) : h( $location['Address']['address_1'] ) ?></h4>
+      <div class="location-address">
+        <?php echo $this->element( 'address', array( 'address' => $location['Address'] ) ) ?>
+        <div class="add-edit clearfix"><?php echo $this->Html->link( __( 'edit', true ), array( 'controller' => 'buildings', 'action' => 'edit', h( $location['Building']['id'] ) ), array( 'class' => 'edit-button' ) ) ?>
+        <?php /* ?>| <?php echo $this->Html->link( __( 'remove', true ), '#', array( 'class' => 'remove-button' ) ) ?><?php */ ?>
         </div>
-        <div class="location-equipment-grid grid_5">
-          <?php echo $this->element( '../fixtures/_list', array( 'plugin' => false, 'fixtures' => $fixtures ) ) ?>
-          <?php echo $this->Html->link( __( 'Add equipment', true ), array( 'controller' => 'fixtures', 'action' => 'add', $location['Building']['id'] ), array( 'class' => 'add-equipment-button' ) ) ?>
-          <!-- add a location button -->
-          <?php echo $this->Html->link( sprintf( __( 'Add a location %s', true ), '&rsaquo;' ), array( 'controller' => 'buildings', 'action' => 'add' ), array( 'class' => 'add-location-button', 'escape' => false ) ) ?>
-
+      </div>
+      <div class="location-equipment-grid grid_5">
+        <?php echo $this->element( '../fixtures/_list', array( 'plugin' => false, 'fixtures' => $fixtures ) ) ?>
+        <?php echo $this->Html->link( __( 'Add equipment', true ), array( 'controller' => 'fixtures', 'action' => 'add', $location['Building']['id'] ), array( 'class' => 'add-equipment-button' ) ) ?>
+        <!-- add a location button -->
+        <?php echo $this->Html->link( sprintf( __( 'Add a location %s', true ), '&rsaquo;' ), array( 'controller' => 'buildings', 'action' => 'add' ), array( 'class' => 'add-location-button', 'escape' => false ) ) ?>
       </div><!-- /location-equipment-grid -->
     </div><!-- /location-wrapper -->
   <?php endif; ?>
