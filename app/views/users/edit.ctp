@@ -5,6 +5,6 @@
 
 <?php echo $this->Form->create( 'User', array( 'id' => 'UserRegisterForm' ) ) ?>
   <div id="user-registration">
-  	<?php echo $this->element( '../users/_form', array( 'title' => false, 'show_zip_code' => !User::agent() ) ) ?>
+  	<?php echo $this->element( '../users/_form', array( 'title' => false, 'show_zip_code' => !User::agent() && !$user_has_locations ) ) ?>
   </div>
 <?php echo $this->Form->end( __( 'Update my profile', true ) ) ?>

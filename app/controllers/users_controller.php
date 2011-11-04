@@ -570,7 +570,7 @@ class UsersController extends AppController {
    */
   public function edit() {
     if( !empty( $this->data ) ) {
-    
+      
     }
     else {
       $this->data = $this->User->find(
@@ -583,6 +583,10 @@ class UsersController extends AppController {
       
       $this->User->set( $this->data );
     }
+    
+    $user_has_locations = $this->User->has_locations();
+    
+    $this->set( compact( 'user_has_locations' ) );
   }
   
   /**
