@@ -15,9 +15,8 @@ $(document).ready( function() {
   }
   
   /** GENERAL APPLICATION STUFF */
-  
-  // Handle disabled links
-  $( 'a.disabled' ).click( function( e ) {
+  // Handle disabled links (even if added after load)
+  $( 'a.disabled' ).live( 'click', function( e ) {
     e.preventDefault();
   });
   

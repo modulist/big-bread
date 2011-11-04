@@ -95,6 +95,7 @@
   
   <div class="detail-buttons clearfix">
 	  <?php echo $this->Html->link( __( 'Get a Quote &rsaquo;', true ), array( 'controller' => 'proposals', 'action' => 'quote', h( $rebate['TechnologyIncentive']['id'] ), $location_id ), array( 'class' => 'quote-button', 'escape' => false ) ) ?>
-	  <?php echo $this->Html->link( 'Download the rebate form', $rebate['TechnologyIncentive']['rebate_link'], array( 'class' => 'download-button', 'rel' => 'nofollow', 'target' => '_blank' ) ) ?>
+    <?php $classes = array( 'download-button', !$user_has_locations ? 'disabled' : false ) ?>
+	  <?php echo $this->Html->link( 'Download the rebate form', $rebate['TechnologyIncentive']['rebate_link'], array( 'class' => join( ' ', array_filter( $classes ) ), 'rel' => 'nofollow', 'target' => '_blank', 'title' => !$user_has_locations ? __( 'Add a property location so we can provide the proper forms.', true ) : false ) ) ?>
   </div>
 </div><!-- /modal popup -->

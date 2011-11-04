@@ -14,7 +14,10 @@ class TechnologyIncentivesController extends AppController {
    */
   public function details( $id, $location_id = null ) {
     $rebate = $this->TechnologyIncentive->get( $id );
+
+    $this->loadModel( 'User' );    
+    $user_has_locations = $this->User->has_locations();
     
-    $this->set( compact( 'location_id', 'rebate' ) );
+    $this->set( compact( 'location_id', 'rebate', 'user_has_locations' ) );
   }
 }

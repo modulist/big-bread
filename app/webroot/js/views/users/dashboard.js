@@ -2,6 +2,13 @@ $.getScript( '/js/views/buildings/_location_switcher.js' );
 $.getScript( '/js/views/technology_incentives/details.js' );
 
 $(document).ready( function() {
+  $( 'a.disabled' ).tipsy({
+    gravity: 'w',
+    trigger: 'hover',
+    fade: true,
+    live: true
+  });
+  
   $('.rebate-description .toggle').click( function( e ) {
     e.preventDefault();
     
