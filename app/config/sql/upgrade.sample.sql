@@ -13,7 +13,7 @@ CREATE TABLE messages(
   foreign_key         char(36)      NULL, -- which of that what generated the message?
   sender_id           char(36)      COLLATE utf8_unicode_ci NULL COMMENT 'A null sender indicates a message from the system (e.g. new user email)', -- null if system is sender
   recipient_id        char(36)      COLLATE utf8_unicode_ci NULL COMMENT 'A null recipient indicates a message to the system (e.g. feedback)', -- null if sent to system
-  replacements        text          NULL COMMENT 'JSON encoded string of variable replacement values',
+  replacements        mediumtext    NULL COMMENT 'JSON encoded string of variable replacement values',
   sent                datetime      NULL,
   created             datetime      NOT NULL,
   modified            datetime      NOT NULL,
