@@ -219,12 +219,15 @@ class BuildingsController extends AppController {
     $user_id = $this->Auth->user( 'id' );
     
     # Determine which zip code to use
-    if( empty( $location_id ) ) {
-      $location = $this->Building->Client->locations( $user_id, 1 );
+    if( empty( $location_id ) ) { # No location was explicitly defined
+      # Use the current location context, if any, or the most recently created location
+      $location = $this->Session->read( 'last_accessed_location_id' )
+        ? array_shift( $this->Building->Client->locations( $user_id, 1, array( 'Building.id' => $this->Session->read( 'last_accessed_location_id' ) ) ) )
+        : array_shift( $this->Building->Client->locations( $user_id, 1 ) );
       
       if( !empty( $location ) ) {
-        $location = $location[0];
         $location_id = $location['Building']['id'];
+        $this->Session->write( 'last_accessed_location_id', $location_id );
       }
     }
     else {

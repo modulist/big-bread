@@ -494,17 +494,13 @@ class UsersController extends AppController {
       $this->redirect( array( 'controller' => 'users', 'action' => 'dashboard' ), null, true );
     }
 
-    # Default to the most recently created location
-    if( empty( $location_id ) ) {
-      $location = array_shift( $this->User->locations( $user_id, 1 ) );
+    if( empty( $location_id ) ) { # No location was explicitly requested
+      # Use the current location context, if any, or the most recently created location
+      $location = $this->Session->read( 'last_accessed_location_id' )
+        ? array_shift( $this->User->locations( $user_id, 1, array( 'Building.id' => $this->Session->read( 'last_accessed_location_id' ) ) ) )
+        : array_shift( $this->User->locations( $user_id, 1 ) );
     }
     else {
-      # The user can't display a building that doesn't belong to them
-      if( !$this->User->Building->belongs_to( $location_id, $this->Auth->user( 'id' ) ) ) {
-        $this->Session->setFlash( __( 'You\'re not authorized to view that building\'s data.', true ), null, null, 'warning' );
-        $this->redirect( $this->referer( array( 'controller' => 'users', 'action' => 'dashboard' ) ), null, true );
-      }
-      
       $location = $this->User->Building->find(
         'first',
         array(
@@ -519,8 +515,18 @@ class UsersController extends AppController {
     }
     
     if( !empty( $location ) ) {
+      # The user can't display a building that doesn't belong to them
+      if( !$this->User->Building->belongs_to( $location['Building']['id'], $this->Auth->user( 'id' ) ) ) {
+        $this->Session->delete( 'last_accessed_location_id' );
+        $this->Session->setFlash( __( 'You\'re not authorized to view that building\'s data.', true ), null, null, 'warning' );
+        $this->redirect( $this->referer( array( 'controller' => 'users', 'action' => 'dashboard' ) ), null, true );
+      }
+      
       $location_title = !empty( $location['Building']['name'] ) ? $location['Building']['name'] : $location['Address']['address_1'];
       $zip_code       = $location['Address']['zip_code'];
+      
+      # Set this location as the default context for other actions
+      $this->Session->write( 'last_accessed_location_id', $location['Building']['id'] );
     }
     
     # Other locations that the user will be able to switch to
