@@ -15,7 +15,7 @@
   <?php echo $this->element( '../users/_interests', array( 'watchable' => $watchable_technologies, 'watched' => $this->data['WatchedTechnology']['selected'] ) ) ?>
   
   <div id="user-registration">
-  	<?php echo $this->element( '../users/_form' ) ?>
+  	<?php echo $this->element( '../users/_form', array( 'show_zip_code' => !$has_locations ) ) ?>
   </div>
 
 <?php echo $this->Form->end( __( 'Let\'s go!', true ) ) ?>

@@ -164,6 +164,10 @@ class UsersController extends AppController {
     if( $this->Session->check( 'Auth.User' ) ) {
       $this->redirect( array( 'action' => 'dashboard' ) );
     }
+
+    $has_locations = !empty( $user_id )
+      ? $this->User->has_locations( $user_id )
+      : false;
     
     # Handle a submitted registration
     if( !empty( $this->data ) ) {
@@ -171,7 +175,7 @@ class UsersController extends AppController {
       
       # Override any user type with whatever came in from the form
       $user_type_id = $this->data['User']['user_type_id'];
-
+      
       # The password value is hashed automagically. We need to hash the
       # confirmation value manually for validation.
       # @see User::identical()
@@ -243,10 +247,8 @@ class UsersController extends AppController {
           'conditions' => array( 'User.id' => $user_id ),
         )
       );
-      # I have no idea why this has to be done, but without explicitly
-      # setting the data, the pre-populated form is displayed with
-      # validation errors.
       $this->User->set( $this->data );
+      
       $this->data['WatchedTechnology']['selected'] = Set::extract( '/TechnologyWatchList/id', $this->data );
     }
     else if( isset( $this->params['url']['zip_code'] ) ) {
@@ -267,7 +269,7 @@ class UsersController extends AppController {
     
     $watchable_technologies = array_chunk( $this->User->TechnologyWatchList->Technology->grouped(), 2 );
   
-    $this->set( compact( 'user_type_id', 'watchable_technologies' ) );
+    $this->set( compact( 'has_locations', 'user_type_id', 'watchable_technologies' ) );
   }
   
   /**
