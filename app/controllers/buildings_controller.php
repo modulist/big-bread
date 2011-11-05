@@ -232,7 +232,6 @@ class BuildingsController extends AppController {
       
       if( !empty( $location ) ) {
         $location_id = $location['Building']['id'];
-        $this->Session->write( 'last_accessed_location_id', $location_id );
       }
     }
     else {
@@ -246,11 +245,6 @@ class BuildingsController extends AppController {
           ),
           'conditions' => array(
             'Building.id' => $location_id,
-            'OR' => array(
-              'Building.client_id'    => $user_id,
-              'Building.realtor_id'   => $user_id,
-              'Building.inspector_id' => $user_id,
-            )
           ),
         )
       );
@@ -271,19 +265,33 @@ class BuildingsController extends AppController {
     if( empty( $location ) ) {
       $rebates_for = $zip_code;
     }
-    else if( empty( $location['Building']['name'] ) ) {
-      $rebates_for = $location['Address']['address_1'];
-    }
     else {
-      $rebates_for = $location['Building']['name'];
+      # Ensure that the current user can see this building
+      if( !$this->Building->belongs_to( $location_id, $this->Auth->user( 'id' ) ) ) {
+        $this->Session->setFlash( __( 'You\'re not authorized to access that building\'s data.', true ), null, null, 'warning' );
+        $this->redirect( $this->referer( array( 'controller' => 'users', 'action' => 'dashboard' ) ), null, true );
+      }
+      
+      if( empty( $location['Building']['name'] ) ) {
+        $rebates_for = $location['Address']['address_1'];
+      }
+      else {
+        $rebates_for = $location['Building']['name'];
+      }
+      
+      $this->Session->write( 'last_accessed_location_id', $location_id );
     }
+
+    
+    # Other locations that the user will be able to switch to
+    $other_locations = $this->Building->Client->locations( null, null, array( 'Building.id <> ' => $location['Building']['id'] ) );
     
     # Pull the technology watch list and reduce it to just the technology ids
     # so we can just use in_array() while looping.
     $watched_technologies = $this->Building->Client->technology_watch_list( $location_id );
     $watched_technologies = Set::extract( '/TechnologyWatchList/technology_id', $watched_technologies );
     
-    $this->set( compact( 'location_id', 'rebates', 'rebates_for', 'watched_technologies' ) );
+    $this->set( compact( 'location', 'location_id', 'other_locations', 'rebates', 'rebates_for', 'watched_technologies' ) );
   }
   
   /**
