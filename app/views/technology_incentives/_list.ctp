@@ -45,8 +45,11 @@
                   
                   <?php if( array_sum( $amounts ) > 0 ): ?>
                     <?php printf( '%s %s', $this->Number->format( array_sum( $amounts ), array( 'places' => 0, 'before' => '$' ) ), __( 'total', true ) ) ?>
-                  <?php else: ?>
+                  <?php elseif( !empty( $percents ) ): ?>
                     <?php printf( '%s %s', __( 'Up to', true ), $this->Number->format( max( $percents ), array( 'places' => 0, 'before' => false, 'after' => '%' ) ) ) ?>
+                  <?php else: ?>
+                    <?php $max = max( Set::extract( '/IncentiveAmountType[incentive_amount_type_id!=/USD|PERC/]/../TechnologyIncentive/amount', $tech_rebates ) ) ?>
+                    <?php printf( '%s %s', __( 'Up to', true ), $this->Number->format( $max, array( 'places' => 0, 'before' => false, 'after' => array_shift( Set::extract( '/TechnologyIncentive[amount=' . $max . ']/../IncentiveAmountType/name', $tech_rebates ) ) ) ) ) ?>
                   <?php endif; ?>
                 </td>
               </tr>
