@@ -3,6 +3,10 @@ USE @DB_NAME@;
 SET NAMES utf8;
 SET foreign_key_checks = 0;
 
+UPDATE incentive
+   SET expiration_date = null
+ WHERE expiration_date = '0000-00-00';
+
 DROP TABLE IF EXISTS questionnaires;
 
 DROP TABLE IF EXISTS messages;
