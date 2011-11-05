@@ -153,10 +153,15 @@ class BuildingsController extends AppController {
       }
       else {
         $this->Session->setFlash( __( 'There was an error saving this location.', true ), null, null, 'validation' );
-        new PHPDump( $this->data );        
-        new PHPDump( $this->Building->invalidFields() ); exit;
       }
     }
+    
+    # Agents will be asked to identify "default" interests when adding a new location
+    if( User::agent() ) {
+      $watchable_technologies = array_chunk( $this->Building->Client->TechnologyWatchList->Technology->grouped(), 2 );
+    }
+    
+    $this->set( compact( 'watchable_technologies' ) );
   }
   
   /**

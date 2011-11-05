@@ -32,4 +32,6 @@
       </div><!-- /grid-4 -->
     </div><!-- /utilities-wrapper -->
   </div><!-- /my-utilities -->
+  
+  <?php echo $this->element( '../users/_interests', array( 'watchable' => $watchable_technologies, 'watched' => array() ) ) ?>
 <?php echo $this->Form->end( __( 'Add location', true ) ) ?>
