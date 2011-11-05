@@ -306,9 +306,6 @@ class UsersController extends AppController {
     }
     
     if( !empty( $this->data ) ) {
-      # Agents should be sent to the add a location page.
-      $this->Auth->loginRedirect = array( 'controller' => 'buildings', 'action' => 'add' );
-      
       $this->data['User']['user_type_id'] = $user_type_id;
       
       # The password value is hashed automagically. We need to hash the
@@ -331,7 +328,9 @@ class UsersController extends AppController {
         $this->User->Message->queue( $template, 'User', $this->User->id, null, $this->User->id, $message_vars );
         
         $this->complete_registration();
-        $this->redirect( array( 'controller' => 'users', 'action' => 'dashboard' ), null, true );
+        
+        # Agents should be sent to the add a location page.
+        $this->redirect( array( 'controller' => 'buildings', 'action' => 'add' ), null, true );
       }
       else {
         $this->Session->setFlash( __( 'There\'s a problem with your registration. Please correct the errors below.', true ), null, null, 'validation' );
