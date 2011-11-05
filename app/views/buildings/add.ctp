@@ -33,5 +33,12 @@
     </div><!-- /utilities-wrapper -->
   </div><!-- /my-utilities -->
   
-  <?php echo $this->element( '../users/_interests', array( 'watchable' => $watchable_technologies, 'watched' => array() ) ) ?>
+  <?php if( User::agent() ): ?>
+    <div id="my-interests" class="grid_9">
+      <h2><?php __( 'Potential interests for my client' ) ?></h2>
+      <p class="instructions"><?php __( 'Select the categories that you believe your client should consider.' ) ?></p>
+      
+      <?php echo $this->element( '../users/_interests', array( 'watchable' => $watchable_technologies, 'watched' => array() ) ) ?>
+    </div>
+  <?php endif; ?>
 <?php echo $this->Form->end( __( 'Add location', true ) ) ?>

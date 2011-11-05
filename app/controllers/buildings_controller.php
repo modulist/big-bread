@@ -116,7 +116,7 @@ class BuildingsController extends AppController {
         if( User::agent() ) {
           if( $new_client ) { # Invite the new user
             $client = array( 'Client' => $this->data['Client'] );
-                
+
             $message_vars = array(
               'recipient_first_name' => $this->data['Client']['first_name'],
               'sender_name'          => sprintf( '%s %s', $this->Auth->user( 'first_name' ), $this->Auth->user( 'last_name' ) ),
@@ -147,8 +147,11 @@ class BuildingsController extends AppController {
             'rebates' => $rebates,
           );
           $this->Building->Realtor->Message->queue( MessageTemplate::TYPE_CLIENT_REBATES, 'Building', $this->Building->id, null, $this->Auth->user( 'id' ), $message_vars );
+          
+          $this->redirect( array( 'controller' => 'fixtures', 'action' => 'add', $this->Building->id ), null, true );
         }
         
+        # Non-agent users go right back to the dashboard.
         $this->redirect( array( 'controller' => 'users', 'action' => 'dashboard', $this->Building->id ), null, true );
       }
       else {

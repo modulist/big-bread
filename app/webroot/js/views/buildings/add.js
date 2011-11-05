@@ -1,4 +1,29 @@
 $(document).ready( function() {
+  // Hijack the un/watch technology list to handle functionality via ajax.
+  $( '#my-interests a' ).click( function( e ) {
+    e.preventDefault();
+    
+    var $this  = $(this);
+    var action = $this.attr( 'href' ).match( /(?:un)?watch/ );
+    
+    $.ajax({
+      url: $this.attr( 'href' ),
+      type: 'GET',
+      success: function( data, status, jqXHR ) {
+        $this.parent().toggleClass( 'active' );
+        
+        if( action == 'unwatch' ) {
+          var new_url = $this.attr( 'href' ).replace( /unwatch/, 'watch' );
+          $this.attr( 'href', new_url );
+        }
+        else {
+          var new_url = $this.attr( 'href' ).replace( /watch/, 'unwatch' );
+          $this.attr( 'href', new_url );
+        }
+      }
+    });
+  });
+  
   // Whenever the address value changes, we need to go get locale and
   // utility data.
   $('#AddressZipCode').change( function() {
