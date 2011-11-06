@@ -37,8 +37,8 @@ class ProposalsController extends AppController {
    * @access	public
    * @todo    rename to "request". proposals/quote makes no sense.
    */
-  public function quote( $id, $location_id = null ) {
-    $rebate   = $this->Proposal->Technology->TechnologyIncentive->get( $id );
+  public function request( $id, $location_id = null ) {
+    $rebate   = $this->Proposal->TechnologyIncentive->get( $id );
     $location = ClassRegistry::init( 'Building' )->find(
       'first',
       array(
@@ -76,11 +76,11 @@ class ProposalsController extends AppController {
 
     if( !empty( $this->data ) ){
       $this->Proposal->Requestor->id = $this->Auth->user( 'id' );
-      $this->Proposal->Requestor->Building->id = $this->data['Building']['id'];
+      $this->Proposal->Building->id = $this->data['Building']['id'];
       
       # In this context, utility data isn't required.
       foreach( array( 'Electricity', 'Gas', 'Water' ) as $utility ) {
-        $this->Proposal->Requestor->Building->{$utility . 'Provider'}->validate = array();
+        $this->Proposal->Building->{$utility . 'Provider'}->validate = array();
         
         # That said, if they'e emptied a value that already exists, we just want
         # to remove that utility's association with this building; not update the
@@ -98,26 +98,27 @@ class ProposalsController extends AppController {
       if( !$this->Proposal->Requestor->validates( array( 'fieldList' => array( 'phone_number' ) ) ) ) {
         $validationErrors['Requestor'] = $this->Proposal->Requestor->validationErrors;
       }
-      if( !$this->Proposal->Requestor->Building->saveAll( $this->data, array( 'validate' => 'only' ) ) ) {
-        $validationErrors = array_merge( $validationErrors, $this->Proposal->Requestor->Building->validationErrors );
+      if( !$this->Proposal->Building->saveAll( $this->data, array( 'validate' => 'only' ) ) ) {
+        $validationErrors = array_merge( $validationErrors, $this->Proposal->Building->validationErrors );
       }
       
       if( empty( $validationErrors ) ) {
         $this->Proposal->Requestor->saveField( 'phone_number', $this->data['Requestor']['phone_number'] );
-        $this->Proposal->Requestor->Building->saveAll( $this->data, array( 'validate' => false ) ); # This was validated above
-          
+        $this->Proposal->Building->unbindModel( array( 'hasMany' => array( 'Proposal' ) ) ); # We don't want to save the proposal just yet
+        $this->Proposal->Building->saveAll( $this->data, array( 'validate' => false ) ); # This was validated above
+
         # With basic validation done...get everything in one place
-        $this->data = Set::merge( $rebate, $location, $this->data );
-        
+        $this->data = Set::merge( Set::merge( $rebate, $location ), $this->data );
+
         $this->data['Proposal']['user_id']                 = $this->Auth->user( 'id' );
         $this->data['Proposal']['technology_incentive_id'] = $this->data['TechnologyIncentive']['id'];
-        $this->data['Proposal']['location_id']             = $this->data['Building']['id'];
+        $this->data['Proposal']['location_id']             = $this->Proposal->Building->id;
         
         if( $this->Proposal->save( $this->data['Proposal'] ) ) {
           # TODO: Retrieve the set of qualified contractors and iterate
           # -- Generate a message record for each contractor recipient
-          $stackable_rebates = $this->Proposal->Technology->TechnologyIncentive->related( $this->data['TechnologyIncentive'], $this->data['Address']['zip_code'], $this->data['Incentive']['equipment_manufacturer_id'] );
-          $fixtures = $this->Proposal->Technology->Fixture->find(
+          $stackable_rebates = $this->Proposal->TechnologyIncentive->related( $this->data['TechnologyIncentive'], $this->data['Address']['zip_code'], $this->data['Incentive']['equipment_manufacturer_id'] );
+          $fixtures = $this->Proposal->TechnologyIncentive->Technology->Fixture->find(
             'all',
             array(
               'contain'    => false,
@@ -128,6 +129,7 @@ class ProposalsController extends AppController {
             )
           );
           
+          $this->loadModel( 'ZipCode' );
           $replacements = array(
             'sender_full_name' => sprintf( '%s %s', $this->data['User']['first_name'], $this->data['User']['last_name'] ),
             'proposal' => array(
@@ -142,8 +144,8 @@ class ProposalsController extends AppController {
             'location' => array(
               'address_1' => $this->data['Address']['address_1'],
               'address_2' => $this->data['Address']['address_2'],
-              'city'      => $this->data['Address']['ZipCode']['city'],
-              'state'     => $this->data['Address']['ZipCode']['state'],
+              'city'      => $this->ZipCode->field( 'city', array( 'ZipCode.zip' => $this->data['Address']['zip_code'] ) ),
+              'state'     => $this->ZipCode->field( 'state', array( 'ZipCode.zip' => $this->data['Address']['zip_code'] ) ),
               'zip_code'  => $this->data['Address']['zip_code'],
             ),
             'sender' => array(

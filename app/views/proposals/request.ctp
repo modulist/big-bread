@@ -2,7 +2,7 @@
 
 <h2><?php __( 'Get a Quote' ) ?></h2>
 
-<?php echo $this->Form->create( 'Proposal', array( 'url' => array( 'action' => 'quote', $rebate['TechnologyIncentive']['id'], $location['Building']['id'] ) ) ) ?>
+<?php echo $this->Form->create( 'Proposal', array( 'url' => array( 'action' => 'request', $rebate['TechnologyIncentive']['id'], $location['Building']['id'] ) ) ) ?>
   <?php echo $this->Form->input( 'Building.id' ) ?>
   <div class="form-field-group clearfix">
     <h4><?php __( 'What do you need done?' ) ?></h4>

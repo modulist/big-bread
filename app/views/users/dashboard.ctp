@@ -60,7 +60,6 @@
   <?php endif; ?>
 </div><!-- /my-locations -->
 
-<?php if( !User::agent() ): # Pending quotes aren't useful for agents ?>
   <h2 class="my-rebates"><?php printf( __( 'Rebates for %s', true ), $location_title ) ?></h2>
   <?php if( empty( $technology_watch_list ) ): ?>
     <p class="message-empty-watchlist" style="margin-left: 10px"><?php __( 'Wondering why you don\'t see any rebates? It\'s because you haven\'t had a chance to identify any interests for this location. Scroll down to do just that.' ) ?></p>
@@ -68,146 +67,45 @@
   
   <?php echo $this->element( '../technology_incentives/_list', array( 'rebates' => $rebates, 'watch_list' => $technology_watch_list, 'location_id' => $location['Building']['id'] ) ) ?>
 
-  <?php //if( !empty( $pending_quotes ) ): ?>
+  <?php if( !empty( $pending_quotes ) ): ?>
     <form id="QuotesDashboardForm">
       <div id="pending-quotes" class="grid_9">
         <h2><?php printf( __( 'Pending quotes for %s', true ), $location_title ) ?></h2>
         <table class="pending quotes-list">
-          <tr class="pending-quotes-category-row first">
-            <td class="pending-quotes-category">
-              <table class="pending-quotes-header">
-                <tr class="">
-                  <td class="quote-category"><a href="#" class="toggle collapsed"><span class="quote-category-title">Windows</span></a>&nbsp;(3)</td>
-                  <td class="quote-date">1 week ago</td>
-                  <td class="quote-status">
-                    <select>
-                      <option value="Active" selected="">Active</option>
-                      <option value="On hold">On hold</option>
-                      <option value="Closed">Closed</option>
-                    </select>
-                  </td>
-                  <td class="quote-action"><a href="#" class="remove-button">remove</a></td>
-                </tr> 
-              </table>     
-              <table class="pending-quotes-content">
-                <tr>
-                  <td class="contractor">Acme Air</td>
-                  <td class="quote-date">1 week ago</td>
-                  <td class="quote-status">
-                    <select>
-                      <option value="Active" selected="">Active</option>
-                      <option value="On hold">On hold</option>
-                      <option value="Closed">Closed</option>
-                    </select>
-                  </td>
-                  <td class="quote-action"><a href="#" class="remove-button">remove</a></td>
-                </tr>
-                <tr>
-                  <td class="contractor">Metropolitan Climate Control</td>
-                  <td class="quote-date">1 week ago</td>
-                  <td class="quote-status">
-                    <select>
-                      <option value="Active" selected="">Active</option>
-                      <option value="On hold">On hold</option>
-                      <option value="Closed">Closed</option>
-                    </select>
-                  </td>
-                  <td class="quote-action"><a href="#" class="remove-button">remove</a></td>
-                </tr>
-                <tr>
-                  <td class="contractor">Reliable Comfort Corps</td>
-                  <td class="quote-date">1 week ago</td>
-                  <td class="quote-status">
-                    <select>
-                      <option value="Active" selected="">Active</option>
-                      <option value="On hold">On hold</option>
-                      <option value="Closed">Closed</option>
-                    </select>
-                  </td>
-                  <td class="quote-action"><a href="#" class="remove-button">remove</a></td>
-                </tr>
-              </table>    		
-            </td>
-          </tr>
-          <tr class="pending-quotes-category-row">
-            <td class="pending-quotes-category">
-              <table class="pending-quotes-header">
-                <tr class="even">
-                  <td class="quote-category"><a href="#" class="toggle expanded"><span class="quote-category-title">Air Conditioners</span></a>&nbsp;(3)</td>
-                  <td class="quote-date">3 weeks 2 days ago</td>
-                  <td class="quote-status">
-                    <select>
-                      <option value="Active" selected="">Active</option>
-                      <option value="On hold">On hold</option>
-                      <option value="Closed">Closed</option>
-                    </select>
-                  </td>
-                  <td class="quote-action"><a href="#" class="remove-button">remove</a></td>
-                </tr>      
-              </table>     
-              <table class="pending-quotes-content">
-                <tr>
-                  <td class="contractor">Acme Air</td>
-                  <td class="quote-date">1 week ago</td>
-                  <td class="quote-status">
-                    <select>
-                      <option value="Active" selected="">Active</option>
-                      <option value="On hold">On hold</option>
-                      <option value="Closed">Closed</option>
-                    </select>
-                  </td>
-                  <td class="quote-action"><a href="#" class="remove-button">remove</a></td>
-                </tr>
-                <tr>
-                  <td class="contractor">Metropolitan Climate Control</td>
-                  <td class="quote-date">1 week ago</td>
-                  <td class="quote-status">
-                    <select>
-                      <option value="Active" selected="">Active</option>
-                      <option value="On hold">On hold</option>
-                      <option value="Closed">Closed</option>
-                    </select>
-                  </td>
-                  <td class="quote-action"><a href="#" class="remove-button">remove</a></td>
-                </tr>
-                <tr>
-                  <td class="contractor">Reliable Comfort Corps</td>
-                  <td class="quote-date">1 week ago</td>
-                  <td class="quote-status">
-                    <select>
-                      <option value="Active" selected="">Active</option>
-                      <option value="On hold">On hold</option>
-                      <option value="Closed">Closed</option>
-                    </select>
-                  </td>
-                  <td class="quote-action"><a href="#" class="remove-button">remove</a></td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-          <tr class="pending-quotes-category-row last">
-            <td class="pending-quotes-category">
-              <table class="pending-quotes-header">
-                <tr class="last odd">
-                  <td class="quote-category"><a href="#" class="toggle collapsed"><span class="quote-category-title">Air Conditioners</span></a>&nbsp;(1)</td>
-                  <td class="quote-date">3 months 11 days ago</td>
-                  <td class="quote-status">
-                    <select>
-                      <option value="Active">Active</option>
-                      <option value="On hold">On hold</option>
-                      <option value="Closed" selected="">Closed</option>
-                    </select>
-                  </td>
-                  <td class="quote-action"><a href="#" class="remove-button">remove</a></td>
-                </tr>
-              </table>    		
-            </td>
-          </tr>
+          <?php $c_groups = count( $pending_quotes ) ?>
+          <?php $i = 0; ?>
+          <?php foreach( $pending_quotes as $tech_name => $quotes ): ?>
+            <?php $classes = array( $i++ % 2 == 0 ? 'odd' : 'even' ) # Adjusted for 0-based indexing ?>        
+            <?php array_push( $classes, $i == 0 ? 'first' : false ) ?>
+            <?php array_push( $classes, $i == $c_groups - 1 ? 'last' : false )?>
+            
+            <tr class="pending-quotes-category-row <?php echo join( ' ', array_filter( $classes ) ) ?>">
+              <td class="pending-quotes-category">
+                <table class="pending-quotes-header">
+                  <tr class="last odd">
+                    <td class="quote-category"><a href="#" class="toggle collapsed"><span class="quote-category-title"><?php echo h( $tech_name ) ?></span></a> (<?php echo count( $quotes ) ?>)</td>
+                    <td class="quote-date">&nbsp;</td>
+                    <td class="quote-status">&nbsp;</td>
+                    <td class="quote-action">&nbsp;</td>
+                  </tr>
+                </table>
+                <table class="pending-quotes-content">
+                  <?php foreach( $quotes as $quote ): ?>
+                    <tr>
+                      <td class="contractor"><?php echo h( $quote['TechnologyIncentive']['Incentive']['name'] ) ?></td>
+                      <td class="quote-date"><?php echo date( DATE_FORMAT_LONG, strtotime( $quote['Proposal']['created'] ) ) ?></td>
+                      <td class="quote-status">&nbsp;</td>
+                      <td class="quote-action">&nbsp;</td>
+                    </tr>
+                  <?php endforeach; ?>
+                </table>
+              </td>
+            </tr>
+          <?php endforeach; ?>
         </table>
       </div>
     </form>  
-  <?php //endif; ?>
-<?php endif; ?>
+  <?php endif; ?>
   
 <div id="my-interests" class="grid_9">
   <h2><?php printf( User::agent() ? __( 'Potential interests for my client', true ) : __( 'My interests for %s', true ), $location_title ) ?></h2>

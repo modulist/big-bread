@@ -69,7 +69,7 @@
                   <td class="rebate-dates"><?php echo empty( $rebate['Incentive']['expiration_date'] ) ? __( 'while funds last', true ) : date( 'm/d/Y', strtotime( $rebate['Incentive']['expiration_date'] ) ) ?></td>
                   <td class="rebate-amount"><?php echo $this->Number->format( $rebate['TechnologyIncentive']['amount'], array( 'places' => 0, 'before' => $rebate['IncentiveAmountType']['incentive_amount_type_id'] == 'USD' ? h( $rebate['IncentiveAmountType']['name'] ) : false, 'after' => $rebate['IncentiveAmountType']['incentive_amount_type_id'] != 'USD' ? h( $rebate['IncentiveAmountType']['name'] ) : false ) ) ?></td>
                   <td class="rebate-action">
-                    <?php echo $this->Html->link( __( 'Get a Quote &rsaquo;', true ), array( 'controller' => 'proposals', 'action' => 'quote', h( $rebate['TechnologyIncentive']['id'] ), h( $location_id ) ), array( 'class' => 'quote-button', 'escape' => false ) ) ?>
+                    <?php echo $this->Html->link( __( 'Get a Quote &rsaquo;', true ), array( 'controller' => 'proposals', 'action' => 'request', h( $rebate['TechnologyIncentive']['id'] ), h( $location_id ) ), array( 'class' => 'quote-button', 'escape' => false ) ) ?>
                   </td>
                 </tr>
               <?php endforeach; ?>

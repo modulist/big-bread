@@ -565,7 +565,7 @@ class UsersController extends AppController {
     );
     
     # Quotes requested by this user that haven't been completed.
-    $pending_quotes = array();
+    $pending_quotes = $this->User->quotes( $this->Auth->user( 'id' ), $location_id );
     
     # The user's technology watchlist
     $watchable_technologies = array_chunk( $this->User->TechnologyWatchList->Technology->grouped(), 2 );

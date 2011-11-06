@@ -108,4 +108,19 @@ $(document).ready( function() {
       }
     });
   });
+  
+  $( '.pending-quotes-header a.toggle' ).click( function( e ) {
+    e.preventDefault();
+    
+    var $this = $(this);
+    
+    if( $this.hasClass( 'collapsed' ) ) {
+      $this.removeClass( 'collapsed' ).addClass( 'expanded' );
+      $this.closest( '.pending-quotes-category' ).find( '.pending-quotes-content' ).slideDown(); 
+    }
+    else {
+      $this.removeClass( 'expanded' ).addClass( 'collapsed' );
+      $this.closest( '.pending-quotes-category' ).find( '.pending-quotes-content' ).slideUp(); 
+    }
+  });
 });

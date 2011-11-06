@@ -40,6 +40,9 @@ class Building extends AppModel {
     'Fixture' => array(
       'dependent' => true,
     ),
+    'Proposal' => array(
+      'foreignKey' => 'location_id',
+    ),
 	);
   
   public $actsAs = array(

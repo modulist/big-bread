@@ -376,6 +376,46 @@ class User extends AppModel {
   }
   
   /**
+   * Retrieves the pending quotes for a user and, optionall, a location.
+   *
+   * @param   string $user_id
+   * @return  array
+   * @access  public
+   */
+  public function quotes( $user_id = null, $location_id = null ) {
+    $user_id = !empty( $user_id ) ? $user_id : self::get( 'id' );
+    
+    # If the user doesn't "own" the building the building, there are no pending quotes
+    if( !empty( $location_id ) && !$this->Building->belongs_to( $location_id, $user_id ) ) {
+      return array();
+    }
+
+    $location_condition = false;
+    if( !empty( $location_id ) ) {
+      $location_condition = array( 'Proposal.location_id' => $location_id, );
+    }
+    
+    $quotes = $this->Proposal->find(
+      'all',
+      array(
+        'contain'    => array(
+          'TechnologyIncentive' => array(
+            'Incentive',
+            'Technology',
+          ),
+        ),
+        'conditions' => array(
+          'Proposal.user_id' => $user_id,
+          $location_condition,
+        ),
+      )
+    );
+    $quotes = Set::combine( $quotes, '{n}.Proposal.id', '{n}', '{n}.TechnologyIncentive.Technology.name' );
+    
+    return $quotes;
+  }
+  
+  /**
    * Retrieves a user's watchlist for a given scenario.
    *
    * @param   $location_id

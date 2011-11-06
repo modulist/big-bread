@@ -11,11 +11,14 @@ class Proposal extends AppModel {
     )
   );
 	public $belongsTo = array(
-    'Incentive',
+    'Building' => array(
+      'className'  => 'Building',
+      'foreignKey' => 'location_id',
+    ),
 		'Requestor' => array(
-			'className' => 'User',
+			'className'  => 'User',
 			'foreignKey' => 'user_id',
 		),
-    'Technology',
+    'TechnologyIncentive',
 	);
 }
