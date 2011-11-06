@@ -1,4 +1,3 @@
-
   <div id="my-equipment">
     <div class="clearfix">
       <h2><?php printf( __( '%s equipment at %s', true ), ucwords( $this->action ), h( $location_name ) ) ?>:</h2>
@@ -8,7 +7,7 @@
     </div>
     
     <div class="equipment-wrapper clearfix">
-      <div class="location-icon">&nbsp</div>
+      <div class="location-icon"></div>
       <div class="location-equipment">
         <h4><?php __( 'Equipment type' ) ?></h4>
         
@@ -36,6 +35,7 @@
           <div class="choose-button"><p><?php __( 'Choose a file' ) ?></p></div>
           <?php */ ?>
         <?php echo $this->Form->end( sprintf( __( 'Add to %s', true ), $location_name ) ) ?>
+        <?php echo $this->Html->link( __( 'Cancel', true ), array( 'action' => 'add', $location['Building']['id'] ) ) ?>
       </div><!-- /location-equipment-->	
         
       <div class="equipment-tag grid_3">
@@ -51,7 +51,5 @@
 
         <?php echo $this->element( '../fixtures/_list', array( 'plugin' => false, 'fixtures' => $fixtures ) ) ?>
       </div><!-- /location-equipment-grid -->
-      
     </div><!-- /location-wrapper -->
-      
   </div><!-- /my-equipment -->

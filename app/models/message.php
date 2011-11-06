@@ -77,7 +77,7 @@ class Message extends AppModel {
   /**
    * Writes a message to the "queue".
    *
-   * @param   string  $template     Send the code for usability
+   * @param   string  $template
    * @param   string  $model
    * @param   uuid    $foreign_key
    * @param   uuid    $sender_id
@@ -98,8 +98,9 @@ class Message extends AppModel {
         'sender_id'           => $sender_id,
         'recipient_id'        => $recipient_id,
         'replacements'        => json_encode( $replacements ),
-      );
+      );      
       
+      $this->create(); # In case this is part of a loop...
       $queued = $this->save( $message );
     }
     else {

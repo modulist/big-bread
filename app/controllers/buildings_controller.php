@@ -101,7 +101,7 @@ class BuildingsController extends AppController {
           );
         }
         elseif( User::agent() && $this->Auth->user( 'id' ) != $this->Building->Client->id ) { # We need to transfer the realtor-selected interests to the client
-          $updated = $this->Building->Client->TechnologyWatchList->updateAll(
+          $this->Building->Client->TechnologyWatchList->updateAll(
             array(
               'TechnologyWatchList.user_id'     => "'" . $this->Building->Client->id . "'",
               'TechnologyWatchList.location_id' => "'" . $this->Building->id . "'" ),
@@ -118,11 +118,11 @@ class BuildingsController extends AppController {
             $client = array( 'Client' => $this->data['Client'] );
 
             $message_vars = array(
-              'recipient_first_name' => $this->data['Client']['first_name'],
+              'recipient_first_name' => $client['Client']['first_name'],
               'sender_name'          => sprintf( '%s %s', $this->Auth->user( 'first_name' ), $this->Auth->user( 'last_name' ) ),
-              'invite_code'          => $this->data['Client']['invite_code'],
+              'invite_code'          => $client['Client']['invite_code'],
             );
-            $this->Building->Client->Message->queue( MessageTemplate::TYPE_INVITE, 'Building', $this->Building->id, null, $this->Building->Client->id, $message_vars );
+            $this->Building->Client->Message->queue( MessageTemplate::TYPE_INVITE, 'User', $this->Auth->user( 'id' ), null, $this->Building->Client->id, $message_vars );
           }
           else {
             # Pull the client data so we can use it in the email below
