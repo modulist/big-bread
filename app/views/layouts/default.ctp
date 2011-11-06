@@ -4,7 +4,12 @@
   <?php echo $this->element( 'layout/head_content' ) ?>
 </head>
 
-<body class="layout-default <?php echo Inflector::underscore( $this->name ) . ' ' . Inflector::underscore( $this->action ) ?><?php echo $this->Session->check( 'Auth.User' ) ? ' authenticated' : false ?>">
+<?php $classes = array( Inflector::underscore( $this->name ), Inflector::underscore( $this->action ) ) ?>
+<?php if( $this->Session->check( 'Auth.User' ) ): ?>
+  <?php $classes = array_merge( $classes, array( 'authenticated', strtolower( UserType::$lookup[$this->Session->read( 'Auth.User.user_type_id' )] ) ) ) ?>
+<?php endif; ?>
+
+<body class="layout-default <?php echo  join( ' ', $classes ) ?>">
   
 <div id="wrapper" class="container_12">
   <header class="clearfix">

@@ -17,9 +17,11 @@
 <div class="main-menu">
   <?php if( $this->Session->check( 'Auth.User' ) ): ?>
     <ul class="menu">
-    	<li class="leaf"><?php echo $this->Html->link( 'Home', array( 'controller' => 'users', 'action' => 'dashboard', 'realtor' => false, 'inspector' => false ), array( 'class' => 'home' ) ) ?></li>
+    	<li class="leaf"><?php echo $this->Html->link( 'Home', Configure::read( 'nav.home' ), array( 'class' => 'home' ) ) ?></li>
     	<li class="leaf"><?php echo $this->Html->link( 'Ways to Save', array( 'controller' => 'buildings', 'action' => 'ways_to_save', 'realtor' => false, 'inspector' => false ), array( 'class' => 'ways-to-save' ) ) ?></li>
-    	<li class="leaf"><?php echo $this->Html->link( 'Add a Location', array( 'controller' => 'buildings', 'action' => 'add', 'realtor' => false, 'inspector' => false ), array( 'class' => 'location' ) ) ?></li>
+      <?php if( !User::agent() ): # If user is an agent, this is the homepage ?>
+        <li class="leaf"><?php echo $this->Html->link( 'Add a Location', array( 'controller' => 'buildings', 'action' => 'add', 'realtor' => false, 'inspector' => false ), array( 'class' => 'location' ) ) ?></li>
+      <?php endif; ?>
     	<li class="leaf"><?php echo $this->Html->link( 'My Profile', array( 'controller' => 'users', 'action' => 'edit', 'realtor' => false, 'inspector' => false ), array( 'class' => 'profile' ) ) ?></li>
     </ul>
   <?php endif; ?>

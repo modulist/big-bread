@@ -78,6 +78,7 @@ class AppController extends Controller {
     $user = $this->Auth->user();
     if( !empty( $user ) ) {
       Configure::write( 'User', $user[$this->Auth->getModel()->alias] );
+      Configure::write( 'nav.home', !User::agent() ? array( 'controller' => 'users', 'action' => 'dashboard', 'realtor' => false, 'inspector' => false ) : array( 'controller' => 'buildings', 'action' => 'add', 'realtor' => false, 'inspector' => false ) );
     }
     
     # Get a default zip code if the user is anonymous or if, for whatever
