@@ -488,6 +488,11 @@ class UsersController extends AppController {
    * @access	public
    */
   public function dashboard( $location_id = null, $user_id = null ) {
+    # If we got here as an agent, this isn't their homepage. Redirect accordingly.
+    if( User::agent() ) {
+      $this->redirect( Configure::read( 'nav.home' ), null, true );
+    }
+    
     $user_id        = empty( $user_id ) ? $this->Auth->user( 'id' ) : $user_id;
     $location       = array();
     $location_title = $this->Auth->user( 'zip_code' );
@@ -580,7 +585,7 @@ class UsersController extends AppController {
    */
   public function edit() {
     if( !empty( $this->data ) ) {
-      
+      # TODO: Handle data entry
     }
     else {
       $this->data = $this->User->find(
