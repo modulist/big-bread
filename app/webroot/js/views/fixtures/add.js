@@ -20,6 +20,7 @@ $(document).ready( function() {
       $( '#FixtureOutsideUnit0' ).closest( '.input.radio' ).slideUp();
     }
   });
+  $( '#FixtureTechnologyId' ).trigger( 'change' );
   
   $( '#slider' ).slider({
     value: 0,
