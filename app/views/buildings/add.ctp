@@ -1,7 +1,26 @@
 <div id="messages">
-	<h1><?php __( 'Add a new location' ) ?></h1>
-	<p><?php __( 'to save on major home improvement projects, or simply when replacing an appliance.' ) ?></p>
+  <?php if( !User::agent() ): ?>
+    <h1><?php __( 'Add a new location' ) ?></h1>
+    <p><?php __( 'To save on major home improvement projects or simply when replacing an appliance.' ) ?></p>
+  <?php else: ?>
+    <?php if( UserType::$lookup[$this->Session->read( 'Auth.User.user_type_id' )] == 'INSPECTOR' ): ?>
+      <h1><?php __( 'Be a solution hero with huge rebates from SaveBigBread' ) ?></h1>
+      
+      <?php if( $has_locations ): ?>    
+        <p><?php __( 'Welcome back and keep the savings pumping for your clients. The more they come back to SaveBigBread, the more they\'ll remember it was you that brought it to their attention and another reason they owe you a referral.' ) ?></p>
+      <?php else: ?>
+        <p><?php __( 'Over 60% of US adults are not even aware of the variety of improvement incentives out there.  Share the savings with your first client and see how they appreciate someone who helps them save thousands of $s.' ) ?></p>
+      <?php endif; ?>
+    <?php else: ?>
+      <h1><?php __( 'Rebates help close sales' ) ?></h1>
+      <p><?php __( 'You\'re about to provide another reason why your client will refer you. Inform your client of thousands of $ in savings that will make their home ownership experience more affordable and increase the value of their home. ' ) ?></p>
+    <?php endif; ?>
+  <?php endif; ?>
 </div><!-- /#messages -->
+
+<?php if( User::agent() ): ?>
+  <p><?php __( 'Once you hit <strong>Add location</strong>, we\'ll send your client an invitation to return to the site. Next, we\'ll direct you to <strong>add equipment</strong> so you can enter the make, model &amp; serial number for your client. We\'ll also send you an email with a list of the rebates that you\'ve elevated to "My Interests".' ) ?></p>
+<?php endif; ?>
 
 <?php echo $this->Form->create( 'Building', array( 'url' => array( 'controller' => 'buildings', 'action' => 'add' ) ) ) ?>
   <div class="clearfix">

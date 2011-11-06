@@ -348,7 +348,7 @@ class UsersController extends AppController {
       : __( 'Be a solution hero with huge rebates from SaveBigBread', true );
     $intro = UserType::$lookup[$user_type_id] == 'REALTOR'
       ? __( 'Don\'t let a demand for home repair concessions derail a sale.  Help purchasers feel more confident that there are ways to manage their home repair costs and sellers know that there are replacement $s that don\'t have to come from them.  Everyone wins when they signup on SaveBigBread.', true )
-      : __( 'Let your competition be the problem guy while you unearth thousands in savings for your clients and be the solution guy.  You\'ll more than offset your fee and create customer awe when you unearth repairs and bring big rebates to the table.  Be the hero and help your client SaveBigBread.', true );
+      : __( 'Let your competition be the problem guy while you\'re the solution guy. You\'ll more than offset your fee and create customer awe when you bring big rebates to the table. Be the hero and help your client SaveBigBread.', true );
     
     $this->set( compact( 'headline', 'intro', 'user_type_id' ) );
   } 
