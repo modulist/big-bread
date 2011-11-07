@@ -32,7 +32,7 @@
     <div id="content-top-inner">
       <div class="branding">
         <div id="logo"><?php echo $this->Html->image( 'logo-home-2.png' ) ?></div>
-        <div id="slogan"><?php __( 'Save Big Bread with<br />home energy rebates.' ) ?></div>
+        <div id="slogan"><?php printf( __( 'Save Big Bread with<br />home energy rebates.%s', true ), $this->Html->image( 'beta.png', array( 'class' => 'beta' ) ) ) ?></div>
       </div>
       
       <div class="sample-rebate">
