@@ -90,16 +90,16 @@ class BuildingsController extends AppController {
         # Agents creating buildings on behalf of a client will initially have
         # the watchlinst assigned to themselves. Once the building is created,
         # transfer them to the client.
-        if( User::agent() && $this->Auth->user( 'id' ) != $this->Building->Client->id ) { 
+        if( User::agent() && $this->Auth->user( 'id' ) != $this->Building->Client->id ) {
           $this->Building->Client->TechnologyWatchList->updateAll(
             array(
               'TechnologyWatchList.user_id'     => "'" . $this->Building->Client->id . "'",
-              'TechnologyWatchList.location_id' => "'" . $this->Building->id . "'"
+              'TechnologyWatchList.location_id' => "'" . $this->Building->id . "'",
             ),
             array(
               'TechnologyWatchList.model'       => 'Technology',
               'TechnologyWatchList.user_id'     => $this->Auth->user( 'id' ),
-              'TechnologyWatchList.location_id' => null,
+              'TechnologyWatchList.location_id' => $this->Building->id, # Location is set to this id in Building::afterSave()
             )
           );
         }
