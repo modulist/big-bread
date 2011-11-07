@@ -25,8 +25,8 @@
     <?php echo $this->element( 'phone_number', array( 'plugin' => 'FormatMask', 'model' => 'Requestor', 'field' => 'phone_number', 'required' => true ) ) ?>
     
     <h4><?php __( 'Where will the work be performed?' ) ?></h4>
-      
-    <?php if( empty( $this->data['Building'] ) ): ?>
+
+    <?php if( !isset( $this->data['Building']['id'] ) || empty( $this->data['Building']['id'] ) ): ?>
       <p><?php __( 'You haven\'t created a location yet, so let\'s do that now.' ) ?></p>
       <?php echo $this->element( '../buildings/_basic_inputs', array( 'plugin' => false ) ) # We have to reset the plugin context ?>
     <?php else: ?>

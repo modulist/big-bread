@@ -106,9 +106,13 @@ class ProposalsController extends AppController {
         $this->Proposal->Building->unbindModel( array( 'hasMany' => array( 'Proposal' ) ) ); # We don't want to save the proposal just yet
         $this->Proposal->Building->saveAll( $this->data, array( 'validate' => false ) ); # This was validated above
 
+new PHPDump( $this->data, 'BEFORE' );
+
         # With basic validation done...get everything in one place
         $this->data = Set::merge( Set::merge( $rebate, $location ), $this->data );
 
+new PHPDump( $this->data, 'AFTER' ); exit;
+        
         $this->data['Proposal']['user_id']                 = $this->Auth->user( 'id' );
         $this->data['Proposal']['technology_incentive_id'] = $this->data['TechnologyIncentive']['id'];
         $this->data['Proposal']['location_id']             = $this->Proposal->Building->id;
@@ -179,6 +183,9 @@ class ProposalsController extends AppController {
         }
       }
       else {
+        # Set data for redraw
+        $this->data = Set::merge( Set::merge( $rebate, $location ), $this->data );
+        
         # Write the complete list of validation errors to the view
         $this->set( compact( 'validationErrors' ) );
       }
