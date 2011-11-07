@@ -58,7 +58,7 @@ Configure::write( 'Env.code', 'DEV' );
 Configure::write( 'Env.domain', 'dev.bigbread.net' );
 Configure::write( 'Env.full_base_url', 'http://dev.bigbread.net' );
 
-Configure::write( 'email.redirect_to', 'rob@savebigbread.com' );
+Configure::write( 'email.redirect_to', 'tony@savebigbread.com' );
 
 # Defines the controller => actions for which SSL should be forced.
 # Our SSL certificate won't work for subdomains, so we need to overwrite
