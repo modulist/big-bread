@@ -73,22 +73,22 @@ class ProposalsController extends AppController {
       )
     );
 
+    # In this context, utility data isn't required.
+    foreach( array( 'Electricity', 'Gas', 'Water' ) as $utility ) {
+      $this->Proposal->Building->{$utility . 'Provider'}->validate = array();
+      
+      # That said, if they'e emptied a value that already exists, we just want
+      # to remove that utility's association with this building; not update the
+      # utility itself.
+      if( isset( $this->data[$utility . 'Provider'] ) && empty( $this->data[$utility . 'Provider']['name'] ) ) {
+        $this->data['Building'][strtolower( $utility ) . '_provider_id'] = null;
+        unset( $this->data[$utility . 'Provider'] );
+      }
+    }
+      
     if( !empty( $this->data ) ){
       $this->Proposal->Requestor->id = $this->Auth->user( 'id' );
       $this->Proposal->Building->id = $this->data['Building']['id'];
-      
-      # In this context, utility data isn't required.
-      foreach( array( 'Electricity', 'Gas', 'Water' ) as $utility ) {
-        $this->Proposal->Building->{$utility . 'Provider'}->validate = array();
-        
-        # That said, if they'e emptied a value that already exists, we just want
-        # to remove that utility's association with this building; not update the
-        # utility itself.
-        if( isset( $this->data[$utility . 'Provider'] ) && empty( $this->data[$utility . 'Provider']['name'] ) ) {
-          $this->data['Building'][strtolower( $utility ) . '_provider_id'] = null;
-          unset( $this->data[$utility . 'Provider'] );
-        }
-      }
       
       # Compile our validation errors from each separate
       $validationErrors = array();
