@@ -35,7 +35,6 @@ class ProposalsController extends AppController {
    * @param   $id           The rebate to be quoted.
    * @param   $location_id  The location to which the quote applies.
    * @access	public
-   * @todo    rename to "request". proposals/quote makes no sense.
    */
   public function request( $id, $location_id = null ) {
     $rebate   = $this->Proposal->TechnologyIncentive->get( $id );
@@ -184,7 +183,8 @@ class ProposalsController extends AppController {
           );
           
           # TODO: change the recipient id
-          $this->Proposal->Message->queue( MessageTemplate::TYPE_PROPOSAL, 'Proposal', $this->Proposal->id, $this->Auth->user( 'id' ), $this->Auth->user( 'id' ), $replacements );
+          # Currently null recipient to messages to go to Tony
+          $this->Proposal->Message->queue( MessageTemplate::TYPE_PROPOSAL, 'Proposal', $this->Proposal->id, $this->Auth->user( 'id' ), null, $replacements );
            
           $this->Session->setFlash( 'Your request for a quote has been delivered.', null, null, 'success' );
           $this->redirect( array( 'controller' => 'users', 'action' => 'dashboard', $this->data['Building']['id'] ), null, true );

@@ -15,13 +15,11 @@ class UsersController extends AppController {
     $this->Auth->allow( '*' );
     $this->Auth->deny(
       'dashboard',
-      'dismiss_notice', # TODO: Kill this action?
       'edit',
       'unwatch',
       'watch'
     );
     
-    # TODO: Move this to a component callback?
     # Squash the phone number if it exists in a data array to prep for save
     if( !empty( $this->data[$this->User->alias]['phone_number'] ) && is_array( $this->data[$this->User->alias]['phone_number'] ) ) {
       $this->data[$this->User->alias]['phone_number'] = $this->Format->phone_number( $this->data[$this->User->alias]['phone_number'] );

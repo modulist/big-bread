@@ -109,26 +109,6 @@ class Technology extends AppModel {
   }
   
   /**
-   * Retrieves the energy sources relevant to a given technology.
-   *
-   * @param 	$technology_id
-   * @return	array
-   * @access	public
-   * @todo    Remove this. No longer required?
-   */
-  public function energy_sources( $technology_id ) {
-    return $this->EnergySource->find(
-      'all',
-      array(
-        'contain'    => false,
-        'fields'     => array( 'EnergySource.incentive_tech_energy_type_id', 'EnergySource.name' ),
-        'conditions' => array( 'EnergySource.technology_id' => $technology_id ),
-        'order'      => array( 'EnergySource.name' ),
-      )
-    );
-  }
-  
-  /**
    * Retrieves a list of manufacturers for a given technology.
    *
    * @param 	$technology_ids

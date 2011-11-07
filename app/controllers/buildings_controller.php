@@ -14,7 +14,6 @@ class BuildingsController extends AppController {
     
     $this->Auth->allow( 'highlights' );
     
-    # TODO: Move this to a component callback?
     # Squash the phone number if it exists in a data array to prep for save
     if( !empty( $this->data[$this->Building->Client->alias]['phone_number'] ) && is_array( $this->data[$this->Building->Client->alias]['phone_number'] ) ) {
       $this->data[$this->Building->Client->alias]['phone_number'] = $this->Format->phone_number( $this->data[$this->Building->Client->alias]['phone_number'] );
