@@ -104,7 +104,8 @@ class BuildingsController extends AppController {
           $this->Building->Client->TechnologyWatchList->updateAll(
             array(
               'TechnologyWatchList.user_id'     => "'" . $this->Building->Client->id . "'",
-              'TechnologyWatchList.location_id' => "'" . $this->Building->id . "'" ),
+              'TechnologyWatchList.location_id' => "'" . $this->Building->id . "'"
+            ),
             array(
               'TechnologyWatchList.model'       => 'Technology',
               'TechnologyWatchList.user_id'     => $this->Auth->user( 'id' ),
