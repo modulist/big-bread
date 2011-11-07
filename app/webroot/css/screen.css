@@ -845,3 +845,4 @@ body.layout-default_landing .copyright {color: #000; font: 11px/1.125 Georgia, "
 
 
 /*=========== temporary fixes and hidden objects ==========*/
+body.users.register #nav-links li a.signup { display: none; }
