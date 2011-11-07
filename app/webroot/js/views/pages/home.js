@@ -24,7 +24,9 @@ $(document).ready( function() {
       success: function( data, status, jqXHR ) {
         location.reload();
       },
-      error: function( e, jqXHR, settings, thrownError ) {
+      error: function( jqXHR, textStatus, thrownError ) {
+        console.log( jqXHR );
+        console.log( textStatus );
         if( $('.flash.error', $this).length > 0 ) {
           $('.flash.error').fadeTo( 200, 100 );
         }

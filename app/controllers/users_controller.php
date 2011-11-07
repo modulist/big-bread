@@ -358,7 +358,7 @@ class UsersController extends AppController {
    * @access  public
    */
 	public function login() {
-    if( $this->Session->check( 'Auth.User' ) ) {
+    if( empty( $this->data ) && $this->Session->check( 'Auth.User' ) ) {
       $this->redirect( array( 'action' => 'dashboard' ) );
     }
     
@@ -376,6 +376,7 @@ class UsersController extends AppController {
         $this->redirect( $this->Auth->redirect(), null, true );
       }
       else {
+        exit( 'HERE' );
         $this->autoRender = false;
       }
 		}
