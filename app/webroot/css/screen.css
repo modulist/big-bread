@@ -776,6 +776,7 @@ body.layout-default_landing #links div.contractor-link a { background: url(../im
 body.layout-default_landing .branding { margin: 0; width: 1000px; }
 body.layout-default_landing #logo { margin: 5px 0 0 22px;}
 body.layout-default_landing #slogan { margin: -180px 0 0 240px; font: 36px/1.0 'BirraStout'; color:#16433b; font-weight:normal; font-stretch: condensed; }
+body.layout-default_landing #slogan img { display: block; margin: 10px 0 0;  }
 
 .intro { width: 845px; margin: 5px auto 0 auto; font-weight:bold; line-height: 32px; }
 .intro p { 
@@ -801,7 +802,7 @@ body.layout-default_landing #content-bottom p { margin:0; padding: 5px 0; font-s
 body.layout-default_landing .green-dot-divider { padding: 0;}
 body.layout-default_landing #blog-link a { color: #5c998f; }
 .slide-show {float: left;}
-.sample-rebate { width: 447px; height: 327px; margin: -13px 0 0 250px; padding: 90px 0 0; background: url(../img/sample-rebate-outer.png) no-repeat; text-align: center; }
+.sample-rebate { width: 447px; height: 327px; margin: -55px 0 0 250px; padding: 90px 0 0; background: url(../img/sample-rebate-outer.png) no-repeat; text-align: center; }
 .sample-rebate p { color: #000; }
 .sample-rebate p.headline { font: 18px/1.25 'UltraRegular'; letter-spacing: .07em; color: #254a46; }
 .sample-rebate p.sample-rebate-amount { font: 48px/1.25 'UltraRegular'; letter-spacing: .1em; }
