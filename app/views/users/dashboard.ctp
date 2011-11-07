@@ -60,52 +60,54 @@
   <?php endif; ?>
 </div><!-- /my-locations -->
 
-  <h2 class="my-rebates"><?php printf( __( 'Rebates for %s', true ), $location_title ) ?></h2>
-  <?php if( empty( $technology_watch_list ) ): ?>
-    <p class="message-empty-watchlist" style="margin-left: 10px"><?php __( 'Wondering why you don\'t see any rebates? It\'s because you haven\'t had a chance to identify any interests for this location. Scroll down to do just that.' ) ?></p>
-  <?php endif; ?>
-  
-  <?php echo $this->element( '../technology_incentives/_list', array( 'rebates' => $rebates, 'watch_list' => $technology_watch_list, 'location_id' => $location['Building']['id'] ) ) ?>
+<h2 class="my-rebates"><?php printf( __( 'Rebates for %s', true ), $location_title ) ?></h2>
+<?php if( empty( $technology_watch_list ) ): ?>
+  <p class="message-empty-watchlist" style="margin-left: 10px"><?php __( 'Wondering why you don\'t see any rebates? It\'s because you haven\'t had a chance to identify any interests for this location. Scroll down to do just that.' ) ?></p>
+<?php endif; ?>
 
-  <?php if( !empty( $pending_quotes ) ): ?>
-    <form id="QuotesDashboardForm">
-      <div id="pending-quotes" class="grid_9">
-        <h2><?php printf( __( 'Pending quotes for %s', true ), $location_title ) ?></h2>
-        <table class="pending quotes-list">
-          <?php $c_groups = count( $pending_quotes ) ?>
-          <?php $i = 0; ?>
-          <?php foreach( $pending_quotes as $tech_name => $quotes ): ?>
-            <?php $classes = array( $i++ % 2 == 0 ? 'odd' : 'even' ) # Adjusted for 0-based indexing ?>        
-            <?php array_push( $classes, $i == 0 ? 'first' : false ) ?>
-            <?php array_push( $classes, $i == $c_groups - 1 ? 'last' : false )?>
-            
-            <tr class="pending-quotes-category-row <?php echo join( ' ', array_filter( $classes ) ) ?>">
-              <td class="pending-quotes-category">
-                <table class="pending-quotes-header">
-                  <tr class="last odd">
-                    <td class="quote-category"><a href="#" class="toggle collapsed"><span class="quote-category-title"><?php echo h( $tech_name ) ?></span></a> (<?php echo count( $quotes ) ?>)</td>
-                    <td class="quote-date">&nbsp;</td>
-                    <td class="quote-status">&nbsp;</td>
-                    <td class="quote-action">&nbsp;</td>
-                  </tr>
-                </table>
-                <table class="pending-quotes-content">
-                  <?php foreach( $quotes as $quote ): ?>
-                    <tr>
-                      <td class="contractor"><?php echo h( $quote['TechnologyIncentive']['Incentive']['name'] ) ?></td>
-                      <td class="quote-date"><?php echo date( DATE_FORMAT_LONG, strtotime( $quote['Proposal']['created'] ) ) ?></td>
-                      <td class="quote-status">&nbsp;</td>
-                      <td class="quote-action">&nbsp;</td>
-                    </tr>
-                  <?php endforeach; ?>
-                </table>
-              </td>
-            </tr>
-          <?php endforeach; ?>
-        </table>
-      </div>
-    </form>  
-  <?php endif; ?>
+<?php echo $this->element( '../technology_incentives/_list', array( 'rebates' => $rebates, 'watch_list' => $technology_watch_list, 'location_id' => $location['Building']['id'] ) ) ?>
+
+<form id="QuotesDashboardForm">
+  <div id="pending-quotes" class="grid_9">
+    <h2><?php printf( __( 'Pending quotes for %s', true ), $location_title ) ?></h2>
+    <?php if( empty( $pending_quotes ) ): ?>
+      <p class="message-no-quotes" style="margin-left: 10px"><?php __( 'Looks like you don\'t have any open quotes. Take a look at what we have and let us know what you need.' ) ?></p>
+    <?php endif; ?>
+    
+    <table class="pending quotes-list">
+      <?php $c_groups = count( $pending_quotes ) ?>
+      <?php $i = 0; ?>
+      <?php foreach( $pending_quotes as $tech_name => $quotes ): ?>
+        <?php $classes = array( $i++ % 2 == 0 ? 'odd' : 'even' ) # Adjusted for 0-based indexing ?>        
+        <?php array_push( $classes, $i == 0 ? 'first' : false ) ?>
+        <?php array_push( $classes, $i == $c_groups - 1 ? 'last' : false )?>
+        
+        <tr class="pending-quotes-category-row <?php echo join( ' ', array_filter( $classes ) ) ?>">
+          <td class="pending-quotes-category">
+            <table class="pending-quotes-header">
+              <tr class="last odd">
+                <td class="quote-category"><a href="#" class="toggle collapsed"><span class="quote-category-title"><?php echo h( $tech_name ) ?></span></a> (<?php echo count( $quotes ) ?>)</td>
+                <td class="quote-date">&nbsp;</td>
+                <td class="quote-status">&nbsp;</td>
+                <td class="quote-action">&nbsp;</td>
+              </tr>
+            </table>
+            <table class="pending-quotes-content">
+              <?php foreach( $quotes as $quote ): ?>
+                <tr>
+                  <td class="contractor"><?php echo h( $quote['TechnologyIncentive']['Incentive']['name'] ) ?></td>
+                  <td class="quote-date"><?php echo date( DATE_FORMAT_LONG, strtotime( $quote['Proposal']['created'] ) ) ?></td>
+                  <td class="quote-status">&nbsp;</td>
+                  <td class="quote-action">&nbsp;</td>
+                </tr>
+              <?php endforeach; ?>
+            </table>
+          </td>
+        </tr>
+      <?php endforeach; ?>
+    </table>
+  </div>
+</form>  
   
 <div id="my-interests" class="grid_9">
   <h2><?php printf( User::agent() ? __( 'Potential interests for my client', true ) : __( 'My interests for %s', true ), $location_title ) ?></h2>

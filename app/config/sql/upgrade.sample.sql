@@ -235,6 +235,10 @@ UPDATE technologies
 UPDATE technologies
    SET technology_group_id = '4e7a5b45-6054-4f0c-b939-22536e891b5e' -- Laundry
  WHERE incentive_tech_id IN( 'WASH', 'DRYER' );
+ 
+UPDATE technologies
+   SET title = 'Clothes Washers'
+ WHERE incentive_tech_id = 'WASH';
 
 UPDATE technologies
    SET watchable = 1

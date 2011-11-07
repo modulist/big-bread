@@ -96,12 +96,12 @@ $(document).ready( function() {
               .attr( 'title', $tech_row_star.attr( 'title' ).replace( / add /, ' remove ' ) );
             // Show the rebate group
             $tech_row.slideDown( function() {
-                if( $( '.rebates-watch-list .rebate-category-row:visible' ).length == 0 ) {
-                  $( '.message-empty-watchlist' ).slideDown();
-                }
-                else {
-                  $( '.message-empty-watchlist' ).slideUp();
-                }
+              if( $( '.rebates-watch-list .rebate-category-row:visible' ).length == 0 ) {
+                $( '.message-empty-watchlist' ).slideDown();
+              }
+              else {
+                $( '.message-empty-watchlist' ).slideUp();
+              }
             });
           }
         }
@@ -113,14 +113,16 @@ $(document).ready( function() {
     e.preventDefault();
     
     var $this = $(this);
+    var $category_header  = $this.closest( '.pending-quotes-category' );
+    var $category_content = $category_header.find( '.pending-quotes-content' );
     
     if( $this.hasClass( 'collapsed' ) ) {
       $this.removeClass( 'collapsed' ).addClass( 'expanded' );
-      $this.closest( '.pending-quotes-category' ).find( '.pending-quotes-content' ).slideDown(); 
+      $category_content.slideDown(); 
     }
     else {
       $this.removeClass( 'expanded' ).addClass( 'collapsed' );
-      $this.closest( '.pending-quotes-category' ).find( '.pending-quotes-content' ).slideUp(); 
+      $category_content.slideUp(); 
     }
   });
 });
