@@ -376,7 +376,6 @@ class UsersController extends AppController {
         $this->redirect( $this->Auth->redirect(), null, true );
       }
       else {
-        exit( 'HERE' );
         $this->autoRender = false;
       }
 		}
