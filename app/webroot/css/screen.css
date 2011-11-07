@@ -67,7 +67,6 @@ tr:hover { background-color: rgba(143, 212, 105, 0.25); }
 header { background:url(../img/header-background.png) top no-repeat; height:137px; }
 #logoheader{ margin: 0; }
 #logo { width: 360px; margin: 40px 0 0 60px; position: absolute; }
-body.layout-default_landing #logo { width: 360px; margin: 40px 0 0 60px; position: inherit; }
 .main-menu { margin: -20px 0 0 270px; font-size: 14px; }
 .main-menu ul.menu li a { border-radius: 4px; -moz-border-radius: 4px; -webkit-border-radius: 4px; padding: 8px 15px;  }
 /* .main-menu li a.active { background-color: #fff; } */
@@ -746,6 +745,7 @@ body.layout-default_landing { }
 body.layout-default_landing h2 {margin-top: 0;}
 body.layout-default_landing h3 {margin-top: 0;font-size: 16px; color: #156873;}
 body.layout-default_landing h3.title {margin-bottom: 10px; font-size: 16px; color: #5c998f; letter-spacing: 0;}
+body.layout-default_landing #logo { width: 360px; margin: 40px 0 0 60px; position: inherit; }
 body.layout-default_landing #content-top {margin-top:30px;margin-left:0px; background: url(../img/home-content-top-background.png) top no-repeat; height: 494px; width: 1000px;}
 body.layout-default_landing #content-top-inner { background: url(../img/home-top-content-trees.png) 50px 255px no-repeat, url(../img/home-top-content-trees.png) right 255px no-repeat; }
 body.layout-default_landing .login-wrapper { float: right; width: 310px; font: 14px/1 'UltraRegular', serif; color: #308166; letter-spacing: .07em;  }
@@ -772,7 +772,7 @@ body.layout-default_landing #links div { float:left; height: 86px; padding-right
 body.layout-default_landing #links div a { padding-top: 38px; display: block;}
 body.layout-default_landing #links div.contractor-link a { background: url(../img/icon-contractor.png) no-repeat; padding-left: 65px; height: 86px }
 .branding { margin-top: 75px; margin-left:50px;} 
-body.layout-default_landing .branding { margin: 0;}
+body.layout-default_landing .branding { margin: 0; width: 1000px; }
 body.layout-default_landing #logo { margin: 5px 0 0 22px;}
 body.layout-default_landing #slogan { margin: -180px 0 0 240px; font: 36px/1.0 'BirraStout'; color:#16433b; font-weight:normal; font-stretch: condensed; }
 

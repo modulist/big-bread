@@ -13,7 +13,7 @@
 <?php echo $this->Html->css( 'screen', 'stylesheet', array( 'media' => 'screen' ) ) ?>
 <?php echo $this->Html->css( 'print', 'stylesheet', array( 'media' => 'print' ) ) ?>
 
-<!--[if IE<8]>
+<!--[if lt IE 8]>
 <?php echo $this->Html->css( 'ie', 'stylesheet', array( 'media' => 'screen, projection' ) ) ?>
 <![endif]-->
  

@@ -35,8 +35,8 @@ AddDefaultCharset UTF-8
   RewriteCond %{REMOTE_ADDR} !^96\.241\.49\.
   # Adobe Browser Labs (for cross-browser testing)
   # see http://blogs.adobe.com/browserlab/2011/04/14/browserlabs-egress-ip-addresses/
-  RewriteCond %{REMOTE_ADDR} !^212\.113\.146\.11
-  RewriteCond %{REMOTE_ADDR} !^192\.150\.3\.7
+  RewriteCond %{REMOTE_ADDR} !^212\.113\.146\.
+  RewriteCond %{REMOTE_ADDR} !^192\.150\.3\.
 
   RewriteRule ^(.*)$ http://www.savebigbread.com/$1 [R=301,L]
   
