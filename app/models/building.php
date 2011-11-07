@@ -83,6 +83,30 @@ class Building extends AppModel {
    */
   
   /**
+   * CakePHP afterSave callback.
+   *
+   * @param   bool $created
+   * @return  bool
+   * @access  public
+   */
+  public function afterSave( $created ) {
+    if( $created ) {
+      # Update any technology watch list for the building's client that is not
+      # assigned to a location.
+      $this->Client->TechnologyWatchList->updateAll(
+        array(
+          'TechnologyWatchList.location_id' => "'" . $this->id . "'"
+        ),
+        array(
+          'TechnologyWatchList.model'       => 'Technology',
+          'TechnologyWatchList.user_id'     => User::get(),
+          'TechnologyWatchList.location_id' => null,
+        )
+      );
+    }
+  }
+  
+  /**
    * PUBLIC METHODS
    */
   

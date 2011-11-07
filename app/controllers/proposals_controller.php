@@ -106,21 +106,6 @@ class ProposalsController extends AppController {
         $this->Proposal->Building->unbindModel( array( 'hasMany' => array( 'Proposal' ) ) ); # We don't want to save the proposal just yet
         $this->Proposal->Building->saveAll( $this->data, array( 'validate' => false ) ); # This was validated above
 
-        # If we got here with no building, we might need to update some default
-        # interests.
-        if( empty( $this->data['Building']['id'] ) ) { # Creating a new building
-          $this->Proposal->Requestor->TechnologyWatchList->updateAll(
-            array(
-              'TechnologyWatchList.location_id' => "'" . $this->Proposal->Building->id . "'"
-            ),
-            array(
-              'TechnologyWatchList.model'       => 'Technology',
-              'TechnologyWatchList.user_id'     => $this->Auth->user( 'id' ),
-              'TechnologyWatchList.location_id' => null,
-            )
-          );
-        }
-        
         # With basic validation done...get everything in one place
         $this->data = Set::merge( Set::merge( $rebate, $location ), $this->data );
 

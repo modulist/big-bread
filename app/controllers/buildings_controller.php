@@ -87,19 +87,10 @@ class BuildingsController extends AppController {
       if( $this->Building->saveAll( $this->data ) ) {
         $this->Session->setFlash( sprintf( __( '"%s" has been saved.', true ), !empty( $this->data['Building']['name'] ) ? $this->data['Building']['name'] : __( 'Your location', true ) ), null, null, 'success' );
         
-        # If this is our first building, then we want to update the user's
-        # "default" interests to attach them to the new location.
-        if( !User::agent() && $this->Building->Client->has_locations() === 1 ) {
-          $updated = $this->Building->Client->TechnologyWatchList->updateAll(
-            array( 'TechnologyWatchList.location_id' => "'" . $this->Building->id . "'" ),
-            array(
-              'TechnologyWatchList.model'       => 'Technology',
-              'TechnologyWatchList.user_id'     => $this->Auth->user( 'id' ),
-              'TechnologyWatchList.location_id' => null,
-            )
-          );
-        }
-        elseif( User::agent() && $this->Auth->user( 'id' ) != $this->Building->Client->id ) { # We need to transfer the realtor-selected interests to the client
+        # Agents creating buildings on behalf of a client will initially have
+        # the watchlinst assigned to themselves. Once the building is created,
+        # transfer them to the client.
+        if( User::agent() && $this->Auth->user( 'id' ) != $this->Building->Client->id ) { 
           $this->Building->Client->TechnologyWatchList->updateAll(
             array(
               'TechnologyWatchList.user_id'     => "'" . $this->Building->Client->id . "'",
