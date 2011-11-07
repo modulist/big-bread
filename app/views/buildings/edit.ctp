@@ -1,6 +1,6 @@
 <div id="messages">
 	<h1><?php __( 'Edit a location' ) ?></h1>
-	<p><?php __( 'to save on major home improvement projects, or simply when replacing an appliance.' ) ?></p>
+	<p><?php __( 'When we have location information, we can get suppliers to give you bigger rebates.' ) ?></p>
 </div><!-- /#messages -->
 
 <?php echo $this->Form->create( 'Building', array( 'url' => array( 'controller' => 'buildings', 'action' => 'edit' ) ) ) ?>
