@@ -13,4 +13,8 @@
 <?php echo $this->Html->css( 'screen', 'stylesheet', array( 'media' => 'screen' ) ) ?>
 <?php echo $this->Html->css( 'print', 'stylesheet', array( 'media' => 'print' ) ) ?>
 
+<!--[if IE<8]>
+<?php echo $this->Html->css( 'ie', 'stylesheet', array( 'media' => 'screen, projection' ) ) ?>
+<![endif]-->
+ 
 <?php echo $this->Html->script( 'lib/modernizr-1.7.min.js' ) . "\n" ?>
