@@ -5,16 +5,11 @@
   <?php else: ?>
     <?php if( UserType::$lookup[$this->Session->read( 'Auth.User.user_type_id' )] == 'INSPECTOR' ): ?>
       <h1><?php __( 'Be a solution hero with huge rebates from SaveBigBread' ) ?></h1>
-      
-      <?php if( $has_locations ): ?>    
-        <p><?php __( 'Welcome back and keep the savings pumping for your clients. The more they come back to SaveBigBread, the more they\'ll remember it was you that brought it to their attention and another reason they owe you a referral.' ) ?></p>
-      <?php else: ?>
-        <p><?php __( 'Over 60% of US adults are not even aware of the variety of improvement incentives out there.  Share the savings with your first client and see how they appreciate someone who helps them save thousands of $s.' ) ?></p>
-      <?php endif; ?>
     <?php else: ?>
       <h1><?php __( 'Rebates help close sales' ) ?></h1>
-      <p><?php __( 'You\'re about to provide another reason why your client will refer you. Once you hit <strong>Add location</strong>, we\'ll send your client an invitation to return to the site. Next, we\'ll direct you to <strong>add equipment</strong> so you can enter the make, model &amp; serial number for your client. We\'ll also send you an email with a list of the rebates that you\'ve elevated to "My Interests".' ) ?></p>
     <?php endif; ?>
+    
+    <p><?php __( 'You\'re about to provide another reason why your client will refer you. Once you hit <strong>Add location</strong>, we\'ll send your client an invitation to return to the site. Next, we\'ll direct you to <strong>add equipment</strong> so you can enter the make, model &amp; serial number for your client. We\'ll also send you an email with a list of the rebates that you\'ve elevated to "My Interests".' ) ?></p>
   <?php endif; ?>
 </div><!-- /#messages -->
 
