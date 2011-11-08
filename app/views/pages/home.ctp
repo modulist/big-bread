@@ -118,17 +118,5 @@
 	  </div> <!-- /#column-last -->
 	</div> <!-- content-wrapper -->
   
-  <div id="links" class="clearfix">
-    <?php if( Configure::read( 'Feature.contractor_registration.enabled' ) ): ?>
-      <div class="contractor-link">
-        <?php echo $this->Html->link( __( 'For contractors &rsaquo;', true ), array( 'controller' => 'contractors' ), array( 'escape' => false ) ) ?>
-      </div>
-    <?php endif; ?>
-  	<div class="other-link">
-      <?php echo $this->Html->link( __( 'Inspectors &rsaquo;', true ), array( 'controller' => 'users', 'action' => 'register', 'inspector' => true ), array( 'escape' => false ) ) ?>
-    </div>
-  	<div class="other-link">
-      <?php echo $this->Html->link( __( 'Realtors &rsaquo;', true ), array( 'controller' => 'users', 'action' => 'register', 'realtor' => true ), array( 'escape' => false ) ) ?>
-    </div>
-  </div>
+
 </div> <!-- #content-bottom -->
