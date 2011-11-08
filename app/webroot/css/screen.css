@@ -552,6 +552,8 @@ a.button {
 .edit-location-button:hover, 
 .download-button:hover,
 .add-equipment-button:hover { background-color: #3b7e9a; text-decoration: none; }
+.download-button.disabled,
+.add-equipment-button.disabled { background-color: #d8d8d8 }
 .choose-button {float:left; background: url(/img/button-choose.png) no-repeat; width:118px; height: 22px; margin-top: 12px;}
 .choose-button p {font: 11px/1 Georgia, serif; color: #fff; padding: 5px; vertical-align: middle;}
 
