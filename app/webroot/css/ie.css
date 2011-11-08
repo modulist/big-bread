@@ -3,6 +3,13 @@
 #sidebar{ position: fixed; top: 190px; margin: 0 0 0 20px; width:180px; border-top-left-radius: 20px; border-bottom-left-radius: 20px; -moz-border-top-left-radius: 20px; -moz-border-bottom-left-radius: 20px; background: #fff; padding: 0 20px 0 30px; }
 #messages { padding: 10px 0 20px 120px; background: url(../img/handyman.png) 15px top no-repeat; min-height: 105px; width: 580px; }
 
-.header { background: url(../img/header-background.png) top no-repeat; height:137px; }
+.header { background: url(../img/header-background.png) top no-repeat; height:157px; }
+#page_content { background: #8fd469; padding: 0; }
 .footer { clear: both; background: url(../img/footer-background.png) top no-repeat; height: 200px; font-weight: bold; }
+.footer a { color: #01deb8;  }
+.footer .footer-inner { color: #383737; background: url(../img/footer-blk.png) 0px 20px no-repeat; min-height: 173px; width: 1000px; padding: 80px 0 0 150px; }
+.footer .footer-menu { color: #01deb8; padding: 4px 0; }
+
 body.layout-default-login .footer {background: url(../img/footer-background-login.png) top no-repeat; }
+
+#login-popup { width: 376px; margin-left: -100px; }
