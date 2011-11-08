@@ -19,7 +19,7 @@
         <?php if( file_exists( ELEMENTS . 'layout/sidebar/' . Inflector::underscore( $this->name ) . '/' . Inflector::underscore( $this->action ) . '.ctp' ) ): ?>
           <?php echo $this->element( 'layout/sidebar/' . Inflector::underscore( $this->name ) . '/' . Inflector::underscore( $this->action ) ) ?>
         <?php endif; ?>
-      </div</aside> <!-- #sidebar -->
+      </div></aside> <!-- #sidebar -->
       
       <div id="content" class="grid_6 clearfix">
         <?php echo $this->element( 'layout/flash_messages' ) ?>
