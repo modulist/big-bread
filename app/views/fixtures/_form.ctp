@@ -34,8 +34,10 @@
           <p class="small"><?php __( 'You can attach invoices, a product manual, or anything else.' ) ?></p>
           <div class="choose-button"><p><?php __( 'Choose a file' ) ?></p></div>
           <?php */ ?>
-        <?php echo $this->Form->end( sprintf( __( 'Add to %s', true ), $location_name ) ) ?>
-        <?php echo $this->Html->link( __( 'Cancel', true ), array( 'action' => 'add', $location['Building']['id'] ) ) ?>
+          <div class="controls clearfix">
+		        <?php echo $this->Form->end( sprintf( __( 'Add this', true ), $location_name ) ) ?>
+		        <?php echo $this->Html->link( __( 'Cancel', true ), array( 'action' => 'add', $location['Building']['id'] ), array( 'class' => 'cancel-button') ) ?>
+        	</div>
       </div><!-- /location-equipment-->	
         
       <div class="equipment-tag grid_3">
