@@ -4,12 +4,11 @@
 	<div class="content-wrapper clearfix">
 	  <div id="column-first" class="grid_3">
 	    <h3 class="title"><?php __( '*Here&#146;s how it works:' ) ?></h3>
-	    <h3><?php __( '1. Find Savings' ) ?></h3>
+	    <h3><?php __( '1. Find savings' ) ?></h3>
 	    <div class="green-dot-divider">
 	      <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
 	    </div>     
-	    
-	    <p><?php __( 'There are $2 billion in energy credits and rebates available from utilities as well as federal, state, and local governments' ) ?></p>   
+	    <p><?php __( 'Over $2 billion in manufacturer, utility and government energy efficient, home improvement is available for homeowners on SaveBigBread.' ) ?></p>   
 	    <p><?php printf( __( 'Here are just some of the available rebates for HVAC systems in %s:', true ), '<br /><span class="rebate-city">' . h( $locale['ZipCode']['city'] ) . ', ' . h( $locale['ZipCode']['state'] ) . '</span>' ) ?></p>
 	    <table class="rebates-preview">
 	      <?php $i = 0 ?>
@@ -28,13 +27,13 @@
 	    <div class="green-dot-divider">
 	      <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
 	    </div>      
-	    <p><?php __( 'SaveBigBread can help you get quotes from contractors in your area &ndash; free of charge' ) ?></p>
+	    <p><?php __( 'Homeowners use SaveBigBread to get free quotes from rebate program authorized contractors. Only select contractors can offer all of the rebates to you.' ) ?></p>
 	    
 	    <h3><?php __( '3. Redeem a rebate' ) ?></h3>
 	    <div class="green-dot-divider">
 	      <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
 	    </div>
-	    <p><?php __( 'Tell us about your purchase and upload a scan of the invoice, and we&#146;ll handle the rest for you.' ) ?></p>
+	    <p><?php __( 'Tell us about your purchase, send us your invoice and we\'ll handle the rest for you.' ) ?></p>
 
 	    <div class="green-dot-divider">
 	      <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
@@ -119,17 +118,5 @@
 	  </div> <!-- /#column-last -->
 	</div> <!-- content-wrapper -->
   
-  <div id="links" class="clearfix">
-    <?php if( Configure::read( 'Feature.contractor_registration.enabled' ) ): ?>
-      <div class="contractor-link">
-        <?php echo $this->Html->link( __( 'For contractors &rsaquo;', true ), array( 'controller' => 'contractors' ), array( 'escape' => false ) ) ?>
-      </div>
-    <?php endif; ?>
-  	<div class="other-link">
-      <?php echo $this->Html->link( __( 'Inspectors &rsaquo;', true ), array( 'controller' => 'users', 'action' => 'register', 'inspector' => true ), array( 'escape' => false ) ) ?>
-    </div>
-  	<div class="other-link">
-      <?php echo $this->Html->link( __( 'Realtors &rsaquo;', true ), array( 'controller' => 'users', 'action' => 'register', 'realtor' => true ), array( 'escape' => false ) ) ?>
-    </div>
-  </div>
+
 </div> <!-- #content-bottom -->

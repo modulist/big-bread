@@ -180,7 +180,9 @@ class UsersController extends AppController {
       $this->data['User']['confirm_password'] = $this->Auth->password( $this->data['User']['confirm_password'] );
       
       # Massage the selected watchlist items into a format we can work with.
-      $this->data['WatchedTechnology']['selected'] = array_filter( explode( ',', $this->data['WatchedTechnology']['selected'] ) );
+      if( !empty( $this->data['WatchedTechnology']['selected'] ) ) {
+        $this->data['WatchedTechnology']['selected'] = array_filter( explode( ',', $this->data['WatchedTechnology']['selected'] ) );
+      }
       
       # Save the user and their watchlist in a transaction. Model::saveAll()
       # does not work in this scenario.
@@ -219,8 +221,8 @@ class UsersController extends AppController {
         $commit = $this->User->Message->queue( MessageTemplate::TYPE_NEW_USER, 'User', $this->User->id, null, $this->User->id, $replacements );
 
         if( $commit ) {
+          $ds->commit( $this->User ); # Commit the user changes in order to complete registration
           $this->complete_registration();
-          $ds->commit( $this->User );
           $this->redirect( $this->Auth->redirect(), null, true );
         }
       }
@@ -358,7 +360,7 @@ class UsersController extends AppController {
    * @access  public
    */
 	public function login() {
-    if( $this->Session->check( 'Auth.User' ) ) {
+    if( empty( $this->data ) && $this->Session->check( 'Auth.User' ) ) {
       $this->redirect( array( 'action' => 'dashboard' ) );
     }
     
@@ -684,7 +686,6 @@ class UsersController extends AppController {
   private function complete_registration() {
     $this->Session->setFlash( sprintf( __( 'Welcome to SaveBigBread, %s. Thanks for registering.', true ), $this->data['User']['first_name'] ), null, null, 'success' );
     $this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
-    $this->Auth->login( $this->data ); # Authenticate the new user
-    
+    $this->Auth->login( $this->data['User'] ); # Authenticate the new user
   }
 }

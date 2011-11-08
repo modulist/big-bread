@@ -54,7 +54,7 @@ VALUES
   ( UUID(), 'new_user', '%recipient_first_name%, thanks for registering to Save Big Bread on SaveBigBread.com', NOW(), NOW() ),
   ( UUID(), 'new_realtor', 'SaveBigBread creates referrals from happy clients.', NOW(), NOW() ),
   ( UUID(), 'new_inspector', 'SaveBigBread creates referrals from happy clients.', NOW(), NOW() ),
-  ( UUID(), 'invite', '%recipient_first_name% wants you to save $1,000s on SaveBigBread', NOW(), NOW() ),
+  ( UUID(), 'invite', '%sender_first_name% wants you to save $1,000s on SaveBigBread', NOW(), NOW() ),
   ( UUID(), 'proposal_request', '%sender_full_name% requests a quote from a qualified contractor', NOW(), NOW() ),
   ( UUID(), 'forgot_password', 'Reset your SaveBigBread.com password', NOW(), NOW() ),
   ( UUID(), 'feedback', 'Feedback from a user at SaveBigBread.com', NOW(), NOW() ),

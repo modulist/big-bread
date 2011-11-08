@@ -30,3 +30,4 @@
     </div><!-- /utilities-wrapper -->
   </div><!-- /my-utilities -->
 <?php echo $this->Form->end( __( 'Update location', true ) ) ?>
+<?php echo $this->Html->link( __( 'Cancel', true ), array( 'action' => 'add' ) ) ?>

@@ -110,6 +110,7 @@ class BuildingsController extends AppController {
 
             $message_vars = array(
               'recipient_first_name' => $client['Client']['first_name'],
+              'sender_first_name'    => $this->Auth->user( 'first_name' ),
               'sender_name'          => sprintf( '%s %s', $this->Auth->user( 'first_name' ), $this->Auth->user( 'last_name' ) ),
               'invite_code'          => $client['Client']['invite_code'],
             );

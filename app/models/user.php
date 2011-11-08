@@ -171,10 +171,13 @@ class User extends AppModel {
       # empty value and that fools the validation rule. This is bad. We
       # want to know an empty password when we see one and throw it out, so
       # we have to make that adjustment manually.
-      $empty_password = Security::hash( '', null, true );
+      $empty_password    = Security::hash( '', null, true );
+      # If we have an id and a non-empty password, then we're editing an invited
+      # user's record. If that's the case, we want to treat it as a create action.
+      $existing_password = $this->field( 'password', array( 'User.id' => $this->id ) );
       
       if( isset( $this->data[$this->alias]['password'] ) && $this->data[$this->alias]['password'] == $empty_password ) {
-        if( !empty( $this->id ) ) {
+        if( !empty( $this->id ) && !empty( $existing_password ) ) {
           # When editing, just remove the data so no change is made.
           # This allows users leave their password empty unless they
           # actually want to change it.

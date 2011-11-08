@@ -10,6 +10,15 @@ class Fixture extends AppModel {
   );
   
 	public $validate = array(
+    'technology_id' => array(
+			'notempty' => array(
+				'rule'       => 'notEmpty',
+				'message'    => 'Please identify the type of equipment.',
+				'allowEmpty' => false,
+				'required'   => true,
+        'last'       => true,
+			),
+    ),
     'service_in' => array(
 			'year'     => array(
 				'rule'       => 'integer',

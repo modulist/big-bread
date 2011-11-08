@@ -3,15 +3,16 @@
 <head>
   <?php echo $this->element( 'layout/head_content' ) ?>
 </head>
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 
 <body class="layout-default layout-default-login <?php echo Inflector::underscore( $this->name ) . ' ' . Inflector::underscore( $this->action ) ?><?php echo $this->Session->check( 'Auth.User' ) ? ' authenticated' : false ?>">
   
 <div id="wrapper" class="container_12">
-  <header class="clearfix">
+  <header class="clearfix"><div class="header">
     <?php echo $this->element( 'layout/header' ) ?>
-  </header><!-- #header -->
+  </div></header><!-- #header -->
   
-  <section id="page_content"> 				
+  <section><div id="page_content"> 				
     <div id="bodymain" class="clearfix">
       <aside id="sidebar">
         <!-- page-specific sidebar -->
@@ -27,11 +28,11 @@
       </div> <!-- #content -->
       
     </div> <!-- #bodymain -->
-  </section> <!-- #page_content -->
+  </div></section> <!-- #page_content -->
   
-  <footer id="footer">
+  <footer id="footer"><div class="footer">
     <?php echo $this->element( 'layout/footer' ) ?>
-  </footer> <!-- #footer -->
+  </div></footer> <!-- #footer -->
 </div> <!-- #wrapper -->
   
 <?php echo $this->element( 'layout/include_scripts' ) ?>

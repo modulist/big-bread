@@ -1,3 +1,4 @@
+/app/webroot/.htaccess
 /app/config
 /app/tmp
 /plugins

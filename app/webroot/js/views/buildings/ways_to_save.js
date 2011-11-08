@@ -27,8 +27,9 @@ $(document).ready( function() {
     
     $( '<div/>' ).load( $this.attr( 'href' ) ).dialog({
       height: 'auto',
-      maxWidth: 800,
-      minWidth: 600,
+      //maxWidth: 880,
+      //minWidth: 600,
+      width: 700,
       position: 'center',
       resizable: false,
       title: $this.attr( 'title' ).length > 0 ? $this.attr( 'title' ) : false,

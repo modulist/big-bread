@@ -13,14 +13,10 @@
       <?php endif; ?>
     <?php else: ?>
       <h1><?php __( 'Rebates help close sales' ) ?></h1>
-      <p><?php __( 'You\'re about to provide another reason why your client will refer you. Inform your client of thousands of $ in savings that will make their home ownership experience more affordable and increase the value of their home. ' ) ?></p>
+      <p><?php __( 'You\'re about to provide another reason why your client will refer you. Once you hit <strong>Add location</strong>, we\'ll send your client an invitation to return to the site. Next, we\'ll direct you to <strong>add equipment</strong> so you can enter the make, model &amp; serial number for your client. We\'ll also send you an email with a list of the rebates that you\'ve elevated to "My Interests".' ) ?></p>
     <?php endif; ?>
   <?php endif; ?>
 </div><!-- /#messages -->
-
-<?php if( User::agent() ): ?>
-  <p><?php __( 'Once you hit <strong>Add location</strong>, we\'ll send your client an invitation to return to the site. Next, we\'ll direct you to <strong>add equipment</strong> so you can enter the make, model &amp; serial number for your client. We\'ll also send you an email with a list of the rebates that you\'ve elevated to "My Interests".' ) ?></p>
-<?php endif; ?>
 
 <?php echo $this->Form->create( 'Building', array( 'url' => array( 'controller' => 'buildings', 'action' => 'add' ) ) ) ?>
   <div class="clearfix">
@@ -61,3 +57,4 @@
     </div>
   <?php endif; ?>
 <?php echo $this->Form->end( __( 'Add location', true ) ) ?>
+<?php echo $this->Html->link( __( 'Cancel', true ), array( 'action' => 'add' ) ) ?>

@@ -73,22 +73,22 @@ class ProposalsController extends AppController {
       )
     );
 
+    # In this context, utility data isn't required.
+    foreach( array( 'Electricity', 'Gas', 'Water' ) as $utility ) {
+      $this->Proposal->Building->{$utility . 'Provider'}->validate = array();
+      
+      # That said, if they'e emptied a value that already exists, we just want
+      # to remove that utility's association with this building; not update the
+      # utility itself.
+      if( isset( $this->data[$utility . 'Provider'] ) && empty( $this->data[$utility . 'Provider']['name'] ) ) {
+        $this->data['Building'][strtolower( $utility ) . '_provider_id'] = null;
+        unset( $this->data[$utility . 'Provider'] );
+      }
+    }
+      
     if( !empty( $this->data ) ){
       $this->Proposal->Requestor->id = $this->Auth->user( 'id' );
       $this->Proposal->Building->id = $this->data['Building']['id'];
-      
-      # In this context, utility data isn't required.
-      foreach( array( 'Electricity', 'Gas', 'Water' ) as $utility ) {
-        $this->Proposal->Building->{$utility . 'Provider'}->validate = array();
-        
-        # That said, if they'e emptied a value that already exists, we just want
-        # to remove that utility's association with this building; not update the
-        # utility itself.
-        if( isset( $this->data[$utility . 'Provider'] ) && empty( $this->data[$utility . 'Provider']['name'] ) ) {
-          $this->data['Building'][strtolower( $utility ) . '_provider_id'] = null;
-          unset( $this->data[$utility . 'Provider'] );
-        }
-      }
       
       # Compile our validation errors from each separate
       $validationErrors = array();
@@ -108,7 +108,7 @@ class ProposalsController extends AppController {
 
         # With basic validation done...get everything in one place
         $this->data = Set::merge( Set::merge( $rebate, $location ), $this->data );
-
+        
         $this->data['Proposal']['user_id']                 = $this->Auth->user( 'id' );
         $this->data['Proposal']['technology_incentive_id'] = $this->data['TechnologyIncentive']['id'];
         $this->data['Proposal']['location_id']             = $this->Proposal->Building->id;
@@ -179,6 +179,9 @@ class ProposalsController extends AppController {
         }
       }
       else {
+        # Set data for redraw
+        $this->data = Set::merge( Set::merge( $rebate, $location ), $this->data );
+        
         # Write the complete list of validation errors to the view
         $this->set( compact( 'validationErrors' ) );
       }
