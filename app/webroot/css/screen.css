@@ -52,6 +52,7 @@ h5 a, h6 a { color: #666;  }
 .hidden { display: none; }
 .loading { padding-left: 10px; }
 .loading .spinner { vertical-align: middle; }
+.disabled { background-color: #999; }
 
 table { border-spacing: 0; }
 tr.odd { background-color: rgba(143, 212, 105, 0.1)/*#f4fbf0*/; border: none; }
@@ -657,8 +658,9 @@ td.quote-action { width: 110px; padding-left: 20px; }
 
 
 /* ============================= savings details ======================= */
-body.ways_to_save h2.rebate-title { float: left; margin: 0 0 .5em; width: 425px; letter-spacing: 0; }
-.savings-detail .rebate-amount { float: left; margin-left: 15px; width: 190px; font: 30px/1 "UltraRegular", serif; color: #558388; text-align: right; }
+.savings-detail-header tr { vertical-align: top; }
+.savings-detail-header .rebate-title h2 { margin: 0 0 .5em; width: 75%; letter-spacing: 0; }
+.savings-detail-header .rebate-amount { padding-left: 15px; width: 25%; font: 30px/1 "UltraRegular", serif; color: #558388; text-align: right; }
 table.savings-detail-grid { width: 100%; background: url(../img/dotrule-orange-1px.png) bottom repeat-x; margin: 0 0 20px; }
 .savings-detail-grid tbody tr { background: url(../img/dotrule-orange-1px.png) top repeat-x; }
 .savings-detail-grid th { font: 14px/1.125 'UltraRegular', serif; letter-spacing: .1em; color: #0c4d54; text-align: left; padding: 30px 5px 6px; }
