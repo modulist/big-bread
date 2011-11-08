@@ -78,7 +78,6 @@ header { background: url(../img/header-background.png) top no-repeat; height:137
 .layout-default.buildings.ways_to_save .main-menu a.ways-to-save,
 .layout-default.buildings.add .main-menu a.location,
 .layout-default.users.edit .main-menu a.profile { background-color: #fff }
-body.ways_to_save h2 { margin-top: 12px; width: 500px; }
 
 ul.menu { height:28px; list-style: none; padding: 0; float: left; }
 ul.menu li { float:left; }
@@ -468,7 +467,7 @@ ul.other-location-list { display: none  }
 ul.other-location-list.active { display: block; position: absolute; top: 31px; z-index: 100; width: 200px; list-style: none;  text-transform: capitalize; margin: 0; padding: 0; background-color: rgba(255,255,255,.92); border: 1px solid #ccc; box-shadow: 5px 5px 7px rgba(0,0,0,.35)  }
 ul.other-location-list li { padding: 3px 10px;  }
 ul.other-location-list li:hover { background-color: #4c96b6; color: white;  }
-ul.other-location-list li a:hover { color: white; text-decoration: none; }
+ul.other-location-list li:hover a { color: white; text-decoration: none; }
 table.current-equipment { width: 100%; padding: 0 0 15px; margin: 0 0 15px; background: url(/img/dotrule-orange-2px.png) bottom repeat-x; }
 table.current-equipment td { padding: 3px 10px; }
 .current-equipment-icon {float:left; background: url(/img/equipment-current-icon.png) no-repeat; width: 67px; height: 71px;margin-right: 10px;}
@@ -656,8 +655,8 @@ td.quote-action { width: 110px; padding-left: 20px; }
 
 
 /* ============================= savings details ======================= */
-h2.rebate-title { float: left; margin: 0 0 .5em; width: 400px; letter-spacing: 0; }
-.savings-detail .rebate-amount { float: left; margin-left: 15px; width: 210px; font: 30px/1 "UltraRegular", serif; color: #558388; text-align: right; }
+body.ways_to_save h2.rebate-title { float: left; margin: 0 0 .5em; width: 425px; letter-spacing: 0; }
+.savings-detail .rebate-amount { float: left; margin-left: 15px; width: 190px; font: 30px/1 "UltraRegular", serif; color: #558388; text-align: right; }
 table.savings-detail-grid { width: 100%; background: url(../img/dotrule-orange-1px.png) bottom repeat-x; margin: 0 0 20px; }
 .savings-detail-grid tbody tr { background: url(../img/dotrule-orange-1px.png) top repeat-x; }
 .savings-detail-grid th { font: 14px/1.125 'UltraRegular', serif; letter-spacing: .1em; color: #0c4d54; text-align: left; padding: 30px 5px 6px; }

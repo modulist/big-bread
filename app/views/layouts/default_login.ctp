@@ -14,12 +14,12 @@
   
   <section><div id="page_content"> 				
     <div id="bodymain" class="clearfix">
-      <aside id="sidebar">
+      <aside><div id="sidebar">
         <!-- page-specific sidebar -->
         <?php if( file_exists( ELEMENTS . 'layout/sidebar/' . Inflector::underscore( $this->name ) . '/' . Inflector::underscore( $this->action ) . '.ctp' ) ): ?>
           <?php echo $this->element( 'layout/sidebar/' . Inflector::underscore( $this->name ) . '/' . Inflector::underscore( $this->action ) ) ?>
         <?php endif; ?>
-      </aside> <!-- #sidebar -->
+      </div</aside> <!-- #sidebar -->
       
       <div id="content" class="grid_6 clearfix">
         <?php echo $this->element( 'layout/flash_messages' ) ?>

@@ -1,8 +1,38 @@
 /* place all IE-specific overwrites here */
 
+/* get rid of multiple background images  */
 #sidebar{ position: fixed; top: 190px; margin: 0 0 0 20px; width:180px; border-top-left-radius: 20px; border-bottom-left-radius: 20px; -moz-border-top-left-radius: 20px; -moz-border-bottom-left-radius: 20px; background: #fff; padding: 0 20px 0 30px; }
 #messages { padding: 10px 0 20px 120px; background: url(../img/handyman.png) 15px top no-repeat; min-height: 105px; width: 580px; }
 
-.header { background: url(../img/header-background.png) top no-repeat; height:137px; }
+
+/* correct rgba color tags */
+.main-menu li a:hover { background-color: #fff; text-decoration: none; }
+.main-menu li a:active { background-color: #fff; text-decoration: none; }
+input[type=submit],input[type=reset]{ border: 1px solid #4677a4; -moz-border-radius: 4px; -webkit-border-radius: 4px; -khtml-border-radius: 4px; border-radius: 4px; background: url(../img/bk-button.png) repeat-x #4a9dc0; color:#fff; padding: 4px 30px; font-weight: bold; text-align: center !important; width: 210px; height: 40px; }
+.my-interests-grid li a:hover { background: url(../img/sprite-rebate-table.png) -4px -27px no-repeat rgba(143, 212, 105, 0.1); text-decoration: none; }
+.my-interests-grid li.active a{ background: url(../img/sprite-rebate-table.png) -4px -47px no-repeat; }
+.my-interests-grid li.active a:hover { background: url(../img/sprite-rebate-table.png) -4px -67px no-repeat rgba(143, 212, 105, 0.1); }
+ul.other-location-list.active { display: block; position: absolute; top: 31px; z-index: 100; width: 200px; list-style: none;  text-transform: capitalize; margin: 0; padding: 0; background-color: #fff; border: 1px solid #ccc; }
+.pending-quotes tr.odd { background-color: #f4fbf0; border: none; }
+.pending-quotes tr:hover, .pending-quotes tr.odd:hover, .pending-quotes tr.even:hover { background-color: rgba(143, 212, 105, 0.25); } 
+.rebates-watch-list tr.even:hover { background-color:  rgba(143, 212, 105, 0.15); } 
+.rebate-content tr.odd { background-color: #f4fbf0; border: none; }
+.rebate-content tr.even:hover { background-color: #fff; } 
+.pending-quotes-content tr.odd { background-color: #f4fbf0; border: none; }
+.pending-quotes-content tr.even:hover { background-color: #fff; } 
+
+
+/* add styles for html5 elements not recognized by ie */
+.header { background: url(../img/header-background.png) top no-repeat; height:167px; }
+#page_content { background: #8fd469; padding: 0; }
 .footer { clear: both; background: url(../img/footer-background.png) top no-repeat; height: 200px; font-weight: bold; }
+.footer a { color: #01deb8;  }
+.footer .footer-inner { color: #383737; background: url(../img/footer-blk.png) 0px 20px no-repeat; min-height: 173px; width: 1000px; padding: 80px 0 0 150px; }
+.footer .footer-menu { color: #01deb8; padding: 4px 0; }
 body.layout-default-login .footer {background: url(../img/footer-background-login.png) top no-repeat; }
+
+
+/* size and alignment fixes */
+#login-popup { width: 376px; margin-left: -100px; }
+.house-signup #UserRegisterForm #zipcode { width: 96px; margin-right: 5px; font: 27px/1 'UltraRegular', serif; color: #546e64; letter-spacing: 0; border: 1px solid #698666; background: #b3e6d2; text-align: left; }
+.house-signup #UserRegisterForm #zipcode.loading { width: 116px; border-width: 2px; color: #ccc; background: url(../img/loading.gif) no-repeat 90px 0 #fff; }
