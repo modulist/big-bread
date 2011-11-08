@@ -7,7 +7,7 @@
       <?php if( $this->Session->check( 'Auth.User' ) ): ?>
         <li class="first last"><?php echo $this->Html->link( 'Logout', array( 'controller' => 'users', 'action' => 'logout', 'realtor' => false, 'inspector' => false ) ) ?></li>
       <?php else: ?>
-        <li class="first"><?php echo $this->Html->link( 'Login', array( 'controller' => 'users', 'action' => 'login', 'realtor' => false, 'inspector' => false ) ) ?></li>
+        <li class="first"><?php echo $this->Html->link( 'Login', array( 'controller' => 'users', 'action' => 'login', 'realtor' => false, 'inspector' => false ), array ( 'class' => 'login') ) ?></li>
         <li class="last"><?php echo $this->Html->link( 'Sign up', array( 'controller' => 'users', 'action' => 'register' ), array ( 'class' => 'signup') ) ?></li>
       <?php endif; ?>
     </ul>

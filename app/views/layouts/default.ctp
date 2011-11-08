@@ -12,11 +12,11 @@
 <body class="layout-default <?php echo  join( ' ', $classes ) ?>">
   
 <div id="wrapper" class="container_12">
-  <header class="clearfix">
+  <header class="clearfix"><div class="header">
     <?php echo $this->element( 'layout/header' ) ?>
-  </header><!-- #header -->
+  </div></header><!-- #header -->
   
-  <section id="page_content"> 				
+  <section><div id="page_content">  				
     <div id="bodymain" class="clearfix">
       <?php if( !User::agent() ): ?>
         <aside id="sidebar">
@@ -34,11 +34,11 @@
       </div> <!-- #content -->
       
     </div> <!-- #bodymain -->
-  </section> <!-- #page_content -->
+  </div></section> <!-- #page_content -->
   
-  <footer id="footer">
+  <footer id="footer"><div class="footer">
     <?php echo $this->element( 'layout/footer' ) ?>
-  </footer> <!-- #footer -->
+  </div></footer> <!-- #footer -->
 </div> <!-- #wrapper -->
   
 <?php echo $this->element( 'layout/include_scripts' ) ?>

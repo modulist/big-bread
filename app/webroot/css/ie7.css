@@ -26,7 +26,7 @@ ul.other-location-list.active { display: block; position: absolute; top: 31px; z
 
 
 /* home page */
-.login-wrapper { position: absolute; right: 200px; height: 64px; }
+.login-wrapper { position: absolute; right: 100px; height: 64px; }
 body.layout-default_landing #login-trigger a { background: url(../img/login-cloud.png) no-repeat; height: 64px; display: block; float: right; margin-top: -37px; }
 body.layout-default_landing #content-top-inner { background: url(../img/home-top-content-trees.png) 50px 255px no-repeat; }
 body.layout-default_landing #logo { width: 360px; position: static; z-index: 10;  margin: 10px 0 0 30px; }

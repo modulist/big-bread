@@ -14,11 +14,11 @@
 <?php echo $this->Html->css( 'print', 'stylesheet', array( 'media' => 'print' ) ) ?>
 
 <!--[if lt IE 8]>
-<?php echo $this->Html->css( 'ie7', 'stylesheet', array( 'media' => 'screen, projection' ) ) ?>
+<?php echo $this->Html->css( 'ie7', 'stylesheet', array( 'media' => 'screen, projection' ) ) . "\n" ?>
 <![endif]-->
  
 <!--[if lte IE 8]>
-<?php echo $this->Html->css( 'ie', 'stylesheet', array( 'media' => 'screen, projection' ) ) ?>
+<?php echo $this->Html->css( 'ie', 'stylesheet', array( 'media' => 'screen, projection' ) ) . "\n" ?>
 <![endif]-->
  
 <?php echo $this->Html->script( 'lib/modernizr-1.7.min.js' ) . "\n" ?>
