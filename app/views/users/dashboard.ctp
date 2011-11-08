@@ -42,7 +42,7 @@
     </div>
     
     <div class="location-wrapper clearfix">
-      <div class="location-icon"><?php # echo $i ?>1</div>
+      <div class="location-icon"></div>
       <h4><?php echo !empty( $location['Building']['name'] ) ? h( $location['Building']['name'] ) : h( $location['Address']['address_1'] ) ?></h4>
       <div class="location-address">
         <?php echo $this->element( 'address', array( 'address' => $location['Address'] ) ) ?>
