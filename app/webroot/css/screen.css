@@ -118,28 +118,6 @@ body.onecolumn #content { background: #FFFFFF; min-height:400px; padding: 50px 6
 #savings span { color:#3D7700; font-weight:bold;line-height:1.8em; }
 .eq { display: block; height:25px;width:118px;padding:61px 0px 0px 0px;text-align:center; }
 
-/** Appliances */
-#eq_c44374b26f7f11e0be4180593d270cc9 { background:url(../img/Appliance_on.png) no-repeat 10px 0; }
-#eq_c44374b26f7f11e0be4180593d270cc9_off { background:url(../img/Appliance_off.png) no-repeat 10px 0; }
-/** Building Shell */
-#eq_c44375486f7f11e0be4180593d270cc9 { background:url(../img/Exterior_on.png) no-repeat 10px 0; }
-#eq_c44375486f7f11e0be4180593d270cc9_off { background:url(../img/Exterior_off.png) no-repeat 10px 0; }
-/** Heating & Cooling */
-#eq_c44376606f7f11e0be4180593d270cc9 { background:url(../img/HeatCool_on.png) no-repeat 10px 0; }
-#eq_c44376606f7f11e0be4180593d270cc9_off { background:url(../img/HeatCool_off.png) no-repeat 10px 0; }
-/** Hot Water */
-#eq_c44376ec6f7f11e0be4180593d270cc9 { background:url(../img/HotWater_on.png) no-repeat 10px 0; }
-#eq_c44376ec6f7f11e0be4180593d270cc9_off { background:url(../img/HotWater_off.png) no-repeat 10px 0; }
-/** Lighting */
-#eq_c44377786f7f11e0be4180593d270cc9 { background:url(../img/Light_on.png) no-repeat 10px 0; }
-#eq_c44377786f7f11e0be4180593d270cc9_off { background:url(../img/Light_off.png) no-repeat 10px 0; }
-/** Other */
-#eq_c44377fa6f7f11e0be4180593d270cc9 { background:url(../img/Other_on.png) no-repeat 10px 0; }
-#eq_c44377fa6f7f11e0be4180593d270cc9_off { background:url(../img/Other_off.png) no-repeat 10px 0; }
-/** Whole House */
-#eq_c44379126f7f11e0be4180593d270cc9 { background:url(../img/All_on.png) no-repeat 10px 0; }
-#eq_c44379126f7f11e0be4180593d270cc9_off { background:url(../img/All_off.png) no-repeat 10px 0; }
-
 #TermsCondition_on { background:url(../img/TermsCondition_on.png) no-repeat 0 0; width:151px; height:26px; float:left; margin-right:10px; }
 #TermsCondition_off { background:url(../img/TermsCondition_off.png) no-repeat 0 0; width:151px; height:26px; float:left; margin-right:10px; }
 #RebateForm_on { background:url(../img/RebateForm_on.png) no-repeat 0 0; width:105px; height:26px; float:left; margin-right:10px; }
@@ -478,6 +456,7 @@ table.current-equipment td { padding: 3px 10px; }
 
 #BuildingAddForm input[type='text'] { width: 300px; }
 #BuildingAddForm input[type='submit'] { width: 180px; line-height: 210%; float: left; margin-bottom: 30px; margin-left: 170px;}
+#BuildingAddForm div.input { margin: 0 0 20px; }
 #BuildingAddForm .AddLocationState { width: 180px; float: left; margin: 0 10px 0 0; }
 #BuildingAddForm .AddLocationState input { width: 180px; margin: 4px 10px 0 0;}
 #BuildingAddForm .AddLocationState select { width: 180px; height: 24px;}
@@ -491,11 +470,22 @@ table.current-equipment td { padding: 3px 10px; }
 #BuildingEditForm .AddLocationZip { width: 100px; float: left; margin: 0 10px 0 0; }
 #BuildingEditForm .AddLocationZip input { width: 100px; margin: 4px 10px 0 0; }
 
-#BuildingDashboardForm { float: left; }
 #BuildingDashboardForm input[type='text'] { width: 300px; }
-#BuildingDashboardForm input#AddressAddress2 { width: 220px; }
-#BuildingDashboardForm input#AddressZipCode { width: 70px; float: right; }
-
+#BuildingDashboardForm input#AddressAddress2 { width: 215px; margin-right: 7px }
+#BuildingDashboardForm input#AddressZipCode { width: 70px; margin-right: 0; }
+#BuildingDashboardForm div.input { margin: 0; }
+#BuildingDashboardForm div.input.address-2,
+#BuildingDashboardForm div.input.zip-code { float: left; }
+#BuildingDashboardForm .location-name label { font: 14px/1 "UltraRegular", serif; letter-spacing: .07em; padding-bottom: 2px; }
+#BuildingDashboardForm .address-1 label,
+#BuildingDashboardForm .address-2 label,
+#BuildingDashboardForm .zip-code label,
+#BuildingDashboardForm .zip-code small { display: none; }
+h2.first-location { padding-bottom: 20px; }
+#BuildingDashboardForm .basic-inputs { float: left; width: 330px; }
+#BuildingDashboardForm .instructions { float: left; width: 210px; padding-top: 18px; }
+#BuildingDashboardForm .instructions .message-text { font: 18px/24px Georgia, serif; color: #57550f; }
+#BuildingDashboardForm input[type='submit'] { width: 120px; margin-top: 10px; }
 
 #FixtureAddForm input[type='text'],
 #FixtureEditForm input[type='text'] { width: 300px; }
