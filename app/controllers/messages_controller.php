@@ -79,7 +79,12 @@ class MessagesController extends AppController {
         $this->Message->Sender->invalidate( 'full_name', 'Name cannot be empty.' );
       }
       
-      if( $this->Message->Sender->validates( $this->data ) ) {
+      if( $this->Message->Sender->validates( $this->data ) && $this->Message->validates( $this->data ) ) {
+        # Now that we've validated the message coming in from the form, remove
+        # the validation so we can save. We're validating properties that don't
+        # actually exist in the model's schema.
+        $this->Message->validate = array();
+        
         # Pull the friendly user type value
         $this->data['Sender']['user_type'] = strlen( $this->data['Sender']['user_type_id'] ) == 36
           ? $this->Message->Sender->UserType->field( 'name', array( 'UserType.id' => $this->data['Sender']['user_type_id'] ) )
@@ -95,12 +100,11 @@ class MessagesController extends AppController {
         # Queue up the message
         if( $this->Message->queue( MessageTemplate::TYPE_FEEDBACK, 'User', $this->Auth->user( 'id' ), $this->Auth->user( 'id' ), null, $replacements ) ) {
           $this->Session->setFlash( 'Thank you for taking the time to send us your feedback. Our Customer Service will contact you as soon as possible.', null, null, 'success' );
+          $this->redirect( array( 'action' => 'feedback' ) );        
         }
         else {
           $this->Session->setFlash( 'An error occurred while saving your feeback. Please try again later.', null, null, 'error' );
         }
-        
-        $this->redirect( array( 'action' => 'feedback' ) );        
       }
       else {
         # new PHPDump( $this->Message->Sender->invalidFields() ); exit;
