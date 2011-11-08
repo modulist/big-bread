@@ -1,6 +1,11 @@
 <div id="messages">
-	<h1><?php __( 'Let&#146;s find rebates in your area' ) ?></h1>
-	<p><?php __( 'First, you&#146;ll have to help us out by letting us know what kinds of rebates you&#146;re interested in.' ) ?></p>
+  <?php if( !$has_locations ): ?>
+    <h1><?php __( 'Let&#146;s find rebates in your area' ) ?></h1>
+    <p><?php __( 'First, you&#146;ll have to help us out by letting us know what kinds of rebates you&#146;re interested in.' ) ?></p>
+  <?php else: ?>
+    <h1><?php __( 'Create your password' ) ?></h1>
+    <p><?php __( 'We\'ll keep you posted on how to SaveBigBread.' ) ?></p>
+  <?php endif; ?>
 </div>
 
 <?php echo $this->Form->create( 'User', array( 'action' => 'register' ) ) ?>
