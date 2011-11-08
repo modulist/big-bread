@@ -4,7 +4,7 @@
 	<div class="content-wrapper clearfix">
 	  <div id="column-first" class="grid_3">
 	    <h3 class="title"><?php __( '*Here&#146;s how it works:' ) ?></h3>
-	    <h3><?php __( '1. Find Savings' ) ?></h3>
+	    <h3><?php __( '1. Find savings' ) ?></h3>
 	    <div class="green-dot-divider">
 	      <?php echo $this->Html->image( 'green-dot-divider.png' ) ?>
 	    </div>     
