@@ -180,6 +180,7 @@ class FixturesController extends AppController {
     # If data was submitted, we need to retain that for display
     if( empty( $this->data ) ) {
       $this->data = $fixture;
+      $this->Fixture->set( $this->data );
     }
     
     $this->set( compact( 'action_param', 'fixtures', 'location', 'location_name', 'other_locations', 'technologies' ) );
