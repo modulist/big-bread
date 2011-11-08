@@ -52,4 +52,4 @@
     </div>
   <?php endif; ?>
 <?php echo $this->Form->end( __( 'Add location', true ) ) ?>
-<?php echo $this->Html->link( __( 'Cancel', true ), array( 'action' => 'add' ) ) ?>
+<?php echo $this->Html->link( __( 'Cancel', true ), array( 'action' => 'add' ), array( 'class' => 'cancel-button') ) ?>
