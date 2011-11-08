@@ -174,7 +174,7 @@ class User extends AppModel {
       $empty_password    = Security::hash( '', null, true );
       # If we have an id and a non-empty password, then we're editing an invited
       # user's record. If that's the case, we want to treat it as a create action.
-      $existing_password = $this->field( 'password', array( 'User.id' => $this->id ) );
+      $existing_password = $this->field( 'password', array( $this->alias . '.id' => $this->id ) );
       
       if( isset( $this->data[$this->alias]['password'] ) && $this->data[$this->alias]['password'] == $empty_password ) {
         if( !empty( $this->id ) && !empty( $existing_password ) ) {
