@@ -52,7 +52,6 @@ h5 a, h6 a { color: #666;  }
 .hidden { display: none; }
 .loading { padding-left: 10px; }
 .loading .spinner { vertical-align: middle; }
-.disabled { background-color: #999; }
 
 table { border-spacing: 0; }
 tr.odd { background-color: rgba(143, 212, 105, 0.1)/*#f4fbf0*/; border: none; }
