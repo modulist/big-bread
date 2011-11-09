@@ -40,10 +40,11 @@
         	</div>
       </div><!-- /location-equipment-->	
         
-      <div class="equipment-tag grid_3">
+      <!-- uncomment to add back the equipment tag 
+      <div class="equipment-tag ui-dialog ui-widget ui-widget-content ui-corner-all">
         <?php echo $this->Html->image( 'sticker-sm.jpg', array( 'alt' => 'Sample equipment tag' ) ) ?>
     		<small><?php __( 'Do not open the cabinet of any equipment while the unit is in operation or if it creates a safety issue or violates a warranty requirement.' ) ?></small>
-    	</div>
+    	</div>-->
 
       <div class="add-equipment-grid grid_3">
         <div class="clearfix">
