@@ -1,6 +1,8 @@
 $.getScript( '/js/jquery/jquery.currency.min.js' );
 
 $(document).ready( function() {
+  var jqXHR = null;
+  
   // Show/hide the login form
   $('#login-trigger a, #login-popup .cancel-link, #login-popup .close-button' ).click( function( e ) {
     e.preventDefault();
@@ -55,7 +57,7 @@ $(document).ready( function() {
         
         if( $this.val().search( /^[0-9]{5}$/ ) >= 0 ) {
           $this.toggleClass( 'loading' );
-          $.ajax({
+          jqXHR = $.ajax({
             url: '/api/v1/zip_codes/highlights/' + $this.val() + '/true.json',
             dataType: 'json',
             beforeSend: function( jqXHR, settings ) {
@@ -102,13 +104,22 @@ $(document).ready( function() {
               }
             },
             error: function( jqXHR, textStatus ) {
-              alert( 'Sorry, we don\'t have any data for the ' + $this.val() + ' zip code.' );
+              // If the status is 0, we aborted the request ourselves.              
+              if( jqXHR.status != 0 ) {
+                alert( 'Sorry, we don\'t have any data for the ' + $this.val() + ' zip code.' );
+              }
             },
             complete: function( jqXHR, textStatus ) {
               $this.toggleClass( 'loading' );
             }
           });
         }
+      }
+    });
+    
+    $( '#UserRegisterForm' ).submit( function( e ) {
+      if( jqXHR ) {
+        jqXHR.abort();
       }
     });
 });
