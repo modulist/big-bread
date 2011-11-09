@@ -26,15 +26,20 @@
 
 <div id="my-locations" class="clearfix">
   <?php if( empty( $location ) ): ?>
-    <h2><?php echo !User::agent() ? __( 'Add my first location', true ) : __( 'Add a location', true ) ?>:</h2>
+    <h2 class="first-location"><?php echo !User::agent() ? __( 'Add my first location', true ) : __( 'Add a location', true ) ?>:</h2>
     <div class="location-icon-large"></div>
     
-    <?php echo $this->Form->create( 'Building', array( 'url' => array( 'controller' => 'buildings', 'action' => 'add' ), 'class' => 'clearfix' ) ) ?>
-      <?php if( User::agent() ): ?>
-        <?php echo $this->element( '../buildings/_client_inputs' ) ?>
-      <?php endif; ?>
-      <?php echo $this->element( '../buildings/_basic_inputs' ) ?>
-    <?php echo $this->Form->end( __( 'Add location', true ) ) ?>
+	    <?php echo $this->Form->create( 'Building', array( 'url' => array( 'controller' => 'buildings', 'action' => 'add' ), 'class' => 'clearfix' ) ) ?>
+	      <?php if( User::agent() ): ?>
+	        <?php echo $this->element( '../buildings/_client_inputs' ) ?>
+	      <?php endif; ?>
+	      <?php echo $this->element( '../buildings/_basic_inputs' ) ?>
+      <div class="instructions">
+      	<div class="message-text">
+      		<?php __( 'We\'ll find your city and state for you.' ) ?>
+				</div>
+		    <?php echo $this->Form->end( __( 'Add location', true ) ) ?>
+	    </div>
   <?php else: ?>
     <h2><?php __( 'My location' ) ?>:</h2>
     <div class="location-switch-wrapper clearfix">

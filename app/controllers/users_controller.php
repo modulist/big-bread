@@ -684,7 +684,7 @@ class UsersController extends AppController {
    * @access  private
    */
   private function complete_registration() {
-    $this->Session->setFlash( sprintf( __( 'Welcome to SaveBigBread, %s. Thanks for registering.', true ), $this->data['User']['first_name'] ), null, null, 'success' );
+    $this->Session->setFlash( sprintf( __( 'Welcome to SaveBigBread, %s. Thanks for registering.', true ), h( trim( $this->data['User']['first_name'] ) ) ), null, null, 'success' );
     $this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
     $this->Auth->login( $this->data['User'] ); # Authenticate the new user
   }

@@ -51,5 +51,7 @@
       <?php echo $this->element( '../users/_interests', array( 'watchable' => $watchable_technologies, 'watched' => array() ) ) ?>
     </div>
   <?php endif; ?>
-<?php echo $this->Form->end( __( 'Add location', true ) ) ?>
-<?php echo $this->Html->link( __( 'Cancel', true ), array( 'action' => 'add' ) ) ?>
+  <div class="controls clearfix">
+		<?php echo $this->Form->end( __( 'Add location', true ) ) ?>
+		<?php echo $this->Html->link( __( 'Cancel', true ), array( 'action' => 'add' ), array( 'class' => 'cancel-button') ) ?>
+	</div>

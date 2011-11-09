@@ -128,7 +128,7 @@ $(document).ready( function() {
 
   // If the page loads with a zip code value, trigger the zip code's
   // change event to go get utility & locale data.
-  if( $('#AddressZipCode').length > 0 && $('#AddressZipCode').val().length > 0 ) {
+  if( $('#AddressZipCode').length > 0 && $('#AddressZipCode').val() != $('#AddressZipCode').attr( 'placeholder' ) ) {
     $('#AddressZipCode').trigger( 'change' );
   }
 });

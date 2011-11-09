@@ -67,7 +67,7 @@ class Message extends AppModel {
     $subject  = $match[0];
     $variable = $match[1];
     
-    return str_replace( $subject, $replacements[$variable], $haystack );
+    return str_replace( $subject, trim( $replacements[$variable] ), $haystack );
   }
   
   /**
@@ -89,7 +89,7 @@ class Message extends AppModel {
   public function queue( $template, $model, $foreign_key, $sender_id, $recipient_id, $replacements ) {
     $queued       = true;
     $template_id  = $this->MessageTemplate->field( 'id', array( 'MessageTemplate.template' => $template ) );
-    
+
     if( !empty( $template_id ) ) {
       $message = array(
         'message_template_id' => $template_id,
@@ -98,8 +98,8 @@ class Message extends AppModel {
         'sender_id'           => $sender_id,
         'recipient_id'        => $recipient_id,
         'replacements'        => json_encode( $replacements ),
-      );      
-      
+      );
+
       $this->create(); # In case this is part of a loop...
       $queued = $this->save( $message );
     }
@@ -108,7 +108,8 @@ class Message extends AppModel {
     }
     
     if( !$queued ) {
-      $this->log( '{Message::queue} Error queuing message: ' . json_encode( $this->invalidFields() ), LOG_ERR );
+# new PHPDump( $this->invalidFields() ); exit;
+      $this->log( '{Message::queue} Error queuing message: ' . json_encode( $this->invalidFields() ) );
     }
     
     return $queued;

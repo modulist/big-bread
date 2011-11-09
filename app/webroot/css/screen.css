@@ -118,28 +118,6 @@ body.onecolumn #content { background: #FFFFFF; min-height:400px; padding: 50px 6
 #savings span { color:#3D7700; font-weight:bold;line-height:1.8em; }
 .eq { display: block; height:25px;width:118px;padding:61px 0px 0px 0px;text-align:center; }
 
-/** Appliances */
-#eq_c44374b26f7f11e0be4180593d270cc9 { background:url(../img/Appliance_on.png) no-repeat 10px 0; }
-#eq_c44374b26f7f11e0be4180593d270cc9_off { background:url(../img/Appliance_off.png) no-repeat 10px 0; }
-/** Building Shell */
-#eq_c44375486f7f11e0be4180593d270cc9 { background:url(../img/Exterior_on.png) no-repeat 10px 0; }
-#eq_c44375486f7f11e0be4180593d270cc9_off { background:url(../img/Exterior_off.png) no-repeat 10px 0; }
-/** Heating & Cooling */
-#eq_c44376606f7f11e0be4180593d270cc9 { background:url(../img/HeatCool_on.png) no-repeat 10px 0; }
-#eq_c44376606f7f11e0be4180593d270cc9_off { background:url(../img/HeatCool_off.png) no-repeat 10px 0; }
-/** Hot Water */
-#eq_c44376ec6f7f11e0be4180593d270cc9 { background:url(../img/HotWater_on.png) no-repeat 10px 0; }
-#eq_c44376ec6f7f11e0be4180593d270cc9_off { background:url(../img/HotWater_off.png) no-repeat 10px 0; }
-/** Lighting */
-#eq_c44377786f7f11e0be4180593d270cc9 { background:url(../img/Light_on.png) no-repeat 10px 0; }
-#eq_c44377786f7f11e0be4180593d270cc9_off { background:url(../img/Light_off.png) no-repeat 10px 0; }
-/** Other */
-#eq_c44377fa6f7f11e0be4180593d270cc9 { background:url(../img/Other_on.png) no-repeat 10px 0; }
-#eq_c44377fa6f7f11e0be4180593d270cc9_off { background:url(../img/Other_off.png) no-repeat 10px 0; }
-/** Whole House */
-#eq_c44379126f7f11e0be4180593d270cc9 { background:url(../img/All_on.png) no-repeat 10px 0; }
-#eq_c44379126f7f11e0be4180593d270cc9_off { background:url(../img/All_off.png) no-repeat 10px 0; }
-
 #TermsCondition_on { background:url(../img/TermsCondition_on.png) no-repeat 0 0; width:151px; height:26px; float:left; margin-right:10px; }
 #TermsCondition_off { background:url(../img/TermsCondition_off.png) no-repeat 0 0; width:151px; height:26px; float:left; margin-right:10px; }
 #RebateForm_on { background:url(../img/RebateForm_on.png) no-repeat 0 0; width:105px; height:26px; float:left; margin-right:10px; }
@@ -477,36 +455,48 @@ table.current-equipment td { padding: 3px 10px; }
 .location-equipment-grid.grid_5 { width: 350px; margin-right: 0; }
 
 #BuildingAddForm input[type='text'] { width: 300px; }
-#BuildingAddForm input[type='submit'] {width: 220px; line-height: 210%;margin-bottom: 30px;margin-left:150px;}
+#BuildingAddForm input[type='submit'] { width: 180px; line-height: 210%; float: left; margin-bottom: 30px; margin-left: 170px;}
+#BuildingAddForm div.input { margin: 0 0 20px; }
 #BuildingAddForm .AddLocationState { width: 180px; float: left; margin: 0 10px 0 0; }
 #BuildingAddForm .AddLocationState input { width: 180px; margin: 4px 10px 0 0;}
 #BuildingAddForm .AddLocationState select { width: 180px; height: 24px;}
 #BuildingAddForm .AddLocationZip { width: 100px; float: left; margin: 0 10px 0 0; }
 #BuildingAddForm .AddLocationZip input { width: 100px; margin: 4px 10px 0 0; }
 #BuildingEditForm input[type='text'] { width: 300px; }
-#BuildingEditForm input[type='submit'] {width: 220px; line-height: 210%;margin-bottom: 30px;margin-left:150px;}
+#BuildingEditForm input[type='submit'] { float: left; width: 180px; line-height: 210%;margin-bottom: 30px;margin-left:170px;}
 #BuildingEditForm .AddLocationState { width: 180px; float: left; margin: 0 10px 0 0; }
 #BuildingEditForm .AddLocationState input { width: 180px; margin: 4px 10px 0 0;}
 #BuildingEditForm .AddLocationState select { width: 180px; height: 24px;}
 #BuildingEditForm .AddLocationZip { width: 100px; float: left; margin: 0 10px 0 0; }
 #BuildingEditForm .AddLocationZip input { width: 100px; margin: 4px 10px 0 0; }
 
-#BuildingDashboardForm { float: left; }
 #BuildingDashboardForm input[type='text'] { width: 300px; }
-#BuildingDashboardForm input#AddressAddress2 { width: 220px; }
-#BuildingDashboardForm input#AddressZipCode { width: 70px; float: right; }
+#BuildingDashboardForm input#AddressAddress2 { width: 215px; margin-right: 7px }
+#BuildingDashboardForm input#AddressZipCode { width: 70px; margin-right: 0; }
+#BuildingDashboardForm div.input { margin: 0; }
+#BuildingDashboardForm div.input.address-2,
+#BuildingDashboardForm div.input.zip-code { float: left; }
+#BuildingDashboardForm .location-name label { font: 14px/1 "UltraRegular", serif; letter-spacing: .07em; padding-bottom: 2px; }
+#BuildingDashboardForm .address-1 label,
+#BuildingDashboardForm .address-2 label,
+#BuildingDashboardForm .zip-code label,
+#BuildingDashboardForm .zip-code small { display: none; }
+h2.first-location { padding-bottom: 20px; }
+#BuildingDashboardForm .basic-inputs { float: left; width: 330px; }
+#BuildingDashboardForm .instructions { float: left; width: 210px; padding-top: 18px; }
+#BuildingDashboardForm .instructions .message-text { font: 18px/24px Georgia, serif; color: #57550f; }
+#BuildingDashboardForm input[type='submit'] { width: 120px; margin-top: 10px; }
 
-
-#EquipmentAddForm input[type='text'] { width: 300px; }
-#EquipmentAddForm select { width: 300px; }
-#EquipmentAddForm textarea { width: 300px; height:150px; } 
-#EquipmentAddForm input.year {border:0; font: 18px/1 Georgia, serif; color: #0c4d54; -moz-border-radius: 0; -webkit-border-radius: 0; -khtml-border-radius:0; border-radius: 0; box-shadow: none;}
-#EquipmentAddForm input[type='submit'] {width: 220px; line-height: 210%;margin-bottom: 30px;margin-top: 20px;}
-#EquipmentEditForm input[type='text'] { width: 300px; }
-#EquipmentEditForm select { width: 300px; }
-#EquipmentEditForm textarea { width: 300px; height:150px; } 
-#EquipmentEditForm input.year {border:0; font: 18px/1 Georgia, serif; color: #0c4d54; -moz-border-radius: 0; -webkit-border-radius: 0; -khtml-border-radius:0; border-radius: 0; box-shadow: none;}
-#EquipmentEditForm input[type='submit'] {width: 220px; line-height: 210%;margin-bottom: 30px;margin-top: 20px;}
+#FixtureAddForm input[type='text'],
+#FixtureEditForm input[type='text'] { width: 300px; }
+#FixtureAddForm select,
+#FixtureEditForm select { width: 300px; }
+#FixtureAddForm textarea,
+#FixtureEditForm textarea { width: 300px; height:150px; } 
+#FixtureAddForm input[type='submit'],
+#FixtureEditForm input[type='submit'] { float:left; width: 170px; line-height: 210%; margin-bottom: 30px; margin-top: 5px;}
+#FixtureAddForm input.year,
+#FixtureEditForm input.year {border:0; font: 18px/1 Georgia, serif; color: #0c4d54; -moz-border-radius: 0; -webkit-border-radius: 0; -khtml-border-radius:0; border-radius: 0; box-shadow: none;}
 
 /* ============================= get a quote ======================= */
 .popup { padding: 0 20px 30px; }
@@ -551,6 +541,8 @@ a.button {
 .edit-location-button:hover, 
 .download-button:hover,
 .add-equipment-button:hover { background-color: #3b7e9a; text-decoration: none; }
+.download-button.disabled,
+.add-equipment-button.disabled { background-color: #d8d8d8 }
 .choose-button {float:left; background: url(/img/button-choose.png) no-repeat; width:118px; height: 22px; margin-top: 12px;}
 .choose-button p {font: 11px/1 Georgia, serif; color: #fff; padding: 5px; vertical-align: middle;}
 
@@ -567,6 +559,8 @@ a.quote-button { background-color: #ef7600; text-transform: uppercase; }
 .close-button:active { background: url(../img/close-button-active.png) top right no-repeat; }
 .signup-button a { display: block; width: 200px; height: 22px; padding: 7px 10px; margin: 15px 0; font: 18px/1 'UltraRegular', serif; color: #fff; letter-spacing: 0; border: 1px solid #4f684f; text-align: center; box-shadow: none; text-shadow: none; background: url(../img/bk-button.png) repeat-x; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;  }
 .signup-button a:hover { background: #63ffec; text-decoration: none; }
+.cancel-button { float: left; display: block; width: 95px; height: 15px; padding: 10px; margin: 5px 0 0 10px; font: 14px/1 Georgia, serif; color: #fff; font-weight: bold; letter-spacing: 0; border: 1px solid #995454; text-align: center; box-shadow: none; text-shadow: -1px -1px 1px rgba(0,0,0,0.2); background: url(../img/bk-cancel-button.png) repeat-x #c74242; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;  }
+.cancel-button:hover { background: url(../img/bk-cancel-button-down.png) repeat-x #c74242; text-decoration: none; }
 
 
 
@@ -655,8 +649,9 @@ td.quote-action { width: 110px; padding-left: 20px; }
 
 
 /* ============================= savings details ======================= */
-body.ways_to_save h2.rebate-title { float: left; margin: 0 0 .5em; width: 425px; letter-spacing: 0; }
-.savings-detail .rebate-amount { float: left; margin-left: 15px; width: 190px; font: 30px/1 "UltraRegular", serif; color: #558388; text-align: right; }
+.savings-detail-header tr { vertical-align: top; }
+.savings-detail-header .rebate-title h2 { margin: 0 0 .5em; width: 75%; letter-spacing: 0; }
+.savings-detail-header .rebate-amount { padding-left: 15px; width: 25%; font: 30px/1 "UltraRegular", serif; color: #558388; text-align: right; }
 table.savings-detail-grid { width: 100%; background: url(../img/dotrule-orange-1px.png) bottom repeat-x; margin: 0 0 20px; }
 .savings-detail-grid tbody tr { background: url(../img/dotrule-orange-1px.png) top repeat-x; }
 .savings-detail-grid th { font: 14px/1.125 'UltraRegular', serif; letter-spacing: .1em; color: #0c4d54; text-align: left; padding: 30px 5px 6px; }
