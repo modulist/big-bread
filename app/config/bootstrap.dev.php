@@ -48,10 +48,6 @@
  * Inflector::rules('plural', array('rules' => array(), 'irregular' => array(), 'uninflected' => array()));
  *
  */
-
-# Core overrides
-Configure::write( 'debug', 2 );
-Configure::write( 'Cache.disable', false );
    
 Configure::write( 'Env.name', 'Development' );
 Configure::write( 'Env.code', 'DEV' );
