@@ -101,7 +101,7 @@
               <?php foreach( $quotes as $quote ): ?>
                 <tr>
                   <td class="contractor"><?php echo h( $quote['TechnologyIncentive']['Incentive']['name'] ) ?></td>
-                  <td class="quote-date"><?php echo date( DATE_FORMAT_LONG, strtotime( $quote['Proposal']['created'] ) ) ?></td>
+                  <td class="quote-date"><?php echo $this->Time->timeAgoInWords( $quote['Proposal']['created'], array( 'end' => '+6 months' ) ) ?></td>
                   <td class="quote-status">&nbsp;</td>
                   <td class="quote-action">&nbsp;</td>
                 </tr>
