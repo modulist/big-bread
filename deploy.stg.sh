@@ -28,8 +28,10 @@ rsync -vcrlDtOzi --progress \
       --exclude "app/tmp" \
       --exclude "*.komodoproject" \
       --exclude ".komodotools" \
+      --exclude "*.chproj" \
       --exclude ".git" \
       --exclude ".gitignore" \
+      --exclude ".gitmodules" \
       --exclude "_meta" \
       --exclude "app/config/bootstrap.*.php" \
       --exclude "app/config/core.php" \
