@@ -32,9 +32,11 @@ class AppController extends Controller {
    * @access  public
    */
   public function constructClasses() {
-    if( Configure::read( 'debug' ) > 0 ) {
-      $this->components[] = 'DebugKit.Toolbar';
-    }
+    # Causing more harm than good.
+    # In IE, syntax error is generated
+    # if( Configure::read( 'debug' ) > 0 ) {
+    #  $this->components[] = 'DebugKit.Toolbar';
+    # }
     
     parent::constructClasses();
   }
