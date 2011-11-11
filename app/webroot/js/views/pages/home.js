@@ -27,8 +27,11 @@ $(document).ready( function() {
         location.reload();
       },
       error: function( jqXHR, textStatus, thrownError ) {
-        console.log( jqXHR );
-        console.log( textStatus );
+        if( window.console ) {
+          console.log( jqXHR );
+          console.log( textStatus );
+        }
+
         if( $('.flash.error', $this).length > 0 ) {
           $('.flash.error').fadeTo( 200, 100 );
         }
