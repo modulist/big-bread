@@ -2,8 +2,8 @@
 
 class ContractorsController extends AppController {
   public $name       = 'Contractors';
-  public $helpers    = array( 'Form', 'FormatMask.Format' );
-  public $components = array( 'SwiftMailer', 'FormatMask.Format' );
+  public $helpers    = array( 'FormatMask.Format' );
+  public $components = array( 'FormatMask.Format' );
 
   /**
    * CALLBACKS

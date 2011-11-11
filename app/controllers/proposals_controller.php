@@ -2,8 +2,8 @@
 
 class ProposalsController extends AppController {
 	public $name       = 'Proposals';
-  public $components = array( 'SwiftMailer', 'FormatMask.Format' );
-  public $helpers    = array( 'Form', 'FormatMask.Format' );
+  public $helpers    = array( 'FormatMask.Format' );
+  public $components = array( 'FormatMask.Format' );
 
   /**
    * CALLBACKS

@@ -1,9 +1,9 @@
 <?php
 
 class UsersController extends AppController {
-  public $name    = 'Users';
-  public $helpers = array( 'Form', 'FormatMask.Format' );
-  public $components = array( 'SwiftMailer', 'FormatMask.Format' );
+  public $name       = 'Users';
+  public $helpers    = array( 'FormatMask.Format' );
+  public $components = array( 'FormatMask.Format' );
   
   /**
    * CALLBACKS

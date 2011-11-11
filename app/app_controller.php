@@ -1,7 +1,7 @@
 <?php
 
 class AppController extends Controller {
-  public $helpers    = array( 'Html', 'Number', 'Session', 'Text', 'Time' );
+  public $helpers    = array( 'Form', 'Html', 'Number', 'Session', 'Text', 'Time' );
   public $components = array(
     'Auth' => array(
       'authorize'     => 'controller',
