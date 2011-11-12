@@ -1,7 +1,7 @@
 <?php
 
 class AppController extends Controller {
-  public $helpers    = array( 'Form', 'Html', 'Number', 'Session', 'Text', 'Time' );
+  public $helpers    = array( 'AppHtml', 'Form', 'Html', 'Number', 'Session', 'Text', 'Time' );
   public $components = array(
     'Auth' => array(
       'authorize'     => 'controller',
@@ -20,11 +20,11 @@ class AppController extends Controller {
     'RequestHandler',
     'Session'
   );
-  
+
   /**
    * OVERRIDES
    */
-  
+
   /**
    * Override this method to ensure that some components get loaded
    * conditionally.
@@ -37,14 +37,14 @@ class AppController extends Controller {
     # if( Configure::read( 'debug' ) > 0 ) {
     #  $this->components[] = 'DebugKit.Toolbar';
     # }
-    
+
     parent::constructClasses();
   }
-  
+
   /**
    * CALLBACKS
    */
-  
+
   /**
    * CakePHP beforeFilter callback.
    *
@@ -75,14 +75,14 @@ class AppController extends Controller {
         exit( 'Unable to authenticate.' );
       }
     }
-    
+
     # Write auth user data to a config variable for easy access
     $user = $this->Auth->user();
     if( !empty( $user ) ) {
       Configure::write( 'User', $user[$this->Auth->getModel()->alias] );
-      Configure::write( 'nav.home', !User::agent() ? array( 'controller' => 'users', 'action' => 'dashboard', 'realtor' => false, 'inspector' => false ) : array( 'controller' => 'buildings', 'action' => 'add', 'realtor' => false, 'inspector' => false ) );
+      Configure::write( 'nav.home', !User::agent() ? array( 'controller' => 'users', 'action' => 'dashboard' ) : array( 'controller' => 'buildings', 'action' => 'add' ) );
     }
-    
+
     # Get a default zip code if the user is anonymous or if, for whatever
     # reason, the user does not have a default zip code value.
     if( !$this->Session->check( 'default_zip_code' ) ) {
@@ -93,7 +93,7 @@ class AppController extends Controller {
           'key=' . APIKEY_IPINFODB . '&ip=' . $client_ip . '&format=json'
         );
         $response = json_decode( $response, true );
-        
+
         $default_zip_code = strlen( preg_replace( '/[^\d]/', '', $response['zipCode'] ) ) > 0
           ? preg_replace( '/[^\d]/', '', $response['zipCode'] )
           : '02127';
@@ -101,7 +101,7 @@ class AppController extends Controller {
       else {
         $default_zip_code = $user[$this->Auth->getModel()->alias]['zip_code'];
       }
-      
+
       $this->Session->write( 'default_zip_code', $default_zip_code );
     }
 
@@ -112,7 +112,7 @@ class AppController extends Controller {
     if( !empty( $this->data ) && empty( $this->data['User'] ) ) {
       $this->data['User'] = $this->current_user();
     }
-    
+
     /**
      * Turn off debug output for ajax requests its output will hose the
      * structured response format.
@@ -120,14 +120,14 @@ class AppController extends Controller {
     if( $this->RequestHandler->isAjax() ) {
       Configure::write( 'debug', 0 );
     }
-    
+
     # Set common mail server properties if the SwiftMailer component
     # is in play.
     if( isset( $this->SwiftMailer ) ) {
-      $this->SwiftMailer->smtpType     = 'tls'; 
-      $this->SwiftMailer->smtpHost     = 'smtp.gmail.com'; 
-      $this->SwiftMailer->smtpPort     = 465; 
-      $this->SwiftMailer->smtpUsername = 'do-not-reply@savebigbread.com'; 
+      $this->SwiftMailer->smtpType     = 'tls';
+      $this->SwiftMailer->smtpHost     = 'smtp.gmail.com';
+      $this->SwiftMailer->smtpPort     = 465;
+      $this->SwiftMailer->smtpUsername = 'do-not-reply@savebigbread.com';
       $this->SwiftMailer->smtpPassword = '971gMAndxmHPBAG';
     }
   }
@@ -140,10 +140,10 @@ class AppController extends Controller {
   public function beforeRender() {
     /**
      * TODO: Move this to a component for clarity?
-     * 
+     *
      * Updates the associated model's data array with unified datetime
      * values.
-     * 
+     *
      * This unborks the datetime component array created when submitting a form
      * that contains date, time or datetime fields. Calling this after an
      * invalid save attempt allows the form to receive datetime in a
@@ -151,14 +151,14 @@ class AppController extends Controller {
      */
     if( !empty( $this->data[$this->modelClass] ) && $this->{$this->modelClass}->invalidFields() ) {
       $schema = $this->{$this->modelClass}->schema();
-      
+
       foreach( $schema as $field => $meta ) {
         if( isset( $this->data[$this->modelClass][$field] ) && $meta['type'] == 'datetime' ) {
           $this->data[$this->modelClass][$field] = $this->{$this->modelClass}->deconstruct( $field, $this->data[$this->modelClass][$field] );
         }
       }
     }
-    
+
     # If password values are set in the data structure of a GET request,
     # clear them. The encrypted values just create confusion.
     if( $this->RequestHandler->isGet() ) {
@@ -170,7 +170,7 @@ class AppController extends Controller {
       }
     }
   }
-  
+
   /**
    * CakePHP afterFilter callback
    *
@@ -187,11 +187,11 @@ class AppController extends Controller {
       $this->Auth->logout();
     }
   }
-  
+
   /**
    * PUBLIC FUNCTIONS
    */
-  
+
   /**
    * Has the final call over whether a user gets authenticated. Called
    * by the Auth component.
@@ -202,11 +202,11 @@ class AppController extends Controller {
   public function isAuthorized() {
     return true;
   }
-  
+
   /**
    * PROTECTED METHODS
    */
-  
+
   /**
    * Returns the current user object. Used to support the Auditable
    * behavior for delete actions which send no data, but perform a
@@ -218,7 +218,7 @@ class AppController extends Controller {
   protected function current_user( $property = null) {
     return User::get( $property );
   }
-  
+
   /**
    * Refreshes the authenticated user session partially or en masse.
    *
@@ -240,16 +240,16 @@ class AppController extends Controller {
             'conditions' => array( 'User.id' => $this->Auth->User( 'id' ) ),
           )
         );
-        
+
         $this->Auth->login( $user );
       }
     }
   }
-  
+
   /**
    * PRIVATE METHODS
    */
-  
+
   /**
    * Authenticates API access via an API key.
    *
@@ -263,14 +263,14 @@ class AppController extends Controller {
     #         $headers = getallheaders()
     # @see app/webroot/.htaccess
     $headers = $_SERVER;
-    
+
     if( array_key_exists( 'HTTP_AUTHORIZATION', $headers ) || !empty( $headers['HTTP_AUTHORIZATION'] ) ) {
       $this->User = ClassRegistry::init( 'User' );
       $user = $this->User->find( 'first', array(
         'contain'    => array( 'ApiUser' ),
         'conditions' => array( 'ApiUser.api_key' => $headers['HTTP_AUTHORIZATION'] ),
       ));
-      
+
       if( !empty( $user ) ) { # There's a user with this API key
         # If the API is being used from an authenticated session, ignore. Otherwise,
         # authenticate as the API owner. Otherwise, the authenticated user for internal
@@ -281,7 +281,7 @@ class AppController extends Controller {
             $this->Session->write( 'Auth.type', 'API' );
             $this->User->id = $user['User']['id'];
             $this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
-            
+
             $auth = true;
           }
         }
@@ -290,10 +290,10 @@ class AppController extends Controller {
         }
       }
     }
-    
+
     return $auth;
   }
-  
+
   /**
    * Force traffic to a given action through SSL.
    */
@@ -301,12 +301,12 @@ class AppController extends Controller {
     if( !$this->RequestHandler->isSSL() ) {
       $redirect_to = $this->params;
       unset( $redirect_to['url']['ext'] ); # Otherwise, ext=<whatever> will be added to the query string
-      
+
       $redirect_to = 'https://' . $_SERVER['HTTP_HOST'] . Router::reverse( $redirect_to );
       $this->redirect( $redirect_to, null, true );
     }
   }
-  
+
   /**
    * Force traffic to a given action away from SSL.
    */
