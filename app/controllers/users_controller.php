@@ -43,9 +43,7 @@ class UsersController extends AppController {
    * @access	public
    */
   public function invite() {
-    if( $this->Session->check( 'Auth.User' ) ) {
-      $this->redirect( array( 'action' => 'dashboard' ) );
-    }
+    $this->deny_authenticated_user();
 
     $invite_code = $this->params['invite_code'];
     $user        = $this->User->find(
@@ -79,9 +77,7 @@ class UsersController extends AppController {
    * @access  public
    */
   public function reset_password() {
-    if( $this->Session->check( 'Auth.User' ) ) {
-      $this->redirect( array( 'action' => 'dashboard' ) );
-    }
+    $this->deny_authenticated_user();
 
     if( !empty( $this->data ) ) { # Do the reset
       $this->User->id = $this->data['User']['id'];
@@ -159,9 +155,7 @@ class UsersController extends AppController {
    * @access  public
    */
   public function register( $user_id = null ) {
-    if( $this->Session->check( 'Auth.User' ) ) {
-      $this->redirect( array( 'action' => 'dashboard' ) );
-    }
+    $this->deny_authenticated_user();
 
     $has_locations = !empty( $user_id )
       ? $this->User->has_locations( $user_id )
@@ -303,9 +297,7 @@ class UsersController extends AppController {
    * @access  public
    */
   public function agent_register( $user_type_id ) {
-    if( $this->Session->check( 'Auth.User' ) ) {
-      $this->redirect( array( 'action' => 'dashboard' ) );
-    }
+    $this->deny_authenticated_user();
 
     if( !empty( $this->data ) ) {
       $this->data['User']['user_type_id'] = $user_type_id;
@@ -360,9 +352,7 @@ class UsersController extends AppController {
    * @access  public
    */
 	public function login() {
-    if( empty( $this->data ) && $this->Session->check( 'Auth.User' ) ) {
-      $this->redirect( array( 'action' => 'dashboard' ) );
-    }
+    $this->deny_authenticated_user();
 
     $this->layout = 'default_login';
 
@@ -372,6 +362,7 @@ class UsersController extends AppController {
 			$this->User->saveField( 'last_login', date( 'Y-m-d H:i:s' ) );
 
       # Update the session value
+      # @see AppModel::refresh_auth()
       $this->refresh_auth( 'last_login', date( 'Y-m-d H:i:s' ) );
 
       if( !$this->RequestHandler->isAjax() ) {
@@ -402,9 +393,7 @@ class UsersController extends AppController {
    * @access	public
    */
   public function forgot_password() {
-    if( $this->Session->check( 'Auth.User' ) ) {
-      $this->redirect( array( 'action' => 'dashboard' ) );
-    }
+    $this->deny_authenticated_user();
 
     $this->layout = 'default_login';
 
@@ -696,6 +685,19 @@ class UsersController extends AppController {
   /**
    * PRIVATE METHODS
    */
+
+  /**
+   * Redirects authenticated users to the dashboard. There are certain actions
+   * that simply shouldn't be accessed by authenticated users.
+   *
+   * @return  void
+   * @access  private
+   */
+  private function deny_authenticated_user() {
+    if( $this->Session->check( 'Auth.User' ) ) {
+      $this->redirect( array( 'action' => 'dashboard' ) );
+    }
+  }
 
   /**
    * Aggregates the functionality required to complete the registration process.
