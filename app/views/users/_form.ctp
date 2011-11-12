@@ -23,6 +23,10 @@
 	<div class="grid_3 last">
 		<?php echo $this->Form->input( 'User.confirm_password', array( 'type' => 'password' ) ) ?>
 	</div>
+
+  <?php if( $this->name == 'Users' && $this->action == 'edit' ): ?>
+    <small style="display: block; clear: both;"><?php __( 'Leave the password fields empty unless you intend to change your current password.' ) ?></small>
+  <?php endif; ?>
 </div>
 
 <?php if( $show_zip_code ): ?>
@@ -36,4 +40,4 @@
   </div>
 <?php endif; ?>
 
-  
+

@@ -5,6 +5,7 @@
 
 <?php echo $this->Form->create( 'User', array( 'id' => 'UserRegisterForm' ) ) ?>
   <div id="user-registration">
-  	<?php echo $this->element( '../users/_form', array( 'title' => false, 'show_zip_code' => !User::agent() && !$user_has_locations ) ) ?>
+    <?php $password = $this->Session->read( 'Auth.user.password' ); ?>
+  	<?php echo $this->element( '../users/_form', array( 'title' => false, 'show_zip_code' => !empty( $password ) ) ) ?>
   </div>
 <?php echo $this->Form->end( __( 'Update my profile', true ) ) ?>
