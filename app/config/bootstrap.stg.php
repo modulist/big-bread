@@ -53,8 +53,8 @@ Configure::write( 'Env.name', 'Staging' );
 Configure::write( 'Env.code', 'STG' );
 Configure::write( 'Env.domain', 'stage.savebigbread.com' );
 Configure::write( 'Env.full_base_url', 'http://stage.savebigbread.com' );
-      
-Configure::write( 'email.redirect_all_email_to', 'tony@savebigbread.com' );
+
+Configure::write( 'email.redirect_to', 'tony@savebigbread.com' );
 
 # Defines the controller => actions for which SSL should be forced.
 # Our SSL certificate won't work for subdomains, so we need to overwrite
