@@ -9,7 +9,7 @@
       <h1><?php __( 'Rebates help close sales' ) ?></h1>
     <?php endif; ?>
 
-    <p><?php __( 'You\'re about to provide another reason why your client will refer you. Once you hit <strong>Add location</strong>, we\'ll send your client an invitation to return to the site. Next, we\'ll direct you to <strong>add equipment</strong> so you can enter the make, model &amp; serial number for your client. We\'ll also send you an email with a list of the rebates that you\'ve elevated to "My Interests".' ) ?></p>
+    <p><?php __( 'You\'re about to provide another reason why your client will refer you. After you\'ve entered your client\'s information and potential interests, you\'ll be directed to enter existing equipment information.  We\'ll email you a report of "potential interest" rebates and your client will receive an invitation to view their personal account with thousands of $s in rebates that you\'ve set up for them.' ) ?></p>
   <?php endif; ?>
 </div><!-- /#messages -->
 
