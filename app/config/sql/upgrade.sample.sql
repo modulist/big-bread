@@ -13,7 +13,7 @@ DROP TABLE IF EXISTS messages;
 CREATE TABLE messages(
   id                  char(36)      NOT NULL,
   message_template_id char(36)      NOT NULL,
-  model               varchar(255)  NULL, -- what generated the message? 
+  model               varchar(255)  NULL, -- what generated the message?
   foreign_key         char(36)      NULL, -- which of that what generated the message?
   sender_id           char(36)      COLLATE utf8_unicode_ci NULL COMMENT 'A null sender indicates a message from the system (e.g. new user email)', -- null if system is sender
   recipient_id        char(36)      COLLATE utf8_unicode_ci NULL COMMENT 'A null recipient indicates a message to the system (e.g. feedback)', -- null if sent to system
@@ -21,7 +21,7 @@ CREATE TABLE messages(
   sent                datetime      NULL,
   created             datetime      NOT NULL,
   modified            datetime      NOT NULL,
-  
+
   PRIMARY KEY( id ),
   CONSTRAINT fk__messages__message_templates FOREIGN KEY( message_template_id )
     REFERENCES message_templates( id )
@@ -45,14 +45,14 @@ CREATE TABLE message_templates(
   subject     varchar(255)  NULL,
   created     datetime      NOT NULL,
   modified    datetime      NOT NULL,
-  
+
   PRIMARY KEY( id )
 ) ENGINE=InnoDB;
 
 INSERT INTO message_templates( id, template, subject, created, modified )
 VALUES
   ( UUID(), 'new_user', '%recipient_first_name%, thanks for registering to Save Big Bread on SaveBigBread.com', NOW(), NOW() ),
-  ( UUID(), 'new_realtor', 'SaveBigBread creates referrals from happy clients.', NOW(), NOW() ),
+  ( UUID(), 'new_realtor', 'Another reason for you to be referred!', NOW(), NOW() ),
   ( UUID(), 'new_inspector', 'SaveBigBread creates referrals from happy clients.', NOW(), NOW() ),
   ( UUID(), 'invite', '%sender_first_name% wants you to save $1,000s on SaveBigBread', NOW(), NOW() ),
   ( UUID(), 'proposal_request', '%sender_full_name% requests a quote from a qualified contractor', NOW(), NOW() ),
@@ -78,16 +78,16 @@ ALTER TABLE proposals
     REFERENCES buildings( id )
       ON UPDATE CASCADE
       ON DELETE NO ACTION;
- 
+
 UPDATE proposals p, technology_incentives ti
    SET p.technology_incentive_id = ti.id
  WHERE ti.technology_id = p.technology_id
        AND ti.incentive_id = p.incentive_id;
-       
+
 ALTER TABLE proposals
   DROP incentive_id,
   DROP technology_id;
- 
+
 -- Merging products and building_products into one table: fixtures
 DROP TABLE IF EXISTS fixtures;
 RENAME TABLE building_products TO fixtures;
@@ -109,7 +109,7 @@ UPDATE fixtures f, products p
        f.model            = p.model,
        f.energy_source_id = p.energy_source_id
  WHERE f.product_id = p.id;
- 
+
 DROP TABLE products;
 
 UPDATE fixtures
@@ -186,7 +186,7 @@ VALUES
 ALTER TABLE technology_groups
   DROP rebate_bar,
   ADD display_order int NULL;
-  
+
 UPDATE technology_groups
    SET display_order = 1
  WHERE incentive_tech_group_id = 'HVAC';
@@ -216,7 +216,7 @@ UPDATE technology_groups
 UPDATE technology_groups
    SET display_order = null
  WHERE incentive_tech_group_id IN ( 'OTH','LIGHT' );
- 
+
 UPDATE technology_groups
    SET display_order = 99
  WHERE display_order IS NULL;
@@ -235,7 +235,7 @@ UPDATE technologies
 UPDATE technologies
    SET technology_group_id = '4e7a5b45-6054-4f0c-b939-22536e891b5e' -- Laundry
  WHERE incentive_tech_id IN( 'WASH', 'DRYER' );
- 
+
 UPDATE technologies
    SET title = 'Clothes Washers'
  WHERE incentive_tech_id = 'WASH';
@@ -243,7 +243,7 @@ UPDATE technologies
 UPDATE technologies
    SET watchable = 1
  WHERE incentive_tech_id IN( 'AIRSL' );
- 
+
 UPDATE technologies
    SET watchable = 0
  WHERE incentive_tech_id IN( 'CEILF', 'CHP', 'CTRL', 'DHUM', 'DRHR', 'FIREPL', 'INS', 'LAMP', 'LFIX', 'LCTRL', 'MAINT', 'MOTOR', 'OTHER', 'POOLP', 'PSHEAT', 'PTHST', 'PV', 'RMAC', 'SHOWER', 'SIDING', 'SPHEAT', 'STEAM', 'WBLD', 'WHFAN', 'WHINS', 'WIND' );
@@ -264,37 +264,37 @@ UPDATE technologies
    SET title = 'Tune-Ups',
        watchable = 1
  WHERE incentive_tech_id = 'MAINT';
- 
+
 UPDATE technologies
    SET watchable = 1
  WHERE incentive_tech_id = 'INS';
- 
+
 UPDATE technologies
    SET title = 'Glass Doors'
  WHERE incentive_tech_id = 'DOOR';
- 
+
 UPDATE technologies
    SET title = 'Roofing'
  WHERE incentive_tech_id = 'ROOF';
- 
+
 UPDATE technologies
    SET title     = 'Audit/Home Performance',
        watchable = 1
  WHERE incentive_tech_id = 'WBLD';
- 
+
 UPDATE technologies
    SET title = 'Heat Pumps'
  WHERE incentive_tech_id = 'HP';
- 
+
 UPDATE user_types
    SET selectable = 1
  WHERE code = 'CNTRCT';
- 
+
 ALTER TABLE contractors
   ADD licensed boolean NOT NULL DEFAULT 0 COMMENT 'Whether the contractor possesses all required state and local licenses.' AFTER better_business_bureau_listed,
   ADD felony_charges boolean NOT NULL DEFAULT 0 COMMENT 'Whether the contractor has any criminal or sex offender charges or convictions in his/her history.' AFTER better_business_bureau_listed,
   ADD filings_current boolean NOT NULL DEFAULT 0 COMMENT 'Whether the contractor is current in all of his/her state filings.' AFTER better_business_bureau_listed,
   ADD bankruptcy_filings boolean NOT NULL DEFAULT 0 COMMENT 'Whether the contractor has filed for bankruptcy or has any judgements or liens against him/her.' AFTER better_business_bureau_listed
 ;
- 
+
 SET foreign_key_checks = 1;
