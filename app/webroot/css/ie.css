@@ -34,5 +34,10 @@ body.layout-default-login .footer {background: url(../img/footer-background-logi
 
 /* size and alignment fixes */
 #login-popup { width: 376px; margin-left: -100px; }
+#login-popup input[type="text"] { color: #000; }
+#login-popup input[type="password"] { color: #000 !important; }
+
+#BuildingDashboardForm input[type="text"] { padding-right: 0; }
+#BuildingDashboardForm input[type="submit"] { padding: 0; height: 25px; }
 .house-signup #UserRegisterForm #zipcode { width: 96px; margin-right: 5px; font: 27px/1 'UltraRegular', serif; color: #546e64; letter-spacing: 0; border: 1px solid #698666; background: #b3e6d2; text-align: left; }
 .house-signup #UserRegisterForm #zipcode.loading { width: 116px; border-width: 2px; color: #ccc; background: url(../img/loading.gif) no-repeat 90px 0 #fff; }
