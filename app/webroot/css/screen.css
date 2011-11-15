@@ -455,7 +455,7 @@ table.current-equipment td { padding: 3px 10px; }
 .location-equipment-grid.grid_5 { width: 350px; margin-right: 0; }
 
 #BuildingAddForm input[type='text'] { width: 300px; }
-#BuildingAddForm input[type='submit'] { width: 180px; line-height: 210%; float: left; margin-bottom: 30px; margin-left: 170px;}
+#BuildingAddForm input[type='submit'] { width: 180px; height: 37px; float: left; margin-bottom: 30px; margin-left: 170px;}
 #BuildingAddForm div.input { margin: 0 0 20px; }
 #BuildingAddForm .AddLocationState { width: 180px; float: left; margin: 0 10px 0 0; }
 #BuildingAddForm .AddLocationState input { width: 180px; margin: 4px 10px 0 0;}
@@ -494,7 +494,7 @@ h2.first-location { padding-bottom: 20px; }
 #FixtureAddForm textarea,
 #FixtureEditForm textarea { width: 300px; height:150px; } 
 #FixtureAddForm input[type='submit'],
-#FixtureEditForm input[type='submit'] { float:left; width: 170px; line-height: 210%; margin-bottom: 30px; margin-top: 5px;}
+#FixtureEditForm input[type='submit'] { float:left; width: 170px; height: 37px; margin-bottom: 30px; margin-top: 5px;}
 #FixtureAddForm input.year,
 #FixtureEditForm input.year {border:0; font: 18px/1 Georgia, serif; color: #0c4d54; -moz-border-radius: 0; -webkit-border-radius: 0; -khtml-border-radius:0; border-radius: 0; box-shadow: none;}
 
@@ -502,12 +502,13 @@ h2.first-location { padding-bottom: 20px; }
 .popup { padding: 0 20px 30px; }
 .popup h2, .modal h2 { margin-top: 20px; }
 
-#ProposalQuoteForm h2 { margin-top: 20px; }
-#ProposalQuoteForm h4 { font-size: 14px; letter-spacing: .1em; background: url(/img/dotrule-orange-1px.png) repeat-x left bottom; padding: 0 0 10px; margin-bottom: 5px; }
-#ProposalQuoteForm p { padding: 5px 0; }
-#ProposalQuoteForm label { font-size: 12px; }
-#ProposalQuoteForm input[type='radio'] { padding: 5px 0; /*margin: 4px 4px 4px 0;*/ }
-#ProposalQuoteForm input[type='submit'] { background: none #fd7e01; height: 40px; }
+body.proposals.request .breadcrumb { margin-top: -20px; }
+body.proposals.request h2 { margin-top: 20px; }
+#ProposalRequestForm h4 { font-size: 14px; letter-spacing: .1em; background: url(/img/dotrule-orange-1px.png) repeat-x left bottom; padding: 0 0 10px; margin-bottom: 5px; }
+#ProposalRequestForm p { padding: 5px 0; }
+#ProposalRequestForm label { font-size: 12px; }
+#ProposalRequestForm input[type='radio'] { padding: 5px 0; /*margin: 4px 4px 4px 0;*/ }
+#ProposalRequestForm input[type='submit'] { background: none #fd7e01; height: 40px; }
 
 table.pending-quotes {width: 700px; font-size: 11px; color: #0c4d54; padding: 5px 0 10px; margin: 10px 0 40px; background: url(../img/dotrule-green-4px.png) top left repeat-x, url(/img/dotrule-green-4px.png) bottom left repeat-x; }
 .pending-quotes tr { vertical-align: top; background: url(/img/dotrule-orange-1px.png) top left repeat-x; }
