@@ -502,13 +502,20 @@ h2.first-location { padding-bottom: 20px; }
 .popup { padding: 0 20px 30px; }
 .popup h2, .modal h2 { margin-top: 20px; }
 
-body.proposals.request .breadcrumb { margin-top: -20px; }
+body.proposals.request .breadcrumb { margin-top: -20px; font-weight: bold; color: #0c4654;}
 body.proposals.request h2 { margin-top: 20px; }
-#ProposalRequestForm h4 { font-size: 14px; letter-spacing: .1em; background: url(/img/dotrule-orange-1px.png) repeat-x left bottom; padding: 0 0 10px; margin-bottom: 5px; }
-#ProposalRequestForm p { padding: 5px 0; }
-#ProposalRequestForm label { font-size: 12px; }
-#ProposalRequestForm input[type='radio'] { padding: 5px 0; /*margin: 4px 4px 4px 0;*/ }
+#ProposalRequestForm h4 { font-size: 14px; letter-spacing: .1em; background: url(/img/dotrule-orange-1px.png) repeat-x left bottom; padding: 0 0 5px; margin-bottom: 5px; }
+#ProposalRequestForm p { padding: 0 0 5px; }
+#ProposalRequestForm .input { margin: 10px 0; }
+#ProposalRequestForm .input.radio { margin: 0; }
+#ProposalRequestForm label { font-size: 12px; margin-right: 20px; }
+#ProposalRequestForm input[type='radio'] { padding: 5px 0; margin: 4px 4px 4px 0; vertical-align: -1px; }
 #ProposalRequestForm input[type='submit'] { background: none #fd7e01; height: 40px; }
+#ProposalRequestForm .utility-provider { float: left; padding-right: 10px; margin-right: 10px; border-right: 1px dotted #ff7e00; }
+#ProposalRequestForm .utility-provider:last-child { padding-right: 0; margin-right: 0; border-right: none; }
+#ProposalRequestForm .utility-provider label,
+#ProposalRequestForm .utility-provider input { margin: 3px 0; }
+#ProposalRequestForm textarea { width: 680px; }
 
 table.pending-quotes {width: 700px; font-size: 11px; color: #0c4d54; padding: 5px 0 10px; margin: 10px 0 40px; background: url(../img/dotrule-green-4px.png) top left repeat-x, url(/img/dotrule-green-4px.png) bottom left repeat-x; }
 .pending-quotes tr { vertical-align: top; background: url(/img/dotrule-orange-1px.png) top left repeat-x; }

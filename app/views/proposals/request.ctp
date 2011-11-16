@@ -38,7 +38,9 @@
 
     <h4><?php __( 'Which utilities are involved?' ) ?></h4>
     <p><?php __( 'We\'ll need your account numbers to reserve and process your utility rebates.  Please add them to your request or add them to your profile as soon as possible.' ) ?></p>
-    <?php echo $this->element( '../buildings/_utility_inputs', array( 'plugin' => false, 'show_account_numbers' => true ) ) # We have to reset the plugin context ?>
+    <div class="form-field-grid clearfix">
+	    <?php echo $this->element( '../buildings/_utility_inputs', array( 'plugin' => false, 'show_account_numbers' => true ) ) # We have to reset the plugin context ?>
+    </div>
   </div>
 
   <div class="form-field-group clearfix">
