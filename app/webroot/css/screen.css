@@ -343,7 +343,7 @@ input[type=text], input[type=password],
 textarea { width: 210px; margin-right: 10px; background-color: #FFF; border: 1px solid #8ed7c8; -moz-border-radius: 4px; -webkit-border-radius: 4px; -khtml-border-radius:4px; border-radius: 4px; box-shadow: 0px 0px 5px  #8ed7c8; }
 
 label { color: #0c4d54; font-weight: bold; font-size: 14px; display:inline; }
-/*div.input label { display: block; }*/
+div.input label { display: block; }
 div.checkbox label, div.radio label { display: inline; }
 fieldset { border: 0 none; margin: 0 0 10px 0; }
 fieldset div.cloneable { border-bottom: 1px solid #CCC; }
