@@ -22,7 +22,7 @@
             <?php echo $this->Form->input( 'Fixture.name', array( 'class' => 'tooltip', 'title' => 'Example: Downstairs Refrigerator' ) ) ?>
             <?php echo $this->Form->input( 'Fixture.make', array( 'class' => 'tooltip', 'title' => 'Example: Whirlpool' ) ) ?>
             <?php echo $this->Form->input( 'Fixture.model', array( 'label' => __( 'Model (from equipment tag)', true ) ) ) ?>
-            <?php echo $this->Form->input( 'Fixture.serial_number', array( 'label' => __( 'Serial Number', true ), 'between' => '<span class="help-icon"><a href="#"></a></span>' ) ) ?>
+            <?php echo $this->Form->input( 'Fixture.serial_number', array( 'label' => __( 'Serial Number', true ), 'between' => '<a class="help-icon" href="#"></a>' ) ) ?>
             <?php echo $this->Form->input( 'Fixture.outside_unit', array( 'type' => 'radio', 'options' => array( __( 'Inside unit', true ), __( 'Outside unit', true ) ), 'default' => 0, 'legend' => __( 'Unit location (for dual unit fixtures)', true ), 'div' => array( 'class' => 'input radio hidden' ) ) ) ?>
             <?php echo $this->Form->input( 'Fixture.purchase_price', array( 'class' => 'tooltip', 'title' => 'Example: 1200.00', 'after' => '<small>' . __( 'Provide the purchase price net of manufacturer and contractor discounts. Do not deduct utility rebates and tax credits from the total.', true ) . '</small>' ) ) ?>
             <?php echo $this->Form->input( 'Fixture.service_in', array( 'type' => 'text', 'label' => __( 'Year Installed', true ), 'between' => '<div id="slider"></div>' ) ) ?>
